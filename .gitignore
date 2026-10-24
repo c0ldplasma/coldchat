@@ -32,6 +32,9 @@
 !/pubspec.yaml
 !/l10n.yaml
 
+# Website (GitHub Pages: support page, privacy policy, terms)
+!/docs/**
+
 # GitHub CI/CD workflow files
 !/.github/workflows/**/*.yml
 

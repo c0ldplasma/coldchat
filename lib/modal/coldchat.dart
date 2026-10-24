@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coldchat/modal/about.dart';
 import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:coldchat/modal/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/tile.dart';
 import '/tmi/client/client.dart';
@@ -84,7 +86,7 @@ class ColdChatModal extends StatelessWidget {
                       const Spacer(),
                       InkWell(
                         borderRadius: BorderRadius.circular(4.0),
-                        onTap: () {},
+                        onTap: () => launchUrl(Uri.parse(privacyPolicyUrl), mode: LaunchMode.externalApplication),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
@@ -108,7 +110,7 @@ class ColdChatModal extends StatelessWidget {
                       ),
                       InkWell(
                         borderRadius: BorderRadius.circular(4.0),
-                        onTap: () {},
+                        onTap: () => launchUrl(Uri.parse(termsOfServiceUrl), mode: LaunchMode.externalApplication),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(

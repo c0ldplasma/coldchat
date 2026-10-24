@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
-import 'package:http/http.dart' as http;
 
 import '../../components/surface.dart';
 import '../../data/emote.dart';
@@ -79,14 +77,12 @@ class EmotePicker extends StatefulWidget {
 
 class _EmotePickerState extends State<EmotePicker> {
   PickerMode mode = PickerMode.emote;
-  Future<http.Response>? gifSearch;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   late final List<StreamSubscription> emoteSubscriptions;
 
   @override
   void initState() {
-    gifSearch = http.get(Uri.parse('https://g.tenor.com/v1/search?q=forsen&key=LIVDSRZULELA&limit=50'));
     // Emotes keep loading after the picker opens (Twitch's only arrive once
     // the chat connection is up), so rebuild when any list changes.
     emoteSubscriptions = [
@@ -151,39 +147,6 @@ class _EmotePickerState extends State<EmotePicker> {
       type: SurfaceType.background,
       child: Column(
         children: [
-          if (mode == PickerMode.gif)
-            Expanded(
-              child: FutureBuilder<http.Response>(
-                future: gifSearch,
-                builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
-                  if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-                  final gifs = <GifInfo>[];
-                  final responseJson = json.decode(utf8.decode(snapshot.data!.bodyBytes)) as Map<String, dynamic>;
-                  for (final gif in responseJson['results']) {
-                    gifs.add(GifInfo(
-                      url: gif['media'][0]['tinygif']['url'] as String,
-                      width: (gif['media'][0]['tinygif']['dims'][0] as int).toDouble(),
-                      height: (gif['media'][0]['tinygif']['dims'][1] as int).toDouble(),
-                      preview: gif['media'][0]['tinygif']['url'] as String,
-                    ));
-                  }
-
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          buildGifColumn(gifs.take(gifs.length ~/ 2).toList()),
-                          const SizedBox(width: 8.0),
-                          buildGifColumn(gifs.sublist(gifs.length ~/ 2).toList()),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
           if (mode == PickerMode.emote)
             Expanded(
               child: Column(
@@ -379,41 +342,6 @@ class _EmotePickerState extends State<EmotePicker> {
         imageUrl: emotes.first.mipmap.last,
         fit: BoxFit.contain,
       );
-
-  Expanded buildGifColumn(List<GifInfo> gifs) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final gif in gifs) ...[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                gif.url,
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
-            ),
-            const SizedBox(height: 8.0),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class GifInfo {
-  final String url;
-  final String preview;
-  final double width;
-  final double height;
-
-  GifInfo({
-    required this.url,
-    required this.preview,
-    required this.width,
-    required this.height,
-  });
 }
 
           // const SizedBox(height: 4.0),
