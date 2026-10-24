@@ -11,6 +11,7 @@ import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/dark_bar.dart';
 import '../components/modal.dart';
@@ -429,6 +430,7 @@ class ChannelViewState extends State<ChannelView> {
             mainAxisSize: MainAxisSize.min,
             children: [
                 UploadQueueBar(channelName: widget.channel.name),
+                if (widget.channel is WhisperChannel) const _WhisperHistoryHint(),
                 if (widget.channel is WhisperChannel && !widget.channel.client.whispers.hasScope)
                   Surface(
                     type: SurfaceType.error,
@@ -696,5 +698,58 @@ class ChannelViewState extends State<ChannelView> {
         ),
       );
     });
+  }
+}
+
+/// Whispers that arrive while ColdChat is closed never reach it, and Twitch gives apps no history to fetch them
+/// from later. Says so once, with a way to read them on Twitch, until dismissed.
+class _WhisperHistoryHint extends StatefulWidget {
+  const _WhisperHistoryHint();
+
+  @override
+  State<_WhisperHistoryHint> createState() => _WhisperHistoryHintState();
+}
+
+class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
+  static const String _dismissedKey = 'whisperHistoryHintDismissed';
+
+  bool dismissed = Hive.box('Settings').get(_dismissedKey) == true;
+
+  @override
+  Widget build(BuildContext context) {
+    if (dismissed) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    return Surface(
+      type: SurfaceType.tertiary,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12.0, top: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Text(l10n.whisperHistoryHint),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Hive.box('Settings').put(_dismissedKey, true);
+                    setState(() => dismissed = true);
+                  },
+                  child: Text(l10n.gotIt),
+                ),
+                TextButton(
+                  // Twitch has no link to its whisper inbox; on a phone with the Twitch app this opens the app.
+                  onPressed: () => launchUrl(Uri.parse('https://www.twitch.tv/'), mode: LaunchMode.externalApplication),
+                  child: Text(l10n.openTwitch),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

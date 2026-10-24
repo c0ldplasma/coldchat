@@ -528,4 +528,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String whisperFailed(String reason) {
     return 'Flüsternachricht nicht gesendet: $reason';
   }
+
+  @override
+  String get whisperHistoryHint =>
+      'Flüsternachrichten, die du bekommst, während ColdChat geschlossen ist, erscheinen hier nicht, weil Twitch den Verlauf nicht an Apps weitergibt. Du findest sie auf Twitch hinter dem Flüster-Symbol oben rechts.';
+
+  @override
+  String get gotIt => 'Verstanden';
+
+  @override
+  String get openTwitch => 'Twitch öffnen';
 }

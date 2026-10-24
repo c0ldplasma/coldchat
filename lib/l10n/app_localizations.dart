@@ -1059,6 +1059,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Whisper not sent: {reason}'**
   String whisperFailed(String reason);
+
+  /// No description provided for @whisperHistoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.'**
+  String get whisperHistoryHint;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gotIt;
+
+  /// No description provided for @openTwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Twitch'**
+  String get openTwitch;
 }
 
 class _AppLocalizationsDelegate

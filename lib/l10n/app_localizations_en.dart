@@ -526,6 +526,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String whisperFailed(String reason) {
     return 'Whisper not sent: $reason';
   }
+
+  @override
+  String get whisperHistoryHint =>
+      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+
+  @override
+  String get gotIt => 'Got it';
+
+  @override
+  String get openTwitch => 'Open Twitch';
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

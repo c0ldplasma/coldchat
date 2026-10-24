@@ -255,5 +255,8 @@
   "whisperNeedsScope": "Sign in again to send and receive whispers. Your login is from before ColdChat supported them.",
   "whisperUserNotFound": "There is no Twitch user with that name.",
   "whisperFailed": "Whisper not sent: {reason}",
-  "@whisperFailed": {"placeholders": {"reason": {"type": "String"}}}
+  "@whisperFailed": {"placeholders": {"reason": {"type": "String"}}},
+  "whisperHistoryHint": "Whispers sent to you while ColdChat was closed don't show up here, because Twitch doesn't share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.",
+  "gotIt": "Got it",
+  "openTwitch": "Open Twitch"
 }

@@ -221,5 +221,8 @@
   "whisperNeedsLogin": "Melde dich bei Twitch an, um Flüsternachrichten zu senden.",
   "whisperNeedsScope": "Melde dich noch einmal an, um Flüsternachrichten zu senden und zu empfangen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat sie unterstützt hat.",
   "whisperUserNotFound": "Es gibt keinen Twitch-Nutzer mit diesem Namen.",
-  "whisperFailed": "Flüsternachricht nicht gesendet: {reason}"
+  "whisperFailed": "Flüsternachricht nicht gesendet: {reason}",
+  "whisperHistoryHint": "Flüsternachrichten, die du bekommst, während ColdChat geschlossen ist, erscheinen hier nicht, weil Twitch den Verlauf nicht an Apps weitergibt. Du findest sie auf Twitch hinter dem Flüster-Symbol oben rechts.",
+  "gotIt": "Verstanden",
+  "openTwitch": "Twitch öffnen"
 }
