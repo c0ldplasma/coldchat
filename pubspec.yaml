@@ -1,7 +1,7 @@
 name: coldchat
 description: ColdChat, a third-party Twitch chat client for Android and iOS
 publish_to: 'none'
-version: 2.1.0+124
+version: 2.2.0+140
 
 environment:
   # 3.13.7 / Flutter 3.47.8 fix GHSA-frr6-h895-5pxp (compromised eMudhra CAs
