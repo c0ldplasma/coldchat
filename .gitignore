@@ -25,6 +25,12 @@
 /android/build/
 /android/.kotlin/
 /android/**/*.iml
+
+# The native SwiftUI iOS app
+!/ios-native/**
+/ios-native/**/xcuserdata/
+/ios-native/build/
+/ios-native/**/__pycache__/
 **/.DS_Store
 
 # Flutter and dart project files
