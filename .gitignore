@@ -4,6 +4,7 @@
 
 # Fonts
 !/fonts/**/*.ttf
+!/fonts/**/*.txt
 
 # App assets (e.g. launcher icon source)
 !/assets/**/*.png
@@ -17,6 +18,14 @@
 
 # Localization files
 !/lib/l10n/**/*.arb
+
+# Android and iOS projects. Their own .gitignore files drop the generated parts.
+!/android/**
+!/ios/**
+/android/build/
+/android/.kotlin/
+/android/**/*.iml
+**/.DS_Store
 
 # Flutter and dart project files
 !/analysis_options.yaml

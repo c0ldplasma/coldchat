@@ -195,5 +195,11 @@
   "emoteMenuButtonDownloadFailed": "Das Emote konnte nicht heruntergeladen werden. Der Button wurde nicht geändert.",
   "takePhoto": "Foto aufnehmen",
   "chooseFromLibrary": "Aus Mediathek auswählen",
-  "cameraUnavailable": "Die Kamera konnte nicht geöffnet werden. Prüfe, ob ColdChat Zugriff auf die Kamera hat."
+  "cameraUnavailable": "Die Kamera konnte nicht geöffnet werden. Prüfe, ob ColdChat Zugriff auf die Kamera hat.",
+  "about": "Über",
+  "sourceCode": "Quellcode",
+  "license": "Lizenz",
+  "basedOnChatsen": "Basiert auf Chatsen",
+  "openSourceLicenses": "Open-Source-Lizenzen",
+  "aboutLegalese": "ColdChat ist freie Software: Du kannst sie unter den Bedingungen der GNU Affero General Public License, Version 3, weitergeben und verändern. Sie wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt."
 }

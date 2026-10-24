@@ -433,4 +433,23 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cameraUnavailable =>
       'Die Kamera konnte nicht geöffnet werden. Prüfe, ob ColdChat Zugriff auf die Kamera hat.';
+
+  @override
+  String get about => 'Über';
+
+  @override
+  String get sourceCode => 'Quellcode';
+
+  @override
+  String get license => 'Lizenz';
+
+  @override
+  String get basedOnChatsen => 'Basiert auf Chatsen';
+
+  @override
+  String get openSourceLicenses => 'Open-Source-Lizenzen';
+
+  @override
+  String get aboutLegalese =>
+      'ColdChat ist freie Software: Du kannst sie unter den Bedingungen der GNU Affero General Public License, Version 3, weitergeben und verändern. Sie wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt.';
 }
