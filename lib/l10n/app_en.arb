@@ -230,5 +230,14 @@
   "license": "License",
   "basedOnChatsen": "Based on Chatsen",
   "openSourceLicenses": "Open source licenses",
-  "aboutLegalese": "ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY."
+  "aboutLegalese": "ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.",
+  "unblock": "Unblock",
+  "report": "Report",
+  "reportUserTitle": "Report {name}",
+  "@reportUserTitle": {"placeholders": {"name": {"type": "String"}}},
+  "reportUserDescription": "Reports are handled by Twitch. Open {name}'s channel on Twitch and choose Report there. You can also block {name} here to hide their messages.",
+  "@reportUserDescription": {"placeholders": {"name": {"type": "String"}}},
+  "openOnTwitch": "Open on Twitch",
+  "blockFailed": "The block list couldn't be changed. Check your connection and try again.",
+  "contact": "Contact & feedback"
 }

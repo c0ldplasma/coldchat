@@ -52,6 +52,33 @@ class Client {
   /// The token for Helix requests, or null while browsing anonymously.
   TokenData? get apiTokenData => _apiAccount?.tokenData.accessToken == null ? null : _apiAccount!.tokenData;
 
+  /// The connected, logged-in account, which is the one whose Twitch block list hides messages.
+  ConnectionConnected? get _blockingState {
+    final state = receiver.state;
+    return state is ConnectionConnected && state.twitchAccount.tokenData.accessToken != null ? state : null;
+  }
+
+  /// The id of the account that can block users, or null while anonymous or disconnected.
+  String? get blockingUserId => _blockingState?.twitchAccount.tokenData.userId;
+
+  bool isBlocked(String userId) => _blockingState?.blockedUserIds.contains(userId) ?? false;
+
+  /// Blocks or unblocks [userId] on Twitch and re-renders their messages in every channel.
+  Future<void> setBlocked(String userId, bool blocked) async {
+    final state = _blockingState;
+    if (state == null) throw Exception('Not logged in');
+    if (blocked) {
+      await Twitch.blockUser(state.twitchAccount.tokenData, userId);
+      if (!state.blockedUserIds.contains(userId)) state.blockedUserIds.add(userId);
+    } else {
+      await Twitch.unblockUser(state.twitchAccount.tokenData, userId);
+      state.blockedUserIds.remove(userId);
+    }
+    for (final channel in channels.state) {
+      channel.rebuildMessagesFrom(userId);
+    }
+  }
+
   late final List<Provider> providers = [
     SevenTVProvider(),
     BetterTTVProvider(),

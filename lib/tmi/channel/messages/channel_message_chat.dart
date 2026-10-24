@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:coldchat/api/anonfiles/anonfiles.dart';
 import 'package:coldchat/data/custom_badge.dart';
 import 'package:coldchat/data/inline_url.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_user.dart';
-import 'package:coldchat/tmi/channel/messages/embeds/file_embed.dart';
 import 'package:coldchat/tmi/channel/messages/embeds/image_embed.dart';
 import 'package:coldchat/tmi/user.dart';
 import 'package:collection/collection.dart';
@@ -210,20 +208,6 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
         splits.add(InlineUrl(url: '$uri'));
         if (_imageRegex.hasMatch('${uri.removeFragment()}')) {
           embeds.add(ImageEmbed(url: '$uri'));
-        } else if (uri.host == 'anonfiles.com') {
-          try {
-            Anonfiles.getFileInfo(uri.path.split('/')[1]).then((fileInfo) {
-              if (fileInfo == null) return;
-              embeds.add(
-                FileEmbed(
-                  name: fileInfo.metadata.name,
-                  url: fileInfo.url.short,
-                  size: fileInfo.metadata.size.bytes,
-                ),
-              );
-            });
-            // ignore: empty_catches
-          } catch (e) {}
         }
       } else {
         splits.add(textSplit);

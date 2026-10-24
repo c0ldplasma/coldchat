@@ -453,4 +453,30 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get aboutLegalese =>
       'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+
+  @override
+  String get unblock => 'Unblock';
+
+  @override
+  String get report => 'Report';
+
+  @override
+  String reportUserTitle(String name) {
+    return 'Report $name';
+  }
+
+  @override
+  String reportUserDescription(String name) {
+    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+  }
+
+  @override
+  String get openOnTwitch => 'Open on Twitch';
+
+  @override
+  String get blockFailed =>
+      'The block list couldn\'t be changed. Check your connection and try again.';
+
+  @override
+  String get contact => 'Contact & feedback';
 }

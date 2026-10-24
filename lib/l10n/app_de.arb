@@ -201,5 +201,12 @@
   "license": "Lizenz",
   "basedOnChatsen": "Basiert auf Chatsen",
   "openSourceLicenses": "Open-Source-Lizenzen",
-  "aboutLegalese": "ColdChat ist freie Software: Du kannst sie unter den Bedingungen der GNU Affero General Public License, Version 3, weitergeben und verändern. Sie wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt."
+  "aboutLegalese": "ColdChat ist freie Software: Du kannst sie unter den Bedingungen der GNU Affero General Public License, Version 3, weitergeben und verändern. Sie wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt.",
+  "unblock": "Blockierung aufheben",
+  "report": "Melden",
+  "reportUserTitle": "{name} melden",
+  "reportUserDescription": "Meldungen bearbeitet Twitch. Öffne den Kanal von {name} auf Twitch und nutze dort „Melden“. Du kannst {name} auch hier blockieren, um die Nachrichten auszublenden.",
+  "openOnTwitch": "Auf Twitch öffnen",
+  "blockFailed": "Die Blockierliste konnte nicht geändert werden. Prüf deine Verbindung und versuch es noch einmal.",
+  "contact": "Kontakt & Feedback"
 }

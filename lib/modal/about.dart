@@ -55,6 +55,12 @@ class AboutModal extends StatelessWidget {
                 onTap: () => _open('https://github.com/chatsen/chatsen'),
               ),
               Tile(
+                title: AppLocalizations.of(context)!.contact,
+                subtitle: 'github.com/c0ldplasma/coldchat/issues',
+                prefix: const Icon(Icons.mail_outline_rounded),
+                onTap: () => _open('$repositoryUrl/issues'),
+              ),
+              Tile(
                 title: AppLocalizations.of(context)!.openSourceLicenses,
                 prefix: const Icon(Icons.description_outlined),
                 onTap: () => showLicensePage(

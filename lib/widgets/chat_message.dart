@@ -20,7 +20,6 @@ import '/data/settings/message_appearance.dart';
 import '/modal/message.dart';
 import '/tmi/channel/messages/channel_message_ban.dart';
 import '/tmi/channel/messages/channel_message_notice.dart';
-import '/tmi/channel/messages/embeds/file_embed.dart';
 import '/tmi/channel/messages/embeds/image_embed.dart';
 import '/tmi/channel/channel_message.dart';
 import '/tmi/channel/messages/channel_message_chat.dart';
@@ -28,7 +27,6 @@ import 'channel_view.dart';
 import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
 import 'chat/reply_painter.dart';
-import 'embeds/embedded_file.dart';
 import 'embeds/embedded_image.dart';
 
 class BlockedChatMessage extends StatefulWidget {
@@ -336,7 +334,6 @@ class ChatMessage extends StatelessWidget {
               if (state.isNotEmpty) SizedBox(height: 8.0 * messageAppearance.scale),
               for (final embed in state) ...[
                 if (embed is ImageEmbed) EmbeddedImage(embed: embed, scale: messageAppearance.scale),
-                if (embed is FileEmbed) EmbeddedFile(embed: embed, scale: messageAppearance.scale),
                 SizedBox(height: 8.0 * messageAppearance.scale),
               ],
             ],

@@ -939,6 +939,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.'**
   String get aboutLegalese;
+
+  /// No description provided for @unblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get unblock;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// No description provided for @reportUserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report {name}'**
+  String reportUserTitle(String name);
+
+  /// No description provided for @reportUserDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports are handled by Twitch. Open {name}\'s channel on Twitch and choose Report there. You can also block {name} here to hide their messages.'**
+  String reportUserDescription(String name);
+
+  /// No description provided for @openOnTwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open on Twitch'**
+  String get openOnTwitch;
+
+  /// No description provided for @blockFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The block list couldn\'t be changed. Check your connection and try again.'**
+  String get blockFailed;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact & feedback'**
+  String get contact;
 }
 
 class _AppLocalizationsDelegate
