@@ -14,6 +14,19 @@ A native SwiftUI port of the Flutter app in this repository, with the same featu
 - The version comes from `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` in the project's build settings. Keep them
   in step with `pubspec.yaml` (see Versioning in `CLAUDE.md`).
 
+## Installing next to the Flutter app
+
+To keep both apps on one iPhone, build with a separate bundle ID, name and the orange `AppIconNative` icon, then
+install in place with `devicectl` (see `CLAUDE.md`, never `flutter install`):
+
+```bash
+xcodebuild -project ios-native/ColdChat.xcodeproj -scheme ColdChat -configuration Release \
+  -destination generic/platform=iOS -derivedDataPath build/ios-native -allowProvisioningUpdates \
+  PRODUCT_BUNDLE_IDENTIFIER=com.plasmari.coldchat.swift APP_DISPLAY_NAME="ColdChat Swift" \
+  ASSETCATALOG_COMPILER_APPICON_NAME=AppIconNative build
+xcrun devicectl device install app --device <UDID> build/ios-native/Build/Products/Release-iphoneos/ColdChat.app
+```
+
 ## Layout
 
 | Folder | What |
