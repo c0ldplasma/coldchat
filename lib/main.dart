@@ -71,12 +71,14 @@ Future<void> main() async {
     Hive.openBox('UserTriggers'),
     Hive.openBox('CustomCommands'),
     Hive.openBox('ChatSettings'),
+    Hive.openBox('Whispers'),
   ]);
   final twitchAccountsBox = boxes[0];
   final accountSettingsBox = boxes[1];
   final settingsBox = boxes[2];
   final channelsBox = boxes[3];
   final emoteBadgeCacheBox = boxes[4];
+  final whispersBox = boxes[10];
 
   // await settingsBox.clear();
 
@@ -104,6 +106,7 @@ Future<void> main() async {
             twitchAccount: activeTwitchAccount,
             channelsBox: channelsBox,
             cacheBox: emoteBadgeCacheBox,
+            whispersBox: whispersBox,
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),

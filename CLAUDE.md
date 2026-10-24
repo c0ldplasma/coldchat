@@ -225,6 +225,12 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   its date; the App Store privacy label and Play data safety form must match it.
 - Settings → About shows the AGPL notices and links the source of the installed build by its release tag.
 - `build/` is currently untracked but present in the working tree; don't commit it.
+- **Whispers** (`lib/tmi/whispers/`) arrive over EventSub WebSocket (`lib/api/twitch/eventsub_socket.dart`,
+  `user.whisper.message`) and are sent with Helix `POST /whispers`; IRC whispers are not used. Both need the
+  `user:manage:whispers` scope, which logins from before 2.3.0 lack (they have to sign in again). Twitch has no
+  whisper history API, so conversations are stored on the device in the `Whispers` Hive box as IRC-shaped lines,
+  and each conversation is a `WhisperChannel` (a `Channel` that is never joined) so the chat view and composer
+  work unchanged. `/w <user> [message]` is handled in `ChannelView.sendMessage`.
 - Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/oauth_webview.dart`),
   so there is no refresh token and an expired login can only be fixed by signing in again. See
   `lib/widgets/login_expired_banner.dart` and `Client.validateCredentials`.

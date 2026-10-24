@@ -478,4 +478,52 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get contact => 'Contact & feedback';
+
+  @override
+  String get whisper => 'Whisper';
+
+  @override
+  String whisperTo(String name) {
+    return 'Whisper to $name';
+  }
+
+  @override
+  String whisperFrom(String name) {
+    return 'Whisper from $name';
+  }
+
+  @override
+  String get openWhisper => 'Open';
+
+  @override
+  String get userCard => 'User card';
+
+  @override
+  String get closeConversation => 'Close conversation';
+
+  @override
+  String get closeConversationSubtitle =>
+      'The messages stay on this device and come back with the next whisper.';
+
+  @override
+  String get deleteConversation => 'Delete conversation';
+
+  @override
+  String get deleteConversationSubtitle =>
+      'Deletes the messages from this device. Twitch keeps no whisper history.';
+
+  @override
+  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+
+  @override
+  String get whisperNeedsScope =>
+      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+
+  @override
+  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+
+  @override
+  String whisperFailed(String reason) {
+    return 'Whisper not sent: $reason';
+  }
 }

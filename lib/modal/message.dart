@@ -6,6 +6,7 @@ import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/tile.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/chat_message.dart';
 
 class MessageModal extends StatelessWidget {
@@ -18,6 +19,9 @@ class MessageModal extends StatelessWidget {
     this.channelViewState,
   });
 
+  // Whispers can't be replied to or deleted.
+  bool get _whisper => message.channel is WhisperChannel;
+
   @override
   Widget build(BuildContext context) => ListView(
         shrinkWrap: true,
@@ -26,14 +30,15 @@ class MessageModal extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ChatMessage(message: message),
           ),
-          Tile(
-            title: AppLocalizations.of(context)!.reply,
-            prefix: const Icon(Icons.reply_outlined),
-            onTap: () {
-              Navigator.of(context).pop();
-              channelViewState?.setReplyChannelMessageChat(message);
-            },
-          ),
+          if (!_whisper)
+            Tile(
+              title: AppLocalizations.of(context)!.reply,
+              prefix: const Icon(Icons.reply_outlined),
+              onTap: () {
+                Navigator.of(context).pop();
+                channelViewState?.setReplyChannelMessageChat(message);
+              },
+            ),
           Tile(
             title: AppLocalizations.of(context)!.copyText,
             subtitle: AppLocalizations.of(context)!.copyTextSubtitle,
@@ -47,15 +52,16 @@ class MessageModal extends StatelessWidget {
               await Clipboard.setData(ClipboardData(text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')} ${message.user.displayName}: ${message.body}'));
             },
           ),
-          Tile(
-            title: AppLocalizations.of(context)!.deleteMessage,
-            prefix: const Icon(Icons.delete_outline_outlined),
-            onTap: () async {
-              Navigator.of(context).pop();
-              await Twitch.deleteChatMessage(message.channel!.client.transmitter.twitchAccount!.tokenData, broadcasterId: message.channel!.id!, moderatorId: message.channel!.client.transmitter.twitchAccount!.tokenData.userId!);
-              // await message.channel?.send('/delete ${message.id}');
-            },
-          ),
+          if (!_whisper)
+            Tile(
+              title: AppLocalizations.of(context)!.deleteMessage,
+              prefix: const Icon(Icons.delete_outline_outlined),
+              onTap: () async {
+                Navigator.of(context).pop();
+                await Twitch.deleteChatMessage(message.channel!.client.transmitter.twitchAccount!.tokenData, broadcasterId: message.channel!.id!, moderatorId: message.channel!.client.transmitter.twitchAccount!.tokenData.userId!);
+                // await message.channel?.send('/delete ${message.id}');
+              },
+            ),
           Tile(
             title: AppLocalizations.of(context)!.mentionUser,
             prefix: const Icon(Icons.alternate_email_outlined),

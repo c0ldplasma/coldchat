@@ -239,5 +239,21 @@
   "@reportUserDescription": {"placeholders": {"name": {"type": "String"}}},
   "openOnTwitch": "Open on Twitch",
   "blockFailed": "The block list couldn't be changed. Check your connection and try again.",
-  "contact": "Contact & feedback"
+  "contact": "Contact & feedback",
+  "whisper": "Whisper",
+  "whisperTo": "Whisper to {name}",
+  "@whisperTo": {"placeholders": {"name": {"type": "String"}}},
+  "whisperFrom": "Whisper from {name}",
+  "@whisperFrom": {"placeholders": {"name": {"type": "String"}}},
+  "openWhisper": "Open",
+  "userCard": "User card",
+  "closeConversation": "Close conversation",
+  "closeConversationSubtitle": "The messages stay on this device and come back with the next whisper.",
+  "deleteConversation": "Delete conversation",
+  "deleteConversationSubtitle": "Deletes the messages from this device. Twitch keeps no whisper history.",
+  "whisperNeedsLogin": "Sign in with Twitch to send whispers.",
+  "whisperNeedsScope": "Sign in again to send and receive whispers. Your login is from before ColdChat supported them.",
+  "whisperUserNotFound": "There is no Twitch user with that name.",
+  "whisperFailed": "Whisper not sent: {reason}",
+  "@whisperFailed": {"placeholders": {"reason": {"type": "String"}}}
 }

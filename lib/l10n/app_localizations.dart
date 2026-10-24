@@ -981,6 +981,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact & feedback'**
   String get contact;
+
+  /// No description provided for @whisper.
+  ///
+  /// In en, this message translates to:
+  /// **'Whisper'**
+  String get whisper;
+
+  /// No description provided for @whisperTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Whisper to {name}'**
+  String whisperTo(String name);
+
+  /// No description provided for @whisperFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Whisper from {name}'**
+  String whisperFrom(String name);
+
+  /// No description provided for @openWhisper.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get openWhisper;
+
+  /// No description provided for @userCard.
+  ///
+  /// In en, this message translates to:
+  /// **'User card'**
+  String get userCard;
+
+  /// No description provided for @closeConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Close conversation'**
+  String get closeConversation;
+
+  /// No description provided for @closeConversationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The messages stay on this device and come back with the next whisper.'**
+  String get closeConversationSubtitle;
+
+  /// No description provided for @deleteConversation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete conversation'**
+  String get deleteConversation;
+
+  /// No description provided for @deleteConversationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deletes the messages from this device. Twitch keeps no whisper history.'**
+  String get deleteConversationSubtitle;
+
+  /// No description provided for @whisperNeedsLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Twitch to send whispers.'**
+  String get whisperNeedsLogin;
+
+  /// No description provided for @whisperNeedsScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.'**
+  String get whisperNeedsScope;
+
+  /// No description provided for @whisperUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no Twitch user with that name.'**
+  String get whisperUserNotFound;
+
+  /// No description provided for @whisperFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Whisper not sent: {reason}'**
+  String whisperFailed(String reason);
 }
 
 class _AppLocalizationsDelegate

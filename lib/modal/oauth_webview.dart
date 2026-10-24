@@ -88,6 +88,7 @@ class _OAuthWebViewModalState extends State<OAuthWebViewModal> {
           // Whispers
           'whispers:read',
           'whispers:edit',
+          'user:manage:whispers',
 
           // Sub emotes
           'user_subscriptions',

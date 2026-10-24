@@ -478,4 +478,54 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get contact => 'Kontakt & Feedback';
+
+  @override
+  String get whisper => 'Flüstern';
+
+  @override
+  String whisperTo(String name) {
+    return 'An $name flüstern';
+  }
+
+  @override
+  String whisperFrom(String name) {
+    return 'Flüsternachricht von $name';
+  }
+
+  @override
+  String get openWhisper => 'Öffnen';
+
+  @override
+  String get userCard => 'Nutzerkarte';
+
+  @override
+  String get closeConversation => 'Unterhaltung schließen';
+
+  @override
+  String get closeConversationSubtitle =>
+      'Die Nachrichten bleiben auf diesem Gerät und kommen mit der nächsten Flüsternachricht zurück.';
+
+  @override
+  String get deleteConversation => 'Unterhaltung löschen';
+
+  @override
+  String get deleteConversationSubtitle =>
+      'Löscht die Nachrichten von diesem Gerät. Twitch speichert keinen Verlauf von Flüsternachrichten.';
+
+  @override
+  String get whisperNeedsLogin =>
+      'Melde dich bei Twitch an, um Flüsternachrichten zu senden.';
+
+  @override
+  String get whisperNeedsScope =>
+      'Melde dich noch einmal an, um Flüsternachrichten zu senden und zu empfangen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat sie unterstützt hat.';
+
+  @override
+  String get whisperUserNotFound =>
+      'Es gibt keinen Twitch-Nutzer mit diesem Namen.';
+
+  @override
+  String whisperFailed(String reason) {
+    return 'Flüsternachricht nicht gesendet: $reason';
+  }
 }

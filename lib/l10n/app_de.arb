@@ -208,5 +208,18 @@
   "reportUserDescription": "Meldungen bearbeitet Twitch. Öffne den Kanal von {name} auf Twitch und nutze dort „Melden“. Du kannst {name} auch hier blockieren, um die Nachrichten auszublenden.",
   "openOnTwitch": "Auf Twitch öffnen",
   "blockFailed": "Die Blockierliste konnte nicht geändert werden. Prüf deine Verbindung und versuch es noch einmal.",
-  "contact": "Kontakt & Feedback"
+  "contact": "Kontakt & Feedback",
+  "whisper": "Flüstern",
+  "whisperTo": "An {name} flüstern",
+  "whisperFrom": "Flüsternachricht von {name}",
+  "openWhisper": "Öffnen",
+  "userCard": "Nutzerkarte",
+  "closeConversation": "Unterhaltung schließen",
+  "closeConversationSubtitle": "Die Nachrichten bleiben auf diesem Gerät und kommen mit der nächsten Flüsternachricht zurück.",
+  "deleteConversation": "Unterhaltung löschen",
+  "deleteConversationSubtitle": "Löscht die Nachrichten von diesem Gerät. Twitch speichert keinen Verlauf von Flüsternachrichten.",
+  "whisperNeedsLogin": "Melde dich bei Twitch an, um Flüsternachrichten zu senden.",
+  "whisperNeedsScope": "Melde dich noch einmal an, um Flüsternachrichten zu senden und zu empfangen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat sie unterstützt hat.",
+  "whisperUserNotFound": "Es gibt keinen Twitch-Nutzer mit diesem Namen.",
+  "whisperFailed": "Flüsternachricht nicht gesendet: {reason}"
 }
