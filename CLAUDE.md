@@ -155,25 +155,48 @@ ASC_PW="$(security find-generic-password -l COLDCHAT_ASC -w)" xcrun altool --upl
 `altool`: it stores the item under `--item <name>` and then fails to find it, with
 `AuthenticationFailure("Failed to find item COLDCHAT_ASC ...")`. The `@env:` route above is the workaround.
 
-Expect one non-blocking warning: `MinimumOSVersion too low ... 13.0` (90068). From Spring 2027 App Store
-Connect requires 15.0+, so the deployment target needs raising before then. Processing on Apple's side
-takes a few minutes after `UPLOAD SUCCEEDED` before the build appears in TestFlight.
+The deployment target is iOS 15.0, which App Store Connect requires from Spring 2027. The app is iPhone-only
+(`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Processing on Apple's side takes a few
+minutes after `UPLOAD SUCCEEDED` before the build appears in TestFlight.
+
+`ios/Runner/PrivacyInfo.xcprivacy` is the app's privacy manifest: no tracking, no collected data, no
+required-reason APIs (plugins and the Flutter engine ship their own). Update it if the app ever starts using
+one, e.g. `UserDefaults` or file timestamps.
 
 Uploading is irreversible — a build can be expired in TestFlight but its number is spent.
 
-## Android — APK
+## Android — signing, APK and Play bundle
+
+Release builds are signed with the **Play upload key** when `android/key.properties` exists; otherwise
+`android/app/build.gradle.kts` falls back to the debug key, so CI and fresh clones still build (but those
+builds can't go to Play).
+
+- Keystore: `~/.android/coldchat-upload.jks`, alias `upload`. Its password is in the keychain as
+  `COLDCHAT_UPLOAD_KEYSTORE`. Neither file is in the repo; `android/.gitignore` excludes `key.properties`, `*.jks`
+  and `*.keystore`. **Back up the keystore.** With Play App Signing a lost upload key can be reset through Play
+  support, but that takes days.
+- `android/key.properties` (local only):
+
+  ```properties
+  storePassword=<from keychain>
+  keyPassword=<from keychain>
+  keyAlias=upload
+  storeFile=/Users/<you>/.android/coldchat-upload.jks
+  ```
 
 ```bash
-flutter build apk --release
-# -> build/app/outputs/flutter-apk/app-release.apk  (~65 MB universal APK)
+flutter build appbundle --release   # -> build/app/outputs/bundle/release/app-release.aab, for Play
+flutter build apk --release         # -> build/app/outputs/flutter-apk/app-release.apk, for sideloading
 ```
 
-**This APK is signed with the debug keystore.** `android/app/build.gradle.kts` has
-`release { signingConfig = signingConfigs.getByName("debug") }`. It sideloads and runs fine, but it cannot
-go to Play, and its signature will not match a properly signed build later — switching keys requires an
-uninstall, which wipes app data. Wiring up a real release keystore is still an open task.
+APKs sideloaded before 2.2.0 were signed with the debug key. Android refuses to update an app across signing
+keys, so those installs have to be uninstalled (losing their data) before installing a properly signed build.
 
-`flutter build appbundle` would produce a Play-ready `.aab`, but only once the signing config is fixed.
+## App icon
+
+`assets/icon.png` is the square, full-bleed 1024px source; iOS and Android launchers round the corners
+themselves. After changing it, run `dart run flutter_launcher_icons` and commit the generated files in
+`android/` and `ios/`. Android 8+ uses an adaptive icon (`adaptive_icon_*` in `pubspec.yaml`).
 
 ## Repo gotchas
 
