@@ -452,4 +452,30 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get aboutLegalese =>
       'ColdChat ist freie Software: Du kannst sie unter den Bedingungen der GNU Affero General Public License, Version 3, weitergeben und verändern. Sie wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt.';
+
+  @override
+  String get unblock => 'Blockierung aufheben';
+
+  @override
+  String get report => 'Melden';
+
+  @override
+  String reportUserTitle(String name) {
+    return '$name melden';
+  }
+
+  @override
+  String reportUserDescription(String name) {
+    return 'Meldungen bearbeitet Twitch. Öffne den Kanal von $name auf Twitch und nutze dort „Melden“. Du kannst $name auch hier blockieren, um die Nachrichten auszublenden.';
+  }
+
+  @override
+  String get openOnTwitch => 'Auf Twitch öffnen';
+
+  @override
+  String get blockFailed =>
+      'Die Blockierliste konnte nicht geändert werden. Prüf deine Verbindung und versuch es noch einmal.';
+
+  @override
+  String get contact => 'Kontakt & Feedback';
 }

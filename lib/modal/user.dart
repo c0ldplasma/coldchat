@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/twitch/twitch_profile.dart';
 import '../tmi/client/client.dart';
@@ -51,6 +52,7 @@ class _UserModalState extends State<UserModal> {
             shrinkWrap: true,
             children: [
               if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
+              if (profile != null) _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
               if (channel != null && profile != null)
                 Material(
                   color: Theme.of(context).colorScheme.secondaryContainer,
@@ -166,4 +168,81 @@ class _UserModalState extends State<UserModal> {
           );
         },
       );
+}
+
+/// Block and report, which both stores require wherever users see each other's messages. Blocking uses the
+/// account's Twitch block list, so it applies everywhere. Twitch has no API for reports, so Report points to
+/// Twitch's own.
+class _UserSafetyActions extends StatefulWidget {
+  final Client client;
+  final TwitchUser user;
+
+  const _UserSafetyActions({required this.client, required this.user});
+
+  @override
+  State<_UserSafetyActions> createState() => _UserSafetyActionsState();
+}
+
+class _UserSafetyActionsState extends State<_UserSafetyActions> {
+  bool busy = false;
+
+  Future<void> toggleBlock() async {
+    setState(() => busy = true);
+    try {
+      await widget.client.setBlocked(widget.user.id, !widget.client.isBlocked(widget.user.id));
+    } catch (e) {
+      log('$e');
+      if (mounted) {
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: Text(AppLocalizations.of(context)!.blockFailed),
+            actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.close))],
+          ),
+        );
+      }
+    }
+    if (mounted) setState(() => busy = false);
+  }
+
+  Future<void> report() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(AppLocalizations.of(context)!.reportUserTitle(widget.user.displayName)),
+          content: Text(AppLocalizations.of(context)!.reportUserDescription(widget.user.displayName)),
+          actions: [
+            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.cancel)),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication);
+              },
+              child: Text(AppLocalizations.of(context)!.openOnTwitch),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final ownUserId = widget.client.blockingUserId;
+    final canBlock = ownUserId != null && ownUserId != widget.user.id;
+    final blocked = widget.client.isBlocked(widget.user.id);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        if (canBlock)
+          TextButton.icon(
+            icon: Icon(blocked ? Icons.person_outline_rounded : Icons.person_off_outlined),
+            label: Text(blocked ? AppLocalizations.of(context)!.unblock : AppLocalizations.of(context)!.block),
+            onPressed: busy ? null : toggleBlock,
+          ),
+        TextButton.icon(
+          icon: const Icon(Icons.flag_outlined),
+          label: Text(AppLocalizations.of(context)!.report),
+          onPressed: report,
+        ),
+      ],
+    );
+  }
 }

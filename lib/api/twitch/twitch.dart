@@ -302,6 +302,27 @@ class Twitch {
     }
   }
 
+  /// Blocks [userId] for the account of [tokenData] (`user:manage:blocked_users`).
+  static Future<void> blockUser(TokenData tokenData, String userId) => _blocks(tokenData, userId, http.put);
+
+  /// Unblocks [userId] for the account of [tokenData] (`user:manage:blocked_users`).
+  static Future<void> unblockUser(TokenData tokenData, String userId) => _blocks(tokenData, userId, http.delete);
+
+  static Future<void> _blocks(TokenData tokenData, String userId, Future<http.Response> Function(Uri url, {Map<String, String>? headers}) method) async {
+    final response = await method(
+      Uri.parse('https://api.twitch.tv/helix/users/blocks?target_user_id=$userId'),
+      headers: {
+        'Authorization': 'Bearer ${tokenData.accessToken}',
+        'Client-Id': '${tokenData.clientId}',
+      },
+    );
+
+    if (response.statusCode != 204) {
+      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      throw Exception('${errorJson['error']}: ${errorJson['message']}');
+    }
+  }
+
   static Future<void> deleteChatMessage(
     TokenData tokenData, {
     required String broadcasterId,
