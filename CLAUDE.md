@@ -218,6 +218,11 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
 - The app font is **Google Sans Flex** (OFL, `fonts/OFL.txt`), a variable font. `M3Parser.fontVariations` narrows it
   to look like the Product Sans used before. Don't add a `wght` variation there: it overrides `FontWeight`, and bold
   text stops being bold. Product Sans itself is proprietary and must not be bundled.
+- `docs/` is the website on GitHub Pages (`https://c0ldplasma.github.io/coldchat/`): the support page, the
+  **privacy policy** and the terms, linked from the account sheet, Settings → About and the store listings. The
+  privacy policy lists every host the app contacts and what it sends. **When adding, removing or changing a
+  network service (`lib/api/`, upload hosts, image sources), update `docs/privacy.html` in the same PR** and bump
+  its date; the App Store privacy label and Play data safety form must match it.
 - Settings → About shows the AGPL notices and links the source of the installed build by its release tag.
 - `build/` is currently untracked but present in the working tree; don't commit it.
 - Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/oauth_webview.dart`),

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ColdChat Privacy Policy</title>
+  <meta name="description" content="What data ColdChat stores and which services it connects to.">
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon.png" alt="">
+    <div>
+      <h1>Privacy Policy</h1>
+      <p>ColdChat for Android and iOS</p>
+    </div>
+  </header>
+  <nav>
+    <a href="./">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="https://github.com/c0ldplasma/coldchat">Source code</a>
+  </nav>
+
+  <p class="updated">Last updated: October 24, 2026</p>
+
+  <div class="summary">
+    <p><strong>In short:</strong> ColdChat has no servers and no accounts of its own. It contains no analytics,
+      advertising, tracking or crash reporting. The developer receives no data about you. Your settings and
+      logins stay on your device, and the app talks directly to Twitch and the chat services listed below.</p>
+  </div>
+
+  <h2>Who is responsible</h2>
+  <p>ColdChat is a free, open-source hobby project by C0ldPlasma
+    (<a href="https://github.com/c0ldplasma">github.com/c0ldplasma</a>). For questions about this policy, open an
+    issue in the <a href="https://github.com/c0ldplasma/coldchat/issues">issue tracker</a>.</p>
+
+  <h2>Data stored on your device</h2>
+  <p>ColdChat stores the following only on your device, in the app's private storage:</p>
+  <ul>
+    <li>Your Twitch logins: the access token Twitch issues, your user name and user ID.</li>
+    <li>The channels you added, your settings, custom commands, message and user triggers.</li>
+    <li>Cached emote and badge lists, and which mentions you have already seen.</li>
+    <li>A list of the files you uploaded: their links, deletion links and upload times.</li>
+  </ul>
+  <p>This data is not sent anywhere except as described below. Removing an account in the app deletes its login;
+    uninstalling the app deletes all of it.</p>
+
+  <h2>Services ColdChat connects to</h2>
+  <p>To show and send chat, ColdChat connects directly from your device to the services below. Like any internet
+    service, each one receives your IP address and the requests needed for the feature. Their own privacy
+    policies apply to what they do with it.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Service</th><th>Used for</th><th>What it receives</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.twitch.tv/p/legal/privacy-notice/">Twitch</a><br><code>irc-ws.chat.twitch.tv</code>, <code>api.twitch.tv</code>, <code>id.twitch.tv</code>, <code>static-cdn.jtvnw.net</code></td>
+          <td>Sign-in, reading and sending chat, user cards, blocking, moderation, Twitch emotes and badges</td>
+          <td>Your access token, the channels you open, the messages you send, the users you look up, block or moderate</td>
+        </tr>
+        <tr>
+          <td>7TV, BetterTTV, FrankerFaceZ<br><code>7tv.io</code>, <code>api.betterttv.net</code>, <code>sockets.betterttv.net</code>, <code>cdn.betterttv.net</code>, <code>api.frankerfacez.com</code>, and their image servers</td>
+          <td>Third-party emotes and badges, live emote updates</td>
+          <td>The IDs or names of the channels you open</td>
+        </tr>
+        <tr>
+          <td>Chatterino, DankChat<br><code>api.chatterino.com</code>, <code>flxrs.com</code></td>
+          <td>Badges of these chat clients' contributors</td>
+          <td>Only a request for the badge list</td>
+        </tr>
+        <tr>
+          <td>recent-messages<br><code>recent-messages.robotty.de</code></td>
+          <td>Chat history from before you joined (can be turned off in Settings)</td>
+          <td>The names of the channels you open</td>
+        </tr>
+        <tr>
+          <td>GitHub<br><code>raw.githubusercontent.com</code></td>
+          <td>Emoji list and images</td>
+          <td>Only requests for the emoji files</td>
+        </tr>
+        <tr>
+          <td>Litterbox (catbox.moe), nuuls, 0x0.st<br><code>litterbox.catbox.moe</code>, <code>i.nuuls.com</code>, <code>0x0.st</code></td>
+          <td>Uploading a photo or file you attach, tried in this order if one fails</td>
+          <td>The file you chose. The resulting link is public: anyone who has it can open the file. Litterbox deletes files after 72 hours.</td>
+        </tr>
+        <tr>
+          <td>Websites linked in chat</td>
+          <td>Showing images that people post as links</td>
+          <td>The image request, sent to whichever site hosts the image</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The Credits screen in Settings loads contributors' profile pictures from Discord's and GitHub's image
+    servers. Links you tap open in your browser or the matching app.</p>
+
+  <h2>Permissions</h2>
+  <ul>
+    <li><strong>Camera and photo library:</strong> only when you choose to take or attach a photo. Nothing is uploaded
+      unless you send it.</li>
+    <li><strong>Location:</strong> ColdChat never uses your location. iOS requires a description for it only because the
+      built-in web view, used for signing in, could ask for it.</li>
+  </ul>
+
+  <h2>Children</h2>
+  <p>ColdChat is not directed at children. Twitch requires its users to be at least 13 years old.</p>
+
+  <h2>Your choices and rights</h2>
+  <ul>
+    <li>Delete a login by removing the account in the app; delete everything by uninstalling it.</li>
+    <li>Revoke ColdChat's access to your Twitch account under
+      <a href="https://www.twitch.tv/settings/connections">Twitch → Settings → Connections</a>.</li>
+    <li>The developer holds no personal data about you. For data held by Twitch or the other services above,
+      including requests under the GDPR, contact those services directly.</li>
+  </ul>
+
+  <h2>Changes</h2>
+  <p>Changes to this policy are published on this page with a new date. The full history is in the
+    <a href="https://github.com/c0ldplasma/coldchat/commits/main/docs/privacy.html">source repository</a>.</p>
+</main>
+</body>
+</html>

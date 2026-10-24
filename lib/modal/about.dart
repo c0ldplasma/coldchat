@@ -7,6 +7,9 @@ import 'package:url_launcher/url_launcher.dart';
 import '../components/tile.dart';
 
 const String repositoryUrl = 'https://github.com/c0ldplasma/coldchat';
+// Published from docs/ with GitHub Pages.
+const String privacyPolicyUrl = 'https://c0ldplasma.github.io/coldchat/privacy.html';
+const String termsOfServiceUrl = 'https://c0ldplasma.github.io/coldchat/terms.html';
 const String copyrightNotice = '© Chatsen contributors\n© 2026 C0ldPlasma';
 
 /// The notices the AGPL asks an interactive program to show: copyright, license, no warranty and where the
@@ -59,6 +62,16 @@ class AboutModal extends StatelessWidget {
                 subtitle: 'github.com/c0ldplasma/coldchat/issues',
                 prefix: const Icon(Icons.mail_outline_rounded),
                 onTap: () => _open('$repositoryUrl/issues'),
+              ),
+              Tile(
+                title: AppLocalizations.of(context)!.privacyPolicy,
+                prefix: const Icon(Icons.privacy_tip_outlined),
+                onTap: () => _open(privacyPolicyUrl),
+              ),
+              Tile(
+                title: AppLocalizations.of(context)!.termsOfService,
+                prefix: const Icon(Icons.article_outlined),
+                onTap: () => _open(termsOfServiceUrl),
               ),
               Tile(
                 title: AppLocalizations.of(context)!.openSourceLicenses,
