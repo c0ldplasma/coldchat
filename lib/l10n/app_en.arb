@@ -224,5 +224,11 @@
   "emoteMenuButtonDownloadFailed": "Couldn't download that emote. The button wasn't changed.",
   "takePhoto": "Take photo",
   "chooseFromLibrary": "Choose from library",
-  "cameraUnavailable": "The camera couldn't be opened. Check that ColdChat has camera access."
+  "cameraUnavailable": "The camera couldn't be opened. Check that ColdChat has camera access.",
+  "about": "About",
+  "sourceCode": "Source code",
+  "license": "License",
+  "basedOnChatsen": "Based on Chatsen",
+  "openSourceLicenses": "Open source licenses",
+  "aboutLegalese": "ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY."
 }

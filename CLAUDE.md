@@ -189,7 +189,13 @@ uninstall, which wipes app data. Wiring up a real release keystore is still an o
   with the redirect `https://localhost/` exactly as registered in the dev.twitch.tv console, trailing slash
   included. The web view intercepts that redirect, so no page is loaded.
 - The iOS project uses **Swift Package Manager only**; CocoaPods was removed (no `Podfile`). Don't run
-  `pod install`. Note that `ios/` and `android/` are untracked (see `.gitignore`), so changes there are local.
+  `pod install`. `android/` and `ios/` are tracked, because the AGPL requires publishing everything needed to build
+  the shipped app. Their own `.gitignore` files keep generated files and signing keys out; never commit a keystore,
+  `key.properties` or anything with an Apple ID in it.
+- The app font is **Google Sans Flex** (OFL, `fonts/OFL.txt`), a variable font. `M3Parser.fontVariations` narrows it
+  to look like the Product Sans used before. Don't add a `wght` variation there: it overrides `FontWeight`, and bold
+  text stops being bold. Product Sans itself is proprietary and must not be bundled.
+- Settings → About shows the AGPL notices and links the source of the installed build by its release tag.
 - `build/` is currently untracked but present in the working tree; don't commit it.
 - Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/oauth_webview.dart`),
   so there is no refresh token and an expired login can only be fixed by signing in again. See

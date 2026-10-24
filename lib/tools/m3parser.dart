@@ -30,15 +30,40 @@ class AppColors extends ThemeExtension<AppColors> {
 }
 
 class M3Parser {
+  /// Narrows Google Sans Flex and sets its optical size so it matches the Product Sans the app used before.
+  /// Weight is left to [TextStyle.fontWeight]: an explicit `wght` here would override it.
+  static const fontVariations = [FontVariation('wdth', 94), FontVariation('opsz', 22)];
+
+  static TextTheme _withFontVariations(TextTheme textTheme) {
+    TextStyle? apply(TextStyle? style) => style?.copyWith(fontVariations: fontVariations);
+    return TextTheme(
+      displayLarge: apply(textTheme.displayLarge),
+      displayMedium: apply(textTheme.displayMedium),
+      displaySmall: apply(textTheme.displaySmall),
+      headlineLarge: apply(textTheme.headlineLarge),
+      headlineMedium: apply(textTheme.headlineMedium),
+      headlineSmall: apply(textTheme.headlineSmall),
+      titleLarge: apply(textTheme.titleLarge),
+      titleMedium: apply(textTheme.titleMedium),
+      titleSmall: apply(textTheme.titleSmall),
+      bodyLarge: apply(textTheme.bodyLarge),
+      bodyMedium: apply(textTheme.bodyMedium),
+      bodySmall: apply(textTheme.bodySmall),
+      labelLarge: apply(textTheme.labelLarge),
+      labelMedium: apply(textTheme.labelMedium),
+      labelSmall: apply(textTheme.labelSmall),
+    );
+  }
+
   static ThemeData patchTheme(ThemeData baseTheme, {required AppColors appColors}) {
     final newThemeData = baseTheme.copyWith(
       extensions: [appColors],
-      textTheme: baseTheme.textTheme.apply(
-        fontFamily: 'ProductSans',
+      textTheme: _withFontVariations(baseTheme.textTheme.apply(
+        fontFamily: 'GoogleSansFlex',
         bodyColor: baseTheme.colorScheme.onSurface,
         displayColor: baseTheme.colorScheme.onSurface,
         decorationColor: baseTheme.colorScheme.onSurface,
-      ),
+      )),
       tabBarTheme: baseTheme.tabBarTheme.copyWith(
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(

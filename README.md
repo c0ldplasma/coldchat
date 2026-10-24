@@ -4,11 +4,8 @@
 
 # 🛠️ Building the application
 
-The native `android/` and `ios/` projects aren't tracked, so create them first:
-
 ```sh
-flutter create --org com.plasmari --platforms=android,ios .
-rm -rf test
+dart run build_runner build --delete-conflicting-outputs   # generates the *.g.dart files
 
 flutter build apk --release        # Android
 flutter build ios --no-codesign    # iOS
@@ -18,4 +15,4 @@ Flutter 3.47.8 or newer is required. See [CLAUDE.md](CLAUDE.md) for installing o
 
 # 📜 Licensing
 
-ColdChat is distributed under the AGPLv3 licence. A copy may be found in the [LICENSE](LICENSE) file. ColdChat is a modified version of [Chatsen](https://github.com/chatsen/chatsen), which is distributed under the same licence. All the dependencies remain under their original licenses.
+ColdChat is distributed under the AGPLv3 licence. A copy may be found in the [LICENSE](LICENSE) file. ColdChat is a modified version of [Chatsen](https://github.com/chatsen/chatsen), which is distributed under the same licence. All the dependencies remain under their original licenses. The bundled font, [Google Sans Flex](https://github.com/googlefonts/googlesans-flex), is licensed under the [SIL Open Font License 1.1](fonts/OFL.txt).

@@ -29,32 +29,8 @@ jobs:
       APP_TITLE: ColdChat
       APP_NAME: coldchat
       APP_PATH: coldchat
-      APP_ORG: com.plasmari
 
     steps:
-      - name: Set up sed
-        if: matrix.os != 'macos-latest'
-        run: echo "sed=sed" >> $GITHUB_ENV
-
-      - name: Set up sed for macOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          brew install gnu-sed
-          echo "sed=gsed" >> $GITHUB_ENV
-
-      # - name: Setup upterm session
-      #   if: matrix.os == 'ubuntu-latest'
-      #   uses: lhotari/action-upterm@v1
-
-      # - name: Set up Adoptium JDK for Ubuntu
-      #   if: matrix.os == 'ubuntu-latest'
-      #   run: |
-      #     sudo apt install -y wget apt-transport-https gpg
-      #     sudo wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
-      #     echo "deb https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee /etc/apt/sources.list.d/adoptium.list
-      #     sudo apt update
-      #     sudo apt install temurin-17-jdk
-
       - name: Checking out the ${{env.APP_TITLE}} source code
         uses: actions/checkout@v3
         with:
@@ -69,42 +45,9 @@ jobs:
       - name: Check for flutter updates
         run: flutter upgrade
 
-      - name: Setting up the project
-        working-directory: ${{env.APP_PATH}}
-        run: flutter create --org ${{env.APP_ORG}} .
-
-      - name: Cleaning up the test directory
-        working-directory: ${{env.APP_PATH}}
-        run: rm -rf test
-
       - name: Building required generated source files
         working-directory: ${{env.APP_PATH}}
         run: dart run build_runner build --delete-conflicting-outputs
-
-      - name: Applying Android project patches
-        if: matrix.target == 'Android'
-        working-directory: ${{env.APP_PATH}}
-        run: |
-          $sed -i 's/android:label=".*"/android:label="${{env.APP_TITLE}}"/' ./android/app/src/main/AndroidManifest.xml
-          # $sed -i '/defaultConfig {/a \ \ \ \ \ \ \ \ multiDexEnabled = true' ./android/app/build.gradle.kts
-          $sed -i '/compileOptions {/a \ \ \ \ \ \ \ \ isCoreLibraryDesugaringEnabled = true' ./android/app/build.gradle.kts
-          echo -e '\ndependencies {\n    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")\n}' >> ./android/app/build.gradle.kts
-          $sed -i '/.*\/manifest.*/i \ \ \ \ <uses-permission android:name="android.permission.INTERNET"/>' ./android/app/src/main/AndroidManifest.xml
-          # Pin the app's compileSdk to 36 (newer transitive plugin AARs require it).
-          $sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 36/' ./android/app/build.gradle.kts
-          # Force every Android plugin subproject (e.g. file_picker, still on 34) to compile against SDK 36 so AAR metadata checks pass.
-          $sed -i '/project.layout.buildDirectory.value(newSubprojectBuildDir)/a\    afterEvaluate {\n        val android = extensions.findByName("android")\n        if (android != null) {\n            try { android.javaClass.getMethod("setCompileSdkVersion", Int::class.javaPrimitiveType).invoke(android, 36) } catch (e: Exception) {}\n        }\n    }' ./android/build.gradle.kts
-          # $sed -i "/io.flutter.embedding.android.FlutterActivity/a import android.os.Bundle\nimport android.os.Build\nimport androidx.annotation.NonNull\nimport io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode.transparent\nimport io.flutter.embedding.engine.FlutterEngine\nimport io.flutter.plugins.GeneratedPluginRegistrant" android/app/src/main/kotlin/com/plasmari/coldchat/MainActivity.kt
-          # $sed -i "/FlutterActivity()/a \ \ \ \ override fun onCreate(savedInstanceState: Bundle?) {\n\ \ \ \ \ \ \ \ super.onCreate(savedInstanceState)\n\ \ \ \ \ \ \ \ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {\n\ \ \ \ \ \ \ \ \ \ \ \ window.setDecorFitsSystemWindows(false)\n\ \ \ \ \ \ \ \ }\n\ \ \ \ }" android/app/src/main/kotlin/com/plasmari/coldchat/MainActivity.kt
-
-      - name: Applying iOS project patches
-        if: matrix.target == 'iOS'
-        working-directory: ${{env.APP_PATH}}
-        run: |
-          $sed -i 's/<string>${{env.APP_NAME}}<\/string>/<string>${{env.APP_TITLE}}<\/string>/' ./ios/Runner/Info.plist
-          $sed -i '/<dict>/a \ \ <key>NSPhotoLibraryUsageDescription</key>\n\ \ <string>${{env.APP_TITLE}} requests to access your files to allow file selection.</string>' ios/Runner/Info.plist
-          $sed -i '/<dict>/a \ \ <key>CADisableMinimumFrameDurationOnPhone</key><true/>' ios/Runner/Info.plist
-          $sed -i '/<dict>/a \ \ <key>ITSAppUsesNonExemptEncryption</key><false/>' ios/Runner/Info.plist
 
       - name: Building ${{env.APP_TITLE}} for Android
         if: matrix.target == 'Android'

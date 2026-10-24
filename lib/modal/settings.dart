@@ -1,4 +1,5 @@
 import 'package:coldchat/components/boxlistener.dart';
+import 'package:coldchat/modal/about.dart';
 import 'package:coldchat/modal/application_appearance.dart';
 import 'package:coldchat/modal/application_theme.dart';
 import 'package:coldchat/modal/chat_settings.dart';
@@ -77,6 +78,11 @@ class SettingsModal extends StatelessWidget {
                 title: AppLocalizations.of(context)!.credits,
                 prefix: const Icon(Icons.work_outline_outlined),
                 onTap: () => Modal.show(context: context, child: const CreditsModal()),
+              ),
+              Tile(
+                title: AppLocalizations.of(context)!.about,
+                prefix: const Icon(Icons.info_outline_rounded),
+                onTap: () => Modal.show(context: context, child: const AboutModal()),
               ),
               BoxSwitchTile(
                 title: AppLocalizations.of(context)!.chatHistory,

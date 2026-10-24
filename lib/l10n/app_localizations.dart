@@ -903,6 +903,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The camera couldn\'t be opened. Check that ColdChat has camera access.'**
   String get cameraUnavailable;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @sourceCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code'**
+  String get sourceCode;
+
+  /// No description provided for @license.
+  ///
+  /// In en, this message translates to:
+  /// **'License'**
+  String get license;
+
+  /// No description provided for @basedOnChatsen.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on Chatsen'**
+  String get basedOnChatsen;
+
+  /// No description provided for @openSourceLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open source licenses'**
+  String get openSourceLicenses;
+
+  /// No description provided for @aboutLegalese.
+  ///
+  /// In en, this message translates to:
+  /// **'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.'**
+  String get aboutLegalese;
 }
 
 class _AppLocalizationsDelegate
