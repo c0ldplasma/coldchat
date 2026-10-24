@@ -11,6 +11,7 @@ import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/dark_bar.dart';
 import '../components/modal.dart';
@@ -22,7 +23,10 @@ import '../data/filesharing/upload_task.dart';
 import '../data/emote.dart';
 import '../data/settings/chat_settings.dart';
 import '../tmi/channel/channel.dart';
+import '../api/twitch/twitch.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/whispers/whisper_channel.dart';
+import '../tmi/whispers/whispers.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_view.dart';
 import 'emoji_glyph.dart';
@@ -156,6 +160,25 @@ class ChannelViewState extends State<ChannelView> {
       }
     }
 
+    final whisperCommand = _whisperCommand.firstMatch(text.trim());
+    if (whisperCommand != null || widget.channel is WhisperChannel) {
+      final original = textEditingController.text;
+      setReplyChannelMessageChat(null);
+      textEditingController.clear();
+      final whispers = widget.channel.client.whispers;
+      final login = whisperCommand?.group(1);
+      final whisperText = whisperCommand?.group(2)?.trim() ?? '';
+      unawaited(_sendWhisper(
+        () => login == null
+            ? widget.channel.send(text)
+            : whisperText.isEmpty
+                ? whispers.openAndFocus(login)
+                : whispers.sendTo(login, whisperText),
+        original,
+      ));
+      return;
+    }
+
     widget.channel.send(text, tags: {
       if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
     });
@@ -163,6 +186,32 @@ class ChannelViewState extends State<ChannelView> {
     setReplyChannelMessageChat(null);
 
     textEditingController.clear();
+  }
+
+  // `/w <user> [message]`, as on Twitch. Twitch no longer accepts it over IRC, so it goes through Helix.
+  static final RegExp _whisperCommand = RegExp(r'^/(?:w|whisper)\s+@?(\S+)(?:\s+(.*))?$', dotAll: true);
+
+  /// Runs [send] and, if the whisper isn't sent, says why and puts [original] back into an empty composer.
+  Future<void> _sendWhisper(Future<void> Function() send, String original) async {
+    try {
+      await send();
+    } catch (e) {
+      if (!mounted) return;
+      if (textEditingController.text.isEmpty) {
+        textEditingController.text = original;
+        textEditingController.selection = TextSelection.collapsed(offset: original.length);
+        setState(() {});
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(whisperErrorText(context, e))));
+    }
+  }
+
+  static String whisperErrorText(BuildContext context, Object error) {
+    final l10n = AppLocalizations.of(context)!;
+    if (error is WhisperUnavailableException) return error.missingScope ? l10n.whisperNeedsScope : l10n.whisperNeedsLogin;
+    if (error is WhisperUserNotFoundException) return l10n.whisperUserNotFound;
+    if (error is TwitchRequestException) return l10n.whisperFailed(error.message);
+    return l10n.whisperFailed('$error');
   }
 
   /// Pick files and hand them to the global upload queue.
@@ -381,6 +430,15 @@ class ChannelViewState extends State<ChannelView> {
             mainAxisSize: MainAxisSize.min,
             children: [
                 UploadQueueBar(channelName: widget.channel.name),
+                if (widget.channel is WhisperChannel) const _WhisperHistoryHint(),
+                if (widget.channel is WhisperChannel && !widget.channel.client.whispers.hasScope)
+                  Surface(
+                    type: SurfaceType.error,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      child: Text(AppLocalizations.of(context)!.whisperNeedsScope),
+                    ),
+                  ),
                 if (replyChannelMessageChat != null)
                   Surface(
                     type: SurfaceType.error,
@@ -517,7 +575,9 @@ class ChannelViewState extends State<ChannelView> {
                           focusNode: textFocusNode,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            hintText: AppLocalizations.of(context)!.sendMessageIn(widget.channel.name), //'Send message in ',
+                            hintText: widget.channel is WhisperChannel
+                                ? AppLocalizations.of(context)!.whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
+                                : AppLocalizations.of(context)!.sendMessageIn(widget.channel.name),
                             border: InputBorder.none,
                           ),
                           onSubmitted: (text) {
@@ -638,5 +698,58 @@ class ChannelViewState extends State<ChannelView> {
         ),
       );
     });
+  }
+}
+
+/// Whispers that arrive while ColdChat is closed never reach it, and Twitch gives apps no history to fetch them
+/// from later. Says so once, with a way to read them on Twitch, until dismissed.
+class _WhisperHistoryHint extends StatefulWidget {
+  const _WhisperHistoryHint();
+
+  @override
+  State<_WhisperHistoryHint> createState() => _WhisperHistoryHintState();
+}
+
+class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
+  static const String _dismissedKey = 'whisperHistoryHintDismissed';
+
+  bool dismissed = Hive.box('Settings').get(_dismissedKey) == true;
+
+  @override
+  Widget build(BuildContext context) {
+    if (dismissed) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    return Surface(
+      type: SurfaceType.tertiary,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12.0, top: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: Text(l10n.whisperHistoryHint),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Hive.box('Settings').put(_dismissedKey, true);
+                    setState(() => dismissed = true);
+                  },
+                  child: Text(l10n.gotIt),
+                ),
+                TextButton(
+                  // Twitch has no link to its whisper inbox; on a phone with the Twitch app this opens the app.
+                  onPressed: () => launchUrl(Uri.parse('https://www.twitch.tv/'), mode: LaunchMode.externalApplication),
+                  child: Text(l10n.openTwitch),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

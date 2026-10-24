@@ -24,7 +24,7 @@
     <a href="https://github.com/c0ldplasma/coldchat">Source code</a>
   </nav>
 
-  <p class="updated">Last updated: October 24, 2026</p>
+  <p class="updated">Last updated: October 25, 2026</p>
 
   <div class="summary">
     <p><strong>In short:</strong> ColdChat has no servers and no accounts of its own. It contains no analytics,
@@ -44,6 +44,9 @@
     <li>The channels you added, your settings, custom commands, message and user triggers.</li>
     <li>Cached emote and badge lists, and which mentions you have already seen.</li>
     <li>A list of the files you uploaded: their links, deletion links and upload times.</li>
+    <li>Your whisper conversations: the whispers you sent and received in ColdChat, up to the last 200 per
+      conversation. Twitch offers apps no whisper history, so this copy exists only on your device. Deleting a
+      conversation in the app removes it.</li>
   </ul>
   <p>This data is not sent anywhere except as described below. Removing an account in the app deletes its login;
     uninstalling the app deletes all of it.</p>
@@ -57,9 +60,9 @@
       <thead><tr><th>Service</th><th>Used for</th><th>What it receives</th></tr></thead>
       <tbody>
         <tr>
-          <td><a href="https://www.twitch.tv/p/legal/privacy-notice/">Twitch</a><br><code>irc-ws.chat.twitch.tv</code>, <code>api.twitch.tv</code>, <code>id.twitch.tv</code>, <code>static-cdn.jtvnw.net</code></td>
-          <td>Sign-in, reading and sending chat, user cards, blocking, moderation, Twitch emotes and badges</td>
-          <td>Your access token, the channels you open, the messages you send, the users you look up, block or moderate</td>
+          <td><a href="https://www.twitch.tv/p/legal/privacy-notice/">Twitch</a><br><code>irc-ws.chat.twitch.tv</code>, <code>eventsub.wss.twitch.tv</code>, <code>api.twitch.tv</code>, <code>id.twitch.tv</code>, <code>static-cdn.jtvnw.net</code></td>
+          <td>Sign-in, reading and sending chat, sending and receiving whispers, user cards, blocking, moderation, Twitch emotes and badges</td>
+          <td>Your access token, the channels you open, the messages and whispers you send, the users you look up, whisper, block or moderate</td>
         </tr>
         <tr>
           <td>7TV, BetterTTV, FrankerFaceZ<br><code>7tv.io</code>, <code>api.betterttv.net</code>, <code>sockets.betterttv.net</code>, <code>cdn.betterttv.net</code>, <code>api.frankerfacez.com</code>, and their image servers</td>

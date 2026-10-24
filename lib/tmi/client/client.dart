@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:coldchat/api/twitch/eventsub_socket.dart';
 import 'package:coldchat/api/twitch/twitch.dart';
 import 'package:coldchat/providers/dankchat.dart';
 import 'package:coldchat/providers/emojis.dart';
@@ -23,6 +24,8 @@ import '../channel/messages/channel_message_ban.dart';
 import '../channel/messages/channel_message_notice.dart';
 import '../emotes.dart';
 import '../user_badges.dart';
+import '../whispers/whisper_channel.dart';
+import '../whispers/whispers.dart';
 import '/api/betterttv/betterttv_socket.dart';
 import '/providers/betterttv.dart';
 import '/api/recentmessages/recentmessages.dart';
@@ -89,6 +92,11 @@ class Client {
   ];
 
   late ClientChannels channels;
+  late final Whispers whispers;
+  late final EventSubSocket eventSub = EventSubSocket(onWhisper: (whisper) => whispers.receive(whisper));
+
+  /// The logged-in user's chat color, from GLOBALUSERSTATE, for the whispers they send.
+  String? ownColor;
   EmoteBadgeCache? cache;
 
   List<ClientListener> listeners = [];
@@ -111,7 +119,10 @@ class Client {
     TwitchAccount? twitchAccount,
     required Box channelsBox,
     Box? cacheBox,
+    Box? whispersBox,
   }) {
+    whispers = Whispers(this, box: whispersBox);
+
     // Set up the cache before constructing channels so each Channel can
     // hydrate its emotes/badges from disk in its constructor (channels are
     // created inside ClientChannels). Otherwise the cache is still null when
@@ -256,9 +267,19 @@ class Client {
   // Messages resolve their badges when they're built, so history inserted
   // before the global badges arrived would otherwise never show them.
   void _rebuildChannelMessages() {
-    for (final channel in channels.state) {
+    for (final channel in [...channels.state, ...whispers.state]) {
       unawaited(channel.rebuildMessages());
     }
+  }
+
+  /// The chat color of [userId] as seen in any open channel, in IRC's `#RRGGBB` form. Whispers don't carry one.
+  String? chatColorOf(String userId) {
+    for (final channel in channels.state) {
+      final message = channel.channelMessages.state.lastWhereOrNull((m) => m is ChannelMessageChat && m.user.id == userId) as ChannelMessageChat?;
+      final color = message?.message.tags['color'];
+      if (color != null && color.isNotEmpty) return color;
+    }
+    return null;
   }
 
   // Twitch IRC allows ~20 JOIN commands per 10 seconds for normal users. The
@@ -348,6 +369,7 @@ class Client {
   Future<void> ensureRecentMessages(Channel channel) async {
     // User is actively looking at this channel — make sure the throttled
     // JOIN scheduler picks it before any other queued channel.
+    if (channel is WhisperChannel) return;
     channel.joinPriority = true;
     if (channel.recentMessagesFetched) return;
     channel.recentMessagesFetched = true;
@@ -405,6 +427,7 @@ class Client {
     final receiverAlive = results[0];
     final transmitterAlive = results[1];
     bttvSocket.reconnect();
+    eventSub.reconnect();
     if (receiverAlive && transmitterAlive) return; // connection still live — nothing to do
 
     if (!receiverAlive) receiver.forceReconnect();
@@ -486,6 +509,10 @@ class Client {
     final userId = twitchAccount.tokenData.userId;
     twitchUserEmotes.change(userId != null ? cache?.loadEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId)) ?? [] : []);
 
+    whispers.setAccount(twitchAccount);
+    ownColor = null;
+    eventSub.connect(whispers.hasScope ? twitchAccount.tokenData : null);
+
     receiver.add(ConnectionConnect(twitchAccount));
     transmitter.add(ConnectionConnect(twitchAccount));
     // Confirm with Twitch in the background — the local expiry check only
@@ -525,6 +552,7 @@ class Client {
         try {
           if (connection.state is ConnectionStateWithCredentials) {
             final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
+            if (connection == receiver) ownColor = event.tags['color'];
             final emotes = await Twitch.emoteSets(stateTwitchAccount.tokenData, event.tags['emote-sets']?.split(',') ?? []);
             // Every account has at least the global Twitch emotes, so an empty
             // result means the request failed: keep the cached list instead.

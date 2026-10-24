@@ -30,6 +30,17 @@ class TwitchTokenInvalidException implements Exception {
   String toString() => 'TwitchTokenInvalidException: $message';
 }
 
+/// A Helix request Twitch refused, with the reason Twitch gave. Its [message] is meant to be shown to the user.
+class TwitchRequestException implements Exception {
+  final int statusCode;
+  final String message;
+
+  TwitchRequestException(this.statusCode, this.message);
+
+  @override
+  String toString() => 'TwitchRequestException($statusCode): $message';
+}
+
 class Twitch {
   static Future<List<String>> blockedUsers(TokenData tokenData) async {
     try {
@@ -468,6 +479,55 @@ class Twitch {
     } else {
       final errorJson = json.decode(utf8.decode(response.bodyBytes));
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
+    }
+  }
+
+  /// Sends a whisper from the account of [tokenData] (`user:manage:whispers`). Twitch requires a verified
+  /// phone number on the sending account and answers 204 even when it silently drops a whisper.
+  static Future<void> sendWhisper(TokenData tokenData, {required String toUserId, required String message}) async {
+    final response = await http.post(
+      Uri.parse('https://api.twitch.tv/helix/whispers?from_user_id=${tokenData.userId}&to_user_id=$toUserId'),
+      headers: {
+        'Authorization': 'Bearer ${tokenData.accessToken}',
+        'Client-Id': '${tokenData.clientId}',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'message': message}),
+    );
+    if (response.statusCode != 204) throw _requestException(response);
+  }
+
+  /// Subscribes the EventSub WebSocket session [sessionId] to [type] events.
+  static Future<void> createEventSubSubscription(
+    TokenData tokenData, {
+    required String type,
+    required String version,
+    required Map<String, String> condition,
+    required String sessionId,
+  }) async {
+    final response = await http.post(
+      Uri.parse('https://api.twitch.tv/helix/eventsub/subscriptions'),
+      headers: {
+        'Authorization': 'Bearer ${tokenData.accessToken}',
+        'Client-Id': '${tokenData.clientId}',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'type': type,
+        'version': version,
+        'condition': condition,
+        'transport': {'method': 'websocket', 'session_id': sessionId},
+      }),
+    );
+    if (response.statusCode != 202) throw _requestException(response);
+  }
+
+  static TwitchRequestException _requestException(http.Response response) {
+    try {
+      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      return TwitchRequestException(response.statusCode, '${errorJson['message'] ?? errorJson['error']}');
+    } catch (_) {
+      return TwitchRequestException(response.statusCode, 'HTTP ${response.statusCode}');
     }
   }
 }

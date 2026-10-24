@@ -11,6 +11,8 @@ import '../api/twitch/twitch_profile.dart';
 import '../tmi/client/client.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/whispers/whisper_channel.dart';
+import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
 
@@ -53,7 +55,8 @@ class _UserModalState extends State<UserModal> {
             children: [
               if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
               if (profile != null) _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
-              if (channel != null && profile != null)
+              // Moderation acts on a channel; a whisper conversation has none.
+              if (channel != null && channel is! WhisperChannel && profile != null)
                 Material(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                   child: Row(
@@ -170,9 +173,9 @@ class _UserModalState extends State<UserModal> {
       );
 }
 
-/// Block and report, which both stores require wherever users see each other's messages. Blocking uses the
-/// account's Twitch block list, so it applies everywhere. Twitch has no API for reports, so Report points to
-/// Twitch's own.
+/// Whisper, block and report. Block and report are what both stores require wherever users see each other's
+/// messages. Blocking uses the account's Twitch block list, so it applies everywhere. Twitch has no API for
+/// reports, so Report points to Twitch's own.
 class _UserSafetyActions extends StatefulWidget {
   final Client client;
   final TwitchUser user;
@@ -205,6 +208,18 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
     if (mounted) setState(() => busy = false);
   }
 
+  /// Opens the conversation with this user as a tab and switches to it.
+  Future<void> whisper() async {
+    final navigator = Navigator.of(context);
+    try {
+      await widget.client.whispers.openAndFocus(widget.user.login);
+      navigator.popUntil((route) => route.isFirst);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(ChannelViewState.whisperErrorText(context, e))));
+    }
+  }
+
   Future<void> report() => showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -231,6 +246,12 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        if (canBlock)
+          TextButton.icon(
+            icon: const Icon(Icons.mail_outline_rounded),
+            label: Text(AppLocalizations.of(context)!.whisper),
+            onPressed: whisper,
+          ),
         if (canBlock)
           TextButton.icon(
             icon: Icon(blocked ? Icons.person_outline_rounded : Icons.person_off_outlined),
