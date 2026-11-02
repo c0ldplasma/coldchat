@@ -25,6 +25,9 @@ class FrankerFaceZEmote {
   @JsonKey(name: 'modifier')
   bool modifier;
 
+  @JsonKey(name: 'modifier_flags')
+  int? modifierFlags;
+
   @JsonKey(name: 'urls')
   Map<String, String> urls;
 
@@ -48,6 +51,7 @@ class FrankerFaceZEmote {
     required this.public,
     required this.hidden,
     required this.modifier,
+    this.modifierFlags,
     required this.urls,
     required this.status,
     required this.usageCount,

@@ -5,6 +5,7 @@ import 'emote_provider.dart';
 import 'provider.dart';
 import '/data/emote.dart';
 import '/api/seventv/seventv.dart';
+import '/api/seventv/seventv_emote.dart';
 
 class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
   @override
@@ -25,7 +26,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
             for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF')) 'https:${emote.data.host.url}/${urlArray.name}',
           ],
           provider: this,
-          flags: ((emote.data.flags & (1 << 8)) == (1 << 8)) ? EmoteFlags.overlay : 0,
+          flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
     ];
   }
@@ -42,10 +43,13 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
             for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF')) 'https:${emote.data.host.url}/${urlArray.name}',
           ],
           provider: this,
-          flags: ((emote.data.flags & (1 << 8)) == (1 << 8)) ? EmoteFlags.overlay : 0,
+          flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
     ];
   }
+
+  // The emote's own ZeroWidth flag (1 << 8), or the emote set entry's (1 << 0).
+  static bool _isZeroWidth(SevenTVEmote emote) => emote.data.flags & (1 << 8) != 0 || emote.flags & (1 << 0) != 0;
 
   @override
   Future<List<CustomBadge>> globalBadges() async => [];
