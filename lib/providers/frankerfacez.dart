@@ -1,6 +1,7 @@
 import '../data/custom_badge.dart';
 import '../data/badge_users.dart';
 import '/api/frankerfacez/frankerfacez.dart';
+import '/api/frankerfacez/frankerfacez_emote.dart';
 import '/data/emote.dart';
 import 'badge_provider.dart';
 import 'emote_provider.dart';
@@ -26,6 +27,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
               for (final url in emote.urls.values) url,
             ],
             provider: this,
+            flags: _flags(emote),
           ),
     ];
   }
@@ -43,8 +45,32 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
               for (final url in emote.urls.values) url,
             ],
             provider: this,
+            flags: _flags(emote),
           ),
     ];
+  }
+
+  // FrankerFaceZ modifier_flags. Modifiers with Hidden set are effects on the emote before them (ffzX, ffzW, …);
+  // the others are overlay images. Only the effects that need no animation are supported.
+  static const int _hidden = 1 << 0;
+  static const Map<int, int> _effects = {
+    1 << 1: EmoteFlags.flipX,
+    1 << 2: EmoteFlags.flipY,
+    1 << 3: EmoteFlags.growX,
+    1 << 8: EmoteFlags.rotate90,
+    1 << 9: EmoteFlags.greyscale,
+    1 << 10: EmoteFlags.sepia,
+  };
+
+  static int _flags(FrankerFaceZEmote emote) {
+    if (!emote.modifier) return 0;
+    final modifierFlags = emote.modifierFlags ?? 0;
+    if (modifierFlags & _hidden == 0) return EmoteFlags.overlay;
+    var flags = EmoteFlags.modifier;
+    _effects.forEach((ffz, flag) {
+      if (modifierFlags & ffz != 0) flags |= flag;
+    });
+    return flags;
   }
 
   @override

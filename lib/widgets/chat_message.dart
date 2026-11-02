@@ -28,6 +28,7 @@ import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
 import 'chat/reply_painter.dart';
 import 'embeds/embedded_image.dart';
+import 'emote_stack_view.dart';
 
 class BlockedChatMessage extends StatefulWidget {
   final Widget widget;
@@ -193,6 +194,12 @@ class ChatMessage extends StatelessWidget {
         },
       );
 
+  static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
+        image: CachedNetworkImageProvider(emote.mipmap.last),
+        height: (emote.provider.name == 'Emoji' || (emote.provider.name == 'Twitch' && _twitchClassicEmoticons.contains(emote.name)) ? 24.0 : 32.0) * (1.0 / messageAppearance.scale),
+        filterQuality: FilterQuality.high,
+      );
+
   static Widget buildMessageContent(BuildContext context, ChannelMessageChat message, MessageAppearance messageAppearance) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,11 +305,26 @@ class ChatMessage extends StatelessWidget {
                         message: split.name,
                         child: Padding(
                           padding: const EdgeInsets.only(right: 4.0) * messageAppearance.scale,
-                          child: Image(
-                            image: CachedNetworkImageProvider(split.mipmap.last),
-                            height: (split.provider.name == 'Emoji' || (split.provider.name == 'Twitch' && _twitchClassicEmoticons.contains(split.name)) ? 24.0 : 32.0) * (1.0 / messageAppearance.scale),
-                            filterQuality: FilterQuality.high,
-                          ),
+                          child: _emoteImage(split, messageAppearance),
+                        ),
+                      ),
+                    ),
+                  ),
+                if (split is EmoteStack)
+                  WidgetSpan(
+                    child: GestureDetector(
+                      onTap: () => Modal.show(
+                        context: context,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [for (final emote in split.emotes) EmoteModal(emote: emote)],
+                        ),
+                      ),
+                      child: Tooltip(
+                        message: split.emotes.map((emote) => emote.name).join(' '),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 4.0) * messageAppearance.scale,
+                          child: EmoteStackView(stack: split, image: (emote) => _emoteImage(emote, messageAppearance)),
                         ),
                       ),
                     ),

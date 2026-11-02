@@ -203,7 +203,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       final uri = textSplit.startsWith('http') ? Uri.tryParse(textSplit) : null;
 
       if (emote != null) {
-        splits.add(emote);
+        _addEmote(emote);
       } else if (uri != null && uri.isAbsolute) {
         splits.add(InlineUrl(url: '$uri'));
         if (_imageRegex.hasMatch('${uri.removeFragment()}')) {
@@ -274,5 +274,23 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
         mentionned = mentionned || textSplits.whereType<String>().map((e) => e.toLowerCase()).any((split) => (split == connectedState.twitchAccount.tokenData.login || split == '@${connectedState.twitchAccount.tokenData.login}' || split == '${connectedState.twitchAccount.tokenData.login},' || split == '@${connectedState.twitchAccount.tokenData.login},'));
       }
     }
+  }
+
+  /// Adds [emote] to [splits]. A zero-width emote or a FrankerFaceZ modifier right after another emote joins
+  /// that emote's [EmoteStack] instead, the way 7TV, BetterTTV and FrankerFaceZ draw them.
+  void _addEmote(Emote emote) {
+    final previous = splits.isEmpty ? null : splits.last;
+    final layered = emote.flags & (EmoteFlags.overlay | EmoteFlags.modifier) != 0;
+    if (!layered || (previous is! Emote && previous is! EmoteStack)) {
+      splits.add(emote);
+      return;
+    }
+    final stack = previous is EmoteStack ? previous : EmoteStack(previous as Emote);
+    if (emote.flags & EmoteFlags.overlay != 0) {
+      stack.overlays.add(emote);
+    } else {
+      stack.modifiers.add(emote);
+    }
+    splits.last = stack;
   }
 }
