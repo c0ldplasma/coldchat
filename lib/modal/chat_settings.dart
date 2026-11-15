@@ -100,6 +100,22 @@ class ChatSettingsModal extends StatelessWidget {
                 ),
                 onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
               ),
+              Tile(
+                title: AppLocalizations.of(context)!.showImagesFromLinks,
+                subtitle: AppLocalizations.of(context)!.showImagesFromLinksSubtitle,
+                prefix: const Icon(Icons.image_outlined),
+                suffix: Toggle(
+                  value: chatSettings.showLinkImages,
+                  onChanged: (newValue) {
+                    chatSettings.showLinkImages = !chatSettings.showLinkImages;
+                    chatSettings.save();
+                  },
+                ),
+                onTap: () {
+                  chatSettings.showLinkImages = !chatSettings.showLinkImages;
+                  chatSettings.save();
+                },
+              ),
             ],
           );
         },

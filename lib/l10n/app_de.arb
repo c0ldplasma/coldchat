@@ -224,5 +224,10 @@
   "whisperFailed": "Flüsternachricht nicht gesendet: {reason}",
   "whisperHistoryHint": "Flüsternachrichten, die du bekommst, während ColdChat geschlossen ist, erscheinen hier nicht, weil Twitch den Verlauf nicht an Apps weitergibt. Du findest sie auf Twitch hinter dem Flüster-Symbol oben rechts.",
   "gotIt": "Verstanden",
-  "openTwitch": "Twitch öffnen"
+  "openTwitch": "Twitch öffnen",
+  "showImage": "Bild anzeigen · {host}",
+  "showImagesFromLinks": "Bilder aus Links anzeigen",
+  "showImagesFromLinksSubtitle": "Twitch prüft diese Bilder nicht. Sie können unangemessen sein.",
+  "showImagesAutomatically": "Bilder aus Links automatisch anzeigen?",
+  "turnOn": "Einschalten"
 }
