@@ -258,5 +258,11 @@
   "@whisperFailed": {"placeholders": {"reason": {"type": "String"}}},
   "whisperHistoryHint": "Whispers sent to you while ColdChat was closed don't show up here, because Twitch doesn't share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.",
   "gotIt": "Got it",
-  "openTwitch": "Open Twitch"
+  "openTwitch": "Open Twitch",
+  "showImage": "Show image · {host}",
+  "@showImage": {"placeholders": {"host": {"type": "String"}}},
+  "showImagesFromLinks": "Show images from links",
+  "showImagesFromLinksSubtitle": "Twitch doesn't check these images. They may be inappropriate.",
+  "showImagesAutomatically": "Show images from links automatically?",
+  "turnOn": "Turn on"
 }

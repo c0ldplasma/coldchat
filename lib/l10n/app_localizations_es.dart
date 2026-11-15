@@ -538,4 +538,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get openTwitch => 'Open Twitch';
+
+  @override
+  String showImage(String host) {
+    return 'Show image · $host';
+  }
+
+  @override
+  String get showImagesFromLinks => 'Show images from links';
+
+  @override
+  String get showImagesFromLinksSubtitle =>
+      'Twitch doesn\'t check these images. They may be inappropriate.';
+
+  @override
+  String get showImagesAutomatically => 'Show images from links automatically?';
+
+  @override
+  String get turnOn => 'Turn on';
 }

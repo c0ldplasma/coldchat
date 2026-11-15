@@ -1077,6 +1077,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Twitch'**
   String get openTwitch;
+
+  /// No description provided for @showImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Show image · {host}'**
+  String showImage(String host);
+
+  /// No description provided for @showImagesFromLinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Show images from links'**
+  String get showImagesFromLinks;
+
+  /// No description provided for @showImagesFromLinksSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Twitch doesn\'t check these images. They may be inappropriate.'**
+  String get showImagesFromLinksSubtitle;
+
+  /// No description provided for @showImagesAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Show images from links automatically?'**
+  String get showImagesAutomatically;
+
+  /// No description provided for @turnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get turnOn;
 }
 
 class _AppLocalizationsDelegate

@@ -27,7 +27,7 @@ import 'channel_view.dart';
 import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
 import 'chat/reply_painter.dart';
-import 'embeds/embedded_image.dart';
+import 'embeds/link_image.dart';
 import 'emote_stack_view.dart';
 
 class BlockedChatMessage extends StatefulWidget {
@@ -355,7 +355,7 @@ class ChatMessage extends StatelessWidget {
             children: [
               if (state.isNotEmpty) SizedBox(height: 8.0 * messageAppearance.scale),
               for (final embed in state) ...[
-                if (embed is ImageEmbed) EmbeddedImage(embed: embed, scale: messageAppearance.scale),
+                if (embed is ImageEmbed) LinkImage(embed: embed, scale: messageAppearance.scale),
                 SizedBox(height: 8.0 * messageAppearance.scale),
               ],
             ],
