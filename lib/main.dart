@@ -26,9 +26,10 @@ import '/data/webview/cookie_data.dart';
 import '/app.dart';
 import 'data/filesharing/uploaded_media.dart';
 import 'tmi/client/client.dart';
+import 'tools/coldchat_binding.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  ColdChatBinding.ensureInitialized();
 
   await WakelockPlus.enable();
 
