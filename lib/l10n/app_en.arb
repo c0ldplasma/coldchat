@@ -317,6 +317,51 @@
   "@themeIce": {
     "description": "Name of a color theme in Settings → Theme"
   },
+  "channelConnecting": "Connecting to {channel}…",
+  "@channelConnecting": {
+    "description": "Connection status shown at the end of a channel's chat; channel is like #name",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "channelConnected": "Connected to {channel}",
+  "@channelConnected": {
+    "description": "Connection status shown at the end of a channel's chat; channel is like #name",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "channelDisconnected": "Disconnected from {channel}",
+  "@channelDisconnected": {
+    "description": "Connection status shown at the end of a channel's chat; channel is like #name",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "channelSuspended": "{channel} has been suspended by Twitch",
+  "@channelSuspended": {
+    "description": "Connection status shown at the end of a channel's chat; channel is like #name",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
+  "channelBanned": "You're banned from {channel}",
+  "@channelBanned": {
+    "description": "Connection status shown at the end of a channel's chat; channel is like #name",
+    "placeholders": {
+      "channel": {
+        "type": "String"
+      }
+    }
+  },
   "durationDays": "{count, plural, =1{1 day} other{{count} days}}",
   "@durationDays": {
     "description": "A number of days, as it reads inside \"Expires in {time}\"",

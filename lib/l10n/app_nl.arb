@@ -353,6 +353,11 @@
   "hue": "Tint",
   "saturation": "Verzadiging",
   "themeIce": "IJs",
+  "channelConnecting": "Verbinden met {channel}…",
+  "channelConnected": "Verbonden met {channel}",
+  "channelDisconnected": "Verbinding met {channel} verbroken",
+  "channelSuspended": "{channel} is door Twitch geschorst",
+  "channelBanned": "Je bent verbannen uit {channel}",
   "durationDays": "{count, plural, =1{1 dag} other{{count} dagen}}",
   "durationHours": "{count, plural, =1{1 uur} other{{count} uur}}",
   "durationMinutes": "{count, plural, =1{1 minuut} other{{count} minuten}}"

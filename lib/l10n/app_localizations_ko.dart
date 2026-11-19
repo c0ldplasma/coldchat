@@ -608,6 +608,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String get themeIce => '아이스';
 
   @override
+  String channelConnecting(String channel) {
+    return '$channel에 연결 중…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return '$channel에 연결됨';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return '$channel와(과) 연결이 끊어짐';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel은(는) Twitch에 의해 정지되었습니다';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return '$channel에서 차단되었습니다';
+  }
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

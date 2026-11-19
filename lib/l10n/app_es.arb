@@ -353,6 +353,11 @@
   "hue": "Tono",
   "saturation": "Saturación",
   "themeIce": "Hielo",
+  "channelConnecting": "Conectando a {channel}…",
+  "channelConnected": "Conectado a {channel}",
+  "channelDisconnected": "Desconectado de {channel}",
+  "channelSuspended": "Twitch ha suspendido {channel}",
+  "channelBanned": "Estás baneado de {channel}",
   "durationDays": "{count, plural, =1{1 día} other{{count} días}}",
   "durationHours": "{count, plural, =1{1 hora} other{{count} horas}}",
   "durationMinutes": "{count, plural, =1{1 minuto} other{{count} minutos}}"

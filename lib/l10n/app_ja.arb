@@ -353,6 +353,11 @@
   "hue": "色相",
   "saturation": "彩度",
   "themeIce": "アイス",
+  "channelConnecting": "{channel}に接続中…",
+  "channelConnected": "{channel}に接続しました",
+  "channelDisconnected": "{channel}から切断されました",
+  "channelSuspended": "{channel}はTwitchにより停止されています",
+  "channelBanned": "{channel}からBANされています",
   "durationDays": "{count, plural, other{{count}日}}",
   "durationHours": "{count, plural, other{{count}時間}}",
   "durationMinutes": "{count, plural, other{{count}分}}"

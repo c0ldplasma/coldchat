@@ -608,6 +608,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get themeIce => 'アイス';
 
   @override
+  String channelConnecting(String channel) {
+    return '$channelに接続中…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return '$channelに接続しました';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return '$channelから切断されました';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channelはTwitchにより停止されています';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return '$channelからBANされています';
+  }
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

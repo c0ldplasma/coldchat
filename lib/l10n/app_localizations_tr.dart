@@ -616,6 +616,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get themeIce => 'Buz';
 
   @override
+  String channelConnecting(String channel) {
+    return '$channel kanalına bağlanılıyor…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return '$channel kanalına bağlanıldı';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return '$channel kanalıyla bağlantı kesildi';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel Twitch tarafından askıya alındı';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return '$channel kanalından banlandın';
+  }
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

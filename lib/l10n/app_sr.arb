@@ -353,6 +353,11 @@
   "hue": "Нијанса",
   "saturation": "Засићеност",
   "themeIce": "Лед",
+  "channelConnecting": "Повезивање са {channel}…",
+  "channelConnected": "Повезано са {channel}",
+  "channelDisconnected": "Веза са {channel} је прекинута",
+  "channelSuspended": "Twitch је суспендовао {channel}",
+  "channelBanned": "Имаш бан на {channel}",
   "durationDays": "{count, plural, one{{count} дан} other{{count} дана}}",
   "durationHours": "{count, plural, one{{count} сат} few{{count} сата} other{{count} сати}}",
   "durationMinutes": "{count, plural, one{{count} минут} few{{count} минута} other{{count} минута}}"

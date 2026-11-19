@@ -353,6 +353,11 @@
   "hue": "Nyans",
   "saturation": "Mättnad",
   "themeIce": "Is",
+  "channelConnecting": "Ansluter till {channel} …",
+  "channelConnected": "Ansluten till {channel}",
+  "channelDisconnected": "Frånkopplad från {channel}",
+  "channelSuspended": "{channel} har stängts av av Twitch",
+  "channelBanned": "Du är bannad från {channel}",
   "durationDays": "{count, plural, =1{1 dag} other{{count} dagar}}",
   "durationHours": "{count, plural, =1{1 timme} other{{count} timmar}}",
   "durationMinutes": "{count, plural, =1{1 minut} other{{count} minuter}}"

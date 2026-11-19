@@ -249,6 +249,11 @@
   "hue": "Farbton",
   "saturation": "Sättigung",
   "themeIce": "Eis",
+  "channelConnecting": "Verbindung zu {channel} wird hergestellt …",
+  "channelConnected": "Mit {channel} verbunden",
+  "channelDisconnected": "Verbindung zu {channel} getrennt",
+  "channelSuspended": "{channel} wurde von Twitch gesperrt",
+  "channelBanned": "Du bist in {channel} gebannt",
   "durationDays": "{count, plural, =1{1 Tag} other{{count} Tagen}}",
   "durationHours": "{count, plural, =1{1 Stunde} other{{count} Stunden}}",
   "durationMinutes": "{count, plural, =1{1 Minute} other{{count} Minuten}}"

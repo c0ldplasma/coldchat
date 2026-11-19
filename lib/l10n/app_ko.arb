@@ -353,6 +353,11 @@
   "hue": "색조",
   "saturation": "채도",
   "themeIce": "아이스",
+  "channelConnecting": "{channel}에 연결 중…",
+  "channelConnected": "{channel}에 연결됨",
+  "channelDisconnected": "{channel}와(과) 연결이 끊어짐",
+  "channelSuspended": "{channel}은(는) Twitch에 의해 정지되었습니다",
+  "channelBanned": "{channel}에서 차단되었습니다",
   "durationDays": "{count, plural, other{{count}일}}",
   "durationHours": "{count, plural, other{{count}시간}}",
   "durationMinutes": "{count, plural, other{{count}분}}"

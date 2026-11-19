@@ -616,6 +616,31 @@ class AppLocalizationsHr extends AppLocalizations {
   String get themeIce => 'Led';
 
   @override
+  String channelConnecting(String channel) {
+    return 'Povezivanje s $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Povezano s $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Veza s $channel prekinuta';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Twitch je suspendirao $channel';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Imaš ban na $channel';
+  }
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

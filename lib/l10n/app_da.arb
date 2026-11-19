@@ -353,6 +353,11 @@
   "hue": "Nuance",
   "saturation": "Mætning",
   "themeIce": "Is",
+  "channelConnecting": "Opretter forbindelse til {channel} …",
+  "channelConnected": "Forbundet til {channel}",
+  "channelDisconnected": "Afbrudt fra {channel}",
+  "channelSuspended": "{channel} er blevet suspenderet af Twitch",
+  "channelBanned": "Du er bannet fra {channel}",
   "durationDays": "{count, plural, =1{1 dag} other{{count} dage}}",
   "durationHours": "{count, plural, =1{1 time} other{{count} timer}}",
   "durationMinutes": "{count, plural, =1{1 minut} other{{count} minutter}}"

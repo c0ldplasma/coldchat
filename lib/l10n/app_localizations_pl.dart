@@ -618,6 +618,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get themeIce => 'Lodowy';
 
   @override
+  String channelConnecting(String channel) {
+    return 'Łączenie z $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Połączono z $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Rozłączono z $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Kanał $channel został zawieszony przez Twitcha';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Masz bana na $channel';
+  }
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

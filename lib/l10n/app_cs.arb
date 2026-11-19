@@ -353,6 +353,11 @@
   "hue": "Odstín",
   "saturation": "Sytost",
   "themeIce": "Ledová",
+  "channelConnecting": "Připojování k {channel}…",
+  "channelConnected": "Připojeno k {channel}",
+  "channelDisconnected": "Odpojeno od {channel}",
+  "channelSuspended": "Kanál {channel} byl pozastaven Twitchem",
+  "channelBanned": "Na kanálu {channel} máš ban",
   "durationDays": "{count, plural, one{{count} den} few{{count} dny} other{{count} dní}}",
   "durationHours": "{count, plural, one{{count} hodinu} few{{count} hodiny} other{{count} hodin}}",
   "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minuty} other{{count} minut}}"
