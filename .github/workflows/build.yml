@@ -5,10 +5,10 @@ on:
     branches: [main]
   pull_request:
 
-# A newer push to the same branch or PR makes the older run pointless.
+# A newer push to a PR makes its older run pointless. Runs on main always finish: they write the caches PRs read.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 defaults:
   run:
@@ -98,6 +98,25 @@ jobs:
 
       - name: Generate sources
         run: dart run build_runner build --delete-conflicting-outputs
+
+      # The runner image doesn't have the NDK version Flutter pins, and downloading it (~1.5 GB) took longer than
+      # the build itself. CMake is for the jni plugin's native code.
+      - name: Find the NDK version Flutter uses
+        id: ndk
+        if: matrix.target == 'Android'
+        # Fails if Flutter moves it, rather than caching the whole ndk/ folder under an empty version.
+        run: |
+          version=$(grep -oP 'val ndkVersion: String = "\K[^"]+' "$FLUTTER_ROOT/packages/flutter_tools/gradle/src/main/kotlin/FlutterExtension.kt")
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        if: matrix.target == 'Android'
+        with:
+          path: |
+            /usr/local/lib/android/sdk/ndk/${{ steps.ndk.outputs.version }}
+            /usr/local/lib/android/sdk/cmake/3.22.1
+          key: android-ndk-${{ steps.ndk.outputs.version }}-cmake-3.22.1
 
       - name: Build for Android
         if: matrix.target == 'Android'
