@@ -344,8 +344,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get scrollToBottom => 'Skoči na dno';
 
   @override
-  String get startUsingTheApp =>
-      'Za početak korištenja aplikacije dodaj račun u nastavku.';
+  String get appTagline => 'Twitch chat s emotikonima iz 7TV-a, BTTV-a i FFZ-a';
+
+  @override
+  String get loginWithTwitch => 'Prijavi se putem Twitcha';
 
   @override
   String get chatSettings => 'Postavke chata';

@@ -736,11 +736,17 @@ abstract class AppLocalizations {
   /// **'Scroll to bottom'**
   String get scrollToBottom;
 
-  /// No description provided for @startUsingTheApp.
+  /// No description provided for @appTagline.
   ///
   /// In en, this message translates to:
-  /// **'To start using the app, add an account below.'**
-  String get startUsingTheApp;
+  /// **'Twitch chat with 7TV, BTTV and FFZ emotes'**
+  String get appTagline;
+
+  /// No description provided for @loginWithTwitch.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in with Twitch'**
+  String get loginWithTwitch;
 
   /// No description provided for @chatSettings.
   ///

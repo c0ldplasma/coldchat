@@ -344,8 +344,10 @@ class AppLocalizationsNo extends AppLocalizations {
   String get scrollToBottom => 'Rull til bunnen';
 
   @override
-  String get startUsingTheApp =>
-      'Legg til en konto nedenfor for å begynne å bruke appen.';
+  String get appTagline => 'Twitch-chat med emotes fra 7TV, BTTV og FFZ';
+
+  @override
+  String get loginWithTwitch => 'Logg inn med Twitch';
 
   @override
   String get chatSettings => 'Chatteinnstillinger';
