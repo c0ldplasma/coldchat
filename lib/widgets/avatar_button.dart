@@ -36,6 +36,10 @@ class _AvatarButtonState extends State<AvatarButton> {
           Material(
             borderRadius: BorderRadius.circular(128.0),
             color: ChatColors.of(context).raised,
+            // The same lift as the chat's other floating controls; it sits over the messages in a chat.
+            elevation: 3.0,
+            shadowColor: Colors.black,
+            surfaceTintColor: Colors.transparent,
             child: InkWell(
               onTap: () => Modal.show(
                 context: context,

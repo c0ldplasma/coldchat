@@ -187,9 +187,12 @@ class ChatColors extends ThemeExtension<ChatColors> {
   /// Bottom sheets (settings, account, user cards).
   final Color sheet;
 
-  /// Raised elements on the chat: the scroll-down button, the notification pill, the search field.
-  /// This is Material 2's `surfaceVariant`, a different tone from its replacement `surfaceContainerHighest`.
+  /// Pills and fields that float over the chat and the home tab: the scroll-down button, the notification pill, the
+  /// search fields. A few tones lighter than the chat, like Material 3's search bar; over moving content, pair it with
+  /// [raisedShadow].
   final Color raised;
+
+  static const List<BoxShadow> raisedShadow = [BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0))];
 
   /// Links in chat messages. Blue in every theme, because that's what people recognize as a link.
   final Color link;
@@ -203,14 +206,13 @@ class ChatColors extends ThemeExtension<ChatColors> {
 
   factory ChatColors.from(AccentColor accent, ColorScheme scheme, {bool highContrast = false, bool oledBlack = false}) {
     final dark = scheme.brightness == Brightness.dark;
-    final dynamicScheme = accent._dynamicScheme(scheme.brightness, highContrast: highContrast);
     return ChatColors(
       // Darker than the chat in dark mode, which is the look ColdChat always had; a light grey in light mode. On a
       // black chat (OLED) a little lighter instead, since nothing is darker than black.
       bar: oledBlack ? scheme.surfaceContainer : (dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer),
       onBar: scheme.onSurface,
       sheet: oledBlack ? scheme.surfaceContainer : Color.alphaBlend(scheme.onSurface.withValues(alpha: 0.075), scheme.surface),
-      raised: Color(MaterialDynamicColors.surfaceVariant.getArgb(dynamicScheme)),
+      raised: scheme.surfaceContainerHigh,
       link: Color(Hct.from(255.0, 48.0, dark ? 80.0 : (highContrast ? 30.0 : 40.0)).toInt()),
       muted: scheme.onSurfaceVariant,
       brightness: scheme.brightness,

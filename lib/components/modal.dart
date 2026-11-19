@@ -76,7 +76,10 @@ class Modal extends StatelessWidget {
     bool enableDrag = true,
   }) async =>
       await showModalBottomSheet(
-        context: context,
+        // Opened from the navigator itself rather than [context]: a sheet keeps a frozen copy of every inherited style
+        // between the context it's opened from and the navigator (InheritedTheme.capture), like the icon colors of the
+        // tab bar or a Surface, and then wouldn't follow a switch between light and dark while it's open.
+        context: Navigator.of(context).context,
         enableDrag: enableDrag,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,

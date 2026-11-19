@@ -12,6 +12,7 @@ import '../components/surface.dart';
 import '../data/notifications_cubit.dart';
 import '../tmi/channel/channel_message.dart';
 import 'chat_message.dart';
+import '/theme/coldchat_theme.dart';
 import '/tmi/channel/channel.dart';
 import '/tmi/channel/channel_messages.dart';
 
@@ -174,28 +175,30 @@ class _ChatViewState extends State<ChatView> {
                             ignoring: !chromeShown,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                            child: Surface(
-                              borderRadius: BorderRadius.circular(128.0),
-                              // color: Colors.white,
-                              type: SurfaceType.surfaceVariant,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: TextField(
-                                  controller: searchController,
-                                  focusNode: searchFocusNode,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: AppLocalizations.of(context)!.search,
-                                    isDense: true,
-                                    suffixIconConstraints: const BoxConstraints(),
-                                    suffixIcon: searching
-                                        ? GestureDetector(
-                                            onTap: () => setState(() => searchController.clear()),
-                                            child: const Icon(Icons.close_rounded, size: 20.0),
-                                          )
-                                        : null,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(128.0), boxShadow: ChatColors.raisedShadow),
+                              child: Surface(
+                                borderRadius: BorderRadius.circular(128.0),
+                                type: SurfaceType.surfaceVariant,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: TextField(
+                                    controller: searchController,
+                                    focusNode: searchFocusNode,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: AppLocalizations.of(context)!.search,
+                                      isDense: true,
+                                      suffixIconConstraints: const BoxConstraints(),
+                                      suffixIcon: searching
+                                          ? GestureDetector(
+                                              onTap: () => setState(() => searchController.clear()),
+                                              child: const Icon(Icons.close_rounded, size: 20.0),
+                                            )
+                                          : null,
+                                    ),
+                                    onChanged: (text) => setState(() {}),
                                   ),
-                                  onChanged: (text) => setState(() {}),
                                 ),
                               ),
                             ),
@@ -228,10 +231,7 @@ class _ChatViewState extends State<ChatView> {
                       // Styled like the chat's other floating controls (the search pill), with a shadow to lift it off
                       // the messages behind it.
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0))],
-                        ),
+                        decoration: const BoxDecoration(shape: BoxShape.circle, boxShadow: ChatColors.raisedShadow),
                         child: Surface(
                           onTap: () {
                             scrollMessages = null;
