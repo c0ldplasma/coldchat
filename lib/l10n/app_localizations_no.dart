@@ -565,6 +565,58 @@ class AppLocalizationsNo extends AppLocalizations {
   String get turnOn => 'Slå på';
 
   @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blå';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Grønn';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Rav';
+
+  @override
+  String get themeOrange => 'Oransje';
+
+  @override
+  String get themeRed => 'Rød';
+
+  @override
+  String get themePink => 'Rosa';
+
+  @override
+  String get themePurple => 'Lilla';
+
+  @override
+  String get accentColor => 'Aksentfarge';
+
+  @override
+  String get oledBlack => 'OLED-svart';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Svart chatbakgrunn i mørk modus, for OLED-skjermer';
+
+  @override
+  String get customColor => 'Egendefinert';
+
+  @override
+  String get hue => 'Fargetone';
+
+  @override
+  String get saturation => 'Metning';
+
+  @override
+  String get themeIce => 'Is';
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

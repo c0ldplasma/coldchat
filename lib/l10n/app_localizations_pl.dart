@@ -566,6 +566,58 @@ class AppLocalizationsPl extends AppLocalizations {
   String get turnOn => 'Włącz';
 
   @override
+  String get themeIndigo => 'Indygo';
+
+  @override
+  String get themeBlue => 'Niebieski';
+
+  @override
+  String get themeTeal => 'Morski';
+
+  @override
+  String get themeGreen => 'Zielony';
+
+  @override
+  String get themeLime => 'Limonkowy';
+
+  @override
+  String get themeAmber => 'Bursztynowy';
+
+  @override
+  String get themeOrange => 'Pomarańczowy';
+
+  @override
+  String get themeRed => 'Czerwony';
+
+  @override
+  String get themePink => 'Różowy';
+
+  @override
+  String get themePurple => 'Fioletowy';
+
+  @override
+  String get accentColor => 'Kolor akcentu';
+
+  @override
+  String get oledBlack => 'Czerń OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Czarne tło czatu w trybie ciemnym, dla ekranów OLED';
+
+  @override
+  String get customColor => 'Własny';
+
+  @override
+  String get hue => 'Odcień';
+
+  @override
+  String get saturation => 'Nasycenie';
+
+  @override
+  String get themeIce => 'Lodowy';
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

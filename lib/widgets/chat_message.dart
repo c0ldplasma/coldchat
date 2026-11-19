@@ -17,6 +17,7 @@ import '/components/modal.dart';
 import '/components/surface.dart';
 import '/data/emote.dart';
 import '/data/settings/message_appearance.dart';
+import '/theme/coldchat_theme.dart';
 import '/modal/message.dart';
 import '/tmi/channel/messages/channel_message_ban.dart';
 import '/tmi/channel/messages/channel_message_notice.dart';
@@ -248,7 +249,7 @@ class ChatMessage extends StatelessWidget {
                 TextSpan(
                   text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')}  ',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: ChatColors.of(context).muted,
                     fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
                   ),
                 ),
@@ -276,7 +277,7 @@ class ChatMessage extends StatelessWidget {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
-                  color: message.user.color ?? Theme.of(context).colorScheme.primary,
+                  color: ChatColors.of(context).nameColor(message.user.color, Theme.of(context).colorScheme),
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
@@ -333,9 +334,9 @@ class ChatMessage extends StatelessWidget {
                   TextSpan(
                     text: '${split.url} ',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: ChatColors.of(context).link,
                       decoration: TextDecoration.underline,
-                      decorationColor: Colors.blue,
+                      decorationColor: ChatColors.of(context).link,
                       fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
                     ),
                     recognizer: TapGestureRecognizer()

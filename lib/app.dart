@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '/tools/m3parser.dart';
+import '/theme/coldchat_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
@@ -90,6 +90,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
         box: Hive.box('Settings'),
         builder: (context, box) {
           final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
+          final accent = ColdChatTheme.current(box);
           final matchingCustomLocale = AppLocalizations.supportedLocales.firstWhereOrNull((element) => element.toLanguageTag() == box.get('locale'));
           return MaterialApp(
             localizationsDelegates: const [
@@ -105,7 +106,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
                   systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarDividerColor: Colors.transparent,
                   statusBarColor: Colors.transparent,
-                  systemNavigationBarIconBrightness: Brightness.light,
+                  systemNavigationBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
                   statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark,
                   statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
                 ),
@@ -120,22 +121,8 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
                 ),
               );
             }),
-            // theme: M3Parser.parse(M3Themes.themes['green']!, dark: false),
-            // darkTheme: M3Parser.parse(M3Themes.themes['green']!, dark: true),
-            theme: M3Parser.patchTheme(
-              ThemeData(
-                colorSchemeSeed: Color(box.get('themeColor') as int? ?? 0xFF2196F3),
-                brightness: Brightness.light,
-              ),
-              appColors: AppColors.fromSeed(Color(box.get('themeColor') as int? ?? 0xFF2196F3), Brightness.light),
-            ),
-            darkTheme: M3Parser.patchTheme(
-              ThemeData(
-                colorSchemeSeed: Color(box.get('themeColor') as int? ?? 0xFF2196F3),
-                brightness: Brightness.dark,
-              ),
-              appColors: AppColors.fromSeed(Color(box.get('themeColor') as int? ?? 0xFF2196F3), Brightness.dark),
-            ),
+            theme: ColdChatTheme.build(accent, Brightness.light, highContrast: applicationAppearance.highContrast),
+            darkTheme: ColdChatTheme.build(accent, Brightness.dark, highContrast: applicationAppearance.highContrast, oledBlack: applicationAppearance.oledBlack),
             themeMode: applicationAppearance.themeMode == 'dark'
                 ? ThemeMode.dark
                 : applicationAppearance.themeMode == 'light'

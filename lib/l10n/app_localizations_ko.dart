@@ -557,6 +557,57 @@ class AppLocalizationsKo extends AppLocalizations {
   String get turnOn => '켜기';
 
   @override
+  String get themeIndigo => '인디고';
+
+  @override
+  String get themeBlue => '블루';
+
+  @override
+  String get themeTeal => '틸';
+
+  @override
+  String get themeGreen => '그린';
+
+  @override
+  String get themeLime => '라임';
+
+  @override
+  String get themeAmber => '앰버';
+
+  @override
+  String get themeOrange => '오렌지';
+
+  @override
+  String get themeRed => '레드';
+
+  @override
+  String get themePink => '핑크';
+
+  @override
+  String get themePurple => '퍼플';
+
+  @override
+  String get accentColor => '강조 색상';
+
+  @override
+  String get oledBlack => 'OLED 블랙';
+
+  @override
+  String get oledBlackSubtitle => '다크 모드에서 채팅 배경을 검은색으로 표시합니다(OLED 화면용)';
+
+  @override
+  String get customColor => '사용자 지정';
+
+  @override
+  String get hue => '색조';
+
+  @override
+  String get saturation => '채도';
+
+  @override
+  String get themeIce => '아이스';
+
+  @override
   String durationDays(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

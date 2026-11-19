@@ -267,6 +267,56 @@
   "showImagesFromLinksSubtitle": "Twitch doesn't check these images. They may be inappropriate.",
   "showImagesAutomatically": "Show images from links automatically?",
   "turnOn": "Turn on",
+  "themeIndigo": "Indigo",
+  "@themeIndigo": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeBlue": "Blue",
+  "@themeBlue": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeTeal": "Teal",
+  "@themeTeal": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeGreen": "Green",
+  "@themeGreen": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeLime": "Lime",
+  "@themeLime": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeAmber": "Amber",
+  "@themeAmber": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeOrange": "Orange",
+  "@themeOrange": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themeRed": "Red",
+  "@themeRed": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themePink": "Pink",
+  "@themePink": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "themePurple": "Purple",
+  "@themePurple": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
+  "accentColor": "Accent color",
+  "oledBlack": "OLED black",
+  "oledBlackSubtitle": "Black chat background in dark mode, for OLED screens",
+  "customColor": "Custom",
+  "hue": "Hue",
+  "saturation": "Saturation",
+  "themeIce": "Ice",
+  "@themeIce": {
+    "description": "Name of a color theme in Settings → Theme"
+  },
   "durationDays": "{count, plural, =1{1 day} other{{count} days}}",
   "@durationDays": {
     "description": "A number of days, as it reads inside \"Expires in {time}\"",
