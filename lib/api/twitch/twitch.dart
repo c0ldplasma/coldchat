@@ -280,8 +280,8 @@ class Twitch {
       body: json.encode({
         'data': {
           'user_id': userId,
-          'duration': ?duration,
-          'reason': ?reason,
+          if (duration != null) 'duration': duration,
+          if (reason != null) 'reason': reason,
         },
       }),
     );
@@ -454,15 +454,15 @@ class Twitch {
     bool? uniqueChatMode,
   }) async {
     final settings = {
-      'emote_mode': ?emoteMode,
-      'follower_mode': ?followerMode,
-      'follower_mode_duration': ?followerModeDuration,
-      'non_moderator_chat_delay': ?nonModeratorChatDelay,
-      'non_moderator_chat_delay_duration': ?nonModeratorChatDelayDuration,
-      'slow_mode': ?slowMode,
-      'slow_mode_wait_time': ?slowModeWaitTime,
-      'subscriber_mode': ?subscriberMode,
-      'unique_chat_mode': ?uniqueChatMode,
+      if (emoteMode != null) 'emote_mode': emoteMode,
+      if (followerMode != null) 'follower_mode': followerMode,
+      if (followerModeDuration != null) 'follower_mode_duration': followerModeDuration,
+      if (nonModeratorChatDelay != null) 'non_moderator_chat_delay': nonModeratorChatDelay,
+      if (nonModeratorChatDelayDuration != null) 'non_moderator_chat_delay_duration': nonModeratorChatDelayDuration,
+      if (slowMode != null) 'slow_mode': slowMode,
+      if (slowModeWaitTime != null) 'slow_mode_wait_time': slowModeWaitTime,
+      if (subscriberMode != null) 'subscriber_mode': subscriberMode,
+      if (uniqueChatMode != null) 'unique_chat_mode': uniqueChatMode,
     };
 
     final response = await http.patch(
