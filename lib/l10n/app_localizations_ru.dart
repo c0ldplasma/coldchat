@@ -344,7 +344,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get scrollToBottom => 'Прокрутить вниз';
 
   @override
-  String get startUsingTheApp => 'Чтобы начать, добавь аккаунт ниже.';
+  String get appTagline => 'Чат Twitch со смайликами 7TV, BTTV и FFZ';
+
+  @override
+  String get loginWithTwitch => 'Войти через Twitch';
 
   @override
   String get chatSettings => 'Настройки чата';

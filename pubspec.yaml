@@ -69,6 +69,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/emote_providers/
+    - assets/branding/
     - fonts/OFL.txt
   fonts:
     # Variable font; M3Parser.fontVariations sets its width and optical size.

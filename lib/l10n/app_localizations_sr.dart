@@ -344,8 +344,10 @@ class AppLocalizationsSr extends AppLocalizations {
   String get scrollToBottom => 'Скочи на дно';
 
   @override
-  String get startUsingTheApp =>
-      'За почетак коришћења апликације додај налог испод.';
+  String get appTagline => 'Twitch чет са емотиконима из 7TV, BTTV и FFZ';
+
+  @override
+  String get loginWithTwitch => 'Пријави се преко Twitch-а';
 
   @override
   String get chatSettings => 'Подешавања чета';

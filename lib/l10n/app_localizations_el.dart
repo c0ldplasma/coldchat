@@ -345,8 +345,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get scrollToBottom => 'Μετάβαση στο τέλος';
 
   @override
-  String get startUsingTheApp =>
-      'Για να ξεκινήσεις, πρόσθεσε έναν λογαριασμό παρακάτω.';
+  String get appTagline => 'Συνομιλία Twitch με emote από 7TV, BTTV και FFZ';
+
+  @override
+  String get loginWithTwitch => 'Σύνδεση με Twitch';
 
   @override
   String get chatSettings => 'Ρυθμίσεις συνομιλίας';

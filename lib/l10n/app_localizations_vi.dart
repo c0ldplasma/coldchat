@@ -343,8 +343,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scrollToBottom => 'Cuộn xuống cuối';
 
   @override
-  String get startUsingTheApp =>
-      'Để bắt đầu sử dụng ứng dụng, hãy thêm tài khoản bên dưới.';
+  String get appTagline =>
+      'Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ';
+
+  @override
+  String get loginWithTwitch => 'Đăng nhập bằng Twitch';
 
   @override
   String get chatSettings => 'Cài đặt chat';

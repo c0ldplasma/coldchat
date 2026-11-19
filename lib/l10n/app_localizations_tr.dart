@@ -343,8 +343,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scrollToBottom => 'En alta kaydır';
 
   @override
-  String get startUsingTheApp =>
-      'Uygulamayı kullanmaya başlamak için aşağıdan bir hesap ekle.';
+  String get appTagline => '7TV, BTTV ve FFZ ifadeleriyle Twitch sohbeti';
+
+  @override
+  String get loginWithTwitch => 'Twitch ile giriş yap';
 
   @override
   String get chatSettings => 'Sohbet ayarları';

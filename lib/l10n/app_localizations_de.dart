@@ -343,8 +343,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scrollToBottom => 'Zum Ende springen';
 
   @override
-  String get startUsingTheApp =>
-      'Füge unten einen Account hinzu, um die App zu nutzen.';
+  String get appTagline => 'Twitch-Chat mit Emotes von 7TV, BTTV und FFZ';
+
+  @override
+  String get loginWithTwitch => 'Mit Twitch anmelden';
 
   @override
   String get chatSettings => 'Chateinstellungen';

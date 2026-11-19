@@ -343,8 +343,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scrollToBottom => 'Scroll to bottom';
 
   @override
-  String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+  String get appTagline => 'Twitch chat with 7TV, BTTV and FFZ emotes';
+
+  @override
+  String get loginWithTwitch => 'Log in with Twitch';
 
   @override
   String get chatSettings => 'Chat settings';
@@ -812,10 +814,6 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get scrollToBottom => 'Scroll to bottom';
 
   @override
-  String get startUsingTheApp =>
-      'To start using the app, add an account below.';
-
-  @override
   String get chatSettings => 'Chat settings';
 
   @override
@@ -1131,10 +1129,6 @@ class AppLocalizationsEnPt extends AppLocalizationsEn {
 
   @override
   String get scrollToBottom => 'Scroll to bottom';
-
-  @override
-  String get startUsingTheApp =>
-      'To start using the app, add an account below.';
 
   @override
   String get chatSettings => 'Chat settings';

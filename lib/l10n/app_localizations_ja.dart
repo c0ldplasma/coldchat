@@ -343,7 +343,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get scrollToBottom => '最下部へスクロール';
 
   @override
-  String get startUsingTheApp => 'アプリを使い始めるには、下からアカウントを追加してください。';
+  String get appTagline => '7TV・BTTV・FFZのエモートが使えるTwitchチャット';
+
+  @override
+  String get loginWithTwitch => 'Twitchでログイン';
 
   @override
   String get chatSettings => 'チャット設定';

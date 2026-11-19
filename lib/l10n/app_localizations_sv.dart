@@ -344,8 +344,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get scrollToBottom => 'Rulla längst ned';
 
   @override
-  String get startUsingTheApp =>
-      'Lägg till ett konto nedan för att börja använda appen.';
+  String get appTagline => 'Twitch-chatt med emotes från 7TV, BTTV och FFZ';
+
+  @override
+  String get loginWithTwitch => 'Logga in med Twitch';
 
   @override
   String get chatSettings => 'Chattinställningar';
