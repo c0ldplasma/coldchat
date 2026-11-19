@@ -217,7 +217,9 @@ class _HomePageState extends State<HomePage>
                             indicatorSize: TabBarIndicatorSize.label,
                             indicator: UnderlineTabIndicator(
                               borderSide: BorderSide(color: accent, width: 3.0),
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(3.0)),
+                              // A rounded pill a little below the label, not a bar cut off by the tab's bottom edge.
+                              borderRadius: BorderRadius.circular(3.0),
+                              insets: const EdgeInsets.only(bottom: 8.0),
                             ),
                             dividerColor: Colors.transparent,
                             tabs: [
