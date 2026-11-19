@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Vis bilder fra lenker",
   "showImagesFromLinksSubtitle": "Twitch sjekker ikke disse bildene. De kan være upassende.",
   "showImagesAutomatically": "Vis bilder fra lenker automatisk?",
-  "turnOn": "Slå på"
+  "turnOn": "Slå på",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Blå",
+  "themeTeal": "Petrol",
+  "themeGreen": "Grønn",
+  "themeLime": "Lime",
+  "themeAmber": "Rav",
+  "themeOrange": "Oransje",
+  "themeRed": "Rød",
+  "themePink": "Rosa",
+  "themePurple": "Lilla",
+  "accentColor": "Aksentfarge",
+  "oledBlack": "OLED-svart",
+  "oledBlackSubtitle": "Svart chatbakgrunn i mørk modus, for OLED-skjermer",
+  "customColor": "Egendefinert",
+  "hue": "Fargetone",
+  "saturation": "Metning",
+  "themeIce": "Is"
 }

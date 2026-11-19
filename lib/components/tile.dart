@@ -35,7 +35,11 @@ class Tile extends StatelessWidget {
               SizedBox(
                 width: primary ? 40.0 : 36.0,
                 height: primary ? 40.0 : 36.0,
-                child: prefix,
+                // Menu icons in the accent color, like Android's own settings. An icon with its own color keeps it.
+                child: IconTheme.merge(
+                  data: IconThemeData(color: Theme.of(context).colorScheme.primary),
+                  child: prefix ?? const SizedBox.shrink(),
+                ),
               ),
               SizedBox(width: 16.0 + (primary ? 0.0 : 2.0)),
               Expanded(

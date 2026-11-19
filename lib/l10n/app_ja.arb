@@ -335,5 +335,22 @@
   "showImagesFromLinks": "リンクの画像を表示",
   "showImagesFromLinksSubtitle": "これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。",
   "showImagesAutomatically": "リンクの画像を自動で表示しますか？",
-  "turnOn": "オンにする"
+  "turnOn": "オンにする",
+  "themeIndigo": "インディゴ",
+  "themeBlue": "ブルー",
+  "themeTeal": "ティール",
+  "themeGreen": "グリーン",
+  "themeLime": "ライム",
+  "themeAmber": "アンバー",
+  "themeOrange": "オレンジ",
+  "themeRed": "レッド",
+  "themePink": "ピンク",
+  "themePurple": "パープル",
+  "accentColor": "アクセントカラー",
+  "oledBlack": "OLEDブラック",
+  "oledBlackSubtitle": "ダークモードでチャットの背景を黒にします（OLED画面向け）",
+  "customColor": "カスタム",
+  "hue": "色相",
+  "saturation": "彩度",
+  "themeIce": "アイス"
 }

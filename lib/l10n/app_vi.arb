@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Hiện ảnh từ liên kết",
   "showImagesFromLinksSubtitle": "Twitch không kiểm duyệt những ảnh này. Chúng có thể có nội dung không phù hợp.",
   "showImagesAutomatically": "Tự động hiện ảnh từ liên kết?",
-  "turnOn": "Bật"
+  "turnOn": "Bật",
+  "themeIndigo": "Chàm",
+  "themeBlue": "Xanh dương",
+  "themeTeal": "Xanh mòng két",
+  "themeGreen": "Xanh lá",
+  "themeLime": "Xanh chanh",
+  "themeAmber": "Hổ phách",
+  "themeOrange": "Cam",
+  "themeRed": "Đỏ",
+  "themePink": "Hồng",
+  "themePurple": "Tím",
+  "accentColor": "Màu nhấn",
+  "oledBlack": "Đen OLED",
+  "oledBlackSubtitle": "Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED",
+  "customColor": "Tùy chỉnh",
+  "hue": "Sắc độ",
+  "saturation": "Độ bão hòa",
+  "themeIce": "Băng"
 }

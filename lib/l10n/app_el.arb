@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Εμφάνιση εικόνων από συνδέσμους",
   "showImagesFromLinksSubtitle": "Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.",
   "showImagesAutomatically": "Αυτόματη εμφάνιση εικόνων από συνδέσμους;",
-  "turnOn": "Ενεργοποίηση"
+  "turnOn": "Ενεργοποίηση",
+  "themeIndigo": "Λουλακί",
+  "themeBlue": "Μπλε",
+  "themeTeal": "Πετρόλ",
+  "themeGreen": "Πράσινο",
+  "themeLime": "Λάιμ",
+  "themeAmber": "Κεχριμπαρί",
+  "themeOrange": "Πορτοκαλί",
+  "themeRed": "Κόκκινο",
+  "themePink": "Ροζ",
+  "themePurple": "Μωβ",
+  "accentColor": "Χρώμα έμφασης",
+  "oledBlack": "Μαύρο OLED",
+  "oledBlackSubtitle": "Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED",
+  "customColor": "Προσαρμοσμένο",
+  "hue": "Απόχρωση",
+  "saturation": "Κορεσμός",
+  "themeIce": "Πάγος"
 }

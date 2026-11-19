@@ -565,4 +565,56 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get turnOn => 'Activer';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Bleu';
+
+  @override
+  String get themeTeal => 'Bleu canard';
+
+  @override
+  String get themeGreen => 'Vert';
+
+  @override
+  String get themeLime => 'Citron vert';
+
+  @override
+  String get themeAmber => 'Ambre';
+
+  @override
+  String get themeOrange => 'Orange';
+
+  @override
+  String get themeRed => 'Rouge';
+
+  @override
+  String get themePink => 'Rose';
+
+  @override
+  String get themePurple => 'Violet';
+
+  @override
+  String get accentColor => 'Couleur d\'accent';
+
+  @override
+  String get oledBlack => 'Noir OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Fond du chat noir en mode sombre, pour les écrans OLED';
+
+  @override
+  String get customColor => 'Personnalisée';
+
+  @override
+  String get hue => 'Teinte';
+
+  @override
+  String get saturation => 'Saturation';
+
+  @override
+  String get themeIce => 'Glace';
 }

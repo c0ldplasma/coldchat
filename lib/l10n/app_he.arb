@@ -335,5 +335,22 @@
   "showImagesFromLinks": "הצגת תמונות מקישורים",
   "showImagesFromLinksSubtitle": "Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.",
   "showImagesAutomatically": "להציג תמונות מקישורים באופן אוטומטי?",
-  "turnOn": "הפעלה"
+  "turnOn": "הפעלה",
+  "themeIndigo": "אינדיגו",
+  "themeBlue": "כחול",
+  "themeTeal": "כחול-ירקרק",
+  "themeGreen": "ירוק",
+  "themeLime": "ליים",
+  "themeAmber": "ענבר",
+  "themeOrange": "כתום",
+  "themeRed": "אדום",
+  "themePink": "ורוד",
+  "themePurple": "סגול",
+  "accentColor": "צבע הדגשה",
+  "oledBlack": "שחור OLED",
+  "oledBlackSubtitle": "רקע צ'אט שחור במצב כהה, למסכי OLED",
+  "customColor": "מותאם אישית",
+  "hue": "גוון",
+  "saturation": "רוויה",
+  "themeIce": "קרח"
 }

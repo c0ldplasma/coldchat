@@ -231,5 +231,22 @@
   "showImagesFromLinks": "Bilder aus Links anzeigen",
   "showImagesFromLinksSubtitle": "Twitch prüft diese Bilder nicht. Sie können unangemessen sein.",
   "showImagesAutomatically": "Bilder aus Links automatisch anzeigen?",
-  "turnOn": "Einschalten"
+  "turnOn": "Einschalten",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Blau",
+  "themeTeal": "Petrol",
+  "themeGreen": "Grün",
+  "themeLime": "Limette",
+  "themeAmber": "Bernstein",
+  "themeOrange": "Orange",
+  "themeRed": "Rot",
+  "themePink": "Pink",
+  "themePurple": "Lila",
+  "accentColor": "Akzentfarbe",
+  "oledBlack": "OLED-Schwarz",
+  "oledBlackSubtitle": "Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays",
+  "customColor": "Eigene",
+  "hue": "Farbton",
+  "saturation": "Sättigung",
+  "themeIce": "Eis"
 }

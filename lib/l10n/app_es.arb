@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Mostrar imágenes de enlaces",
   "showImagesFromLinksSubtitle": "Twitch no revisa estas imágenes. Pueden ser inapropiadas.",
   "showImagesAutomatically": "¿Mostrar automáticamente las imágenes de los enlaces?",
-  "turnOn": "Activar"
+  "turnOn": "Activar",
+  "themeIndigo": "Índigo",
+  "themeBlue": "Azul",
+  "themeTeal": "Verde azulado",
+  "themeGreen": "Verde",
+  "themeLime": "Lima",
+  "themeAmber": "Ámbar",
+  "themeOrange": "Naranja",
+  "themeRed": "Rojo",
+  "themePink": "Rosa",
+  "themePurple": "Morado",
+  "accentColor": "Color de acento",
+  "oledBlack": "Negro OLED",
+  "oledBlackSubtitle": "Fondo del chat negro en modo oscuro, para pantallas OLED",
+  "customColor": "Personalizado",
+  "hue": "Tono",
+  "saturation": "Saturación",
+  "themeIce": "Hielo"
 }

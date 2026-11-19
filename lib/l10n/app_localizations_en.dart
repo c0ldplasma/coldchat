@@ -559,6 +559,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get turnOn => 'Turn on';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blue';
+
+  @override
+  String get themeTeal => 'Teal';
+
+  @override
+  String get themeGreen => 'Green';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Amber';
+
+  @override
+  String get themeOrange => 'Orange';
+
+  @override
+  String get themeRed => 'Red';
+
+  @override
+  String get themePink => 'Pink';
+
+  @override
+  String get themePurple => 'Purple';
+
+  @override
+  String get accentColor => 'Accent color';
+
+  @override
+  String get oledBlack => 'OLED black';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Black chat background in dark mode, for OLED screens';
+
+  @override
+  String get customColor => 'Custom';
+
+  @override
+  String get hue => 'Hue';
+
+  @override
+  String get saturation => 'Saturation';
+
+  @override
+  String get themeIce => 'Ice';
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

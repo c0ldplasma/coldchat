@@ -562,4 +562,56 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get turnOn => 'चालू करें';
+
+  @override
+  String get themeIndigo => 'इंडिगो';
+
+  @override
+  String get themeBlue => 'नीला';
+
+  @override
+  String get themeTeal => 'टील';
+
+  @override
+  String get themeGreen => 'हरा';
+
+  @override
+  String get themeLime => 'लाइम';
+
+  @override
+  String get themeAmber => 'एम्बर';
+
+  @override
+  String get themeOrange => 'नारंगी';
+
+  @override
+  String get themeRed => 'लाल';
+
+  @override
+  String get themePink => 'गुलाबी';
+
+  @override
+  String get themePurple => 'बैंगनी';
+
+  @override
+  String get accentColor => 'एक्सेंट रंग';
+
+  @override
+  String get oledBlack => 'OLED काला';
+
+  @override
+  String get oledBlackSubtitle =>
+      'डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए';
+
+  @override
+  String get customColor => 'कस्टम';
+
+  @override
+  String get hue => 'रंगत';
+
+  @override
+  String get saturation => 'संतृप्ति';
+
+  @override
+  String get themeIce => 'बर्फ़';
 }

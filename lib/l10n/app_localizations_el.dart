@@ -565,4 +565,56 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get turnOn => 'Ενεργοποίηση';
+
+  @override
+  String get themeIndigo => 'Λουλακί';
+
+  @override
+  String get themeBlue => 'Μπλε';
+
+  @override
+  String get themeTeal => 'Πετρόλ';
+
+  @override
+  String get themeGreen => 'Πράσινο';
+
+  @override
+  String get themeLime => 'Λάιμ';
+
+  @override
+  String get themeAmber => 'Κεχριμπαρί';
+
+  @override
+  String get themeOrange => 'Πορτοκαλί';
+
+  @override
+  String get themeRed => 'Κόκκινο';
+
+  @override
+  String get themePink => 'Ροζ';
+
+  @override
+  String get themePurple => 'Μωβ';
+
+  @override
+  String get accentColor => 'Χρώμα έμφασης';
+
+  @override
+  String get oledBlack => 'Μαύρο OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED';
+
+  @override
+  String get customColor => 'Προσαρμοσμένο';
+
+  @override
+  String get hue => 'Απόχρωση';
+
+  @override
+  String get saturation => 'Κορεσμός';
+
+  @override
+  String get themeIce => 'Πάγος';
 }

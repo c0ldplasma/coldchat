@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Vis billeder fra links",
   "showImagesFromLinksSubtitle": "Twitch tjekker ikke disse billeder. De kan være upassende.",
   "showImagesAutomatically": "Vis billeder fra links automatisk?",
-  "turnOn": "Slå til"
+  "turnOn": "Slå til",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Blå",
+  "themeTeal": "Petrol",
+  "themeGreen": "Grøn",
+  "themeLime": "Lime",
+  "themeAmber": "Rav",
+  "themeOrange": "Orange",
+  "themeRed": "Rød",
+  "themePink": "Pink",
+  "themePurple": "Lilla",
+  "accentColor": "Accentfarve",
+  "oledBlack": "OLED-sort",
+  "oledBlackSubtitle": "Sort chatbaggrund i mørk tilstand, til OLED-skærme",
+  "customColor": "Egen",
+  "hue": "Nuance",
+  "saturation": "Mætning",
+  "themeIce": "Is"
 }

@@ -335,5 +335,22 @@
   "showImagesFromLinks": "Visa bilder från länkar",
   "showImagesFromLinksSubtitle": "Twitch granskar inte de här bilderna. De kan vara olämpliga.",
   "showImagesAutomatically": "Visa bilder från länkar automatiskt?",
-  "turnOn": "Slå på"
+  "turnOn": "Slå på",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Blå",
+  "themeTeal": "Petrol",
+  "themeGreen": "Grön",
+  "themeLime": "Lime",
+  "themeAmber": "Bärnsten",
+  "themeOrange": "Orange",
+  "themeRed": "Röd",
+  "themePink": "Rosa",
+  "themePurple": "Lila",
+  "accentColor": "Accentfärg",
+  "oledBlack": "OLED-svart",
+  "oledBlackSubtitle": "Svart chattbakgrund i mörkt läge, för OLED-skärmar",
+  "customColor": "Egen",
+  "hue": "Nyans",
+  "saturation": "Mättnad",
+  "themeIce": "Is"
 }
