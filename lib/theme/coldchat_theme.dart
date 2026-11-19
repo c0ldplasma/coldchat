@@ -194,7 +194,7 @@ class ChatColors extends ThemeExtension<ChatColors> {
 
   static const List<BoxShadow> raisedShadow = [BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0))];
 
-  /// Links in chat messages. Blue in every theme, because that's what people recognize as a link.
+  /// Links in chat messages, in the accent color like in Telegram.
   final Color link;
 
   /// Message timestamps and other secondary text in the chat.
@@ -213,7 +213,7 @@ class ChatColors extends ThemeExtension<ChatColors> {
       onBar: scheme.onSurface,
       sheet: oledBlack ? scheme.surfaceContainer : Color.alphaBlend(scheme.onSurface.withValues(alpha: 0.075), scheme.surface),
       raised: scheme.surfaceContainerHigh,
-      link: Color(Hct.from(255.0, 48.0, dark ? 80.0 : (highContrast ? 30.0 : 40.0)).toInt()),
+      link: scheme.primary,
       muted: scheme.onSurfaceVariant,
       brightness: scheme.brightness,
     );
