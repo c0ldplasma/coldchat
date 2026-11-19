@@ -19,7 +19,7 @@ abstract class ConnectionStateWithCredentials extends ConnectionState {
 }
 
 class ConnectionConnecting extends ConnectionStateWithCredentials {
-  ConnectionConnecting(TwitchAccount credentials) : super(credentials);
+  ConnectionConnecting(super.credentials);
 }
 
 class ConnectionConnected extends ConnectionStateWithCredentials {
@@ -30,20 +30,19 @@ class ConnectionConnected extends ConnectionStateWithCredentials {
   final List<String> blockedUserIds;
 
   ConnectionConnected(
-    TwitchAccount credentials, {
+    super.credentials, {
     List<String>? blockedUserIds,
-  })  : blockedUserIds = blockedUserIds ?? [],
-        super(credentials);
+  })  : blockedUserIds = blockedUserIds ?? [];
 }
 
 class ConnectionReconnecting extends ConnectionStateWithCredentials {
-  ConnectionReconnecting(TwitchAccount credentials) : super(credentials);
+  ConnectionReconnecting(super.credentials);
 }
 
 class ConnectionBanned extends ConnectionStateWithCredentials {
-  ConnectionBanned(TwitchAccount credentials) : super(credentials);
+  ConnectionBanned(super.credentials);
 }
 
 class ConnectionInvalidCredentials extends ConnectionStateWithCredentials {
-  ConnectionInvalidCredentials(TwitchAccount credentials) : super(credentials);
+  ConnectionInvalidCredentials(super.credentials);
 }

@@ -26,9 +26,17 @@ Android trusts compromised eMudhra intermediate CAs, which allows TLS MitM of e.
 flutter gen-l10n
 ```
 
-Add new strings to `app_en.arb` (the template, see `l10n.yaml`) and `app_de.arb`. The other ~21 locales
-fall back to English; translations for those are managed via Crowdin (`crowdin.yml`). Which strings they
-are missing is written to `build/untranslated_messages.json` instead of being printed on every build.
+Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb` is the template, see `l10n.yaml`);
+there is no translation service, translations are written along with the change. Strings a locale is
+missing fall back to English and are listed in `build/untranslated_messages.json`. CI fails if the checked-in `app_localizations*.dart` don't match the arb files.
+
+## CI and tooling
+
+`.github/workflows/build.yml` runs on pushes to `main` and on PRs: `flutter analyze` plus the localization check,
+and an Android and an unsigned iOS build. It pins the Flutter version; raise `FLUTTER_VERSION` there together with
+the minimum in `pubspec.yaml`. Lints are `flutter_lints` (keep `flutter analyze` at "No issues found!"; `dart fix
+--apply` fixes most new findings). Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
+packages; it skips the code generators and hive, which are held back until hive is replaced.
 
 ## Versioning
 

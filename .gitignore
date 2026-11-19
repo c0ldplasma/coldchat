@@ -30,6 +30,7 @@
 # Flutter and dart project files
 !/analysis_options.yaml
 !/pubspec.yaml
+!/pubspec.lock
 !/l10n.yaml
 
 # Website (GitHub Pages: support page, privacy policy, terms)
@@ -37,10 +38,10 @@
 
 # GitHub CI/CD workflow files
 !/.github/workflows/**/*.yml
+!/.github/dependabot.yml
 
 # Repository related files
 !/.gitignore
 !/README.md
 !/CLAUDE.md
 !/LICENSE
-!/crowdin.yml

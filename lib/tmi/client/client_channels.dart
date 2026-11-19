@@ -43,7 +43,7 @@ class ClientChannels extends Cubit<List<Channel>> {
   }
 
   void joinAll(List<String> channelNames, {bool save = true}) {
-    if (save) channelsBox.addAll(channelNames.where((x) => !state.contains(x)));
+    if (save) channelsBox.addAll(channelNames.where((name) => !state.any((channel) => channel.name == name)));
 
     emit([
       ...state,
