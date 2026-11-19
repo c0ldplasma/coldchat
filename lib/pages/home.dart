@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage>
                 extendBodyBehindAppBar: true,
                 bottomNavigationBar: BottomBar(
                   child: Builder(builder: (context) {
-                    final fg = ChatColors.of(context).onBar;
+                    final muted = ChatColors.of(context).muted;
                     final accent = Theme.of(context).colorScheme.primary;
                     // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
                     return Row(
@@ -211,7 +211,9 @@ class _HomePageState extends State<HomePage>
                             tabAlignment: TabAlignment.start,
                             // The selected tab is one of the places the accent color shows.
                             labelColor: accent,
-                            unselectedLabelColor: fg.withValues(alpha: 0.6),
+                            unselectedLabelColor: muted,
+                            // 12 instead of 16, so the home icon lines up with the composer's image button below it.
+                            labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
                             indicatorSize: TabBarIndicatorSize.label,
                             indicator: UnderlineTabIndicator(
                               borderSide: BorderSide(color: accent, width: 3.0),
@@ -261,7 +263,8 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.add_rounded),
+                          // A plus is a thin glyph; at 28 it looks as big as the send and home icons around it.
+                          icon: const Icon(Icons.add_rounded, size: 28.0),
                           color: accent,
                           tooltip: AppLocalizations.of(context)!.addChannel,
                           onPressed: _openChannelSearch,

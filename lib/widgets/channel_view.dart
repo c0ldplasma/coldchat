@@ -564,9 +564,7 @@ class ChannelViewState extends State<ChannelView> {
                         child: const SizedBox(
                           width: 48.0,
                           height: 48.0,
-                          child: Icon(
-                            Icons.photo_size_select_actual_outlined,
-                          ),
+                          child: Icon(Icons.attach_file_rounded),
                         ),
                       ),
                       // const Separator(axis: Axis.vertical),
