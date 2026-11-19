@@ -343,8 +343,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get scrollToBottom => 'גלילה לסוף';
 
   @override
-  String get startUsingTheApp =>
-      'כדי להתחיל להשתמש באפליקציה, יש להוסיף חשבון למטה.';
+  String get appTagline => 'צ\'אט של Twitch עם אימוטים מ-7TV, ‏BTTV ו-FFZ';
+
+  @override
+  String get loginWithTwitch => 'התחברות עם Twitch';
 
   @override
   String get chatSettings => 'הגדרות צ׳אט';

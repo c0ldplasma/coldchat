@@ -344,8 +344,10 @@ class AppLocalizationsCa extends AppLocalizations {
   String get scrollToBottom => 'Ves al final';
 
   @override
-  String get startUsingTheApp =>
-      'Per començar a fer servir l\'aplicació, afegeix un compte a sota.';
+  String get appTagline => 'Xat de Twitch amb emotes de 7TV, BTTV i FFZ';
+
+  @override
+  String get loginWithTwitch => 'Inicia la sessió amb Twitch';
 
   @override
   String get chatSettings => 'Configuració del xat';

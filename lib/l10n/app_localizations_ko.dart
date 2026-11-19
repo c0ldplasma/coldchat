@@ -343,7 +343,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get scrollToBottom => '맨 아래로 스크롤';
 
   @override
-  String get startUsingTheApp => '앱을 사용하려면 아래에서 계정을 추가하세요.';
+  String get appTagline => '7TV, BTTV, FFZ 이모티콘을 지원하는 Twitch 채팅';
+
+  @override
+  String get loginWithTwitch => 'Twitch로 로그인';
 
   @override
   String get chatSettings => '채팅 설정';

@@ -344,8 +344,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get scrollToBottom => 'सबसे नीचे जाएं';
 
   @override
-  String get startUsingTheApp =>
-      'ऐप का उपयोग शुरू करने के लिए, नीचे एक खाता जोड़ें।';
+  String get appTagline => '7TV, BTTV और FFZ इमोट के साथ Twitch चैट';
+
+  @override
+  String get loginWithTwitch => 'Twitch से लॉग इन करें';
 
   @override
   String get chatSettings => 'चैट सेटिंग्स';

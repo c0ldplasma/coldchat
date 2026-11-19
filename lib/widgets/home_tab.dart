@@ -9,16 +9,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
-import '/components/modal.dart';
 import '/components/separator.dart';
 import '/components/surface.dart';
 import '/data/twitch/stream_data.dart';
 import '/data/twitch_account.dart';
-import '/modal/coldchat.dart';
 import '/pages/home.dart';
 import '/tmi/channel/channel_event.dart';
 import '/tmi/client/client.dart';
 import '/widgets/avatar_button.dart';
+import '/widgets/logged_out_start.dart';
 
 /// Joins [channelName] (if not already joined) and switches to its tab via the
 /// [HomeTabSwitcher] provided by the home page.
@@ -136,41 +135,7 @@ class _HomeTabState extends State<HomeTab> {
         box: Hive.box('AccountSettings'),
         keys: const ['activeTwitchAccount'],
         builder: (BuildContext context, Box<dynamic> box) {
-          if (account == null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.appName,
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                  ),
-                  Text(
-                    AppLocalizations.of(context)!.startUsingTheApp,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                  ),
-                  const SizedBox(height: 24.0),
-                  IconButton(
-                    onPressed: () {
-                      Modal.show(
-                        context: context,
-                        child: const ColdChatModal(),
-                      );
-                    },
-                    iconSize: 64.0,
-                    icon: Icon(
-                      Icons.add_circle_outline_rounded,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+          if (account == null) return const LoggedOutStart();
 
           return RefreshIndicator(
             onRefresh: () {
