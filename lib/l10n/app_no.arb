@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Vis bilder fra lenker",
   "showImagesFromLinksSubtitle": "Twitch sjekker ikke disse bildene. De kan være upassende.",
   "showImagesAutomatically": "Vis bilder fra lenker automatisk?",
-  "turnOn": "Slå på"
+  "turnOn": "Slå på",
+  "durationDays": "{count, plural, =1{1 dag} other{{count} dager}}"
 }

@@ -555,4 +555,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get turnOn => '켜기';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count일',
+    );
+    return '$_temp0';
+  }
 }

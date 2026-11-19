@@ -563,4 +563,16 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get turnOn => 'Zapnout';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dní',
+      few: '$count dny',
+      one: '$count den',
+    );
+    return '$_temp0';
+  }
 }

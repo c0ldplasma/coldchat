@@ -563,4 +563,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get turnOn => 'Включить';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дня',
+      many: '$count дней',
+      few: '$count дня',
+      one: '$count день',
+    );
+    return '$_temp0';
+  }
 }

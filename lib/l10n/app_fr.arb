@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Afficher les images des liens",
   "showImagesFromLinksSubtitle": "Twitch ne vérifie pas ces images. Elles peuvent être inappropriées.",
   "showImagesAutomatically": "Afficher automatiquement les images des liens ?",
-  "turnOn": "Activer"
+  "turnOn": "Activer",
+  "durationDays": "{count, plural, =1{1 jour} other{{count} jours}}"
 }

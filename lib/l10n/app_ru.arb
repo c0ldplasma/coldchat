@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Показывать изображения из ссылок",
   "showImagesFromLinksSubtitle": "Twitch не проверяет эти изображения. Они могут быть неприемлемыми.",
   "showImagesAutomatically": "Показывать изображения из ссылок автоматически?",
-  "turnOn": "Включить"
+  "turnOn": "Включить",
+  "durationDays": "{count, plural, one{{count} день} few{{count} дня} many{{count} дней} other{{count} дня}}"
 }

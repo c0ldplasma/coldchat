@@ -560,4 +560,16 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get turnOn => 'הפעלה';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ימים',
+      two: 'יומיים',
+      one: 'יום אחד',
+    );
+    return '$_temp0';
+  }
 }

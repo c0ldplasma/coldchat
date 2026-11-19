@@ -562,4 +562,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get turnOn => 'Aç';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gün',
+    );
+    return '$_temp0';
+  }
 }

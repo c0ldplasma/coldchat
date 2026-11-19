@@ -335,5 +335,6 @@
   "showImagesFromLinks": "लिंक से इमेज दिखाएं",
   "showImagesFromLinksSubtitle": "Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।",
   "showImagesAutomatically": "लिंक से इमेज अपने-आप दिखाएं?",
-  "turnOn": "चालू करें"
+  "turnOn": "चालू करें",
+  "durationDays": "{count, plural, =1{1 दिन} other{{count} दिन}}"
 }

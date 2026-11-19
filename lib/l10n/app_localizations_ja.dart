@@ -555,4 +555,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get turnOn => 'オンにする';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count日',
+    );
+    return '$_temp0';
+  }
 }

@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Afbeeldingen uit links tonen",
   "showImagesFromLinksSubtitle": "Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.",
   "showImagesAutomatically": "Afbeeldingen uit links automatisch tonen?",
-  "turnOn": "Inschakelen"
+  "turnOn": "Inschakelen",
+  "durationDays": "{count, plural, =1{1 dag} other{{count} dagen}}"
 }

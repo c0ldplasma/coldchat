@@ -562,4 +562,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get turnOn => 'Inschakelen';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dagen',
+      one: '1 dag',
+    );
+    return '$_temp0';
+  }
 }

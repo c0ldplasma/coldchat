@@ -335,5 +335,6 @@
   "showImagesFromLinks": "링크 이미지 표시",
   "showImagesFromLinksSubtitle": "Twitch는 이 이미지들을 검사하지 않아요. 부적절한 이미지일 수 있어요.",
   "showImagesAutomatically": "링크 이미지를 자동으로 표시할까요?",
-  "turnOn": "켜기"
+  "turnOn": "켜기",
+  "durationDays": "{count, plural, other{{count}일}}"
 }

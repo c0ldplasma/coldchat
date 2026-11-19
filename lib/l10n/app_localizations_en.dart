@@ -559,6 +559,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get turnOn => 'Turn on';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

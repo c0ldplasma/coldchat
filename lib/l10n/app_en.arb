@@ -266,5 +266,14 @@
   "showImagesFromLinks": "Show images from links",
   "showImagesFromLinksSubtitle": "Twitch doesn't check these images. They may be inappropriate.",
   "showImagesAutomatically": "Show images from links automatically?",
-  "turnOn": "Turn on"
+  "turnOn": "Turn on",
+  "durationDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@durationDays": {
+    "description": "A number of days, as it reads inside \"Expires in {time}\"",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

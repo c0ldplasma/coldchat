@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Εμφάνιση εικόνων από συνδέσμους",
   "showImagesFromLinksSubtitle": "Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.",
   "showImagesAutomatically": "Αυτόματη εμφάνιση εικόνων από συνδέσμους;",
-  "turnOn": "Ενεργοποίηση"
+  "turnOn": "Ενεργοποίηση",
+  "durationDays": "{count, plural, =1{1 ημέρα} other{{count} ημέρες}}"
 }

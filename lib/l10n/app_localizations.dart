@@ -1119,6 +1119,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn on'**
   String get turnOn;
+
+  /// A number of days, as it reads inside "Expires in {time}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String durationDays(int count);
 }
 
 class _AppLocalizationsDelegate

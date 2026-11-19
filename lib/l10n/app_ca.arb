@@ -335,5 +335,6 @@
   "showImagesFromLinks": "Mostra les imatges dels enllaços",
   "showImagesFromLinksSubtitle": "Twitch no revisa aquestes imatges. Poden ser inadequades.",
   "showImagesAutomatically": "Vols mostrar automàticament les imatges dels enllaços?",
-  "turnOn": "Activa"
+  "turnOn": "Activa",
+  "durationDays": "{count, plural, =1{1 dia} other{{count} dies}}"
 }

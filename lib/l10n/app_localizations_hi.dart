@@ -562,4 +562,15 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get turnOn => 'चालू करें';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count दिन',
+      one: '1 दिन',
+    );
+    return '$_temp0';
+  }
 }

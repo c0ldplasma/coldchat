@@ -133,12 +133,21 @@ class ExpirationText extends StatefulWidget {
 }
 
 class _ExpirationTextState extends State<ExpirationText> {
+  /// "57 days 03:12:05", or just "03:12:05" on the last day. Dart's Duration.toString() printed microseconds.
+  static String _remaining(BuildContext context, Duration remaining) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    final clock = '${two(remaining.inHours % 24)}:${two(remaining.inMinutes % 60)}:${two(remaining.inSeconds % 60)}';
+    final days = remaining.inDays;
+    return days > 0 ? '${AppLocalizations.of(context)!.durationDays(days)} $clock' : clock;
+  }
+
   late Timer timer;
 
   @override
   void initState() {
+    // The countdown shows whole seconds, so there's nothing new to draw more often.
     timer = Timer.periodic(
-      const Duration(milliseconds: 100),
+      const Duration(seconds: 1),
       (Timer t) => setState(() {}),
     );
     super.initState();
@@ -161,7 +170,7 @@ class _ExpirationTextState extends State<ExpirationText> {
       expired
           ? AppLocalizations.of(context)!.loginExpired
           : tokenData.expiresAt != null
-              ? AppLocalizations.of(context)!.expiresIn('${tokenData.expiresAt?.difference(DateTime.now())}')
+              ? AppLocalizations.of(context)!.expiresIn(_remaining(context, tokenData.expiresAt!.difference(DateTime.now())))
               : AppLocalizations.of(context)!.expiresNever,
       style: TextStyle(
         color: expired ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),

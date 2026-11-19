@@ -565,4 +565,15 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get turnOn => 'Ενεργοποίηση';
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ημέρες',
+      one: '1 ημέρα',
+    );
+    return '$_temp0';
+  }
 }
