@@ -350,6 +350,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get loginWithTwitch => 'Войти через Twitch';
 
   @override
+  String get addChannel => 'Добавить канал';
+
+  @override
   String get chatSettings => 'Настройки чата';
 
   @override

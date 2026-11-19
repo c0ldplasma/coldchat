@@ -349,6 +349,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginWithTwitch => 'Log in with Twitch';
 
   @override
+  String get addChannel => 'Add channel';
+
+  @override
   String get chatSettings => 'Chat settings';
 
   @override

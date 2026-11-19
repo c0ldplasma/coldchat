@@ -225,6 +225,7 @@
   "scrollToBottom": "最下部へスクロール",
   "appTagline": "7TV・BTTV・FFZのエモートが使えるTwitchチャット",
   "loginWithTwitch": "Twitchでログイン",
+  "addChannel": "チャンネルを追加",
   "chatSettings": "チャット設定",
   "autocompleteUsersWithAt": "@でユーザー名を補完",
   "autocompleteEmotesWithColon": ":でエモートを補完",

@@ -350,6 +350,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get loginWithTwitch => 'Đăng nhập bằng Twitch';
 
   @override
+  String get addChannel => 'Thêm kênh';
+
+  @override
   String get chatSettings => 'Cài đặt chat';
 
   @override

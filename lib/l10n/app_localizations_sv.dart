@@ -350,6 +350,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get loginWithTwitch => 'Logga in med Twitch';
 
   @override
+  String get addChannel => 'Lägg till kanal';
+
+  @override
   String get chatSettings => 'Chattinställningar';
 
   @override

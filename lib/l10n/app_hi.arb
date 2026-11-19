@@ -225,6 +225,7 @@
   "scrollToBottom": "सबसे नीचे जाएं",
   "appTagline": "7TV, BTTV और FFZ इमोट के साथ Twitch चैट",
   "loginWithTwitch": "Twitch से लॉग इन करें",
+  "addChannel": "चैनल जोड़ें",
   "chatSettings": "चैट सेटिंग्स",
   "autocompleteUsersWithAt": "@ से उपयोगकर्ता नाम ऑटोकम्प्लीट करें",
   "autocompleteEmotesWithColon": ": से इमोट ऑटोकम्प्लीट करें",

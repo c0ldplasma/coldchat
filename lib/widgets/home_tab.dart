@@ -5,6 +5,7 @@ import 'package:coldchat/components/tile.dart';
 import 'package:coldchat/data/twitch/search_data.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
@@ -70,6 +71,8 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   TwitchAccount? account;
   TextEditingController searchTextController = TextEditingController();
+  final FocusNode searchFocus = FocusNode();
+  late final ChannelSearchRequest searchRequest = context.read<HomeTabSwitcher>().searchRequest;
   Future<List<StreamData>>? recommendedStreams;
   Future<List<StreamData>>? topStreams;
   Future<List<SearchData>>? searchResults;
@@ -95,8 +98,21 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void dispose() {
+    searchRequest.removeListener(_focusSearchIfRequested);
+    searchFocus.dispose();
     searchTextController.dispose();
     super.dispose();
+  }
+
+  // The "+" in the tab bar: put the cursor in the channel search, with any old search selected so typing replaces it.
+  void _focusSearchIfRequested() {
+    if (!mounted || !searchRequest.take() || account == null) return;
+    searchFocus.requestFocus();
+    searchTextController.selection = TextSelection(baseOffset: 0, extentOffset: searchTextController.text.length);
+    // Focus set from code, mid tab animation, doesn't bring up the keyboard on Android by itself.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && searchFocus.hasFocus) SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+    });
   }
 
   // Join + switch to the channel, then reset and dismiss the search.
@@ -128,6 +144,10 @@ class _HomeTabState extends State<HomeTab> {
       refresh();
     }
     super.initState();
+
+    searchRequest.addListener(_focusSearchIfRequested);
+    // The request may have come while this tab wasn't built yet.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _focusSearchIfRequested());
   }
 
   @override
@@ -183,6 +203,7 @@ class _HomeTabState extends State<HomeTab> {
                                   ),
                                 ),
                                 controller: searchTextController,
+                                focusNode: searchFocus,
                                 onChanged: (text) {
                                   if (text.isEmpty) {
                                     setState(() {

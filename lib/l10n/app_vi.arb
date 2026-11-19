@@ -225,6 +225,7 @@
   "scrollToBottom": "Cuộn xuống cuối",
   "appTagline": "Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ",
   "loginWithTwitch": "Đăng nhập bằng Twitch",
+  "addChannel": "Thêm kênh",
   "chatSettings": "Cài đặt chat",
   "autocompleteUsersWithAt": "Tự động gợi ý người dùng với @",
   "autocompleteEmotesWithColon": "Tự động gợi ý biểu tượng cảm xúc với :",

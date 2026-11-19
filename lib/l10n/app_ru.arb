@@ -225,6 +225,7 @@
   "scrollToBottom": "Прокрутить вниз",
   "appTagline": "Чат Twitch со смайликами 7TV, BTTV и FFZ",
   "loginWithTwitch": "Войти через Twitch",
+  "addChannel": "Добавить канал",
   "chatSettings": "Настройки чата",
   "autocompleteUsersWithAt": "Дополнять имена пользователей после @",
   "autocompleteEmotesWithColon": "Дополнять смайлики после :",

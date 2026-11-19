@@ -349,6 +349,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get loginWithTwitch => 'Twitchでログイン';
 
   @override
+  String get addChannel => 'チャンネルを追加';
+
+  @override
   String get chatSettings => 'チャット設定';
 
   @override

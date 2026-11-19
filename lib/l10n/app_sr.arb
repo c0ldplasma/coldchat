@@ -225,6 +225,7 @@
   "scrollToBottom": "Скочи на дно",
   "appTagline": "Twitch чет са емотиконима из 7TV, BTTV и FFZ",
   "loginWithTwitch": "Пријави се преко Twitch-а",
+  "addChannel": "Додај канал",
   "chatSettings": "Подешавања чета",
   "autocompleteUsersWithAt": "Довршавање корисника са @",
   "autocompleteEmotesWithColon": "Довршавање емотикона са :",

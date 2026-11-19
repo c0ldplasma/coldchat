@@ -225,6 +225,7 @@
   "scrollToBottom": "Ves al final",
   "appTagline": "Xat de Twitch amb emotes de 7TV, BTTV i FFZ",
   "loginWithTwitch": "Inicia la sessió amb Twitch",
+  "addChannel": "Afegeix un canal",
   "chatSettings": "Configuració del xat",
   "autocompleteUsersWithAt": "Completa els usuaris amb @",
   "autocompleteEmotesWithColon": "Completa els emotes amb :",

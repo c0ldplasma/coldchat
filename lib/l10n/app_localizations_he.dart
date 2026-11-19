@@ -349,6 +349,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get loginWithTwitch => 'התחברות עם Twitch';
 
   @override
+  String get addChannel => 'הוספת ערוץ';
+
+  @override
   String get chatSettings => 'הגדרות צ׳אט';
 
   @override

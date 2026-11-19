@@ -351,6 +351,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get loginWithTwitch => 'Σύνδεση με Twitch';
 
   @override
+  String get addChannel => 'Προσθήκη καναλιού';
+
+  @override
   String get chatSettings => 'Ρυθμίσεις συνομιλίας';
 
   @override

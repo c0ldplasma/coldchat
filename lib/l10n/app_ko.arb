@@ -225,6 +225,7 @@
   "scrollToBottom": "맨 아래로 스크롤",
   "appTagline": "7TV, BTTV, FFZ 이모티콘을 지원하는 Twitch 채팅",
   "loginWithTwitch": "Twitch로 로그인",
+  "addChannel": "채널 추가",
   "chatSettings": "채팅 설정",
   "autocompleteUsersWithAt": "@로 사용자 이름 자동 완성",
   "autocompleteEmotesWithColon": ":로 이모티콘 자동 완성",

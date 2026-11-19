@@ -350,6 +350,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get loginWithTwitch => 'Entrar com a Twitch';
 
   @override
+  String get addChannel => 'Adicionar canal';
+
+  @override
   String get chatSettings => 'Configurações do chat';
 
   @override

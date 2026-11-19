@@ -27,7 +27,29 @@ import '../widgets/login_expired_banner.dart';
 /// [_HomePageState] so it can drive the manually-managed [TabController].
 class HomeTabSwitcher {
   final void Function(String channelName) open;
-  const HomeTabSwitcher(this.open);
+
+  /// Set by the "+" in the tab bar for [HomeTab], which focuses its channel search.
+  final ChannelSearchRequest searchRequest;
+
+  const HomeTabSwitcher(this.open, this.searchRequest);
+}
+
+/// A request to focus the channel search on the home tab. It stays pending until [HomeTab] takes it, because the
+/// home tab may not be built yet while the tab view is still animating towards it.
+class ChannelSearchRequest extends ChangeNotifier {
+  bool _pending = false;
+
+  void request() {
+    _pending = true;
+    notifyListeners();
+  }
+
+  /// Whether a request was pending; clears it.
+  bool take() {
+    final pending = _pending;
+    _pending = false;
+    return pending;
+  }
 }
 
 class HomePage extends StatefulWidget {
@@ -93,7 +115,14 @@ class _HomePageState extends State<HomePage>
     return idx >= 0 ? idx + 1 : 0;
   }
 
-  late final HomeTabSwitcher _switcher = HomeTabSwitcher(_openChannel);
+  final ChannelSearchRequest _searchRequest = ChannelSearchRequest();
+  late final HomeTabSwitcher _switcher = HomeTabSwitcher(_openChannel, _searchRequest);
+
+  // The "+" in the tab bar: back to the home tab, straight into the channel search.
+  void _openChannelSearch() {
+    _tabController?.animateTo(0);
+    _searchRequest.request();
+  }
 
   // Switch to the given channel's tab. Persist it as the last channel first so
   // that if the channel was just added (tab count grows -> controller is
@@ -150,6 +179,7 @@ class _HomePageState extends State<HomePage>
       sub.cancel();
     }
     _tabController?.dispose();
+    _searchRequest.dispose();
     super.dispose();
   }
 
@@ -169,53 +199,66 @@ class _HomePageState extends State<HomePage>
                 bottomNavigationBar: DarkBar(
                   child: Builder(builder: (context) {
                     final fg = DarkBar.foregroundColor(context);
-                    return TabBar(
-                      controller: tabController,
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      labelColor: fg,
-                      unselectedLabelColor: fg.withValues(alpha: 0.6),
-                      indicatorColor: fg,
-                      dividerColor: Colors.transparent,
-                      tabs: [
-                        GestureDetector(
-                          onLongPress: () {
-                            Modal.show(
-                              context: context,
-                              child: const ColdChatModal(),
-                            );
-                          },
-                          child: const SizedBox(
-                            height: 48.0,
-                            child: Icon(Icons.home_outlined),
+                    // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: TabBar(
+                            controller: tabController,
+                            isScrollable: true,
+                            tabAlignment: TabAlignment.start,
+                            labelColor: fg,
+                            unselectedLabelColor: fg.withValues(alpha: 0.6),
+                            indicatorColor: fg,
+                            dividerColor: Colors.transparent,
+                            tabs: [
+                              GestureDetector(
+                                onLongPress: () {
+                                  Modal.show(
+                                    context: context,
+                                    child: const ColdChatModal(),
+                                  );
+                                },
+                                child: const SizedBox(
+                                  height: 48.0,
+                                  child: Icon(Icons.home_outlined),
+                                ),
+                              ),
+                              for (final channel in channels)
+                                GestureDetector(
+                                  onLongPress: () {
+                                    Modal.show(
+                                      context: context,
+                                      child: ChannelModal(channel: channel),
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    height: 48.0,
+                                    child: Center(child: Text(channel.name)),
+                                  ),
+                                ),
+                              for (final conversation in whispers)
+                                GestureDetector(
+                                  onLongPress: () {
+                                    Modal.show(
+                                      context: context,
+                                      child: WhisperModal(conversation: conversation),
+                                    );
+                                  },
+                                  child: SizedBox(
+                                    height: 48.0,
+                                    child: Center(child: _WhisperTabLabel(conversation: conversation)),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                        for (final channel in channels)
-                          GestureDetector(
-                            onLongPress: () {
-                              Modal.show(
-                                context: context,
-                                child: ChannelModal(channel: channel),
-                              );
-                            },
-                            child: SizedBox(
-                              height: 48.0,
-                              child: Center(child: Text(channel.name)),
-                            ),
-                          ),
-                        for (final conversation in whispers)
-                          GestureDetector(
-                            onLongPress: () {
-                              Modal.show(
-                                context: context,
-                                child: WhisperModal(conversation: conversation),
-                              );
-                            },
-                            child: SizedBox(
-                              height: 48.0,
-                              child: Center(child: _WhisperTabLabel(conversation: conversation)),
-                            ),
-                          ),
+                        IconButton(
+                          icon: const Icon(Icons.add_rounded),
+                          color: fg,
+                          tooltip: AppLocalizations.of(context)!.addChannel,
+                          onPressed: _openChannelSearch,
+                        ),
                       ],
                     );
                   }),
