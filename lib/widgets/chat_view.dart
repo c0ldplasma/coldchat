@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/widgets/avatar_button.dart';
@@ -226,22 +225,27 @@ class _ChatViewState extends State<ChatView> {
                       opacity: scrollMessages != null ? 1.0 : 0.0,
                       child: IgnorePointer(
                         ignoring: scrollMessages == null,
-                      child: Surface(
-                        onTap: () {
-                          scrollMessages = null;
-                          setState(() {});
-                          WidgetsBinding.instance.scheduleFrameCallback((_) {
-                            scrollController.jumpTo(scrollController.position.minScrollExtent);
-                          });
-                          searchController.text = '';
-                        },
-                        borderRadius: BorderRadius.circular(128.0),
-                        type: SurfaceType.tertiary,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Transform.rotate(
-                            angle: 90 * pi / 180,
-                            child: const Icon(Icons.chevron_right_outlined),
+                      // Styled like the chat's other floating controls (the search pill), with a shadow to lift it off
+                      // the messages behind it.
+                      child: DecoratedBox(
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0))],
+                        ),
+                        child: Surface(
+                          onTap: () {
+                            scrollMessages = null;
+                            setState(() {});
+                            WidgetsBinding.instance.scheduleFrameCallback((_) {
+                              scrollController.jumpTo(scrollController.position.minScrollExtent);
+                            });
+                            searchController.text = '';
+                          },
+                          borderRadius: BorderRadius.circular(128.0),
+                          type: SurfaceType.surfaceVariant,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.onSurface),
                           ),
                         ),
                       ),
