@@ -24,7 +24,7 @@
     <a href="https://github.com/c0ldplasma/coldchat">Source code</a>
   </nav>
 
-  <p class="updated">Last updated: November 15, 2026</p>
+  <p class="updated">Last updated: November 19, 2026</p>
 
   <div class="summary">
     <p><strong>In short:</strong> ColdChat has no servers and no accounts of its own. It contains no analytics,
@@ -85,6 +85,12 @@
           <td>Only requests for the emoji files</td>
         </tr>
         <tr>
+          <td>ColdChat's website (GitHub Pages)<br><code>c0ldplasma.github.io</code></td>
+          <td>Handing Twitch's answer back to the app after you sign in</td>
+          <td>Only the request for the hand-over page. Your login token is in the part of the address after
+            &ldquo;#&rdquo;, which browsers never send to the server, and the page stores nothing.</td>
+        </tr>
+        <tr>
           <td>Litterbox (catbox.moe), nuuls, 0x0.st<br><code>litterbox.catbox.moe</code>, <code>i.nuuls.com</code>, <code>0x0.st</code></td>
           <td>Uploading a photo or file you attach, tried in this order if one fails</td>
           <td>The file you chose. The resulting link is public: anyone who has it can open the file. Litterbox deletes files after 72 hours.</td>
@@ -104,8 +110,7 @@
   <ul>
     <li><strong>Camera and photo library:</strong> only when you choose to take or attach a photo. Nothing is uploaded
       unless you send it.</li>
-    <li><strong>Location:</strong> ColdChat never uses your location. iOS requires a description for it only because the
-      built-in web view, used for signing in, could ask for it.</li>
+    <li><strong>Location:</strong> ColdChat never asks for or uses your location.</li>
   </ul>
 
   <h2>Children</h2>

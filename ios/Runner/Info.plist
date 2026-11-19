@@ -56,8 +56,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>ColdChat needs camera access so you can take and attach photos in chat.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>ColdChat does not use your location. This key is required because an embedded web component references the location API.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>ColdChat needs microphone access for recording media you choose to attach.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
