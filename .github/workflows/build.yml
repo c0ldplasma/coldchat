@@ -35,7 +35,9 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Check that the checked-in localizations are up to date
+        # gen-l10n writes build/untranslated_messages.json and fails if build/ doesn't exist yet.
         run: |
+          mkdir -p build
           flutter gen-l10n
           git diff --exit-code lib/l10n
 
