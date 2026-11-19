@@ -189,6 +189,12 @@ class _ChatViewState extends State<ChatView> {
                                       border: InputBorder.none,
                                       hintText: AppLocalizations.of(context)!.search,
                                       isDense: true,
+                                      // Like the home tab's search field: accent icon on the neutral pill.
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsetsDirectional.only(end: 8.0),
+                                        child: Icon(Icons.search, size: 20.0, color: Theme.of(context).colorScheme.primary),
+                                      ),
+                                      prefixIconConstraints: const BoxConstraints(),
                                       suffixIconConstraints: const BoxConstraints(),
                                       suffixIcon: searching
                                           ? GestureDetector(
@@ -245,7 +251,7 @@ class _ChatViewState extends State<ChatView> {
                           type: SurfaceType.surfaceVariant,
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.onSurface),
+                            child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.primary),
                           ),
                         ),
                       ),

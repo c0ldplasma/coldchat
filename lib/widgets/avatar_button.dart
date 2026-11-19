@@ -50,9 +50,9 @@ class _AvatarButtonState extends State<AvatarButton> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(width: 6.0),
-                  const Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Icon(Icons.notifications_none_outlined),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Icon(Icons.notifications_none_outlined, color: Theme.of(context).colorScheme.primary),
                   ),
                   Surface(
                     borderRadius: BorderRadius.circular(128.0),
