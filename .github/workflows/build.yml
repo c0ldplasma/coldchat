@@ -51,6 +51,10 @@ jobs:
       - name: Analyze
         run: flutter analyze
 
+      # Generated files are left out: gen-l10n and build_runner format their own output.
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed $(git ls-files 'lib/*.dart' 'test/*.dart' | grep -v '^lib/l10n/app_localizations')
+
   build:
     strategy:
       fail-fast: false

@@ -10,25 +10,27 @@ class LanguageSelectionModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        shrinkWrap: true,
-        children: [
-          ModalHeader(title: AppLocalizations.of(context)!.language),
-          Tile(
-            title: AppLocalizations.of(context)!.justDefault, // locale.toLanguageTag(),
-            subtitle: AppLocalizations.of(context)!.systemDefault,
-            prefix: const Icon(Icons.phone_android_outlined),
-            onTap: () => Hive.box('Settings').put('locale', null),
+    shrinkWrap: true,
+    children: [
+      ModalHeader(title: AppLocalizations.of(context)!.language),
+      Tile(
+        title: AppLocalizations.of(context)!.justDefault, // locale.toLanguageTag(),
+        subtitle: AppLocalizations.of(context)!.systemDefault,
+        prefix: const Icon(Icons.phone_android_outlined),
+        onTap: () => Hive.box('Settings').put('locale', null),
+      ),
+      for (final locale in AppLocalizations.supportedLocales)
+        Tooltip(
+          message: locale.toLanguageTag(),
+          child: Tile(
+            title:
+                LocaleNames.of(context)!.nameOf(locale.toString()) ??
+                (locale.toString() == 'en_PT' ? 'English (Pirate)' : locale.toString()), // locale.toLanguageTag(),
+            subtitle: LocaleNamesLocalizationsDelegate.nativeLocaleNames[locale.toString()],
+            prefix: const Icon(Icons.language_outlined),
+            onTap: () => Hive.box('Settings').put('locale', locale.toLanguageTag()),
           ),
-          for (final locale in AppLocalizations.supportedLocales)
-            Tooltip(
-              message: locale.toLanguageTag(),
-              child: Tile(
-                title: LocaleNames.of(context)!.nameOf(locale.toString()) ?? (locale.toString() == 'en_PT' ? 'English (Pirate)' : locale.toString()), // locale.toLanguageTag(),
-                subtitle: LocaleNamesLocalizationsDelegate.nativeLocaleNames[locale.toString()],
-                prefix: const Icon(Icons.language_outlined),
-                onTap: () => Hive.box('Settings').put('locale', locale.toLanguageTag()),
-              ),
-            ),
-        ],
-      );
+        ),
+    ],
+  );
 }

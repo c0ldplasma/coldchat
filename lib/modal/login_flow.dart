@@ -106,15 +106,15 @@ String _randomState() {
 
 // A dialog rather than a snack bar, because a snack bar would sit behind the account sheet that may still be open.
 void _showLoginFailed(BuildContext context, String reason) => showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.loginFailed),
-        content: Text(reason),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(AppLocalizations.of(context)!.close),
-          ),
-        ],
+  context: context,
+  builder: (context) => AlertDialog(
+    title: Text(AppLocalizations.of(context)!.loginFailed),
+    content: Text(reason),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.of(context).pop(),
+        child: Text(AppLocalizations.of(context)!.close),
       ),
-    );
+    ],
+  ),
+);

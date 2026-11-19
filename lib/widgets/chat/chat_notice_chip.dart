@@ -26,19 +26,31 @@ class ChatNoticeChip extends StatelessWidget {
             borderRadius: BorderRadius.circular(18.0 * messageAppearance.scale),
             onTap: () {},
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0 * messageAppearance.scale, vertical: 8.0 * messageAppearance.scale),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0 * messageAppearance.scale,
+                vertical: 8.0 * messageAppearance.scale,
+              ),
               child: Wrap(
                 alignment: WrapAlignment.start,
                 children: [
                   Text.rich(
                     TextSpan(
                       children: [
-                        WidgetSpan(child: Icon(Icons.info_outline, size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale)),
-                        WidgetSpan(child: SizedBox(height: 8.0 * messageAppearance.scale, width: 8.0 * messageAppearance.scale)),
+                        WidgetSpan(
+                          child: Icon(
+                            Icons.info_outline,
+                            size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale,
+                          ),
+                        ),
+                        WidgetSpan(
+                          child: SizedBox(height: 8.0 * messageAppearance.scale, width: 8.0 * messageAppearance.scale),
+                        ),
                         TextSpan(text: message.text),
                       ],
                     ),
-                    style: TextStyle(fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale),
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale,
+                    ),
                   ),
                 ],
               ),

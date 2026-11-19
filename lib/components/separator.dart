@@ -10,11 +10,11 @@ class Separator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0.0),
-        child: Container(
-          height: axis == Axis.horizontal ? 1 : double.infinity,
-          width: axis == Axis.vertical ? 1 : double.infinity,
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.25),
-        ),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 0.0),
+    child: Container(
+      height: axis == Axis.horizontal ? 1 : double.infinity,
+      width: axis == Axis.vertical ? 1 : double.infinity,
+      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.25),
+    ),
+  );
 }

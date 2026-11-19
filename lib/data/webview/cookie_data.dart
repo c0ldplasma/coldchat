@@ -56,9 +56,9 @@ class CookieData extends HiveObject {
 
   Cookie toCookie() {
     return Cookie(
-      name,
-      value,
-    )
+        name,
+        value,
+      )
       ..expires = expires
       ..maxAge = maxAge
       ..domain = domain

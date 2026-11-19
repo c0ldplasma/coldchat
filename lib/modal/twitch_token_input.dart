@@ -24,73 +24,73 @@ class _TwitchTokenInputModalState extends State<TwitchTokenInputModal> {
 
   @override
   Widget build(BuildContext context) => ListView(
-        shrinkWrap: true,
+    shrinkWrap: true,
+    children: [
+      ModalHeader(title: AppLocalizations.of(context)!.tokenInput),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
+        child: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            border: InputBorder.none,
+            filled: true,
+          ),
+        ),
+      ),
+      Row(
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.tokenInput),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
-            child: TextField(
-              controller: controller,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                filled: true,
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.cancel,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.cancel,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 32.0,
-                child: Separator(axis: Axis.vertical),
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
+          const SizedBox(
+            height: 32.0,
+            child: Separator(axis: Axis.vertical),
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
 
-                    Modal.show(
-                      context: context,
-                      child: VerifyTokenModal(
-                        token: controller.text,
-                        cookies: null,
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.add,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                Modal.show(
+                  context: context,
+                  child: VerifyTokenModal(
+                    token: controller.text,
+                    cookies: null,
+                  ),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.add,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ],
-      );
+      ),
+    ],
+  );
 }

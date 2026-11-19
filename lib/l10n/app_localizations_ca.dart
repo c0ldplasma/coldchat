@@ -146,8 +146,7 @@ class AppLocalizationsCa extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'S\'ha produït un error en verificar les dades d\'usuari:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'S\'ha produït un error en verificar les dades d\'usuari:';
 
   @override
   String get verifyingUserData => 'S\'estan verificant les dades d\'usuari...';
@@ -156,8 +155,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get verifiedUserToken => 'Token d\'usuari verificat!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'S\'ha produït un error en verificar el token d\'usuari:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'S\'ha produït un error en verificar el token d\'usuari:';
 
   @override
   String get verifyingUserToken => 'S\'està verificant el token d\'usuari...';
@@ -276,8 +274,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get copyText => 'Copia el text';
 
   @override
-  String get copyTextSubtitle =>
-      'Mantén premut per copiar amb el nom d\'usuari';
+  String get copyTextSubtitle => 'Mantén premut per copiar amb el nom d\'usuari';
 
   @override
   String get deleteMessage => 'Suprimeix el missatge';
@@ -383,12 +380,10 @@ class AppLocalizationsCa extends AppLocalizations {
   String get backgroundNotifications => 'Notificacions en segon pla';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Aquesta opció no està disponible a la teva plataforma.';
+  String get optionNotAvailableOnYourPlatform => 'Aquesta opció no està disponible a la teva plataforma.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Aquesta opció és només per a qui dona suport a ColdChat.';
+  String get optionNotAvailablePaywalled => 'Aquesta opció és només per a qui dona suport a ColdChat.';
 
   @override
   String get clearAll => 'Esborra-ho tot';
@@ -417,19 +412,16 @@ class AppLocalizationsCa extends AppLocalizations {
   String get emoteMenuButton => 'Botó del menú d\'emotes';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Botó del menú d\'emotes en escala de grisos';
+  String get emoteMenuButtonGrayscale => 'Botó del menú d\'emotes en escala de grisos';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Toca un emote per fer-lo servir com a botó del menú d\'emotes';
+  String get chooseEmoteMenuButton => 'Toca un emote per fer-lo servir com a botó del menú d\'emotes';
 
   @override
   String get resetToKappa => 'Restableix a Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'No s\'ha pogut baixar aquest emote. El botó no s\'ha canviat.';
+  String get emoteMenuButtonDownloadFailed => 'No s\'ha pogut baixar aquest emote. El botó no s\'ha canviat.';
 
   @override
   String get takePhoto => 'Fes una foto';
@@ -438,8 +430,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get chooseFromLibrary => 'Tria de la galeria';
 
   @override
-  String get cameraUnavailable =>
-      'No s\'ha pogut obrir la càmera. Comprova que ColdChat hi tingui accés.';
+  String get cameraUnavailable => 'No s\'ha pogut obrir la càmera. Comprova que ColdChat hi tingui accés.';
 
   @override
   String get about => 'Quant a';
@@ -480,8 +471,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get openOnTwitch => 'Obre a Twitch';
 
   @override
-  String get blockFailed =>
-      'No s\'ha pogut canviar la llista de bloquejos. Comprova la connexió i torna-ho a provar.';
+  String get blockFailed => 'No s\'ha pogut canviar la llista de bloquejos. Comprova la connexió i torna-ho a provar.';
 
   @override
   String get contact => 'Contacte i comentaris';
@@ -520,16 +510,14 @@ class AppLocalizationsCa extends AppLocalizations {
       'Suprimeix els missatges d\'aquest dispositiu. Twitch no desa l\'historial de xiuxiueigs.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Inicia la sessió amb Twitch per enviar xiuxiueigs.';
+  String get whisperNeedsLogin => 'Inicia la sessió amb Twitch per enviar xiuxiueigs.';
 
   @override
   String get whisperNeedsScope =>
       'Torna a iniciar la sessió per enviar i rebre xiuxiueigs. La teva sessió és d\'abans que ColdChat els admetés.';
 
   @override
-  String get whisperUserNotFound =>
-      'No hi ha cap usuari de Twitch amb aquest nom.';
+  String get whisperUserNotFound => 'No hi ha cap usuari de Twitch amb aquest nom.';
 
   @override
   String whisperFailed(String reason) {
@@ -555,12 +543,10 @@ class AppLocalizationsCa extends AppLocalizations {
   String get showImagesFromLinks => 'Mostra les imatges dels enllaços';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch no revisa aquestes imatges. Poden ser inadequades.';
+  String get showImagesFromLinksSubtitle => 'Twitch no revisa aquestes imatges. Poden ser inadequades.';
 
   @override
-  String get showImagesAutomatically =>
-      'Vols mostrar automàticament les imatges dels enllaços?';
+  String get showImagesAutomatically => 'Vols mostrar automàticament les imatges dels enllaços?';
 
   @override
   String get turnOn => 'Activa';
@@ -602,8 +588,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get oledBlack => 'Negre OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Fons del xat negre en mode fosc, per a pantalles OLED';
+  String get oledBlackSubtitle => 'Fons del xat negre en mode fosc, per a pantalles OLED';
 
   @override
   String get customColor => 'Personalitzat';

@@ -13,7 +13,10 @@ class FrankerFaceZ {
 
   static Future<List<FrankerFaceZSet>> globalSets() async {
     final response = await http.get(Uri.parse('https://api.frankerfacez.com/v1/set/global'));
-    return decodeJsonInIsolate(response.bodyBytes, (json) => [for (final setData in json['sets'].values) FrankerFaceZSet.fromJson(setData)]);
+    return decodeJsonInIsolate(
+      response.bodyBytes,
+      (json) => [for (final setData in json['sets'].values) FrankerFaceZSet.fromJson(setData)],
+    );
   }
 
   static Future<FrankerFaceZBadges> badges() async {

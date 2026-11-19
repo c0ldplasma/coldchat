@@ -93,8 +93,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get uploadErrorUnreadableFile =>
-      'Δεν ήταν δυνατή η ανάγνωση του αρχείου';
+  String get uploadErrorUnreadableFile => 'Δεν ήταν δυνατή η ανάγνωση του αρχείου';
 
   @override
   String uploadErrorUnknown(String host) {
@@ -147,8 +146,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Παρουσιάστηκε σφάλμα κατά την επαλήθευση των στοιχείων χρήστη:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Παρουσιάστηκε σφάλμα κατά την επαλήθευση των στοιχείων χρήστη:';
 
   @override
   String get verifyingUserData => 'Επαλήθευση στοιχείων χρήστη...';
@@ -157,8 +155,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get verifiedUserToken => 'Το token χρήστη επαληθεύτηκε!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Παρουσιάστηκε σφάλμα κατά την επαλήθευση του token χρήστη:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Παρουσιάστηκε σφάλμα κατά την επαλήθευση του token χρήστη:';
 
   @override
   String get verifyingUserToken => 'Επαλήθευση token χρήστη...';
@@ -277,8 +274,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get copyText => 'Αντιγραφή κειμένου';
 
   @override
-  String get copyTextSubtitle =>
-      'Κράτα πατημένο για αντιγραφή μαζί με το όνομα χρήστη';
+  String get copyTextSubtitle => 'Κράτα πατημένο για αντιγραφή μαζί με το όνομα χρήστη';
 
   @override
   String get deleteMessage => 'Διαγραφή μηνύματος';
@@ -384,12 +380,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get backgroundNotifications => 'Ειδοποιήσεις στο παρασκήνιο';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σου.';
+  String get optionNotAvailableOnYourPlatform => 'Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σου.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Αυτή η επιλογή είναι μόνο για όσους υποστηρίζουν το ColdChat.';
+  String get optionNotAvailablePaywalled => 'Αυτή η επιλογή είναι μόνο για όσους υποστηρίζουν το ColdChat.';
 
   @override
   String get clearAll => 'Εκκαθάριση όλων';
@@ -418,19 +412,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get emoteMenuButton => 'Κουμπί μενού emote';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Κουμπί μενού emote σε αποχρώσεις του γκρι';
+  String get emoteMenuButtonGrayscale => 'Κουμπί μενού emote σε αποχρώσεις του γκρι';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Πάτησε ένα emote για να το κάνεις κουμπί του μενού emote';
+  String get chooseEmoteMenuButton => 'Πάτησε ένα emote για να το κάνεις κουμπί του μενού emote';
 
   @override
   String get resetToKappa => 'Επαναφορά σε Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Δεν ήταν δυνατή η λήψη του emote. Το κουμπί δεν άλλαξε.';
+  String get emoteMenuButtonDownloadFailed => 'Δεν ήταν δυνατή η λήψη του emote. Το κουμπί δεν άλλαξε.';
 
   @override
   String get takePhoto => 'Λήψη φωτογραφίας';
@@ -481,8 +472,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openOnTwitch => 'Άνοιγμα στο Twitch';
 
   @override
-  String get blockFailed =>
-      'Δεν ήταν δυνατή η αλλαγή της λίστας φραγής. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.';
+  String get blockFailed => 'Δεν ήταν δυνατή η αλλαγή της λίστας φραγής. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.';
 
   @override
   String get contact => 'Επικοινωνία & σχόλια';
@@ -521,16 +511,14 @@ class AppLocalizationsEl extends AppLocalizations {
       'Διαγράφει τα μηνύματα από αυτήν τη συσκευή. Το Twitch δεν κρατά ιστορικό ψιθύρων.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Συνδέσου με το Twitch για να στέλνεις ψιθύρους.';
+  String get whisperNeedsLogin => 'Συνδέσου με το Twitch για να στέλνεις ψιθύρους.';
 
   @override
   String get whisperNeedsScope =>
       'Συνδέσου ξανά για να στέλνεις και να λαμβάνεις ψιθύρους. Η σύνδεσή σου είναι από πριν το ColdChat τους υποστηρίξει.';
 
   @override
-  String get whisperUserNotFound =>
-      'Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.';
+  String get whisperUserNotFound => 'Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.';
 
   @override
   String whisperFailed(String reason) {
@@ -556,12 +544,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get showImagesFromLinks => 'Εμφάνιση εικόνων από συνδέσμους';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.';
+  String get showImagesFromLinksSubtitle => 'Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.';
 
   @override
-  String get showImagesAutomatically =>
-      'Αυτόματη εμφάνιση εικόνων από συνδέσμους;';
+  String get showImagesAutomatically => 'Αυτόματη εμφάνιση εικόνων από συνδέσμους;';
 
   @override
   String get turnOn => 'Ενεργοποίηση';
@@ -603,8 +589,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get oledBlack => 'Μαύρο OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED';
+  String get oledBlackSubtitle => 'Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED';
 
   @override
   String get customColor => 'Προσαρμοσμένο';

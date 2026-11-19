@@ -32,10 +32,13 @@ missing fall back to English and are listed in `build/untranslated_messages.json
 
 ## CI and tooling
 
-`.github/workflows/build.yml` runs on pushes to `main` and on PRs: `flutter analyze` plus the localization check,
+`.github/workflows/build.yml` runs on pushes to `main` and on PRs: `flutter analyze`, a formatting check and the localization check,
 and an Android and an unsigned iOS build. It pins the Flutter version; raise `FLUTTER_VERSION` there together with
 the minimum in `pubspec.yaml`. Lints are `flutter_lints` (keep `flutter analyze` at "No issues found!"; `dart fix
---apply` fixes most new findings). Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
+--apply` fixes most new findings). Code is formatted with `dart format` at width 120 with trailing commas preserved (settings in
+`analysis_options.yaml`): run `dart format lib` before committing. The commit that formatted everything is listed in
+`.git-blame-ignore-revs`, which GitHub's blame skips; locally run `git config blame.ignoreRevsFile .git-blame-ignore-revs`
+once. Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
 packages; it skips the code generators and hive, which are held back until hive is replaced.
 
 ## Versioning

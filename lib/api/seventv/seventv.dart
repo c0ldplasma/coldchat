@@ -7,7 +7,10 @@ import 'seventv_emote.dart';
 class SevenTV {
   static Future<List<SevenTVEmote>> globalEmotes() async {
     final response = await http.get(Uri.parse('https://7tv.io/v3/emote-sets/global'));
-    return decodeJsonInIsolate(response.bodyBytes, (json) => [for (final emote in json['emotes']) SevenTVEmote.fromJson(emote)]);
+    return decodeJsonInIsolate(
+      response.bodyBytes,
+      (json) => [for (final emote in json['emotes']) SevenTVEmote.fromJson(emote)],
+    );
   }
 
   static Future<List<SevenTVEmote>> channelEmotes(String uid) async {

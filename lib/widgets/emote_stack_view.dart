@@ -40,11 +40,19 @@ class EmoteStackView extends StatelessWidget {
     final effects = stack.effects;
     if (effects & EmoteFlags.growX != 0) child = _StretchX(child: child);
     if (effects & (EmoteFlags.flipX | EmoteFlags.flipY) != 0) {
-      child = Transform.flip(flipX: effects & EmoteFlags.flipX != 0, flipY: effects & EmoteFlags.flipY != 0, child: child);
+      child = Transform.flip(
+        flipX: effects & EmoteFlags.flipX != 0,
+        flipY: effects & EmoteFlags.flipY != 0,
+        child: child,
+      );
     }
     if (effects & EmoteFlags.rotate90 != 0) child = RotatedBox(quarterTurns: 1, child: child);
-    if (effects & EmoteFlags.greyscale != 0) child = ColorFiltered(colorFilter: const ColorFilter.matrix(_greyscale), child: child);
-    if (effects & EmoteFlags.sepia != 0) child = ColorFiltered(colorFilter: const ColorFilter.matrix(_sepia), child: child);
+    if (effects & EmoteFlags.greyscale != 0) {
+      child = ColorFiltered(colorFilter: const ColorFilter.matrix(_greyscale), child: child);
+    }
+    if (effects & EmoteFlags.sepia != 0) {
+      child = ColorFiltered(colorFilter: const ColorFilter.matrix(_sepia), child: child);
+    }
     return child;
   }
 }
@@ -65,14 +73,22 @@ class _RenderStretchX extends RenderProxyBox {
       size = constraints.smallest;
       return;
     }
-    child.layout(BoxConstraints(maxWidth: constraints.maxWidth / 2, maxHeight: constraints.maxHeight), parentUsesSize: true);
+    child.layout(
+      BoxConstraints(maxWidth: constraints.maxWidth / 2, maxHeight: constraints.maxHeight),
+      parentUsesSize: true,
+    );
     size = constraints.constrain(Size(child.size.width * 2, child.size.height));
   }
 
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child == null) return;
-    context.pushTransform(needsCompositing, offset, Matrix4.diagonal3Values(2.0, 1.0, 1.0), (context, offset) => super.paint(context, offset));
+    context.pushTransform(
+      needsCompositing,
+      offset,
+      Matrix4.diagonal3Values(2.0, 1.0, 1.0),
+      (context, offset) => super.paint(context, offset),
+    );
   }
 
   @override

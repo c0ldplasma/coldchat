@@ -129,7 +129,8 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
         if (task.status == UploadStatus.cancelled) return;
         // Prefer the watchdog's reason: closing the client to abort shows up
         // here as an opaque "connection closed" error.
-        final failure = task.abortFailure ?? (e is UploadFailure ? e : UploadFailure(host.name, UploadFailureKind.unknown, '$e'));
+        final failure =
+            task.abortFailure ?? (e is UploadFailure ? e : UploadFailure(host.name, UploadFailureKind.unknown, '$e'));
         // Recorded for every host, so the chip can say "Retrying with nuuls…"
         // while the chain continues, and the details dialog can list them all.
         task.attempts.add(failure);
@@ -155,7 +156,8 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
     // A mid-upload drop shows up as a stall on the host that was carrying it,
     // then instant network errors on the rest — so allow timeouts in the mix,
     // but require the final word to be a network error.
-    final offline = last.kind == UploadFailureKind.network &&
+    final offline =
+        last.kind == UploadFailureKind.network &&
         attempts.every((f) => f.kind == UploadFailureKind.network || f.kind == UploadFailureKind.timeout);
 
     task.errorKind = offline
@@ -224,13 +226,23 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
         switch (task.status) {
           case UploadStatus.uploading:
             if (now.difference(task.lastProgressAt) > _stallTimeout) {
-              _abort(task, UploadFailure(task.hostName, UploadFailureKind.timeout, 'stalled for ${_stallTimeout.inSeconds}s'));
+              _abort(
+                task,
+                UploadFailure(task.hostName, UploadFailureKind.timeout, 'stalled for ${_stallTimeout.inSeconds}s'),
+              );
             }
           case UploadStatus.processing:
             waitingOnHost = true;
             final since = task.processingSince;
             if (since != null && now.difference(since) > _processingTimeout) {
-              _abort(task, UploadFailure(task.hostName, UploadFailureKind.timeout, 'no response ${_processingTimeout.inSeconds}s after upload'));
+              _abort(
+                task,
+                UploadFailure(
+                  task.hostName,
+                  UploadFailureKind.timeout,
+                  'no response ${_processingTimeout.inSeconds}s after upload',
+                ),
+              );
             }
           case UploadStatus.done:
           case UploadStatus.failed:

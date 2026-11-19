@@ -8,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
-
 import '../../components/surface.dart';
 import '../../data/emote.dart';
 import '../../providers/emojis.dart';
@@ -193,7 +192,11 @@ class _EmotePickerState extends State<EmotePicker> {
                             ),
                           ],
                         ),
-                        for (final category in groups.entries.where((group) => (group.value.isEmpty && search.isEmpty) || group.value.any((emote) => emote.name.toLowerCase().contains(search))))
+                        for (final category in groups.entries.where(
+                          (group) =>
+                              (group.value.isEmpty && search.isEmpty) ||
+                              group.value.any((emote) => emote.name.toLowerCase().contains(search)),
+                        ))
                           MultiSliver(
                             pushPinnedChildren: true,
                             children: [
@@ -222,11 +225,15 @@ class _EmotePickerState extends State<EmotePicker> {
                               SliverGrid.extent(
                                 maxCrossAxisExtent: 32.0 + 16.0,
                                 children: [
-                                  for (final emote in category.value.where((emote) => emote.name.toLowerCase().contains(search)))
+                                  for (final emote in category.value.where(
+                                    (emote) => emote.name.toLowerCase().contains(search),
+                                  ))
                                     Tooltip(
                                       message: emote.name,
                                       child: InkWell(
-                                        onTap: () async => widget.onPickButtonIcon != null ? widget.onPickButtonIcon!(emote) : widget.insertFieldInput(emote.code ?? emote.name),
+                                        onTap: () async => widget.onPickButtonIcon != null
+                                            ? widget.onPickButtonIcon!(emote)
+                                            : widget.insertFieldInput(emote.code ?? emote.name),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: EmoteGlyph(
@@ -284,7 +291,10 @@ class _EmotePickerState extends State<EmotePicker> {
                                     }
                                     if (section is! RenderSliver) return;
                                     final position = scrollController.position;
-                                    final offset = section.constraints.precedingScrollExtent.clamp(position.minScrollExtent, position.maxScrollExtent);
+                                    final offset = section.constraints.precedingScrollExtent.clamp(
+                                      position.minScrollExtent,
+                                      position.maxScrollExtent,
+                                    );
                                     await position.animateTo(
                                       offset,
                                       duration: const Duration(milliseconds: 300),
@@ -299,7 +309,10 @@ class _EmotePickerState extends State<EmotePicker> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Center(
-                                          child: icons[category] ?? providerLogo(context, category) ?? firstEmoteIcon(groups[category]!),
+                                          child:
+                                              icons[category] ??
+                                              providerLogo(context, category) ??
+                                              firstEmoteIcon(groups[category]!),
                                         ),
                                       ),
                                     ),
@@ -324,13 +337,13 @@ class _EmotePickerState extends State<EmotePicker> {
     final onSurface = Theme.of(context).colorScheme.onSurface;
     return switch (category) {
       'Twitch' => SvgPicture.asset(
-          'assets/emote_providers/twitch.svg',
-          colorFilter: const ColorFilter.mode(Color(0xFF9146FF), BlendMode.srcIn),
-        ),
+        'assets/emote_providers/twitch.svg',
+        colorFilter: const ColorFilter.mode(Color(0xFF9146FF), BlendMode.srcIn),
+      ),
       '7TV' => SvgPicture.asset(
-          'assets/emote_providers/7tv.svg',
-          colorFilter: ColorFilter.mode(onSurface, BlendMode.srcIn),
-        ),
+        'assets/emote_providers/7tv.svg',
+        colorFilter: ColorFilter.mode(onSurface, BlendMode.srcIn),
+      ),
       'BetterTTV' => SvgPicture.asset('assets/emote_providers/bttv.svg'),
       'FrankerFaceZ' => Image.asset('assets/emote_providers/ffz.png', filterQuality: FilterQuality.medium),
       _ => null,
@@ -339,102 +352,102 @@ class _EmotePickerState extends State<EmotePicker> {
 
   /// Fallback for any other section: its first emote, never cut-off text.
   Widget firstEmoteIcon(List<Emote> emotes) => CachedNetworkImage(
-        imageUrl: emotes.first.mipmap.last,
-        fit: BoxFit.contain,
-      );
+    imageUrl: emotes.first.mipmap.last,
+    fit: BoxFit.contain,
+  );
 }
 
-          // const SizedBox(height: 4.0),
-          // Surface(
-          //   type: SurfaceType.transparent,
-          //   child: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: [
-          //       // Padding(
-          //       //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //       //   child: Row(
-          //       //     children: [
-          //       //       Surface(
-          //       //         borderRadius: BorderRadius.circular(8.0),
-          //       //         type: SurfaceType.background,
-          //       //         child: const Padding(
-          //       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          //       //           child: Text('GIFs'),
-          //       //         ),
-          //       //         onTap: () {},
-          //       //       ),
-          //       //       const SizedBox(width: 4.0),
-          //       //       Surface(
-          //       //         borderRadius: BorderRadius.circular(8.0),
-          //       //         type: SurfaceType.background,
-          //       //         child: const Padding(
-          //       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          //       //           child: Text('Emotes'),
-          //       //         ),
-          //       //         onTap: () {},
-          //       //       ),
-          //       //     ],
-          //       //   ),
-          //       // ),
-          //       SegmentedButton<PickerMode>(
-          //         segments: const [
-          //           ButtonSegment<PickerMode>(
-          //             value: PickerMode.gif,
-          //             label: Text('GIFs'),
-          //             icon: Icon(Icons.image_search_outlined),
-          //           ),
-          //           ButtonSegment<PickerMode>(
-          //             value: PickerMode.emote,
-          //             label: Text('Emote'),
-          //             icon: Icon(Icons.emoji_emotions_outlined),
-          //           ),
-          //         ],
-          //         selected: <PickerMode>{mode},
-          //         onSelectionChanged: (selection) {
-          //           setState(() {
-          //             mode = selection.first;
-          //           });
-          //         },
-          //       ),
-          //       const SizedBox(height: 4.0),
-          //       Padding(
-          //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //         child: Surface(
-          //           borderRadius: BorderRadius.circular(8.0),
-          //           // color: Colors.blue,
-          //           type: SurfaceType.background,
-          //           child: Row(
-          //             children: [
-          //               Expanded(
-          //                 child: Padding(
-          //                   padding: const EdgeInsets.only(left: 8.0),
-          //                   child: TextField(
-          //                     controller: searchController,
-          //                     decoration: const InputDecoration(
-          //                       isDense: true,
-          //                       border: InputBorder.none,
-          //                       hintText: 'Search',
-          //                     ),
-          //                     onChanged: (value) {
-          //                       if (mode == PickerMode.gif) {
-          //                         gifSearch = http.get(Uri.parse('https://g.tenor.com/v1/search?q=$value&key=LIVDSRZULELA&limit=50'));
-          //                         setState(() {});
-          //                       }
-          //                     },
-          //                   ),
-          //                 ),
-          //               ),
-          //               const SizedBox(width: 2.0),
-          //               const Icon(Icons.search_outlined),
-          //               const SizedBox(width: 6.0),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // const SizedBox(height: 4.0),
+// const SizedBox(height: 4.0),
+// Surface(
+//   type: SurfaceType.transparent,
+//   child: Column(
+//     mainAxisSize: MainAxisSize.min,
+//     children: [
+//       // Padding(
+//       //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//       //   child: Row(
+//       //     children: [
+//       //       Surface(
+//       //         borderRadius: BorderRadius.circular(8.0),
+//       //         type: SurfaceType.background,
+//       //         child: const Padding(
+//       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+//       //           child: Text('GIFs'),
+//       //         ),
+//       //         onTap: () {},
+//       //       ),
+//       //       const SizedBox(width: 4.0),
+//       //       Surface(
+//       //         borderRadius: BorderRadius.circular(8.0),
+//       //         type: SurfaceType.background,
+//       //         child: const Padding(
+//       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+//       //           child: Text('Emotes'),
+//       //         ),
+//       //         onTap: () {},
+//       //       ),
+//       //     ],
+//       //   ),
+//       // ),
+//       SegmentedButton<PickerMode>(
+//         segments: const [
+//           ButtonSegment<PickerMode>(
+//             value: PickerMode.gif,
+//             label: Text('GIFs'),
+//             icon: Icon(Icons.image_search_outlined),
+//           ),
+//           ButtonSegment<PickerMode>(
+//             value: PickerMode.emote,
+//             label: Text('Emote'),
+//             icon: Icon(Icons.emoji_emotions_outlined),
+//           ),
+//         ],
+//         selected: <PickerMode>{mode},
+//         onSelectionChanged: (selection) {
+//           setState(() {
+//             mode = selection.first;
+//           });
+//         },
+//       ),
+//       const SizedBox(height: 4.0),
+//       Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+//         child: Surface(
+//           borderRadius: BorderRadius.circular(8.0),
+//           // color: Colors.blue,
+//           type: SurfaceType.background,
+//           child: Row(
+//             children: [
+//               Expanded(
+//                 child: Padding(
+//                   padding: const EdgeInsets.only(left: 8.0),
+//                   child: TextField(
+//                     controller: searchController,
+//                     decoration: const InputDecoration(
+//                       isDense: true,
+//                       border: InputBorder.none,
+//                       hintText: 'Search',
+//                     ),
+//                     onChanged: (value) {
+//                       if (mode == PickerMode.gif) {
+//                         gifSearch = http.get(Uri.parse('https://g.tenor.com/v1/search?q=$value&key=LIVDSRZULELA&limit=50'));
+//                         setState(() {});
+//                       }
+//                     },
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(width: 2.0),
+//               const Icon(Icons.search_outlined),
+//               const SizedBox(width: 6.0),
+//             ],
+//           ),
+//         ),
+//       ),
+//     ],
+//   ),
+// ),
+// const SizedBox(height: 4.0),
 
 /*
 

@@ -8,7 +8,7 @@ class Logs extends Cubit<List<Log>> {
   Logs() : super([]);
 
   void add(Log log) => emit([
-        ...state.skip(max(0, state.length - 999)),
-        log,
-      ]);
+    ...state.skip(max(0, state.length - 999)),
+    log,
+  ]);
 }

@@ -146,8 +146,7 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'אירעה שגיאה באימות נתוני המשתמש:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'אירעה שגיאה באימות נתוני המשתמש:';
 
   @override
   String get verifyingUserData => 'אימות נתוני המשתמש...';
@@ -156,8 +155,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get verifiedUserToken => 'טוקן המשתמש אומת!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'אירעה שגיאה באימות טוקן המשתמש:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'אירעה שגיאה באימות טוקן המשתמש:';
 
   @override
   String get verifyingUserToken => 'אימות טוקן המשתמש...';
@@ -382,12 +380,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get backgroundNotifications => 'התראות ברקע';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'האפשרות הזו אינה זמינה בפלטפורמה שלך.';
+  String get optionNotAvailableOnYourPlatform => 'האפשרות הזו אינה זמינה בפלטפורמה שלך.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'האפשרות הזו זמינה רק לתומכי ColdChat.';
+  String get optionNotAvailablePaywalled => 'האפשרות הזו זמינה רק לתומכי ColdChat.';
 
   @override
   String get clearAll => 'ניקוי הכול';
@@ -416,19 +412,16 @@ class AppLocalizationsHe extends AppLocalizations {
   String get emoteMenuButton => 'כפתור תפריט האימוטים';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'הצגת כפתור תפריט האימוטים בגווני אפור';
+  String get emoteMenuButtonGrayscale => 'הצגת כפתור תפריט האימוטים בגווני אפור';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'הקשה על אימוט תהפוך אותו לכפתור תפריט האימוטים';
+  String get chooseEmoteMenuButton => 'הקשה על אימוט תהפוך אותו לכפתור תפריט האימוטים';
 
   @override
   String get resetToKappa => 'איפוס ל-Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'לא ניתן להוריד את האימוט. הכפתור לא שונה.';
+  String get emoteMenuButtonDownloadFailed => 'לא ניתן להוריד את האימוט. הכפתור לא שונה.';
 
   @override
   String get takePhoto => 'צילום תמונה';
@@ -437,8 +430,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get chooseFromLibrary => 'בחירה מהספרייה';
 
   @override
-  String get cameraUnavailable =>
-      'לא ניתן לפתוח את המצלמה. יש לוודא של-ColdChat יש גישה למצלמה.';
+  String get cameraUnavailable => 'לא ניתן לפתוח את המצלמה. יש לוודא של-ColdChat יש גישה למצלמה.';
 
   @override
   String get about => 'אודות';
@@ -479,8 +471,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get openOnTwitch => 'פתיחה ב-Twitch';
 
   @override
-  String get blockFailed =>
-      'לא ניתן לשנות את רשימת החסימות. יש לבדוק את החיבור ולנסות שוב.';
+  String get blockFailed => 'לא ניתן לשנות את רשימת החסימות. יש לבדוק את החיבור ולנסות שוב.';
 
   @override
   String get contact => 'יצירת קשר ומשוב';
@@ -508,15 +499,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get closeConversation => 'סגירת השיחה';
 
   @override
-  String get closeConversationSubtitle =>
-      'ההודעות נשמרות במכשיר הזה ויחזרו עם הלחישה הבאה.';
+  String get closeConversationSubtitle => 'ההודעות נשמרות במכשיר הזה ויחזרו עם הלחישה הבאה.';
 
   @override
   String get deleteConversation => 'מחיקת השיחה';
 
   @override
-  String get deleteConversationSubtitle =>
-      'מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.';
+  String get deleteConversationSubtitle => 'מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.';
 
   @override
   String get whisperNeedsLogin => 'כדי לשלוח לחישות, יש להתחבר עם Twitch.';
@@ -552,8 +541,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get showImagesFromLinks => 'הצגת תמונות מקישורים';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.';
+  String get showImagesFromLinksSubtitle => 'Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.';
 
   @override
   String get showImagesAutomatically => 'להציג תמונות מקישורים באופן אוטומטי?';

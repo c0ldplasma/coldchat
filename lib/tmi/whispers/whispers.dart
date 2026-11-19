@@ -56,7 +56,9 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   /// Shows [account]'s open conversations, replacing the previous account's.
   void setAccount(TwitchAccount? account) {
-    final sameLogin = account?.tokenData.hash == _account?.tokenData.hash && account?.tokenData.accessToken == _account?.tokenData.accessToken;
+    final sameLogin =
+        account?.tokenData.hash == _account?.tokenData.hash &&
+        account?.tokenData.accessToken == _account?.tokenData.accessToken;
     _account = account;
     if (sameLogin) return;
     active = null;
@@ -98,11 +100,15 @@ class Whispers extends Cubit<List<WhisperChannel>> {
   void _addLine(WhisperChannel conversation, String line) {
     try {
       final message = irc.Message.fromEvent(line);
-      conversation.channelMessages.add(ChannelMessageChat(
-        message: message,
-        dateTime: DateTime.fromMillisecondsSinceEpoch(int.tryParse(message.tags['tmi-sent-ts'] ?? '') ?? DateTime.now().millisecondsSinceEpoch),
-        channel: conversation,
-      ));
+      conversation.channelMessages.add(
+        ChannelMessageChat(
+          message: message,
+          dateTime: DateTime.fromMillisecondsSinceEpoch(
+            int.tryParse(message.tags['tmi-sent-ts'] ?? '') ?? DateTime.now().millisecondsSinceEpoch,
+          ),
+          channel: conversation,
+        ),
+      );
     } catch (_) {
       // A corrupt stored line is not worth losing the conversation over.
     }
@@ -199,7 +205,11 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   void receive(ReceivedWhisper whisper) {
     if (_accountId == null) return;
-    final conversation = _conversation(partnerId: whisper.fromUserId, login: whisper.fromLogin, displayName: whisper.fromDisplayName);
+    final conversation = _conversation(
+      partnerId: whisper.fromUserId,
+      login: whisper.fromLogin,
+      displayName: whisper.fromDisplayName,
+    );
     final line = _line(
       id: whisper.id,
       userId: whisper.fromUserId,

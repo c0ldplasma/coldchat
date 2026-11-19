@@ -8,7 +8,10 @@ import 'betterttv_user.dart';
 class BetterTTV {
   static Future<List<BetterTTVEmote>> globalEmotes() async {
     final response = await http.get(Uri.parse('https://api.betterttv.net/3/cached/emotes/global'));
-    return decodeJsonInIsolate(response.bodyBytes, (json) => [for (final emote in json) BetterTTVEmote.fromJson(emote)]);
+    return decodeJsonInIsolate(
+      response.bodyBytes,
+      (json) => [for (final emote in json) BetterTTVEmote.fromJson(emote)],
+    );
   }
 
   static Future<BetterTTVUser?> user(String uid) async {
@@ -18,6 +21,9 @@ class BetterTTV {
 
   static Future<List<BetterTTVBadge>> badges() async {
     final response = await http.get(Uri.parse('https://api.betterttv.net/3/cached/badges'));
-    return decodeJsonInIsolate(response.bodyBytes, (json) => [for (final badge in json) BetterTTVBadge.fromJson(badge)]);
+    return decodeJsonInIsolate(
+      response.bodyBytes,
+      (json) => [for (final badge in json) BetterTTVBadge.fromJson(badge)],
+    );
   }
 }

@@ -276,8 +276,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get copyText => 'Copier le texte';
 
   @override
-  String get copyTextSubtitle =>
-      'Maintiens pour copier avec le nom d\'utilisateur';
+  String get copyTextSubtitle => 'Maintiens pour copier avec le nom d\'utilisateur';
 
   @override
   String get deleteMessage => 'Supprimer le message';
@@ -356,8 +355,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chatSettings => 'Paramètres du chat';
 
   @override
-  String get autocompleteUsersWithAt =>
-      'Compléter les noms d\'utilisateur avec @';
+  String get autocompleteUsersWithAt => 'Compléter les noms d\'utilisateur avec @';
 
   @override
   String get autocompleteEmotesWithColon => 'Compléter les emotes avec :';
@@ -378,19 +376,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
-  String get noNotifications =>
-      'Quelqu\'un, quelque part, te mentionnera un jour.';
+  String get noNotifications => 'Quelqu\'un, quelque part, te mentionnera un jour.';
 
   @override
   String get backgroundNotifications => 'Notifications en arrière-plan';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Cette option n\'est pas disponible sur ta plateforme.';
+  String get optionNotAvailableOnYourPlatform => 'Cette option n\'est pas disponible sur ta plateforme.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Cette option est réservée aux soutiens de ColdChat.';
+  String get optionNotAvailablePaywalled => 'Cette option est réservée aux soutiens de ColdChat.';
 
   @override
   String get clearAll => 'Tout effacer';
@@ -419,19 +414,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get emoteMenuButton => 'Bouton du menu des emotes';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Bouton du menu des emotes en niveaux de gris';
+  String get emoteMenuButtonGrayscale => 'Bouton du menu des emotes en niveaux de gris';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Touche une emote pour l\'utiliser comme bouton du menu des emotes';
+  String get chooseEmoteMenuButton => 'Touche une emote pour l\'utiliser comme bouton du menu des emotes';
 
   @override
   String get resetToKappa => 'Revenir à Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Impossible de télécharger cette emote. Le bouton n\'a pas été modifié.';
+  String get emoteMenuButtonDownloadFailed => 'Impossible de télécharger cette emote. Le bouton n\'a pas été modifié.';
 
   @override
   String get takePhoto => 'Prendre une photo';
@@ -482,8 +474,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get openOnTwitch => 'Ouvrir sur Twitch';
 
   @override
-  String get blockFailed =>
-      'Impossible de modifier la liste de blocage. Vérifie ta connexion et réessaie.';
+  String get blockFailed => 'Impossible de modifier la liste de blocage. Vérifie ta connexion et réessaie.';
 
   @override
   String get contact => 'Contact et avis';
@@ -522,8 +513,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Supprime les messages de cet appareil. Twitch ne conserve aucun historique des chuchotements.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Connecte-toi avec Twitch pour envoyer des chuchotements.';
+  String get whisperNeedsLogin => 'Connecte-toi avec Twitch pour envoyer des chuchotements.';
 
   @override
   String get whisperNeedsScope =>
@@ -556,12 +546,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get showImagesFromLinks => 'Afficher les images des liens';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch ne vérifie pas ces images. Elles peuvent être inappropriées.';
+  String get showImagesFromLinksSubtitle => 'Twitch ne vérifie pas ces images. Elles peuvent être inappropriées.';
 
   @override
-  String get showImagesAutomatically =>
-      'Afficher automatiquement les images des liens ?';
+  String get showImagesAutomatically => 'Afficher automatiquement les images des liens ?';
 
   @override
   String get turnOn => 'Activer';
@@ -603,8 +591,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get oledBlack => 'Noir OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Fond du chat noir en mode sombre, pour les écrans OLED';
+  String get oledBlackSubtitle => 'Fond du chat noir en mode sombre, pour les écrans OLED';
 
   @override
   String get customColor => 'Personnalisée';
