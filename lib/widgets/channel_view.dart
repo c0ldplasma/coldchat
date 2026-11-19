@@ -621,7 +621,7 @@ class ChannelViewState extends State<ChannelView> {
                           width: 48.0,
                           height: 48.0,
                           child: Icon(
-                            spamming ? Icons.send_and_archive_outlined : Icons.send_outlined,
+                            spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),

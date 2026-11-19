@@ -263,8 +263,7 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         IconButton(
-                          // A plus is a thin glyph; at 28 it looks as big as the send and home icons around it.
-                          icon: const Icon(Icons.add_rounded, size: 28.0),
+                          icon: const Icon(Icons.add_circle_outline_rounded),
                           color: accent,
                           tooltip: AppLocalizations.of(context)!.addChannel,
                           onPressed: _openChannelSearch,
