@@ -141,7 +141,7 @@ class ChatMessage extends StatelessWidget {
                                 children: [
                                   WidgetSpan(child: Icon(chatMessage.subInfo!.msgParamWasGifted ? Icons.card_giftcard_outlined : Icons.star_border_outlined, size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale)),
                                   WidgetSpan(child: SizedBox(height: 8.0 * messageAppearance.scale, width: 8.0 * messageAppearance.scale)),
-                                  TextSpan(text: '${chatMessage.subInfo?.systemMsg.replaceAll('\\s', ' ')}'),
+                                  TextSpan(text: '${chatMessage.subInfo?.systemMsg}'),
                                 ],
                               ),
                               style: TextStyle(fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale),
@@ -229,7 +229,7 @@ class ChatMessage extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(text: '@${message.replyInfo?.replyParentDisplayName}: ', style: const TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: '${message.replyInfo?.replyParentMsgBody.replaceAll('\\s', ' ')}'),
+                        TextSpan(text: '${message.replyInfo?.replyParentMsgBody}'),
                         // TextSpan(text: '${message.replyInfo?.replyParentMsgBody}'),
                       ],
                     ),
