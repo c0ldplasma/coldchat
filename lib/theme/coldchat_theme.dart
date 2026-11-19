@@ -249,8 +249,9 @@ class ChatColors extends ThemeExtension<ChatColors> {
       // black chat (OLED) a little lighter instead, since nothing is darker than black.
       bar: oledBlack ? scheme.surfaceContainer : (dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer),
       onBar: scheme.onSurface,
-      sheet: oledBlack ? scheme.surfaceContainer : Color.alphaBlend(scheme.onSurface.withValues(alpha: 0.075), scheme.surface),
-      raised: scheme.surfaceContainerHigh,
+      // One grey for everything that sits above the chat, sheets and floating pills alike.
+      sheet: scheme.surfaceContainer,
+      raised: scheme.surfaceContainer,
       link: scheme.primary,
       muted: scheme.onSurfaceVariant,
       brightness: scheme.brightness,

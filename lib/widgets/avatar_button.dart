@@ -56,8 +56,8 @@ class _AvatarButtonState extends State<AvatarButton> {
                   ),
                   Surface(
                     borderRadius: BorderRadius.circular(128.0),
-                    type: SurfaceType.background,
-                    // color: Theme.of(context).colorScheme.tertiaryContainer,
+                    // The pill is one color; the avatar sits directly on it.
+                    type: SurfaceType.transparent,
                     child: BoxListener(
                       box: Hive.box('AccountSettings'),
                       builder: (context, accountSettingsBox) {
