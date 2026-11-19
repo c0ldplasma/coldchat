@@ -349,5 +349,8 @@
   "themePurple": "Фиолетовый",
   "accentColor": "Цвет акцента",
   "oledBlack": "Чёрный OLED",
-  "oledBlackSubtitle": "Чёрный фон чата в тёмном режиме, для OLED-экранов"
+  "oledBlackSubtitle": "Чёрный фон чата в тёмном режиме, для OLED-экранов",
+  "customColor": "Свой",
+  "hue": "Оттенок",
+  "saturation": "Насыщенность"
 }

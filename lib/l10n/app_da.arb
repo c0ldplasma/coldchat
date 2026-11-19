@@ -349,5 +349,8 @@
   "themePurple": "Lilla",
   "accentColor": "Accentfarve",
   "oledBlack": "OLED-sort",
-  "oledBlackSubtitle": "Sort chatbaggrund i mørk tilstand, til OLED-skærme"
+  "oledBlackSubtitle": "Sort chatbaggrund i mørk tilstand, til OLED-skærme",
+  "customColor": "Egen",
+  "hue": "Nuance",
+  "saturation": "Mætning"
 }

@@ -349,5 +349,8 @@
   "themePurple": "Porpra",
   "accentColor": "Color d'accent",
   "oledBlack": "Negre OLED",
-  "oledBlackSubtitle": "Fons del xat negre en mode fosc, per a pantalles OLED"
+  "oledBlackSubtitle": "Fons del xat negre en mode fosc, per a pantalles OLED",
+  "customColor": "Personalitzat",
+  "hue": "To",
+  "saturation": "Saturació"
 }

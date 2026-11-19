@@ -607,4 +607,13 @@ class AppLocalizationsCa extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Fons del xat negre en mode fosc, per a pantalles OLED';
+
+  @override
+  String get customColor => 'Personalitzat';
+
+  @override
+  String get hue => 'To';
+
+  @override
+  String get saturation => 'Saturació';
 }

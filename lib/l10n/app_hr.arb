@@ -349,5 +349,8 @@
   "themePurple": "Ljubičasta",
   "accentColor": "Boja naglaska",
   "oledBlack": "OLED crna",
-  "oledBlackSubtitle": "Crna pozadina chata u tamnom načinu, za OLED zaslone"
+  "oledBlackSubtitle": "Crna pozadina chata u tamnom načinu, za OLED zaslone",
+  "customColor": "Prilagođeno",
+  "hue": "Nijansa",
+  "saturation": "Zasićenost"
 }

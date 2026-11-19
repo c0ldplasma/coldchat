@@ -349,5 +349,8 @@
   "themePurple": "Tím",
   "accentColor": "Màu nhấn",
   "oledBlack": "Đen OLED",
-  "oledBlackSubtitle": "Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED"
+  "oledBlackSubtitle": "Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED",
+  "customColor": "Tùy chỉnh",
+  "hue": "Sắc độ",
+  "saturation": "Độ bão hòa"
 }

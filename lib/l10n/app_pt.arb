@@ -349,5 +349,8 @@
   "themePurple": "Roxo",
   "accentColor": "Cor de destaque",
   "oledBlack": "Preto OLED",
-  "oledBlackSubtitle": "Fundo do chat preto no modo escuro, para ecrãs OLED"
+  "oledBlackSubtitle": "Fundo do chat preto no modo escuro, para ecrãs OLED",
+  "customColor": "Personalizada",
+  "hue": "Matiz",
+  "saturation": "Saturação"
 }

@@ -349,5 +349,8 @@
   "themePurple": "סגול",
   "accentColor": "צבע הדגשה",
   "oledBlack": "שחור OLED",
-  "oledBlackSubtitle": "רקע צ'אט שחור במצב כהה, למסכי OLED"
+  "oledBlackSubtitle": "רקע צ'אט שחור במצב כהה, למסכי OLED",
+  "customColor": "מותאם אישית",
+  "hue": "גוון",
+  "saturation": "רוויה"
 }

@@ -313,5 +313,8 @@
   },
   "accentColor": "Accent color",
   "oledBlack": "OLED black",
-  "oledBlackSubtitle": "Black chat background in dark mode, for OLED screens"
+  "oledBlackSubtitle": "Black chat background in dark mode, for OLED screens",
+  "customColor": "Custom",
+  "hue": "Hue",
+  "saturation": "Saturation"
 }

@@ -608,4 +608,13 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED';
+
+  @override
+  String get customColor => 'Προσαρμοσμένο';
+
+  @override
+  String get hue => 'Απόχρωση';
+
+  @override
+  String get saturation => 'Κορεσμός';
 }

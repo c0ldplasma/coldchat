@@ -1203,6 +1203,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Black chat background in dark mode, for OLED screens'**
   String get oledBlackSubtitle;
+
+  /// No description provided for @customColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get customColor;
+
+  /// No description provided for @hue.
+  ///
+  /// In en, this message translates to:
+  /// **'Hue'**
+  String get hue;
+
+  /// No description provided for @saturation.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturation'**
+  String get saturation;
 }
 
 class _AppLocalizationsDelegate

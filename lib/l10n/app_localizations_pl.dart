@@ -607,4 +607,13 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Czarne tło czatu w trybie ciemnym, dla ekranów OLED';
+
+  @override
+  String get customColor => 'Własny';
+
+  @override
+  String get hue => 'Odcień';
+
+  @override
+  String get saturation => 'Nasycenie';
 }

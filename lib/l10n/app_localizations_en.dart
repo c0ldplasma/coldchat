@@ -602,6 +602,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Black chat background in dark mode, for OLED screens';
+
+  @override
+  String get customColor => 'Custom';
+
+  @override
+  String get hue => 'Hue';
+
+  @override
+  String get saturation => 'Saturation';
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

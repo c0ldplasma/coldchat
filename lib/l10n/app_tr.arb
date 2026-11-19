@@ -349,5 +349,8 @@
   "themePurple": "Mor",
   "accentColor": "Vurgu rengi",
   "oledBlack": "OLED siyahı",
-  "oledBlackSubtitle": "Karanlık modda siyah sohbet arka planı, OLED ekranlar için"
+  "oledBlackSubtitle": "Karanlık modda siyah sohbet arka planı, OLED ekranlar için",
+  "customColor": "Özel",
+  "hue": "Ton",
+  "saturation": "Doygunluk"
 }

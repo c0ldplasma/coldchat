@@ -349,5 +349,8 @@
   "themePurple": "Fialová",
   "accentColor": "Barva zvýraznění",
   "oledBlack": "OLED černá",
-  "oledBlackSubtitle": "Černé pozadí chatu v tmavém režimu, pro OLED displeje"
+  "oledBlackSubtitle": "Černé pozadí chatu v tmavém režimu, pro OLED displeje",
+  "customColor": "Vlastní",
+  "hue": "Odstín",
+  "saturation": "Sytost"
 }

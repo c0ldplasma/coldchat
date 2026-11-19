@@ -349,5 +349,8 @@
   "themePurple": "퍼플",
   "accentColor": "강조 색상",
   "oledBlack": "OLED 블랙",
-  "oledBlackSubtitle": "다크 모드에서 채팅 배경을 검은색으로 표시합니다(OLED 화면용)"
+  "oledBlackSubtitle": "다크 모드에서 채팅 배경을 검은색으로 표시합니다(OLED 화면용)",
+  "customColor": "사용자 지정",
+  "hue": "색조",
+  "saturation": "채도"
 }

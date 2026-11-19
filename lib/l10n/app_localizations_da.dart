@@ -607,4 +607,13 @@ class AppLocalizationsDa extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Sort chatbaggrund i mørk tilstand, til OLED-skærme';
+
+  @override
+  String get customColor => 'Egen';
+
+  @override
+  String get hue => 'Nuance';
+
+  @override
+  String get saturation => 'Mætning';
 }

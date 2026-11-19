@@ -597,4 +597,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get oledBlackSubtitle => '다크 모드에서 채팅 배경을 검은색으로 표시합니다(OLED 화면용)';
+
+  @override
+  String get customColor => '사용자 지정';
+
+  @override
+  String get hue => '색조';
+
+  @override
+  String get saturation => '채도';
 }

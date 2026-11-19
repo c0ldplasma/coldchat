@@ -606,4 +606,13 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Černé pozadí chatu v tmavém režimu, pro OLED displeje';
+
+  @override
+  String get customColor => 'Vlastní';
+
+  @override
+  String get hue => 'Odstín';
+
+  @override
+  String get saturation => 'Sytost';
 }

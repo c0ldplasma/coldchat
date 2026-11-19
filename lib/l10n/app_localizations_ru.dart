@@ -606,4 +606,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Чёрный фон чата в тёмном режиме, для OLED-экранов';
+
+  @override
+  String get customColor => 'Свой';
+
+  @override
+  String get hue => 'Оттенок';
+
+  @override
+  String get saturation => 'Насыщенность';
 }

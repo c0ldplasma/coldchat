@@ -349,5 +349,8 @@
   "themePurple": "Fioletowy",
   "accentColor": "Kolor akcentu",
   "oledBlack": "Czerń OLED",
-  "oledBlackSubtitle": "Czarne tło czatu w trybie ciemnym, dla ekranów OLED"
+  "oledBlackSubtitle": "Czarne tło czatu w trybie ciemnym, dla ekranów OLED",
+  "customColor": "Własny",
+  "hue": "Odcień",
+  "saturation": "Nasycenie"
 }

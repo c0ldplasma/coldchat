@@ -245,5 +245,8 @@
   "themePurple": "Lila",
   "accentColor": "Akzentfarbe",
   "oledBlack": "OLED-Schwarz",
-  "oledBlackSubtitle": "Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays"
+  "oledBlackSubtitle": "Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays",
+  "customColor": "Eigene",
+  "hue": "Farbton",
+  "saturation": "Sättigung"
 }

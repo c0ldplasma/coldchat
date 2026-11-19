@@ -602,4 +602,13 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get oledBlackSubtitle => 'רקע צ\'אט שחור במצב כהה, למסכי OLED';
+
+  @override
+  String get customColor => 'מותאם אישית';
+
+  @override
+  String get hue => 'גוון';
+
+  @override
+  String get saturation => 'רוויה';
 }

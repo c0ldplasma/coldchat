@@ -607,4 +607,13 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED';
+
+  @override
+  String get customColor => 'Tùy chỉnh';
+
+  @override
+  String get hue => 'Sắc độ';
+
+  @override
+  String get saturation => 'Độ bão hòa';
 }

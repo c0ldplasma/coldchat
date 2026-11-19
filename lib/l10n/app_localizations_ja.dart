@@ -597,4 +597,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get oledBlackSubtitle => 'ダークモードでチャットの背景を黒にします（OLED画面向け）';
+
+  @override
+  String get customColor => 'カスタム';
+
+  @override
+  String get hue => '色相';
+
+  @override
+  String get saturation => '彩度';
 }

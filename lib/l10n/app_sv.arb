@@ -349,5 +349,8 @@
   "themePurple": "Lila",
   "accentColor": "Accentfärg",
   "oledBlack": "OLED-svart",
-  "oledBlackSubtitle": "Svart chattbakgrund i mörkt läge, för OLED-skärmar"
+  "oledBlackSubtitle": "Svart chattbakgrund i mörkt läge, för OLED-skärmar",
+  "customColor": "Egen",
+  "hue": "Nyans",
+  "saturation": "Mättnad"
 }

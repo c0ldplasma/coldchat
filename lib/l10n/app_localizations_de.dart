@@ -606,4 +606,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays';
+
+  @override
+  String get customColor => 'Eigene';
+
+  @override
+  String get hue => 'Farbton';
+
+  @override
+  String get saturation => 'Sättigung';
 }

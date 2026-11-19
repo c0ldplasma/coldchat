@@ -606,4 +606,13 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Sfondo della chat nero in modalità scura, per schermi OLED';
+
+  @override
+  String get customColor => 'Personalizzato';
+
+  @override
+  String get hue => 'Tonalità';
+
+  @override
+  String get saturation => 'Saturazione';
 }

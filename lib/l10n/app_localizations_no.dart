@@ -606,4 +606,13 @@ class AppLocalizationsNo extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Svart chatbakgrunn i mørk modus, for OLED-skjermer';
+
+  @override
+  String get customColor => 'Egendefinert';
+
+  @override
+  String get hue => 'Fargetone';
+
+  @override
+  String get saturation => 'Metning';
 }

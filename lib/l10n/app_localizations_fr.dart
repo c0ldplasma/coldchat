@@ -608,4 +608,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Fond du chat noir en mode sombre, pour les écrans OLED';
+
+  @override
+  String get customColor => 'Personnalisée';
+
+  @override
+  String get hue => 'Teinte';
+
+  @override
+  String get saturation => 'Saturation';
 }

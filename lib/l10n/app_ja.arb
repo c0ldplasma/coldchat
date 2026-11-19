@@ -349,5 +349,8 @@
   "themePurple": "パープル",
   "accentColor": "アクセントカラー",
   "oledBlack": "OLEDブラック",
-  "oledBlackSubtitle": "ダークモードでチャットの背景を黒にします（OLED画面向け）"
+  "oledBlackSubtitle": "ダークモードでチャットの背景を黒にします（OLED画面向け）",
+  "customColor": "カスタム",
+  "hue": "色相",
+  "saturation": "彩度"
 }

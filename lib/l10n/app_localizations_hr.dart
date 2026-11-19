@@ -605,4 +605,13 @@ class AppLocalizationsHr extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Crna pozadina chata u tamnom načinu, za OLED zaslone';
+
+  @override
+  String get customColor => 'Prilagođeno';
+
+  @override
+  String get hue => 'Nijansa';
+
+  @override
+  String get saturation => 'Zasićenost';
 }

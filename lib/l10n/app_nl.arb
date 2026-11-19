@@ -349,5 +349,8 @@
   "themePurple": "Paars",
   "accentColor": "Accentkleur",
   "oledBlack": "OLED-zwart",
-  "oledBlackSubtitle": "Zwarte chatachtergrond in donkere modus, voor OLED-schermen"
+  "oledBlackSubtitle": "Zwarte chatachtergrond in donkere modus, voor OLED-schermen",
+  "customColor": "Eigen",
+  "hue": "Tint",
+  "saturation": "Verzadiging"
 }

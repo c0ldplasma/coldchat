@@ -349,5 +349,8 @@
   "themePurple": "Morado",
   "accentColor": "Color de acento",
   "oledBlack": "Negro OLED",
-  "oledBlackSubtitle": "Fondo del chat negro en modo oscuro, para pantallas OLED"
+  "oledBlackSubtitle": "Fondo del chat negro en modo oscuro, para pantallas OLED",
+  "customColor": "Personalizado",
+  "hue": "Tono",
+  "saturation": "Saturación"
 }

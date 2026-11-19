@@ -349,5 +349,8 @@
   "themePurple": "Љубичаста",
   "accentColor": "Боја акцента",
   "oledBlack": "OLED црна",
-  "oledBlackSubtitle": "Црна позадина чета у тамном режиму, за OLED екране"
+  "oledBlackSubtitle": "Црна позадина чета у тамном режиму, за OLED екране",
+  "customColor": "Прилагођено",
+  "hue": "Нијанса",
+  "saturation": "Засићеност"
 }

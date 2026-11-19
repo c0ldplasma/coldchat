@@ -605,4 +605,13 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए';
+
+  @override
+  String get customColor => 'कस्टम';
+
+  @override
+  String get hue => 'रंगत';
+
+  @override
+  String get saturation => 'संतृप्ति';
 }

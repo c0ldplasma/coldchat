@@ -34,6 +34,7 @@ class AccentColor {
         'red' => l10n.themeRed,
         'pink' => l10n.themePink,
         'purple' => l10n.themePurple,
+        ColdChatTheme.customId => l10n.customColor,
         _ => id,
       };
 
@@ -115,8 +116,34 @@ abstract final class ColdChatTheme {
 
   static AccentColor accentById(String? id) => accents.firstWhere((a) => a.id == id, orElse: () => base);
 
+  /// A color the user mixed from a hue and a saturation (chroma), stored next to [accentKey]. Only those two are
+  /// stored: the lightness of every accent comes from the mode, which is what keeps any choice readable.
+  static const String customId = 'custom';
+  static const String customHueKey = 'accentHue';
+  static const String customChromaKey = 'accentChroma';
+
+  /// Chroma beyond this is out of gamut for most hues at the tones the scheme uses, so the slider stops here.
+  static const double maxChroma = 80.0;
+
+  static AccentColor custom(double hue, double chroma) => AccentColor(customId, hue, chroma);
+
   /// The accent in [settings], or Indigo.
-  static AccentColor current(Box settings) => accentById(settings.get(accentKey) as String?);
+  static AccentColor current(Box settings) {
+    final id = settings.get(accentKey) as String?;
+    if (id == customId) {
+      final hue = settings.get(customHueKey);
+      final chroma = settings.get(customChromaKey);
+      if (hue is double && chroma is double) return custom(hue, chroma);
+    }
+    return accentById(id);
+  }
+
+  /// Picks a custom color, as hue (0–360) and chroma (0–[maxChroma]).
+  static Future<void> setCustom(Box settings, double hue, double chroma) => settings.putAll({
+        accentKey: customId,
+        customHueKey: hue,
+        customChromaKey: chroma,
+      });
 
   /// Moves a color picked in the old list over to the closest accent, so an update changes as little as possible.
   /// New installs get no entry and so Indigo.

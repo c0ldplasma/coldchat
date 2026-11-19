@@ -605,4 +605,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get oledBlackSubtitle =>
       'Karanlık modda siyah sohbet arka planı, OLED ekranlar için';
+
+  @override
+  String get customColor => 'Özel';
+
+  @override
+  String get hue => 'Ton';
+
+  @override
+  String get saturation => 'Doygunluk';
 }

@@ -349,5 +349,8 @@
   "themePurple": "बैंगनी",
   "accentColor": "एक्सेंट रंग",
   "oledBlack": "OLED काला",
-  "oledBlackSubtitle": "डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए"
+  "oledBlackSubtitle": "डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए",
+  "customColor": "कस्टम",
+  "hue": "रंगत",
+  "saturation": "संतृप्ति"
 }

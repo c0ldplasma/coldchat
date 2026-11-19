@@ -349,5 +349,8 @@
   "themePurple": "Μωβ",
   "accentColor": "Χρώμα έμφασης",
   "oledBlack": "Μαύρο OLED",
-  "oledBlackSubtitle": "Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED"
+  "oledBlackSubtitle": "Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED",
+  "customColor": "Προσαρμοσμένο",
+  "hue": "Απόχρωση",
+  "saturation": "Κορεσμός"
 }
