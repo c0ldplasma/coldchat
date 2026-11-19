@@ -5,8 +5,9 @@ import '/tools/channel_ranking.dart';
 
 /// The channel search on the home tab: Twitch's search, completed and sorted by [rankChannels].
 ///
-/// Twitch's search leaves out channels that haven't streamed in six months, so a channel typed out exactly is also
-/// looked up by login and added if the search missed it. Live channels get their viewer count and game from one
+/// Twitch's search also returns close misspellings, in no particular order, so with a common prefix the exact match
+/// can fall outside the candidates it returns. A channel typed out exactly is therefore also looked up by login and
+/// added if the search missed it. Live channels get their viewer count and game from one
 /// stream lookup, which also corrects the search's live flag.
 Future<List<ChannelCandidate>> searchChannels(TokenData tokenData, String rawQuery) async {
   final query = normalizeChannelQuery(rawQuery);

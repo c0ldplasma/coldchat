@@ -221,8 +221,8 @@ class Twitch {
     ];
   }
 
-  /// Twitch's channel search. It only finds channels that streamed in the last six months, matches the start of the
-  /// login, and returns them in no useful order; see `searchChannels` for what ColdChat makes of it.
+  /// Twitch's channel search. It matches the start of the login or display name, including close misspellings, and
+  /// returns them in no useful order; see `searchChannels` for what ColdChat makes of it.
   static Future<List<SearchData>> channelSearch(TokenData tokenData, String query, {int first = 50}) async {
     final response = await http.get(
       Uri.https('api.twitch.tv', '/helix/search/channels', {'query': query, 'first': '$first'}),
