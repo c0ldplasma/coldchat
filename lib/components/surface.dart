@@ -12,7 +12,15 @@ class Surface extends StatelessWidget {
   final Function()? onLongPress;
   final BorderRadius? borderRadius;
 
-  const Surface({super.key, required this.child, this.shouldClip = false, this.onTap, this.onLongPress, this.borderRadius, this.type = SurfaceType.primary});
+  const Surface({
+    super.key,
+    required this.child,
+    this.shouldClip = false,
+    this.onTap,
+    this.onLongPress,
+    this.borderRadius,
+    this.type = SurfaceType.primary,
+  });
 
   @override
   Widget build(BuildContext context) {

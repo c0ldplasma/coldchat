@@ -22,7 +22,8 @@ class ChatSettingsModal extends StatelessWidget {
   Future<void> _pickButtonIcon(BuildContext context) {
     final client = context.read<Client>();
     final lastChannel = Hive.box('Settings').get('lastChannel');
-    final channel = client.channels.state.firstWhereOrNull((c) => c.name == lastChannel) ?? client.channels.state.firstOrNull;
+    final channel =
+        client.channels.state.firstWhereOrNull((c) => c.name == lastChannel) ?? client.channels.state.firstOrNull;
     return Modal.show(
       context: context,
       child: Builder(
@@ -47,77 +48,77 @@ class ChatSettingsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('Settings'),
-        builder: (context, box) {
-          final ChatSettings chatSettings = box.get('chatSettings') as ChatSettings;
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              ModalHeader(title: AppLocalizations.of(context)!.chatSettings),
-              Tile(
-                title: AppLocalizations.of(context)!.autocompleteUsersWithAt,
-                prefix: const Icon(Icons.alternate_email_outlined),
-                suffix: Toggle(
-                  value: chatSettings.userAutocompletionWithAt,
-                  onChanged: (newValue) {
-                    chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-                    chatSettings.save();
-                  },
-                ),
-                onTap: () {
-                  chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-                  chatSettings.save();
-                },
-              ),
-              Tile(
-                title: AppLocalizations.of(context)!.autocompleteEmotesWithColon,
-                prefix: const Icon(Icons.emoji_emotions_outlined),
-                suffix: Toggle(
-                  value: chatSettings.emoteAutocompletionWithColon,
-                  onChanged: (newValue) {
-                    chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-                    chatSettings.save();
-                  },
-                ),
-                onTap: () {
-                  chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-                  chatSettings.save();
-                },
-              ),
-              Tile(
-                title: AppLocalizations.of(context)!.emoteMenuButton,
-                subtitle: EmoteButtonIcon.name ?? 'Kappa',
-                prefix: const SizedBox.square(dimension: 24.0, child: Center(child: EmoteButtonIconView())),
-                suffix: const Icon(Icons.chevron_right),
-                onTap: () => _pickButtonIcon(context),
-              ),
-              Tile(
-                title: AppLocalizations.of(context)!.emoteMenuButtonGrayscale,
-                prefix: const Icon(Icons.filter_b_and_w_outlined),
-                suffix: Toggle(
-                  value: EmoteButtonIcon.grayscale,
-                  onChanged: (newValue) => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
-                ),
-                onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
-              ),
-              Tile(
-                title: AppLocalizations.of(context)!.showImagesFromLinks,
-                subtitle: AppLocalizations.of(context)!.showImagesFromLinksSubtitle,
-                prefix: const Icon(Icons.image_outlined),
-                suffix: Toggle(
-                  value: chatSettings.showLinkImages,
-                  onChanged: (newValue) {
-                    chatSettings.showLinkImages = !chatSettings.showLinkImages;
-                    chatSettings.save();
-                  },
-                ),
-                onTap: () {
-                  chatSettings.showLinkImages = !chatSettings.showLinkImages;
-                  chatSettings.save();
-                },
-              ),
-            ],
-          );
-        },
+    box: Hive.box('Settings'),
+    builder: (context, box) {
+      final ChatSettings chatSettings = box.get('chatSettings') as ChatSettings;
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ModalHeader(title: AppLocalizations.of(context)!.chatSettings),
+          Tile(
+            title: AppLocalizations.of(context)!.autocompleteUsersWithAt,
+            prefix: const Icon(Icons.alternate_email_outlined),
+            suffix: Toggle(
+              value: chatSettings.userAutocompletionWithAt,
+              onChanged: (newValue) {
+                chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
+                chatSettings.save();
+              },
+            ),
+            onTap: () {
+              chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
+              chatSettings.save();
+            },
+          ),
+          Tile(
+            title: AppLocalizations.of(context)!.autocompleteEmotesWithColon,
+            prefix: const Icon(Icons.emoji_emotions_outlined),
+            suffix: Toggle(
+              value: chatSettings.emoteAutocompletionWithColon,
+              onChanged: (newValue) {
+                chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
+                chatSettings.save();
+              },
+            ),
+            onTap: () {
+              chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
+              chatSettings.save();
+            },
+          ),
+          Tile(
+            title: AppLocalizations.of(context)!.emoteMenuButton,
+            subtitle: EmoteButtonIcon.name ?? 'Kappa',
+            prefix: const SizedBox.square(dimension: 24.0, child: Center(child: EmoteButtonIconView())),
+            suffix: const Icon(Icons.chevron_right),
+            onTap: () => _pickButtonIcon(context),
+          ),
+          Tile(
+            title: AppLocalizations.of(context)!.emoteMenuButtonGrayscale,
+            prefix: const Icon(Icons.filter_b_and_w_outlined),
+            suffix: Toggle(
+              value: EmoteButtonIcon.grayscale,
+              onChanged: (newValue) => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
+            ),
+            onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
+          ),
+          Tile(
+            title: AppLocalizations.of(context)!.showImagesFromLinks,
+            subtitle: AppLocalizations.of(context)!.showImagesFromLinksSubtitle,
+            prefix: const Icon(Icons.image_outlined),
+            suffix: Toggle(
+              value: chatSettings.showLinkImages,
+              onChanged: (newValue) {
+                chatSettings.showLinkImages = !chatSettings.showLinkImages;
+                chatSettings.save();
+              },
+            ),
+            onTap: () {
+              chatSettings.showLinkImages = !chatSettings.showLinkImages;
+              chatSettings.save();
+            },
+          ),
+        ],
       );
+    },
+  );
 }

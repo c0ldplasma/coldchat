@@ -9,6 +9,7 @@ import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '/theme/coldchat_theme.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
@@ -78,8 +79,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
     if (box.length > _seenMentionMaxEntries) {
       // Trim oldest entries (lowest stored timestamps) so the box doesn't
       // grow unbounded across sessions.
-      final entries = box.toMap().entries.toList()
-        ..sort((a, b) => (a.value as int).compareTo(b.value as int));
+      final entries = box.toMap().entries.toList()..sort((a, b) => (a.value as int).compareTo(b.value as int));
       final toRemove = entries.take(box.length - _seenMentionMaxEntries).map((e) => e.key).toList();
       box.deleteAll(toRemove);
     }
@@ -87,57 +87,72 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('Settings'),
-        builder: (context, box) {
-          final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
-          final accent = ColdChatTheme.current(box);
-          final matchingCustomLocale = AppLocalizations.supportedLocales.firstWhereOrNull((element) => element.toLanguageTag() == box.get('locale'));
-          return MaterialApp(
-            localizationsDelegates: const [
-              ...AppLocalizations.localizationsDelegates,
-              LocaleNamesLocalizationsDelegate(),
-            ],
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: matchingCustomLocale,
-            debugShowCheckedModeBanner: false,
-            home: Builder(builder: (context) {
-              return AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                  systemNavigationBarColor: Colors.transparent,
-                  systemNavigationBarDividerColor: Colors.transparent,
-                  statusBarColor: Colors.transparent,
-                  systemNavigationBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
-                  statusBarBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.light : Brightness.dark,
-                  statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
-                ),
-                child: Stack(
-                  children: [
-                    const HomePage(),
-                    Container(
-                      color: Theme.of(context).colorScheme.surface,
-                      height: MediaQuery.of(context).viewPadding.top,
-                    ),
-                  ],
-                ),
-              );
-            }),
-            theme: ColdChatTheme.build(accent, Brightness.light, highContrast: applicationAppearance.highContrast),
-            darkTheme: ColdChatTheme.build(accent, Brightness.dark, highContrast: applicationAppearance.highContrast, oledBlack: applicationAppearance.oledBlack),
-            themeMode: applicationAppearance.themeMode == 'dark'
-                ? ThemeMode.dark
-                : applicationAppearance.themeMode == 'light'
-                    ? ThemeMode.light
-                    : ThemeMode.system,
-            scrollBehavior: CustomScrollBehavior(),
-          );
-        },
+    box: Hive.box('Settings'),
+    builder: (context, box) {
+      final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
+      final accent = ColdChatTheme.current(box);
+      final matchingCustomLocale = AppLocalizations.supportedLocales.firstWhereOrNull(
+        (element) => element.toLanguageTag() == box.get('locale'),
       );
+      return MaterialApp(
+        localizationsDelegates: const [
+          ...AppLocalizations.localizationsDelegates,
+          LocaleNamesLocalizationsDelegate(),
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: matchingCustomLocale,
+        debugShowCheckedModeBanner: false,
+        home: Builder(
+          builder: (context) {
+            return AnnotatedRegion<SystemUiOverlayStyle>(
+              value: SystemUiOverlayStyle(
+                systemNavigationBarColor: Colors.transparent,
+                systemNavigationBarDividerColor: Colors.transparent,
+                statusBarColor: Colors.transparent,
+                systemNavigationBarIconBrightness: Theme.of(context).brightness == Brightness.light
+                    ? Brightness.dark
+                    : Brightness.light,
+                statusBarBrightness: Theme.of(context).brightness == Brightness.light
+                    ? Brightness.light
+                    : Brightness.dark,
+                statusBarIconBrightness: Theme.of(context).brightness == Brightness.light
+                    ? Brightness.dark
+                    : Brightness.light,
+              ),
+              child: Stack(
+                children: [
+                  const HomePage(),
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    height: MediaQuery.of(context).viewPadding.top,
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        theme: ColdChatTheme.build(accent, Brightness.light, highContrast: applicationAppearance.highContrast),
+        darkTheme: ColdChatTheme.build(
+          accent,
+          Brightness.dark,
+          highContrast: applicationAppearance.highContrast,
+          oledBlack: applicationAppearance.oledBlack,
+        ),
+        themeMode: applicationAppearance.themeMode == 'dark'
+            ? ThemeMode.dark
+            : applicationAppearance.themeMode == 'light'
+            ? ThemeMode.light
+            : ThemeMode.system,
+        scrollBehavior: CustomScrollBehavior(),
+      );
+    },
+  );
 }
 
 class CustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }

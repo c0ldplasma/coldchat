@@ -146,8 +146,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Đã xảy ra lỗi khi xác minh dữ liệu người dùng:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Đã xảy ra lỗi khi xác minh dữ liệu người dùng:';
 
   @override
   String get verifyingUserData => 'Đang xác minh dữ liệu người dùng...';
@@ -156,8 +155,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get verifiedUserToken => 'Đã xác minh token người dùng!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Đã xảy ra lỗi khi xác minh token người dùng:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Đã xảy ra lỗi khi xác minh token người dùng:';
 
   @override
   String get verifyingUserToken => 'Đang xác minh token người dùng...';
@@ -343,8 +341,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get scrollToBottom => 'Cuộn xuống cuối';
 
   @override
-  String get appTagline =>
-      'Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ';
+  String get appTagline => 'Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ';
 
   @override
   String get loginWithTwitch => 'Đăng nhập bằng Twitch';
@@ -359,8 +356,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get autocompleteUsersWithAt => 'Tự động gợi ý người dùng với @';
 
   @override
-  String get autocompleteEmotesWithColon =>
-      'Tự động gợi ý biểu tượng cảm xúc với :';
+  String get autocompleteEmotesWithColon => 'Tự động gợi ý biểu tượng cảm xúc với :';
 
   @override
   String get language => 'Ngôn ngữ';
@@ -378,19 +374,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get notifications => 'Thông báo';
 
   @override
-  String get noNotifications =>
-      'Một ai đó, ở đâu đó, rồi sẽ nhắc đến bạn vào một ngày nào đó.';
+  String get noNotifications => 'Một ai đó, ở đâu đó, rồi sẽ nhắc đến bạn vào một ngày nào đó.';
 
   @override
   String get backgroundNotifications => 'Thông báo chạy nền';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Tùy chọn này không khả dụng trên nền tảng của bạn.';
+  String get optionNotAvailableOnYourPlatform => 'Tùy chọn này không khả dụng trên nền tảng của bạn.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Tùy chọn này chỉ dành cho người ủng hộ ColdChat.';
+  String get optionNotAvailablePaywalled => 'Tùy chọn này chỉ dành cho người ủng hộ ColdChat.';
 
   @override
   String get clearAll => 'Xóa tất cả';
@@ -419,19 +412,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get emoteMenuButton => 'Nút menu biểu tượng cảm xúc';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Hiển thị nút menu biểu tượng cảm xúc dạng đen trắng';
+  String get emoteMenuButtonGrayscale => 'Hiển thị nút menu biểu tượng cảm xúc dạng đen trắng';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Nhấn vào một biểu tượng cảm xúc để dùng làm nút menu';
+  String get chooseEmoteMenuButton => 'Nhấn vào một biểu tượng cảm xúc để dùng làm nút menu';
 
   @override
   String get resetToKappa => 'Đặt lại về Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Không thể tải biểu tượng cảm xúc đó. Nút chưa được thay đổi.';
+  String get emoteMenuButtonDownloadFailed => 'Không thể tải biểu tượng cảm xúc đó. Nút chưa được thay đổi.';
 
   @override
   String get takePhoto => 'Chụp ảnh';
@@ -482,8 +472,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get openOnTwitch => 'Mở trên Twitch';
 
   @override
-  String get blockFailed =>
-      'Không thể thay đổi danh sách chặn. Hãy kiểm tra kết nối và thử lại.';
+  String get blockFailed => 'Không thể thay đổi danh sách chặn. Hãy kiểm tra kết nối và thử lại.';
 
   @override
   String get contact => 'Liên hệ & góp ý';
@@ -518,8 +507,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteConversation => 'Xóa cuộc trò chuyện';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Xóa tin nhắn khỏi thiết bị này. Twitch không lưu lịch sử tin thì thầm.';
+  String get deleteConversationSubtitle => 'Xóa tin nhắn khỏi thiết bị này. Twitch không lưu lịch sử tin thì thầm.';
 
   @override
   String get whisperNeedsLogin => 'Hãy đăng nhập Twitch để gửi tin thì thầm.';
@@ -529,8 +517,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hãy đăng nhập lại để gửi và nhận tin thì thầm. Phiên đăng nhập của bạn có từ trước khi ColdChat hỗ trợ tính năng này.';
 
   @override
-  String get whisperUserNotFound =>
-      'Không có người dùng Twitch nào có tên này.';
+  String get whisperUserNotFound => 'Không có người dùng Twitch nào có tên này.';
 
   @override
   String whisperFailed(String reason) {
@@ -602,8 +589,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get oledBlack => 'Đen OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED';
+  String get oledBlackSubtitle => 'Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED';
 
   @override
   String get customColor => 'Tùy chỉnh';

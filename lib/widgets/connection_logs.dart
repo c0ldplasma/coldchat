@@ -21,23 +21,23 @@ class ConnectionLogEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () async {},
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Text.rich(
+    onTap: () async {},
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Text.rich(
+        TextSpan(
+          children: [
             TextSpan(
-              children: [
-                TextSpan(
-                  text: (log.data is irc.Message) ? (log.data as irc.Message).raw : '${log.data}',
-                  style: TextStyle(
-                    color: log.outgoing ? Colors.green : Colors.red,
-                  ),
-                ),
-              ],
+              text: (log.data is irc.Message) ? (log.data as irc.Message).raw : '${log.data}',
+              style: TextStyle(
+                color: log.outgoing ? Colors.green : Colors.red,
+              ),
             ),
-          ),
+          ],
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class ConnectionLogsDisplay extends StatelessWidget {
@@ -48,68 +48,71 @@ class ConnectionLogsDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<Logs, List<Log>>(
-        bloc: context.read<Client>().receiver.logs,
-        builder: (BuildContext context, state) => SafeArea(
-          child: Column(
-            children: [
-              TextField(
-                controller: channelController,
-                onSubmitted: (text) {
-                  context.read<Client>().channels.join('#$text');
-                  channelController.clear();
-                },
-              ),
-              BlocBuilder<ClientChannels, List<Channel>>(
-                  bloc: context.read<Client>().channels,
-                  builder: (context, state) {
-                    return Material(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      child: SizedBox(
-                        height: 48.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            for (final channel in state)
-                              BlocBuilder<Channel, ChannelState>(
-                                bloc: channel,
-                                builder: (context, channelState) => InkWell(
-                                  onTap: () {
-                                    final client = context.read<Client>();
-                                    client.receiver.send('JOIN ${channel.name}');
-                                    client.channels.state.firstWhereOrNull((channelSelect) => channelSelect.name == channel.name)?.add(ChannelJoin(client.receiver, client.transmitter));
-                                  },
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Text('${channel.name}\n${channelState.runtimeType.toString().substring(7)}'),
-                                    ),
-                                  ),
-                                ),
+    bloc: context.read<Client>().receiver.logs,
+    builder: (BuildContext context, state) => SafeArea(
+      child: Column(
+        children: [
+          TextField(
+            controller: channelController,
+            onSubmitted: (text) {
+              context.read<Client>().channels.join('#$text');
+              channelController.clear();
+            },
+          ),
+          BlocBuilder<ClientChannels, List<Channel>>(
+            bloc: context.read<Client>().channels,
+            builder: (context, state) {
+              return Material(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                child: SizedBox(
+                  height: 48.0,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      for (final channel in state)
+                        BlocBuilder<Channel, ChannelState>(
+                          bloc: channel,
+                          builder: (context, channelState) => InkWell(
+                            onTap: () {
+                              final client = context.read<Client>();
+                              client.receiver.send('JOIN ${channel.name}');
+                              client.channels.state
+                                  .firstWhereOrNull((channelSelect) => channelSelect.name == channel.name)
+                                  ?.add(ChannelJoin(client.receiver, client.transmitter));
+                            },
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text('${channel.name}\n${channelState.runtimeType.toString().substring(7)}'),
                               ),
-                          ],
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  }),
-              Expanded(
-                child: ListView.builder(
-                  reverse: true,
-                  itemCount: state.length,
-                  itemBuilder: (BuildContext context, int index) => ConnectionLogEntry(
-                    key: ObjectKey(state.reversed.elementAt(index)),
-                    log: state.reversed.elementAt(index),
+                    ],
                   ),
                 ),
-              ),
-              TextField(
-                controller: controller,
-                onSubmitted: (text) {
-                  context.read<Client>().receiver.send(text);
-                  controller.clear();
-                },
-              ),
-            ],
+              );
+            },
           ),
-        ),
-      );
+          Expanded(
+            child: ListView.builder(
+              reverse: true,
+              itemCount: state.length,
+              itemBuilder: (BuildContext context, int index) => ConnectionLogEntry(
+                key: ObjectKey(state.reversed.elementAt(index)),
+                log: state.reversed.elementAt(index),
+              ),
+            ),
+          ),
+          TextField(
+            controller: controller,
+            onSubmitted: (text) {
+              context.read<Client>().receiver.send(text);
+              controller.clear();
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }

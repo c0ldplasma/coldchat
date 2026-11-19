@@ -30,53 +30,55 @@ class _LinkImageState extends State<LinkImage> {
     if (_offeredThisSession || _settings.showLinkImages) return;
     _offeredThisSession = true;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(l10n.showImagesAutomatically),
-      action: SnackBarAction(
-        label: l10n.turnOn,
-        onPressed: () {
-          final settings = _settings;
-          settings.showLinkImages = true;
-          settings.save();
-        },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.showImagesAutomatically),
+        action: SnackBarAction(
+          label: l10n.turnOn,
+          onPressed: () {
+            final settings = _settings;
+            settings.showLinkImages = true;
+            settings.save();
+          },
+        ),
       ),
-    ));
+    );
   }
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder<Box>(
-        valueListenable: Hive.box('Settings').listenable(keys: ['chatSettings']),
-        builder: (context, box, _) {
-          if (widget.embed.revealed || _settings.showLinkImages) {
-            return EmbeddedImage(embed: widget.embed, scale: widget.scale);
-          }
-          final colors = Theme.of(context).colorScheme;
-          final host = Uri.tryParse(widget.embed.url)?.host ?? '';
-          return Material(
-            color: colors.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(8.0),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(8.0),
-              onTap: _reveal,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10.0 * widget.scale, vertical: 6.0 * widget.scale),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.image_outlined, size: 18.0 * widget.scale, color: colors.onSurfaceVariant),
-                    SizedBox(width: 6.0 * widget.scale),
-                    Flexible(
-                      child: Text(
-                        AppLocalizations.of(context)!.showImage(host),
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: colors.onSurfaceVariant, fontSize: 14.0 * widget.scale),
-                      ),
-                    ),
-                  ],
+    valueListenable: Hive.box('Settings').listenable(keys: ['chatSettings']),
+    builder: (context, box, _) {
+      if (widget.embed.revealed || _settings.showLinkImages) {
+        return EmbeddedImage(embed: widget.embed, scale: widget.scale);
+      }
+      final colors = Theme.of(context).colorScheme;
+      final host = Uri.tryParse(widget.embed.url)?.host ?? '';
+      return Material(
+        color: colors.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(8.0),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8.0),
+          onTap: _reveal,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0 * widget.scale, vertical: 6.0 * widget.scale),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.image_outlined, size: 18.0 * widget.scale, color: colors.onSurfaceVariant),
+                SizedBox(width: 6.0 * widget.scale),
+                Flexible(
+                  child: Text(
+                    AppLocalizations.of(context)!.showImage(host),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: colors.onSurfaceVariant, fontSize: 14.0 * widget.scale),
+                  ),
                 ),
-              ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
       );
+    },
+  );
 }

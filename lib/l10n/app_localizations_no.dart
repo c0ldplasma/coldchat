@@ -146,8 +146,7 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Det oppsto en feil under bekreftelse av brukerdata:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Det oppsto en feil under bekreftelse av brukerdata:';
 
   @override
   String get verifyingUserData => 'Bekrefter brukerdata...';
@@ -156,8 +155,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get verifiedUserToken => 'Brukertoken bekreftet!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Det oppsto en feil under bekreftelse av brukertoken:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Det oppsto en feil under bekreftelse av brukertoken:';
 
   @override
   String get verifyingUserToken => 'Bekrefter brukertoken...';
@@ -276,8 +274,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get copyText => 'Kopier tekst';
 
   @override
-  String get copyTextSubtitle =>
-      'Hold inne for å kopiere teksten med brukernavn';
+  String get copyTextSubtitle => 'Hold inne for å kopiere teksten med brukernavn';
 
   @override
   String get deleteMessage => 'Slett melding';
@@ -383,12 +380,10 @@ class AppLocalizationsNo extends AppLocalizations {
   String get backgroundNotifications => 'Varsler i bakgrunnen';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Dette alternativet er ikke tilgjengelig på plattformen din.';
+  String get optionNotAvailableOnYourPlatform => 'Dette alternativet er ikke tilgjengelig på plattformen din.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Dette alternativet er bare for ColdChat-støttespillere.';
+  String get optionNotAvailablePaywalled => 'Dette alternativet er bare for ColdChat-støttespillere.';
 
   @override
   String get clearAll => 'Fjern alt';
@@ -417,19 +412,16 @@ class AppLocalizationsNo extends AppLocalizations {
   String get emoteMenuButton => 'Knapp for emote-menyen';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Vis knappen for emote-menyen i gråtoner';
+  String get emoteMenuButtonGrayscale => 'Vis knappen for emote-menyen i gråtoner';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Trykk på en emote for å bruke den som knapp for emote-menyen';
+  String get chooseEmoteMenuButton => 'Trykk på en emote for å bruke den som knapp for emote-menyen';
 
   @override
   String get resetToKappa => 'Tilbakestill til Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Kunne ikke laste ned den emoten. Knappen ble ikke endret.';
+  String get emoteMenuButtonDownloadFailed => 'Kunne ikke laste ned den emoten. Knappen ble ikke endret.';
 
   @override
   String get takePhoto => 'Ta bilde';
@@ -438,8 +430,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get chooseFromLibrary => 'Velg fra biblioteket';
 
   @override
-  String get cameraUnavailable =>
-      'Kameraet kunne ikke åpnes. Sjekk at ColdChat har tilgang til kameraet.';
+  String get cameraUnavailable => 'Kameraet kunne ikke åpnes. Sjekk at ColdChat har tilgang til kameraet.';
 
   @override
   String get about => 'Om';
@@ -480,8 +471,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get openOnTwitch => 'Åpne på Twitch';
 
   @override
-  String get blockFailed =>
-      'Blokkeringslisten kunne ikke endres. Sjekk tilkoblingen din og prøv igjen.';
+  String get blockFailed => 'Blokkeringslisten kunne ikke endres. Sjekk tilkoblingen din og prøv igjen.';
 
   @override
   String get contact => 'Kontakt og tilbakemelding';
@@ -520,16 +510,14 @@ class AppLocalizationsNo extends AppLocalizations {
       'Sletter meldingene fra denne enheten. Twitch lagrer ingen logg over hviskemeldinger.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Logg inn med Twitch for å sende hviskemeldinger.';
+  String get whisperNeedsLogin => 'Logg inn med Twitch for å sende hviskemeldinger.';
 
   @override
   String get whisperNeedsScope =>
       'Logg inn igjen for å sende og motta hviskemeldinger. Innloggingen din er fra før ColdChat støttet dem.';
 
   @override
-  String get whisperUserNotFound =>
-      'Det finnes ingen Twitch-bruker med det navnet.';
+  String get whisperUserNotFound => 'Det finnes ingen Twitch-bruker med det navnet.';
 
   @override
   String whisperFailed(String reason) {
@@ -555,8 +543,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get showImagesFromLinks => 'Vis bilder fra lenker';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch sjekker ikke disse bildene. De kan være upassende.';
+  String get showImagesFromLinksSubtitle => 'Twitch sjekker ikke disse bildene. De kan være upassende.';
 
   @override
   String get showImagesAutomatically => 'Vis bilder fra lenker automatisk?';
@@ -601,8 +588,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get oledBlack => 'OLED-svart';
 
   @override
-  String get oledBlackSubtitle =>
-      'Svart chatbakgrunn i mørk modus, for OLED-skjermer';
+  String get oledBlackSubtitle => 'Svart chatbakgrunn i mørk modus, for OLED-skjermer';
 
   @override
   String get customColor => 'Egendefinert';

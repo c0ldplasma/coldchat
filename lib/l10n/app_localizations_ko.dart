@@ -146,8 +146,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      '사용자 데이터를 확인하는 중 오류가 발생했어요:';
+  String get anErrorHasOccuredWhenVerifyingUserData => '사용자 데이터를 확인하는 중 오류가 발생했어요:';
 
   @override
   String get verifyingUserData => '사용자 데이터 확인 중...';
@@ -156,8 +155,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get verifiedUserToken => '사용자 토큰 확인 완료!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      '사용자 토큰을 확인하는 중 오류가 발생했어요:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => '사용자 토큰을 확인하는 중 오류가 발생했어요:';
 
   @override
   String get verifyingUserToken => '사용자 토큰 확인 중...';
@@ -423,8 +421,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetToKappa => 'Kappa로 초기화';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      '이모티콘을 다운로드할 수 없어요. 버튼은 변경되지 않았어요.';
+  String get emoteMenuButtonDownloadFailed => '이모티콘을 다운로드할 수 없어요. 버튼은 변경되지 않았어요.';
 
   @override
   String get takePhoto => '사진 찍기';
@@ -433,8 +430,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chooseFromLibrary => '보관함에서 선택';
 
   @override
-  String get cameraUnavailable =>
-      '카메라를 열 수 없어요. ColdChat에 카메라 접근 권한이 있는지 확인하세요.';
+  String get cameraUnavailable => '카메라를 열 수 없어요. ColdChat에 카메라 접근 권한이 있는지 확인하세요.';
 
   @override
   String get about => '정보';
@@ -503,22 +499,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get closeConversation => '대화 닫기';
 
   @override
-  String get closeConversationSubtitle =>
-      '메시지는 이 기기에 남아 있다가 다음 귓속말이 오면 다시 표시돼요.';
+  String get closeConversationSubtitle => '메시지는 이 기기에 남아 있다가 다음 귓속말이 오면 다시 표시돼요.';
 
   @override
   String get deleteConversation => '대화 삭제';
 
   @override
-  String get deleteConversationSubtitle =>
-      '이 기기에서 메시지를 삭제해요. Twitch는 귓속말 기록을 보관하지 않아요.';
+  String get deleteConversationSubtitle => '이 기기에서 메시지를 삭제해요. Twitch는 귓속말 기록을 보관하지 않아요.';
 
   @override
   String get whisperNeedsLogin => '귓속말을 보내려면 Twitch로 로그인하세요.';
 
   @override
-  String get whisperNeedsScope =>
-      '귓속말을 주고받으려면 다시 로그인하세요. 현재 로그인은 ColdChat이 귓속말을 지원하기 전에 한 것이에요.';
+  String get whisperNeedsScope => '귓속말을 주고받으려면 다시 로그인하세요. 현재 로그인은 ColdChat이 귓속말을 지원하기 전에 한 것이에요.';
 
   @override
   String get whisperUserNotFound => '해당 이름의 Twitch 사용자가 없어요.';
@@ -547,8 +540,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get showImagesFromLinks => '링크 이미지 표시';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch는 이 이미지들을 검사하지 않아요. 부적절한 이미지일 수 있어요.';
+  String get showImagesFromLinksSubtitle => 'Twitch는 이 이미지들을 검사하지 않아요. 부적절한 이미지일 수 있어요.';
 
   @override
   String get showImagesAutomatically => '링크 이미지를 자동으로 표시할까요?';

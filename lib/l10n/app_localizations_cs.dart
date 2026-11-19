@@ -146,8 +146,7 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Při ověřování uživatelských dat došlo k chybě:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Při ověřování uživatelských dat došlo k chybě:';
 
   @override
   String get verifyingUserData => 'Ověřování uživatelských dat...';
@@ -156,8 +155,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get verifiedUserToken => 'Uživatelský token ověřen!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Při ověřování uživatelského tokenu došlo k chybě:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Při ověřování uživatelského tokenu došlo k chybě:';
 
   @override
   String get verifyingUserToken => 'Ověřování uživatelského tokenu...';
@@ -276,8 +274,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get copyText => 'Kopírovat text';
 
   @override
-  String get copyTextSubtitle =>
-      'Podržením zkopíruješ text i s uživatelským jménem';
+  String get copyTextSubtitle => 'Podržením zkopíruješ text i s uživatelským jménem';
 
   @override
   String get deleteMessage => 'Smazat zprávu';
@@ -383,12 +380,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get backgroundNotifications => 'Oznámení na pozadí';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Tato možnost není na tvé platformě dostupná.';
+  String get optionNotAvailableOnYourPlatform => 'Tato možnost není na tvé platformě dostupná.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Tato možnost je jen pro ty, kdo podporují ColdChat.';
+  String get optionNotAvailablePaywalled => 'Tato možnost je jen pro ty, kdo podporují ColdChat.';
 
   @override
   String get clearAll => 'Vymazat vše';
@@ -417,19 +412,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get emoteMenuButton => 'Tlačítko nabídky emotikonů';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Tlačítko nabídky emotikonů ve stupních šedi';
+  String get emoteMenuButtonGrayscale => 'Tlačítko nabídky emotikonů ve stupních šedi';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Klepni na emotikon, který chceš použít jako tlačítko nabídky emotikonů';
+  String get chooseEmoteMenuButton => 'Klepni na emotikon, který chceš použít jako tlačítko nabídky emotikonů';
 
   @override
   String get resetToKappa => 'Obnovit na Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Emotikon se nepodařilo stáhnout. Tlačítko zůstalo beze změny.';
+  String get emoteMenuButtonDownloadFailed => 'Emotikon se nepodařilo stáhnout. Tlačítko zůstalo beze změny.';
 
   @override
   String get takePhoto => 'Vyfotit';
@@ -480,8 +472,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openOnTwitch => 'Otevřít na Twitchi';
 
   @override
-  String get blockFailed =>
-      'Seznam blokovaných se nepodařilo změnit. Zkontroluj připojení a zkus to znovu.';
+  String get blockFailed => 'Seznam blokovaných se nepodařilo změnit. Zkontroluj připojení a zkus to znovu.';
 
   @override
   String get contact => 'Kontakt a zpětná vazba';
@@ -509,15 +500,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get closeConversation => 'Zavřít konverzaci';
 
   @override
-  String get closeConversationSubtitle =>
-      'Zprávy zůstanou v tomto zařízení a vrátí se s dalším šepotem.';
+  String get closeConversationSubtitle => 'Zprávy zůstanou v tomto zařízení a vrátí se s dalším šepotem.';
 
   @override
   String get deleteConversation => 'Smazat konverzaci';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.';
+  String get deleteConversationSubtitle => 'Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.';
 
   @override
   String get whisperNeedsLogin => 'Pro posílání šepotů se přihlas přes Twitch.';
@@ -527,8 +516,7 @@ class AppLocalizationsCs extends AppLocalizations {
       'Pro posílání a příjem šepotů se přihlas znovu. Tvoje přihlášení je z doby, kdy je ColdChat ještě nepodporoval.';
 
   @override
-  String get whisperUserNotFound =>
-      'Na Twitchi není žádný uživatel s tímto jménem.';
+  String get whisperUserNotFound => 'Na Twitchi není žádný uživatel s tímto jménem.';
 
   @override
   String whisperFailed(String reason) {
@@ -554,12 +542,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get showImagesFromLinks => 'Zobrazovat obrázky z odkazů';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch tyto obrázky nekontroluje. Mohou být nevhodné.';
+  String get showImagesFromLinksSubtitle => 'Twitch tyto obrázky nekontroluje. Mohou být nevhodné.';
 
   @override
-  String get showImagesAutomatically =>
-      'Zobrazovat obrázky z odkazů automaticky?';
+  String get showImagesAutomatically => 'Zobrazovat obrázky z odkazů automaticky?';
 
   @override
   String get turnOn => 'Zapnout';
@@ -601,8 +587,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get oledBlack => 'OLED černá';
 
   @override
-  String get oledBlackSubtitle =>
-      'Černé pozadí chatu v tmavém režimu, pro OLED displeje';
+  String get oledBlackSubtitle => 'Černé pozadí chatu v tmavém režimu, pro OLED displeje';
 
   @override
   String get customColor => 'Vlastní';

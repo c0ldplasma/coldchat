@@ -15,12 +15,14 @@ class TwitchUser {
   });
 
   factory TwitchUser.fromJson(Map<String, dynamic> json) => TwitchUser(
-        id: json['id'] as String,
-        login: json['login'] as String,
-        displayName: json['display_name'] as String,
-        profileImageUrl: json['profile_image_url'] as String,
-        offlineImageUrl: (json['offline_image_url'] as String?)?.isEmpty ?? true ? null : json['offline_image_url'] as String,
-      );
+    id: json['id'] as String,
+    login: json['login'] as String,
+    displayName: json['display_name'] as String,
+    profileImageUrl: json['profile_image_url'] as String,
+    offlineImageUrl: (json['offline_image_url'] as String?)?.isEmpty ?? true
+        ? null
+        : json['offline_image_url'] as String,
+  );
 }
 
 /// A channel's live stream from Helix `GET /streams`.

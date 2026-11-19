@@ -13,6 +13,30 @@ class Message {
     required this.parameters,
   });
 
+  /// Undoes IRCv3's tag value escaping (https://ircv3.net/specs/extensions/message-tags#escaping-values): Twitch
+  /// sends e.g. a space in `system-msg` or a reply's quoted text as `\s` and a semicolon as `\:`.
+  static String unescapeTagValue(String value) {
+    if (!value.contains('\\')) return value;
+    final out = StringBuffer();
+    for (var i = 0; i < value.length; i++) {
+      final char = value[i];
+      if (char != '\\') {
+        out.write(char);
+        continue;
+      }
+      // A lone backslash at the end is dropped.
+      if (++i == value.length) break;
+      out.write(switch (value[i]) {
+        ':' => ';',
+        's' => ' ',
+        'r' => '\r',
+        'n' => '\n',
+        final other => other,
+      });
+    }
+    return out.toString();
+  }
+
   factory Message.fromEvent(String event) {
     final parts = event.split(' ');
     // if (parts.length < 2) {
@@ -23,7 +47,7 @@ class Message {
     if (parts.isNotEmpty && parts.first.startsWith('@')) {
       tags = <String, String>{
         for (final tag in parts.first.substring(1).split(';'))
-          if (tag.contains('=')) tag.split('=').first: tag.split('=').skip(1).join('='),
+          if (tag.contains('=')) tag.split('=').first: unescapeTagValue(tag.split('=').skip(1).join('=')),
       };
 
       parts.removeAt(0);

@@ -38,7 +38,15 @@ class LoggedOutStart extends StatelessWidget {
                 // The icon's artwork has light rounded corners of its own; clip a little inside them.
                 ClipRRect(
                   borderRadius: BorderRadius.circular(24.0),
-                  child: Transform.scale(scale: 1.06, child: Image.asset('assets/branding/app_icon.png', width: 96.0, height: 96.0, filterQuality: FilterQuality.medium)),
+                  child: Transform.scale(
+                    scale: 1.06,
+                    child: Image.asset(
+                      'assets/branding/app_icon.png',
+                      width: 96.0,
+                      height: 96.0,
+                      filterQuality: FilterQuality.medium,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 24.0),
                 Text(
@@ -63,7 +71,12 @@ class LoggedOutStart extends StatelessWidget {
                     ),
                     onPressed: () => showTwitchLogin(context),
                     onLongPress: () => Modal.show(context: context, child: const TwitchTokenInputModal()),
-                    icon: SvgPicture.asset('assets/emote_providers/twitch.svg', width: 20.0, height: 20.0, colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
+                    icon: SvgPicture.asset(
+                      'assets/emote_providers/twitch.svg',
+                      width: 20.0,
+                      height: 20.0,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    ),
                     label: Text(l10n.loginWithTwitch),
                   ),
                 ),
@@ -102,40 +115,40 @@ class _BalancedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, constraints) {
-          final painter = TextPainter(
-            text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
-            textAlign: TextAlign.center,
-            textDirection: Directionality.of(context),
-            textScaler: MediaQuery.textScalerOf(context),
-          );
-          int lines(double width) {
-            painter.layout(maxWidth: width);
-            return painter.computeLineMetrics().length;
-          }
-
-          final maxWidth = constraints.maxWidth;
-          var width = maxWidth;
-          final count = lines(maxWidth);
-          if (count > 1) {
-            // The narrowest width that still needs no more lines than the full width does.
-            var low = 0.0, high = maxWidth;
-            while (high - low > 1.0) {
-              final mid = (low + high) / 2;
-              if (lines(mid) <= count) {
-                high = mid;
-              } else {
-                low = mid;
-              }
-            }
-            // Rounded up a little so sub-pixel differences between measuring and painting don't add a line.
-            width = (high.ceilToDouble() + 1.0).clamp(0.0, maxWidth);
-          }
-          painter.dispose();
-          return SizedBox(
-            width: width,
-            child: Text(text, textAlign: TextAlign.center, style: style),
-          );
-        },
+    builder: (context, constraints) {
+      final painter = TextPainter(
+        text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
+        textAlign: TextAlign.center,
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
       );
+      int lines(double width) {
+        painter.layout(maxWidth: width);
+        return painter.computeLineMetrics().length;
+      }
+
+      final maxWidth = constraints.maxWidth;
+      var width = maxWidth;
+      final count = lines(maxWidth);
+      if (count > 1) {
+        // The narrowest width that still needs no more lines than the full width does.
+        var low = 0.0, high = maxWidth;
+        while (high - low > 1.0) {
+          final mid = (low + high) / 2;
+          if (lines(mid) <= count) {
+            high = mid;
+          } else {
+            low = mid;
+          }
+        }
+        // Rounded up a little so sub-pixel differences between measuring and painting don't add a line.
+        width = (high.ceilToDouble() + 1.0).clamp(0.0, maxWidth);
+      }
+      painter.dispose();
+      return SizedBox(
+        width: width,
+        child: Text(text, textAlign: TextAlign.center, style: style),
+      );
+    },
+  );
 }

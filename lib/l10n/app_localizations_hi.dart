@@ -146,8 +146,7 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'उपयोगकर्ता डेटा सत्यापित करते समय एक त्रुटि हुई:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'उपयोगकर्ता डेटा सत्यापित करते समय एक त्रुटि हुई:';
 
   @override
   String get verifyingUserData => 'उपयोगकर्ता डेटा सत्यापित किया जा रहा है...';
@@ -156,8 +155,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get verifiedUserToken => 'उपयोगकर्ता टोकन सत्यापित हो गया!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'उपयोगकर्ता टोकन सत्यापित करते समय एक त्रुटि हुई:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'उपयोगकर्ता टोकन सत्यापित करते समय एक त्रुटि हुई:';
 
   @override
   String get verifyingUserToken => 'उपयोगकर्ता टोकन सत्यापित किया जा रहा है...';
@@ -276,8 +274,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get copyText => 'टेक्स्ट कॉपी करें';
 
   @override
-  String get copyTextSubtitle =>
-      'उपयोगकर्ता नाम के साथ कॉपी करने के लिए दबाकर रखें';
+  String get copyTextSubtitle => 'उपयोगकर्ता नाम के साथ कॉपी करने के लिए दबाकर रखें';
 
   @override
   String get deleteMessage => 'संदेश मिटाएं';
@@ -377,19 +374,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get notifications => 'सूचनाएं';
 
   @override
-  String get noNotifications =>
-      'कोई न कोई, कहीं न कहीं, किसी दिन आपको मेंशन करेगा।';
+  String get noNotifications => 'कोई न कोई, कहीं न कहीं, किसी दिन आपको मेंशन करेगा।';
 
   @override
   String get backgroundNotifications => 'बैकग्राउंड सूचनाएं';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'यह विकल्प आपके प्लेटफ़ॉर्म पर उपलब्ध नहीं है।';
+  String get optionNotAvailableOnYourPlatform => 'यह विकल्प आपके प्लेटफ़ॉर्म पर उपलब्ध नहीं है।';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'यह विकल्प केवल ColdChat समर्थकों के लिए है।';
+  String get optionNotAvailablePaywalled => 'यह विकल्प केवल ColdChat समर्थकों के लिए है।';
 
   @override
   String get clearAll => 'सब साफ़ करें';
@@ -421,15 +415,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get emoteMenuButtonGrayscale => 'इमोट मेनू बटन ग्रेस्केल में दिखाएं';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'किसी इमोट को इमोट मेनू बटन बनाने के लिए उस पर टैप करें';
+  String get chooseEmoteMenuButton => 'किसी इमोट को इमोट मेनू बटन बनाने के लिए उस पर टैप करें';
 
   @override
   String get resetToKappa => 'Kappa पर रीसेट करें';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'वह इमोट डाउनलोड नहीं हो सका। बटन नहीं बदला गया।';
+  String get emoteMenuButtonDownloadFailed => 'वह इमोट डाउनलोड नहीं हो सका। बटन नहीं बदला गया।';
 
   @override
   String get takePhoto => 'फ़ोटो लें';
@@ -438,8 +430,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get chooseFromLibrary => 'लाइब्रेरी से चुनें';
 
   @override
-  String get cameraUnavailable =>
-      'कैमरा नहीं खुल सका। जांचें कि ColdChat को कैमरा एक्सेस की अनुमति है।';
+  String get cameraUnavailable => 'कैमरा नहीं खुल सका। जांचें कि ColdChat को कैमरा एक्सेस की अनुमति है।';
 
   @override
   String get about => 'परिचय';
@@ -480,8 +471,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get openOnTwitch => 'Twitch पर खोलें';
 
   @override
-  String get blockFailed =>
-      'ब्लॉक सूची नहीं बदली जा सकी। अपना कनेक्शन जांचें और फिर से कोशिश करें।';
+  String get blockFailed => 'ब्लॉक सूची नहीं बदली जा सकी। अपना कनेक्शन जांचें और फिर से कोशिश करें।';
 
   @override
   String get contact => 'संपर्क और फ़ीडबैक';
@@ -509,19 +499,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get closeConversation => 'बातचीत बंद करें';
 
   @override
-  String get closeConversationSubtitle =>
-      'संदेश इस डिवाइस पर रहेंगे और अगले व्हिस्पर के साथ वापस आ जाएंगे।';
+  String get closeConversationSubtitle => 'संदेश इस डिवाइस पर रहेंगे और अगले व्हिस्पर के साथ वापस आ जाएंगे।';
 
   @override
   String get deleteConversation => 'बातचीत मिटाएं';
 
   @override
-  String get deleteConversationSubtitle =>
-      'इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।';
+  String get deleteConversationSubtitle => 'इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।';
 
   @override
-  String get whisperNeedsLogin =>
-      'व्हिस्पर भेजने के लिए Twitch से साइन इन करें।';
+  String get whisperNeedsLogin => 'व्हिस्पर भेजने के लिए Twitch से साइन इन करें।';
 
   @override
   String get whisperNeedsScope =>
@@ -554,8 +541,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get showImagesFromLinks => 'लिंक से इमेज दिखाएं';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।';
+  String get showImagesFromLinksSubtitle => 'Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।';
 
   @override
   String get showImagesAutomatically => 'लिंक से इमेज अपने-आप दिखाएं?';
@@ -600,8 +586,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get oledBlack => 'OLED काला';
 
   @override
-  String get oledBlackSubtitle =>
-      'डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए';
+  String get oledBlackSubtitle => 'डार्क मोड में काला चैट बैकग्राउंड, OLED स्क्रीन के लिए';
 
   @override
   String get customColor => 'कस्टम';
