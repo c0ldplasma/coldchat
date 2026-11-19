@@ -1,84 +1,103 @@
 name: Build
 
-
 on:
   push:
-    branches:
-      - '*'
-      - '!l10n_dev'
+    branches: [main]
+  pull_request:
+
+# A newer push to the same branch or PR makes the older run pointless.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 defaults:
   run:
     shell: bash
 
+env:
+  # The minimum in pubspec.yaml. Pinned so a new Flutter release can't break CI on its own.
+  FLUTTER_VERSION: '3.47.8'
+
 jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Generate sources
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Check that the checked-in localizations are up to date
+        run: |
+          flutter gen-l10n
+          git diff --exit-code lib/l10n
+
+      - name: Analyze
+        run: flutter analyze
+
   build:
     strategy:
       fail-fast: false
       matrix:
-        target: ["Android", "iOS"]
         include:
           - target: Android
             os: ubuntu-latest
           - target: iOS
             os: macos-latest
 
-    name: ${{matrix.target}}
-    runs-on: ${{matrix.os}}
-    env:
-      APP_TITLE: ColdChat
-      APP_NAME: coldchat
-      APP_PATH: coldchat
+    name: ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checking out the ${{env.APP_TITLE}} source code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        if: matrix.target == 'Android'
         with:
-          path: ${{env.APP_PATH}}
+          distribution: temurin
+          java-version: '17'
 
-      - name: Checking out flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          architecture: x64
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
 
-      - name: Check for flutter updates
-        run: flutter upgrade
-
-      - name: Building required generated source files
-        working-directory: ${{env.APP_PATH}}
+      - name: Generate sources
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Building ${{env.APP_TITLE}} for Android
+      - name: Build for Android
         if: matrix.target == 'Android'
-        working-directory: ${{env.APP_PATH}}
-        env:
-          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         run: flutter build apk
 
-      - name: Building ${{env.APP_TITLE}} for iOS
+      - name: Build for iOS
         if: matrix.target == 'iOS'
-        working-directory: ${{env.APP_PATH}}
         run: flutter build ios --no-codesign
 
-      - name: Uploading Android artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v7
         if: matrix.target == 'Android'
         with:
-          name: ${{env.APP_NAME}}-android.apk
-          path: ${{env.APP_PATH}}/build/app/outputs/flutter-apk/app-release.apk
+          name: coldchat-android.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Packing iOS ipa
+      - name: Pack iOS ipa
         if: matrix.target == 'iOS'
-        working-directory: ${{env.APP_PATH}}
         run: |
           mkdir -p build/ios/iphoneos/Payload
           cp -rf build/ios/iphoneos/Runner.app build/ios/iphoneos/Payload/Runner.app
           ditto -c -k --sequesterRsrc --keepParent build/ios/iphoneos/Payload build/ios/iphoneos/iOS.ipa
 
-      - name: Uploading iOS artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload iOS artifact
+        uses: actions/upload-artifact@v7
         if: matrix.target == 'iOS'
         with:
-          name: ${{env.APP_NAME}}-ios.ipa
-          path: ${{env.APP_PATH}}/build/ios/iphoneos/iOS.ipa
+          name: coldchat-ios.ipa
+          path: build/ios/iphoneos/iOS.ipa
