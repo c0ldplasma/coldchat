@@ -218,7 +218,7 @@ class _ChatViewState extends State<ChatView> {
                           opacity: (chromeShown || BlocProvider.of<NotificationsCubit>(context).state.unread > 0) ? 1.0 : 0.0,
                           child: const Padding(
                             padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                            child: AvatarButton(),
+                            child: AvatarButton(floating: true),
                           ),
                         ),
                     ],
