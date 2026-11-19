@@ -39,7 +39,18 @@ class AccentColor {
 
   /// The full color scheme with this accent, as the app uses it.
   ColorScheme colorScheme(Brightness brightness, {bool highContrast = false, bool oledBlack = false}) {
-    final scheme = _toColorScheme(_dynamicScheme(brightness, highContrast: highContrast), brightness);
+    var scheme = _toColorScheme(_dynamicScheme(brightness), brightness);
+    if (highContrast) {
+      // Only text and outlines get Material's high-contrast tones. At full contrast Material also pushes the accent
+      // to nearly white and the surfaces to the extremes, which erased the accent color entirely.
+      final contrast = _toColorScheme(_dynamicScheme(brightness, highContrast: true), brightness);
+      scheme = scheme.copyWith(
+        onSurface: contrast.onSurface,
+        onSurfaceVariant: contrast.onSurfaceVariant,
+        outline: contrast.outline,
+        outlineVariant: contrast.outlineVariant,
+      );
+    }
     return brightness == Brightness.dark && oledBlack ? _oled(scheme) : scheme;
   }
 
@@ -137,7 +148,7 @@ abstract final class ColdChatTheme {
     final scheme = accent.colorScheme(brightness, highContrast: highContrast, oledBlack: oled);
     final base = ThemeData(colorScheme: scheme, brightness: brightness);
     return base.copyWith(
-      extensions: [ChatColors.from(accent, scheme, highContrast: highContrast, oledBlack: oled)],
+      extensions: [ChatColors.from(scheme, oledBlack: oled)],
       textTheme: _withFontVariations(base.textTheme.apply(
         fontFamily: 'GoogleSansFlex',
         bodyColor: scheme.onSurface,
@@ -204,7 +215,7 @@ class ChatColors extends ThemeExtension<ChatColors> {
 
   const ChatColors({required this.bar, required this.onBar, required this.sheet, required this.raised, required this.link, required this.muted, required this.brightness});
 
-  factory ChatColors.from(AccentColor accent, ColorScheme scheme, {bool highContrast = false, bool oledBlack = false}) {
+  factory ChatColors.from(ColorScheme scheme, {bool oledBlack = false}) {
     final dark = scheme.brightness == Brightness.dark;
     return ChatColors(
       // Darker than the chat in dark mode, which is the look ColdChat always had; a light grey in light mode. On a
