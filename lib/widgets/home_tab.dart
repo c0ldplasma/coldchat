@@ -49,9 +49,7 @@ class HomeSearchBar extends StatelessWidget implements PreferredSizeWidget {
 
 class SliverSearchBar extends SliverPersistentHeaderDelegate {
   @override
-  Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      const SafeArea(child: Placeholder());
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) => const SafeArea(child: Placeholder());
 
   @override
   double get maxExtent => 256.0;
@@ -60,8 +58,7 @@ class SliverSearchBar extends SliverPersistentHeaderDelegate {
   double get minExtent => 256.0;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
 class HomeTab extends StatefulWidget {
@@ -146,14 +143,14 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     final twitchAccountsBox = Hive.box('TwitchAccounts');
     final accountSettingsBox = Hive.box('AccountSettings');
-    account = twitchAccountsBox.values.firstWhereOrNull((element) =>
-        (element as TwitchAccount).tokenData.hash ==
-        accountSettingsBox.get('activeTwitchAccount')) as TwitchAccount?;
+    account = twitchAccountsBox.values.firstWhereOrNull(
+      (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
+    ) as TwitchAccount?;
 
     accountSettingsBox.listenable().addListener(() {
-      account = twitchAccountsBox.values.firstWhereOrNull((element) =>
-          (element as TwitchAccount).tokenData.hash ==
-          accountSettingsBox.get('activeTwitchAccount')) as TwitchAccount?;
+      account = twitchAccountsBox.values.firstWhereOrNull(
+        (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
+      ) as TwitchAccount?;
       setState(() {
         refresh();
       });
@@ -171,216 +168,211 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('AccountSettings'),
-        keys: const ['activeTwitchAccount'],
-        builder: (BuildContext context, Box<dynamic> box) {
-          if (account == null) return const LoggedOutStart();
+    box: Hive.box('AccountSettings'),
+    keys: const ['activeTwitchAccount'],
+    builder: (BuildContext context, Box<dynamic> box) {
+      if (account == null) return const LoggedOutStart();
 
-          return RefreshIndicator(
-            onRefresh: () {
-              setState(() {
-                refresh();
-              });
-              return Future.wait([recommendedStreams!, topStreams!]);
-            },
-            child: CustomScrollView(
-              slivers: [
-                const SliverAppBar.large(
-                  surfaceTintColor: Colors.transparent,
-                  // foregroundColor: Colors.transparent,
-                  title: Text('ColdChat'),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: AvatarButton(),
-                    ),
-                  ],
+      return RefreshIndicator(
+        onRefresh: () {
+          setState(() {
+            refresh();
+          });
+          return Future.wait([recommendedStreams!, topStreams!]);
+        },
+        child: CustomScrollView(
+          slivers: [
+            const SliverAppBar.large(
+              surfaceTintColor: Colors.transparent,
+              // foregroundColor: Colors.transparent,
+              title: Text('ColdChat'),
+              actions: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: AvatarButton(),
                 ),
-                SliverList.list(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Surface(
-                        type: SurfaceType.surfaceVariant,
-                        borderRadius: BorderRadius.circular(48.0),
-                        child: Row(
-                          children: [
-                            const SizedBox(width: 16.0),
-                            Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
-                            const SizedBox(width: 8.0),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  filled: false,
-                                  border: InputBorder.none,
-                                  hintText: AppLocalizations.of(context)!
-                                      .searchForChannels,
-                                  hintStyle: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
-                                  ),
-                                ),
-                                controller: searchTextController,
-                                focusNode: searchFocus,
-                                onChanged: _onSearchChanged,
+              ],
+            ),
+            SliverList.list(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Surface(
+                    type: SurfaceType.surfaceVariant,
+                    borderRadius: BorderRadius.circular(48.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 16.0),
+                        Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              filled: false,
+                              border: InputBorder.none,
+                              hintText: AppLocalizations.of(context)!.searchForChannels,
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                             ),
-                            const SizedBox(width: 16.0),
+                            controller: searchTextController,
+                            focusNode: searchFocus,
+                            onChanged: _onSearchChanged,
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+              ],
+            ),
+            if (searchResults != null)
+              FutureBuilder<List<ChannelCandidate>>(
+                future: searchResults,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return SliverList.list(children: const [Text('Error')]);
+                  }
+                  if (!snapshot.hasData) {
+                    return SliverList.list(
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ],
+                    );
+                  }
+                  final query = normalizeChannelQuery(searchTextController.text);
+                  final results = snapshot.data!;
+                  // The typed name as a channel to join, unless the results already show it as the exact match.
+                  final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
+                  final colors = Theme.of(context).colorScheme;
+                  return SliverList.list(
+                    children: [
+                      if (!hasExact && query.isNotEmpty) ...[
+                        Tile(
+                          onTap: () => _openSearchResult('#${query.toLowerCase()}'),
+                          prefix: ClipRRect(
+                            borderRadius: BorderRadius.circular(48.0),
+                            clipBehavior: Clip.antiAlias,
+                            child: Material(
+                              color: colors.onSurface.withValues(alpha: 0.1),
+                              child: const Icon(Icons.add_circle_outline),
+                            ),
+                          ),
+                          title: query,
+                        ),
+                        const Separator(),
+                      ],
+                      for (final result in results)
+                        Tile(
+                          onTap: () => _openSearchResult('#${result.login}'),
+                          prefix: ClipRRect(
+                            borderRadius: BorderRadius.circular(48.0),
+                            clipBehavior: Clip.antiAlias,
+                            child: Material(
+                              color: colors.onSurface.withValues(alpha: 0.1),
+                              child: Ink.image(image: NetworkImage(result.profileImageUrl)),
+                            ),
+                          ),
+                          title: result.displayName,
+                          subtitle: result.isLive ? result.gameName : null,
+                          suffix: result.isLive && result.viewerCount != null
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 8.0,
+                                      height: 8.0,
+                                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      '${result.viewerCount}',
+                                      style: Theme.of(context).textTheme.bodyMedium
+                                          ?.copyWith(color: colors.onSurface.withValues(alpha: 0.9)),
+                                    ),
+                                  ],
+                                )
+                              : null,
+                        ),
+                    ],
+                  );
+                },
+              ),
+            if (searchResults == null)
+              FutureBuilder<List<StreamData>>(
+                future: recommendedStreams,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError || (snapshot.data?.isEmpty ?? false)) {
+                    return SliverList.list(children: const []);
+                  }
+                  if (!snapshot.hasData) {
+                    return SliverList.list(
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ],
+                    );
+                  }
+                  return SliverList.list(
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.222),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                          ),
+                          items: [
+                            for (final stream in snapshot.data!)
+                              StreamPreviewLarge(
+                                stream: stream,
+                              ),
                           ],
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16.0),
-                  ],
-                ),
-                if (searchResults != null)
-                  FutureBuilder<List<ChannelCandidate>>(
-                    future: searchResults,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return SliverList.list(children: const [Text('Error')]);
-                      }
-                      if (!snapshot.hasData) {
-                        return SliverList.list(
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
-                            ),
-                          ],
-                        );
-                      }
-                      final query = normalizeChannelQuery(searchTextController.text);
-                      final results = snapshot.data!;
-                      // The typed name as a channel to join, unless the results already show it as the exact match.
-                      final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
-                      final colors = Theme.of(context).colorScheme;
-                      return SliverList.list(
-                        children: [
-                          if (!hasExact && query.isNotEmpty) ...[
-                            Tile(
-                              onTap: () => _openSearchResult('#${query.toLowerCase()}'),
-                              prefix: ClipRRect(
-                                borderRadius: BorderRadius.circular(48.0),
-                                clipBehavior: Clip.antiAlias,
-                                child: Material(
-                                  color: colors.onSurface.withValues(alpha: 0.1),
-                                  child: const Icon(Icons.add_circle_outline),
-                                ),
-                              ),
-                              title: query,
-                            ),
-                            const Separator(),
-                          ],
-                          for (final result in results)
-                            Tile(
-                              onTap: () => _openSearchResult('#${result.login}'),
-                              prefix: ClipRRect(
-                                borderRadius: BorderRadius.circular(48.0),
-                                clipBehavior: Clip.antiAlias,
-                                child: Material(
-                                  color: colors.onSurface.withValues(alpha: 0.1),
-                                  child: Ink.image(image: NetworkImage(result.profileImageUrl)),
-                                ),
-                              ),
-                              title: result.displayName,
-                              subtitle: result.isLive ? result.gameName : null,
-                              suffix: result.isLive && result.viewerCount != null
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          width: 8.0,
-                                          height: 8.0,
-                                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                                        ),
-                                        const SizedBox(width: 4.0),
-                                        Text(
-                                          '${result.viewerCount}',
-                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.onSurface.withValues(alpha: 0.9)),
-                                        ),
-                                      ],
-                                    )
-                                  : null,
-                            ),
-                        ],
-                      );
-                    },
-                  ),
-                if (searchResults == null)
-                  FutureBuilder<List<StreamData>>(
-                    future: recommendedStreams,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError ||
-                          (snapshot.data?.isEmpty ?? false)) {
-                        return SliverList.list(children: const []);
-                      }
-                      if (!snapshot.hasData) {
-                        return SliverList.list(
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
-                            ),
-                          ],
-                        );
-                      }
-                      return SliverList.list(
-                        children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                                maxHeight:
-                                    MediaQuery.of(context).size.height * 0.222),
-                            child: CarouselSlider(
-                              options: CarouselOptions(
-                                autoPlay: true,
-                                enlargeCenterPage: true,
-                              ),
-                              items: [
-                                for (final stream in snapshot.data!)
-                                  StreamPreviewLarge(
-                                    stream: stream,
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 16.0),
-                        ],
-                      );
-                    },
-                  ),
-                if (searchResults == null)
-                  FutureBuilder<List<StreamData>>(
-                    future: topStreams,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return SliverList.list(
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Center(child: CircularProgressIndicator()),
-                            ),
-                          ],
-                        );
-                      }
-                      return SliverList.list(
-                        children: [
-                          for (final stream in snapshot.data!)
-                            //Padding(
-                            //  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                            //  child: StreamPreviewPill(stream: stream),
-                            //),
-                            StreamPreviewSmall(stream: stream),
-                        ],
-                      );
-                    },
-                  ),
-              ],
-            ),
-          );
-        },
+                      const SizedBox(height: 16.0),
+                    ],
+                  );
+                },
+              ),
+            if (searchResults == null)
+              FutureBuilder<List<StreamData>>(
+                future: topStreams,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return SliverList.list(
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                      ],
+                    );
+                  }
+                  return SliverList.list(
+                    children: [
+                      for (final stream in snapshot.data!)
+                        //Padding(
+                        //  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        //  child: StreamPreviewPill(stream: stream),
+                        //),
+                        StreamPreviewSmall(stream: stream),
+                    ],
+                  );
+                },
+              ),
+          ],
+        ),
       );
+    },
+  );
 }
 
 class StreamPreviewPill extends StatelessWidget {
@@ -393,57 +385,54 @@ class StreamPreviewPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Surface(
-        type: SurfaceType.surfaceVariant,
-        borderRadius: BorderRadius.circular(12.0),
-        shouldClip: true,
-        onTap: () {},
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Ink.image(
-                image: NetworkImage(stream.thumbnailUrl
-                    .replaceAll('{width}', '1920')
-                    .replaceAll('{height}', '1080')),
-                fit: BoxFit.cover,
-              ),
-            ),
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withValues(alpha: 0.66),
-                      Colors.black.withValues(alpha: 0.66),
-                    ],
-                    stops: const [
-                      0.0,
-                      1.0,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(stream.userName,
-                      style: Theme.of(context).textTheme.titleLarge),
-                  Text(
-                    stream.title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+    type: SurfaceType.surfaceVariant,
+    borderRadius: BorderRadius.circular(12.0),
+    shouldClip: true,
+    onTap: () {},
+    child: Stack(
+      children: [
+        Positioned.fill(
+          child: Ink.image(
+            image: NetworkImage(stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080')),
+            fit: BoxFit.cover,
+          ),
+        ),
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.66),
+                  Colors.black.withValues(alpha: 0.66),
+                ],
+                stops: const [
+                  0.0,
+                  1.0,
                 ],
               ),
             ),
-          ],
+          ),
         ),
-      );
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            // mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(stream.userName, style: Theme.of(context).textTheme.titleLarge),
+              Text(
+                stream.title,
+                style: Theme.of(context).textTheme.titleMedium,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class StreamPreviewSmall extends StatelessWidget {
@@ -469,9 +458,7 @@ class StreamPreviewSmall extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network(
-                    (stream.thumbnailUrl
-                        .replaceAll('{width}', '1920')
-                        .replaceAll('{height}', '1080')),
+                    (stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080')),
                   ),
                 ),
               ),
@@ -485,26 +472,20 @@ class StreamPreviewSmall extends StatelessWidget {
                   Text(
                     stream.userName,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     stream.title.trim(),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.9)),
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9)),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     stream.gameName,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withValues(alpha: 0.9)),
+                    style: Theme.of(context).textTheme.bodyLarge
+                        ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9)),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Row(
@@ -521,11 +502,8 @@ class StreamPreviewSmall extends StatelessWidget {
                       const SizedBox(width: 4.0),
                       Text(
                         '${stream.viewerCount}',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withValues(alpha: 0.9)),
+                        style: Theme.of(context).textTheme.bodyMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9)),
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(width: 16.0),
@@ -536,17 +514,9 @@ class StreamPreviewSmall extends StatelessWidget {
                       const SizedBox(width: 4.0),
                       Expanded(
                         child: Text(
-                          '${DateTime.now().difference(stream.startedAt)}'
-                              .split('.')
-                              .first,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withValues(alpha: 0.9)),
+                          '${DateTime.now().difference(stream.startedAt)}'.split('.').first,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.9)),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -581,9 +551,7 @@ class StreamPreviewLarge extends StatelessWidget {
           children: [
             Positioned.fill(
               child: Ink.image(
-                image: NetworkImage(stream.thumbnailUrl
-                    .replaceAll('{width}', '1920')
-                    .replaceAll('{height}', '1080')),
+                image: NetworkImage(stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080')),
                 fit: BoxFit.cover,
               ),
             ),
@@ -605,8 +573,7 @@ class StreamPreviewLarge extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -614,25 +581,20 @@ class StreamPreviewLarge extends StatelessWidget {
                   Text(
                     stream.userName,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white.withValues(alpha: 0.9),
-                        ),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white.withValues(alpha: 0.9),
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     stream.title.trim(),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
+                    style: Theme.of(context).textTheme.titleMedium
                         ?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     stream.gameName,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Row(
@@ -649,9 +611,7 @@ class StreamPreviewLarge extends StatelessWidget {
                       const SizedBox(width: 4.0),
                       Text(
                         '${stream.viewerCount}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
+                        style: Theme.of(context).textTheme.bodyMedium
                             ?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -664,12 +624,8 @@ class StreamPreviewLarge extends StatelessWidget {
                       const SizedBox(width: 4.0),
                       Expanded(
                         child: Text(
-                          '${DateTime.now().difference(stream.startedAt)}'
-                              .split('.')
-                              .first,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
+                          '${DateTime.now().difference(stream.startedAt)}'.split('.').first,
+                          style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.white.withValues(alpha: 0.9)),
                           overflow: TextOverflow.ellipsis,
                         ),

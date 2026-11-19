@@ -16,52 +16,52 @@ class LoginExpiredBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<Connection, tmi.ConnectionState>(
-        bloc: context.read<Client>().receiver,
-        builder: (context, state) {
-          if (state is! tmi.ConnectionInvalidCredentials) return const SizedBox.shrink();
+    bloc: context.read<Client>().receiver,
+    builder: (context, state) {
+      if (state is! tmi.ConnectionInvalidCredentials) return const SizedBox.shrink();
 
-          final colorScheme = Theme.of(context).colorScheme;
-          return Material(
-            color: colorScheme.errorContainer,
-            child: InkWell(
-              onTap: () => showTwitchLogin(context),
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).viewPadding.top + 12.0,
-                  bottom: 12.0,
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.error_outline_rounded, color: colorScheme.onErrorContainer),
-                    const SizedBox(width: 16.0),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.loginExpired,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: colorScheme.onErrorContainer),
-                          ),
-                          Text(
-                            AppLocalizations.of(context)!.loginExpiredDescription(state.twitchAccount.tokenData.login),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onErrorContainer),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    Text(
-                      AppLocalizations.of(context)!.signInAgain,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: colorScheme.onErrorContainer),
-                    ),
-                  ],
-                ),
-              ),
+      final colorScheme = Theme.of(context).colorScheme;
+      return Material(
+        color: colorScheme.errorContainer,
+        child: InkWell(
+          onTap: () => showTwitchLogin(context),
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).viewPadding.top + 12.0,
+              bottom: 12.0,
+              left: 16.0,
+              right: 16.0,
             ),
-          );
-        },
+            child: Row(
+              children: [
+                Icon(Icons.error_outline_rounded, color: colorScheme.onErrorContainer),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.loginExpired,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(color: colorScheme.onErrorContainer),
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.loginExpiredDescription(state.twitchAccount.tokenData.login),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onErrorContainer),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                Text(
+                  AppLocalizations.of(context)!.signInAgain,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(color: colorScheme.onErrorContainer),
+                ),
+              ],
+            ),
+          ),
+        ),
       );
+    },
+  );
 }

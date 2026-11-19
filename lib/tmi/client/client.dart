@@ -242,11 +242,11 @@ class Client {
   }
 
   CustomBadge _bttvProBadge(String url) => CustomBadge(
-        id: 'bttv-pro',
-        name: 'BetterTTV Pro',
-        mipmap: [url],
-        provider: providers.whereType<BetterTTVProvider>().first,
-      );
+    id: 'bttv-pro',
+    name: 'BetterTTV Pro',
+    mipmap: [url],
+    provider: providers.whereType<BetterTTVProvider>().first,
+  );
 
   void _onBttvLookupUser(BetterTTVProBadge lookup) {
     final url = lookup.url;
@@ -283,7 +283,9 @@ class Client {
   /// The chat color of [userId] as seen in any open channel, in IRC's `#RRGGBB` form. Whispers don't carry one.
   String? chatColorOf(String userId) {
     for (final channel in channels.state) {
-      final message = channel.channelMessages.state.lastWhereOrNull((m) => m is ChannelMessageChat && m.user.id == userId) as ChannelMessageChat?;
+      final message = channel.channelMessages.state.lastWhereOrNull(
+        (m) => m is ChannelMessageChat && m.user.id == userId,
+      ) as ChannelMessageChat?;
       final color = message?.message.tags['color'];
       if (color != null && color.isNotEmpty) return color;
     }
@@ -341,12 +343,17 @@ class Client {
     if (parsed.isEmpty) return;
 
     // History payloads are single-channel; find it from any chat message.
-    final firstChatMessage = parsed.firstWhereOrNull((m) => (m.command == 'PRIVMSG' || m.command == 'USERNOTICE') && m.parameters.isNotEmpty);
-    final bulkChannel = firstChatMessage == null ? null : channels.state.firstWhereOrNull((c) => c.name == firstChatMessage.parameters[0]);
+    final firstChatMessage = parsed.firstWhereOrNull(
+      (m) => (m.command == 'PRIVMSG' || m.command == 'USERNOTICE') && m.parameters.isNotEmpty,
+    );
+    final bulkChannel = firstChatMessage == null
+        ? null
+        : channels.state.firstWhereOrNull((c) => c.name == firstChatMessage.parameters[0]);
 
     // Snapshot existing ids so we drop duplicates BEFORE building them (the
     // post-JOIN backfill mostly re-sends messages we already have).
-    final existingIds = bulkChannel?.channelMessages.state.whereType<ChannelMessageId>().map((e) => e.id).toSet() ?? <String>{};
+    final existingIds =
+        bulkChannel?.channelMessages.state.whereType<ChannelMessageId>().map((e) => e.id).toSet() ?? <String>{};
 
     // Walk from the end (newest) towards the start (oldest), one chunk per
     // iteration, emitting after each so the newest render first.
@@ -445,10 +452,12 @@ class Client {
     // first; insertHistoryMessages dedups by id, so the later rejoin backfill
     // is a no-op for anything we pull in here.
     final viewed = channels.state.where((channel) => channel.recentMessagesEverFetched).toList()..sort(_byJoinPriority);
-    await Future.wait(viewed.map((channel) {
-      channel.joinBackfillDone = false;
-      return _fetchAndInsertHistory(channel);
-    }));
+    await Future.wait(
+      viewed.map((channel) {
+        channel.joinBackfillDone = false;
+        return _fetchAndInsertHistory(channel);
+      }),
+    );
   }
 
   /// Twitch refuses a bad token with an untagged NOTICE whose text we have to
@@ -457,7 +466,9 @@ class Client {
   static bool _isAuthFailureNotice(irc.Message event) {
     if (event.parameters.isEmpty || event.parameters.first != '*') return false;
     final text = event.parameters.length > 1 ? event.parameters.last.toLowerCase() : '';
-    return text.contains('login authentication failed') || text.contains('login unsuccessful') || text.contains('improperly formatted auth');
+    return text.contains('login authentication failed') ||
+        text.contains('login unsuccessful') ||
+        text.contains('improperly formatted auth');
   }
 
   void _rejectCredentials(TwitchAccount twitchAccount) {
@@ -550,9 +561,11 @@ class Client {
           // Joining starts from stateChange once the state has switched.
           connection.add(ConnectionEstablished(connectedState));
           if (stateTwitchAccount.tokenData.accessToken != null) {
-            Twitch.blockedUsers(stateTwitchAccount.tokenData).then((ids) {
-              connectedState.blockedUserIds.addAll(ids);
-            }).catchError((_) {});
+            Twitch.blockedUsers(stateTwitchAccount.tokenData)
+                .then((ids) {
+                  connectedState.blockedUserIds.addAll(ids);
+                })
+                .catchError((_) {});
           }
         }
         break;
@@ -561,7 +574,10 @@ class Client {
           if (connection.state is ConnectionStateWithCredentials) {
             final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
             if (connection == receiver) ownColor = event.tags['color'];
-            final emotes = await Twitch.emoteSets(stateTwitchAccount.tokenData, event.tags['emote-sets']?.split(',') ?? []);
+            final emotes = await Twitch.emoteSets(
+              stateTwitchAccount.tokenData,
+              event.tags['emote-sets']?.split(',') ?? [],
+            );
             // Every account has at least the global Twitch emotes, so an empty
             // result means the request failed: keep the cached list instead.
             if (emotes.isNotEmpty) {
@@ -590,7 +606,9 @@ class Client {
           break;
         }
 
-        final credentials = channel.state is ChannelStateWithConnection ? (channel.state as ChannelStateWithConnection).receiver.twitchAccount : null;
+        final credentials = channel.state is ChannelStateWithConnection
+            ? (channel.state as ChannelStateWithConnection).receiver.twitchAccount
+            : null;
         if (credentials == null) {
           break;
         }
@@ -621,7 +639,9 @@ class Client {
 
         ChannelMessage message = ChannelMessageChat(
           message: event,
-          dateTime: DateTime.fromMillisecondsSinceEpoch(int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch),
+          dateTime: DateTime.fromMillisecondsSinceEpoch(
+            int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
+          ),
           channel: channel,
         );
 
@@ -663,7 +683,9 @@ class Client {
         channel.channelMessages.add(
           ChannelMessageBan(
             message: event,
-            dateTime: DateTime.fromMillisecondsSinceEpoch(int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch),
+            dateTime: DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
+            ),
             channel: channel,
           ),
         );
@@ -692,7 +714,9 @@ class Client {
         channel.channelMessages.add(
           ChannelMessageNotice(
             message: event,
-            dateTime: DateTime.fromMillisecondsSinceEpoch(int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch),
+            dateTime: DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
+            ),
             channel: channel,
           ),
         );

@@ -23,20 +23,20 @@ class AccentColor {
   const AccentColor(this.id, this.hue, this.chroma);
 
   String name(AppLocalizations l10n) => switch (id) {
-        'ice' => l10n.themeIce,
-        'indigo' => l10n.themeIndigo,
-        'blue' => l10n.themeBlue,
-        'teal' => l10n.themeTeal,
-        'green' => l10n.themeGreen,
-        'lime' => l10n.themeLime,
-        'amber' => l10n.themeAmber,
-        'orange' => l10n.themeOrange,
-        'red' => l10n.themeRed,
-        'pink' => l10n.themePink,
-        'purple' => l10n.themePurple,
-        ColdChatTheme.customId => l10n.customColor,
-        _ => id,
-      };
+    'ice' => l10n.themeIce,
+    'indigo' => l10n.themeIndigo,
+    'blue' => l10n.themeBlue,
+    'teal' => l10n.themeTeal,
+    'green' => l10n.themeGreen,
+    'lime' => l10n.themeLime,
+    'amber' => l10n.themeAmber,
+    'orange' => l10n.themeOrange,
+    'red' => l10n.themeRed,
+    'pink' => l10n.themePink,
+    'purple' => l10n.themePurple,
+    ColdChatTheme.customId => l10n.customColor,
+    _ => id,
+  };
 
   /// The full color scheme with this accent, as the app uses it.
   ColorScheme colorScheme(Brightness brightness, {bool highContrast = false, bool oledBlack = false}) {
@@ -145,10 +145,10 @@ abstract final class ColdChatTheme {
 
   /// Picks a custom color, as hue (0–360) and chroma (0–[maxChroma]).
   static Future<void> setCustom(Box settings, double hue, double chroma) => settings.putAll({
-        accentKey: customId,
-        customHueKey: hue,
-        customChromaKey: chroma,
-      });
+    accentKey: customId,
+    customHueKey: hue,
+    customChromaKey: chroma,
+  });
 
   /// Moves a color picked in the old list over to the closest accent, so an update changes as little as possible.
   /// New installs get no entry and so the default.
@@ -175,18 +175,25 @@ abstract final class ColdChatTheme {
   /// Weight is left to [TextStyle.fontWeight]: an explicit `wght` here would override it.
   static const fontVariations = [FontVariation('wdth', 94), FontVariation('opsz', 22)];
 
-  static ThemeData build(AccentColor accent, Brightness brightness, {bool highContrast = false, bool oledBlack = false}) {
+  static ThemeData build(
+    AccentColor accent,
+    Brightness brightness, {
+    bool highContrast = false,
+    bool oledBlack = false,
+  }) {
     final oled = oledBlack && brightness == Brightness.dark;
     final scheme = accent.colorScheme(brightness, highContrast: highContrast, oledBlack: oled);
     final base = ThemeData(colorScheme: scheme, brightness: brightness);
     return base.copyWith(
       extensions: [ChatColors.from(scheme, oledBlack: oled)],
-      textTheme: _withFontVariations(base.textTheme.apply(
-        fontFamily: 'GoogleSansFlex',
-        bodyColor: scheme.onSurface,
-        displayColor: scheme.onSurface,
-        decorationColor: scheme.onSurface,
-      )),
+      textTheme: _withFontVariations(
+        base.textTheme.apply(
+          fontFamily: 'GoogleSansFlex',
+          bodyColor: scheme.onSurface,
+          displayColor: scheme.onSurface,
+          decorationColor: scheme.onSurface,
+        ),
+      ),
       inputDecorationTheme: base.inputDecorationTheme.copyWith(
         hintStyle: TextStyle(color: scheme.onSurfaceVariant),
       ),
@@ -235,7 +242,9 @@ class ChatColors extends ThemeExtension<ChatColors> {
   /// [raisedShadow].
   final Color raised;
 
-  static const List<BoxShadow> raisedShadow = [BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0))];
+  static const List<BoxShadow> raisedShadow = [
+    BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0)),
+  ];
 
   /// Links in chat messages, in the accent color like in Telegram.
   final Color link;
@@ -245,7 +254,15 @@ class ChatColors extends ThemeExtension<ChatColors> {
 
   final Brightness brightness;
 
-  const ChatColors({required this.bar, required this.onBar, required this.sheet, required this.raised, required this.link, required this.muted, required this.brightness});
+  const ChatColors({
+    required this.bar,
+    required this.onBar,
+    required this.sheet,
+    required this.raised,
+    required this.link,
+    required this.muted,
+    required this.brightness,
+  });
 
   factory ChatColors.from(ColorScheme scheme, {bool oledBlack = false}) {
     final dark = scheme.brightness == Brightness.dark;
@@ -283,15 +300,23 @@ class ChatColors extends ThemeExtension<ChatColors> {
   }
 
   @override
-  ChatColors copyWith({Color? bar, Color? onBar, Color? sheet, Color? raised, Color? link, Color? muted, Brightness? brightness}) => ChatColors(
-        bar: bar ?? this.bar,
-        onBar: onBar ?? this.onBar,
-        sheet: sheet ?? this.sheet,
-        raised: raised ?? this.raised,
-        link: link ?? this.link,
-        muted: muted ?? this.muted,
-        brightness: brightness ?? this.brightness,
-      );
+  ChatColors copyWith({
+    Color? bar,
+    Color? onBar,
+    Color? sheet,
+    Color? raised,
+    Color? link,
+    Color? muted,
+    Brightness? brightness,
+  }) => ChatColors(
+    bar: bar ?? this.bar,
+    onBar: onBar ?? this.onBar,
+    sheet: sheet ?? this.sheet,
+    raised: raised ?? this.raised,
+    link: link ?? this.link,
+    muted: muted ?? this.muted,
+    brightness: brightness ?? this.brightness,
+  );
 
   @override
   ChatColors lerp(ChatColors? other, double t) => other == null

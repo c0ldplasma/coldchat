@@ -146,8 +146,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'ユーザーデータの確認中にエラーが発生しました：';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'ユーザーデータの確認中にエラーが発生しました：';
 
   @override
   String get verifyingUserData => 'ユーザーデータを確認中...';
@@ -156,8 +155,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get verifiedUserToken => 'ユーザートークンを確認しました！';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'ユーザートークンの確認中にエラーが発生しました：';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'ユーザートークンの確認中にエラーが発生しました：';
 
   @override
   String get verifyingUserToken => 'ユーザートークンを確認中...';
@@ -382,8 +380,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get backgroundNotifications => 'バックグラウンド通知';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'このオプションはお使いのプラットフォームでは利用できません。';
+  String get optionNotAvailableOnYourPlatform => 'このオプションはお使いのプラットフォームでは利用できません。';
 
   @override
   String get optionNotAvailablePaywalled => 'このオプションはColdChatサポーター専用です。';
@@ -424,8 +421,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetToKappa => 'Kappaに戻す';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'エモートをダウンロードできませんでした。ボタンは変更されていません。';
+  String get emoteMenuButtonDownloadFailed => 'エモートをダウンロードできませんでした。ボタンは変更されていません。';
 
   @override
   String get takePhoto => '写真を撮る';
@@ -434,8 +430,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chooseFromLibrary => 'ライブラリから選択';
 
   @override
-  String get cameraUnavailable =>
-      'カメラを開けませんでした。ColdChatにカメラへのアクセスが許可されているか確認してください。';
+  String get cameraUnavailable => 'カメラを開けませんでした。ColdChatにカメラへのアクセスが許可されているか確認してください。';
 
   @override
   String get about => 'このアプリについて';
@@ -510,15 +505,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteConversation => '会話を削除';
 
   @override
-  String get deleteConversationSubtitle =>
-      'この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。';
+  String get deleteConversationSubtitle => 'この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。';
 
   @override
   String get whisperNeedsLogin => 'ウィスパーを送るには、Twitchでログインしてください。';
 
   @override
-  String get whisperNeedsScope =>
-      'ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。';
+  String get whisperNeedsScope => 'ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。';
 
   @override
   String get whisperUserNotFound => 'その名前のTwitchユーザーは存在しません。';
@@ -547,8 +540,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get showImagesFromLinks => 'リンクの画像を表示';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。';
+  String get showImagesFromLinksSubtitle => 'これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。';
 
   @override
   String get showImagesAutomatically => 'リンクの画像を自動で表示しますか？';

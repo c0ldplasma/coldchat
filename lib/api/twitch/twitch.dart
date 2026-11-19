@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:coldchat/api/twitch/twitch_badge.dart';
 import 'package:coldchat/api/twitch/twitch_emote.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +13,11 @@ import 'twitch_ban_response_data.dart';
 import 'twitch_profile.dart';
 
 Map<String, Map<String, TwitchBadge>> _badgeSetsFromJson(dynamic json) => {
-      for (final badgeSet in json['data'])
-        badgeSet['set_id']: {
-          for (final badgeVersion in badgeSet['versions']) badgeVersion['id']: TwitchBadge.fromJson(badgeVersion),
-        },
-    };
+  for (final badgeSet in json['data'])
+    badgeSet['set_id']: {
+      for (final badgeVersion in badgeSet['versions']) badgeVersion['id']: TwitchBadge.fromJson(badgeVersion),
+    },
+};
 
 /// Thrown when Twitch rejects an access token (401 from /oauth2/validate).
 /// Distinct from a generic failure so callers can tell "the login is dead, ask
@@ -50,7 +51,9 @@ class Twitch {
 
       do {
         final response = await http.get(
-          Uri.parse('https://api.twitch.tv/helix/users/blocks?broadcaster_id=${tokenData.userId}&first=$pageSize${cursor != null ? '&after=$cursor' : ''}'),
+          Uri.parse(
+            'https://api.twitch.tv/helix/users/blocks?broadcaster_id=${tokenData.userId}&first=$pageSize${cursor != null ? '&after=$cursor' : ''}',
+          ),
           headers: {
             'Authorization': 'Bearer ${tokenData.accessToken}',
             'Client-Id': '${tokenData.clientId}',
@@ -171,7 +174,10 @@ class Twitch {
 
     final results = await Future.wait([
       _helixGet(tokenData, 'streams?user_id=${user.id}'),
-      _helixGet(tokenData, 'channels/followers?broadcaster_id=${user.id}&first=1').then<dynamic>((json) => json, onError: (_) => null),
+      _helixGet(
+        tokenData,
+        'channels/followers?broadcaster_id=${user.id}&first=1',
+      ).then<dynamic>((json) => json, onError: (_) => null),
     ]);
     final streams = results[0]['data'] as List;
     final followerCount = results[1]?['total'] as int?;
@@ -184,7 +190,11 @@ class Twitch {
       if (gameId != null && gameId.isNotEmpty) {
         try {
           final games = (await _helixGet(tokenData, 'games?id=$gameId'))['data'] as List;
-          if (games.isNotEmpty) boxArtUrl = (games.first['box_art_url'] as String).replaceAll('{width}', '144').replaceAll('{height}', '192');
+          if (games.isNotEmpty) {
+            boxArtUrl = (games.first['box_art_url'] as String)
+                .replaceAll('{width}', '144')
+                .replaceAll('{height}', '192');
+          }
         } catch (_) {
           // The cover is decoration; the card works without it.
         }
@@ -243,7 +253,9 @@ class Twitch {
     while (emoteSetIds.isNotEmpty) {
       final emoteSetsPack = emoteSetIds.take(takeCount).toList();
       final response = await http.get(
-        Uri.parse('https://api.twitch.tv/helix/chat/emotes/set?${emoteSetsPack.map((x) => 'emote_set_id=$x').join('&')}'),
+        Uri.parse(
+          'https://api.twitch.tv/helix/chat/emotes/set?${emoteSetsPack.map((x) => 'emote_set_id=$x').join('&')}',
+        ),
         headers: {
           'Authorization': 'Bearer ${tokenData.accessToken}',
           'Client-Id': '${tokenData.clientId}',
@@ -302,7 +314,9 @@ class Twitch {
     required String userId,
   }) async {
     final response = await http.delete(
-      Uri.parse('https://api.twitch.tv/helix/moderation/bans?broadcaster_id=$broadcasterId&moderator_id=$moderatorId&user_id=$userId'),
+      Uri.parse(
+        'https://api.twitch.tv/helix/moderation/bans?broadcaster_id=$broadcasterId&moderator_id=$moderatorId&user_id=$userId',
+      ),
       headers: {
         'Authorization': 'Bearer ${tokenData.accessToken}',
         'Client-Id': '${tokenData.clientId}',
@@ -321,7 +335,11 @@ class Twitch {
   /// Unblocks [userId] for the account of [tokenData] (`user:manage:blocked_users`).
   static Future<void> unblockUser(TokenData tokenData, String userId) => _blocks(tokenData, userId, http.delete);
 
-  static Future<void> _blocks(TokenData tokenData, String userId, Future<http.Response> Function(Uri url, {Map<String, String>? headers}) method) async {
+  static Future<void> _blocks(
+    TokenData tokenData,
+    String userId,
+    Future<http.Response> Function(Uri url, {Map<String, String>? headers}) method,
+  ) async {
     final response = await method(
       Uri.parse('https://api.twitch.tv/helix/users/blocks?target_user_id=$userId'),
       headers: {
@@ -343,7 +361,9 @@ class Twitch {
     String? messageId,
   }) async {
     final response = await http.delete(
-      Uri.parse('https://api.twitch.tv/helix/moderation/chat?broadcaster_id=$broadcasterId&moderator_id=$moderatorId${messageId != null ? '&message_id=$messageId' : ''}'),
+      Uri.parse(
+        'https://api.twitch.tv/helix/moderation/chat?broadcaster_id=$broadcasterId&moderator_id=$moderatorId${messageId != null ? '&message_id=$messageId' : ''}',
+      ),
       headers: {
         'Authorization': 'Bearer ${tokenData.accessToken}',
         'Client-Id': '${tokenData.clientId}',
@@ -421,7 +441,9 @@ class Twitch {
     required String color,
   }) async {
     final response = await http.post(
-      Uri.parse('https://api.twitch.tv/helix/chat/announcements?broadcaster_id=$broadcasterId&moderator_id=$moderatorId'),
+      Uri.parse(
+        'https://api.twitch.tv/helix/chat/announcements?broadcaster_id=$broadcasterId&moderator_id=$moderatorId',
+      ),
       headers: {
         'Authorization': 'Bearer ${tokenData.accessToken}',
         'Client-Id': '${tokenData.clientId}',

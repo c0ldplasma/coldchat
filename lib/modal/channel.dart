@@ -36,30 +36,30 @@ class _ChannelModalState extends State<ChannelModal> {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ChannelInfo, TwitchProfile?>(
-        bloc: channel.channelInfo,
-        builder: (context, state) => ListView(
-          shrinkWrap: true,
-          children: [
-            UserModalHeader(profile: state, name: channel.name.replaceFirst('#', '')),
-            Tile(
-              title: AppLocalizations.of(context)!.chatters,
-              prefix: const Icon(Icons.people_outline_outlined),
-              onTap: () async {
-                Modal.show(
-                  context: context,
-                  child: ChattersModal(channel: channel),
-                );
-              },
-            ),
-            Tile(
-              title: AppLocalizations.of(context)!.leaveChannel,
-              prefix: const Icon(Icons.delete_forever_outlined),
-              onTap: () async {
-                context.read<Client>().channels.part(channel);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+    bloc: channel.channelInfo,
+    builder: (context, state) => ListView(
+      shrinkWrap: true,
+      children: [
+        UserModalHeader(profile: state, name: channel.name.replaceFirst('#', '')),
+        Tile(
+          title: AppLocalizations.of(context)!.chatters,
+          prefix: const Icon(Icons.people_outline_outlined),
+          onTap: () async {
+            Modal.show(
+              context: context,
+              child: ChattersModal(channel: channel),
+            );
+          },
         ),
-      );
+        Tile(
+          title: AppLocalizations.of(context)!.leaveChannel,
+          prefix: const Icon(Icons.delete_forever_outlined),
+          onTap: () async {
+            context.read<Client>().channels.part(channel);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    ),
+  );
 }

@@ -146,8 +146,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Kullanıcı verileri doğrulanırken bir hata oluştu:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Kullanıcı verileri doğrulanırken bir hata oluştu:';
 
   @override
   String get verifyingUserData => 'Kullanıcı verileri doğrulanıyor...';
@@ -156,8 +155,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get verifiedUserToken => 'Kullanıcı token\'ı doğrulandı!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Kullanıcı token\'ı doğrulanırken bir hata oluştu:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Kullanıcı token\'ı doğrulanırken bir hata oluştu:';
 
   @override
   String get verifyingUserToken => 'Kullanıcı token\'ı doğrulanıyor...';
@@ -382,12 +380,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get backgroundNotifications => 'Arka plan bildirimleri';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Bu seçenek platformunda kullanılamıyor.';
+  String get optionNotAvailableOnYourPlatform => 'Bu seçenek platformunda kullanılamıyor.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Bu seçenek yalnızca ColdChat destekçileri için.';
+  String get optionNotAvailablePaywalled => 'Bu seçenek yalnızca ColdChat destekçileri için.';
 
   @override
   String get clearAll => 'Tümünü temizle';
@@ -416,19 +412,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get emoteMenuButton => 'İfade menüsü düğmesi';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'İfade menüsü düğmesini gri tonlamalı göster';
+  String get emoteMenuButtonGrayscale => 'İfade menüsü düğmesini gri tonlamalı göster';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'İfade menüsü düğmesi olarak kullanmak için bir ifadeye dokun';
+  String get chooseEmoteMenuButton => 'İfade menüsü düğmesi olarak kullanmak için bir ifadeye dokun';
 
   @override
   String get resetToKappa => 'Kappa\'ya sıfırla';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'İfade indirilemedi. Düğme değiştirilmedi.';
+  String get emoteMenuButtonDownloadFailed => 'İfade indirilemedi. Düğme değiştirilmedi.';
 
   @override
   String get takePhoto => 'Fotoğraf çek';
@@ -437,8 +430,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get chooseFromLibrary => 'Galeriden seç';
 
   @override
-  String get cameraUnavailable =>
-      'Kamera açılamadı. ColdChat\'in kameraya erişimi olup olmadığını kontrol et.';
+  String get cameraUnavailable => 'Kamera açılamadı. ColdChat\'in kameraya erişimi olup olmadığını kontrol et.';
 
   @override
   String get about => 'Hakkında';
@@ -479,8 +471,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openOnTwitch => 'Twitch\'te aç';
 
   @override
-  String get blockFailed =>
-      'Engellenenler listesi değiştirilemedi. Bağlantını kontrol et ve tekrar dene.';
+  String get blockFailed => 'Engellenenler listesi değiştirilemedi. Bağlantını kontrol et ve tekrar dene.';
 
   @override
   String get contact => 'İletişim ve geri bildirim';
@@ -508,19 +499,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get closeConversation => 'Sohbeti kapat';
 
   @override
-  String get closeConversationSubtitle =>
-      'Mesajlar bu cihazda kalır ve bir sonraki fısıltıyla geri gelir.';
+  String get closeConversationSubtitle => 'Mesajlar bu cihazda kalır ve bir sonraki fısıltıyla geri gelir.';
 
   @override
   String get deleteConversation => 'Sohbeti sil';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.';
+  String get deleteConversationSubtitle => 'Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Fısıltı göndermek için Twitch ile giriş yap.';
+  String get whisperNeedsLogin => 'Fısıltı göndermek için Twitch ile giriş yap.';
 
   @override
   String get whisperNeedsScope =>
@@ -553,12 +541,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get showImagesFromLinks => 'Bağlantılardaki görselleri göster';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch bu görselleri denetlemez. Uygunsuz olabilirler.';
+  String get showImagesFromLinksSubtitle => 'Twitch bu görselleri denetlemez. Uygunsuz olabilirler.';
 
   @override
-  String get showImagesAutomatically =>
-      'Bağlantılardaki görseller otomatik gösterilsin mi?';
+  String get showImagesAutomatically => 'Bağlantılardaki görseller otomatik gösterilsin mi?';
 
   @override
   String get turnOn => 'Aç';
@@ -600,8 +586,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get oledBlack => 'OLED siyahı';
 
   @override
-  String get oledBlackSubtitle =>
-      'Karanlık modda siyah sohbet arka planı, OLED ekranlar için';
+  String get oledBlackSubtitle => 'Karanlık modda siyah sohbet arka planı, OLED ekranlar için';
 
   @override
   String get customColor => 'Özel';

@@ -167,9 +167,9 @@ class LitterboxHost extends UploadHost {
 
   @override
   Map<String, String> get fields => const {
-        'reqtype': 'fileupload',
-        'time': '72h',
-      };
+    'reqtype': 'fileupload',
+    'time': '72h',
+  };
 }
 
 /// The host Chatterino uploads to by default. Anonymous, no API key.

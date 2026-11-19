@@ -8,7 +8,8 @@ import 'messages/channel_message_id.dart';
 class ChannelMessages extends Cubit<List<ChannelMessage>> {
   ChannelMessages() : super([]);
 
-  static List<ChannelMessage> sort(List<ChannelMessage> messages) => messages..sort((a, b) => a.dateTime.compareTo(b.dateTime));
+  static List<ChannelMessage> sort(List<ChannelMessage> messages) =>
+      messages..sort((a, b) => a.dateTime.compareTo(b.dateTime));
 
   // While deferring, add() mutates the working list without emitting so a
   // bulk history insert produces a single rebuild instead of one per message
@@ -19,7 +20,8 @@ class ChannelMessages extends Cubit<List<ChannelMessage>> {
   Set<String>? _deferredIds;
 
   bool _containsId(Iterable<ChannelMessage> list, ChannelMessage message) =>
-      message is ChannelMessageId && list.whereType<ChannelMessageId>().any((e) => e.id == (message as ChannelMessageId).id);
+      message is ChannelMessageId &&
+      list.whereType<ChannelMessageId>().any((e) => e.id == (message as ChannelMessageId).id);
 
   void _emitSortedCapped(List<ChannelMessage> messages) {
     final sorted = sort(messages);

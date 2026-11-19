@@ -146,8 +146,7 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Der opstod en fejl under bekræftelse af brugerdata:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Der opstod en fejl under bekræftelse af brugerdata:';
 
   @override
   String get verifyingUserData => 'Bekræfter brugerdata...';
@@ -156,8 +155,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get verifiedUserToken => 'Brugertoken bekræftet!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Der opstod en fejl under bekræftelse af brugertoken:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Der opstod en fejl under bekræftelse af brugertoken:';
 
   @override
   String get verifyingUserToken => 'Bekræfter brugertoken...';
@@ -276,8 +274,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get copyText => 'Kopier tekst';
 
   @override
-  String get copyTextSubtitle =>
-      'Hold nede for at kopiere teksten med brugernavn';
+  String get copyTextSubtitle => 'Hold nede for at kopiere teksten med brugernavn';
 
   @override
   String get deleteMessage => 'Slet besked';
@@ -377,19 +374,16 @@ class AppLocalizationsDa extends AppLocalizations {
   String get notifications => 'Notifikationer';
 
   @override
-  String get noNotifications =>
-      'En eller anden, et eller andet sted, nævner dig en dag.';
+  String get noNotifications => 'En eller anden, et eller andet sted, nævner dig en dag.';
 
   @override
   String get backgroundNotifications => 'Notifikationer i baggrunden';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Denne indstilling er ikke tilgængelig på din platform.';
+  String get optionNotAvailableOnYourPlatform => 'Denne indstilling er ikke tilgængelig på din platform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Denne indstilling er kun for ColdChat-supportere.';
+  String get optionNotAvailablePaywalled => 'Denne indstilling er kun for ColdChat-supportere.';
 
   @override
   String get clearAll => 'Ryd alt';
@@ -418,19 +412,16 @@ class AppLocalizationsDa extends AppLocalizations {
   String get emoteMenuButton => 'Knap til emote-menuen';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Vis knappen til emote-menuen i gråtoner';
+  String get emoteMenuButtonGrayscale => 'Vis knappen til emote-menuen i gråtoner';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tryk på en emote for at bruge den som knap til emote-menuen';
+  String get chooseEmoteMenuButton => 'Tryk på en emote for at bruge den som knap til emote-menuen';
 
   @override
   String get resetToKappa => 'Nulstil til Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Kunne ikke downloade den emote. Knappen blev ikke ændret.';
+  String get emoteMenuButtonDownloadFailed => 'Kunne ikke downloade den emote. Knappen blev ikke ændret.';
 
   @override
   String get takePhoto => 'Tag billede';
@@ -439,8 +430,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get chooseFromLibrary => 'Vælg fra biblioteket';
 
   @override
-  String get cameraUnavailable =>
-      'Kameraet kunne ikke åbnes. Tjek, at ColdChat har adgang til kameraet.';
+  String get cameraUnavailable => 'Kameraet kunne ikke åbnes. Tjek, at ColdChat har adgang til kameraet.';
 
   @override
   String get about => 'Om';
@@ -481,8 +471,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get openOnTwitch => 'Åbn på Twitch';
 
   @override
-  String get blockFailed =>
-      'Bloklisten kunne ikke ændres. Tjek din forbindelse, og prøv igen.';
+  String get blockFailed => 'Bloklisten kunne ikke ændres. Tjek din forbindelse, og prøv igen.';
 
   @override
   String get contact => 'Kontakt og feedback';
@@ -510,8 +499,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get closeConversation => 'Luk samtale';
 
   @override
-  String get closeConversationSubtitle =>
-      'Beskederne bliver på denne enhed og kommer tilbage med næste hviskebesked.';
+  String get closeConversationSubtitle => 'Beskederne bliver på denne enhed og kommer tilbage med næste hviskebesked.';
 
   @override
   String get deleteConversation => 'Slet samtale';
@@ -521,16 +509,14 @@ class AppLocalizationsDa extends AppLocalizations {
       'Sletter beskederne fra denne enhed. Twitch gemmer ingen historik over hviskebeskeder.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Log ind med Twitch for at sende hviskebeskeder.';
+  String get whisperNeedsLogin => 'Log ind med Twitch for at sende hviskebeskeder.';
 
   @override
   String get whisperNeedsScope =>
       'Log ind igen for at sende og modtage hviskebeskeder. Dit login er fra før ColdChat understøttede dem.';
 
   @override
-  String get whisperUserNotFound =>
-      'Der findes ingen Twitch-bruger med det navn.';
+  String get whisperUserNotFound => 'Der findes ingen Twitch-bruger med det navn.';
 
   @override
   String whisperFailed(String reason) {
@@ -556,8 +542,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get showImagesFromLinks => 'Vis billeder fra links';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch tjekker ikke disse billeder. De kan være upassende.';
+  String get showImagesFromLinksSubtitle => 'Twitch tjekker ikke disse billeder. De kan være upassende.';
 
   @override
   String get showImagesAutomatically => 'Vis billeder fra links automatisk?';
@@ -602,8 +587,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get oledBlack => 'OLED-sort';
 
   @override
-  String get oledBlackSubtitle =>
-      'Sort chatbaggrund i mørk tilstand, til OLED-skærme';
+  String get oledBlackSubtitle => 'Sort chatbaggrund i mørk tilstand, til OLED-skærme';
 
   @override
   String get customColor => 'Egen';

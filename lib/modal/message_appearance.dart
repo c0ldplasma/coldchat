@@ -13,71 +13,71 @@ class MessageAppearanceModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('Settings'),
-        builder: (context, box) {
-          final MessageAppearance messageAppearance = box.get('messageAppearance') as MessageAppearance;
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              ModalHeader(title: AppLocalizations.of(context)!.messageAppearance),
-              Tile(
-                prefix: const Icon(Icons.av_timer_rounded),
-                title: AppLocalizations.of(context)!.showTimestamps,
-                suffix: Toggle(
-                  value: messageAppearance.timestamps,
-                  onChanged: (value) {
-                    messageAppearance.timestamps = value;
-                    messageAppearance.save();
-                  },
-                ),
-                onTap: () {
-                  messageAppearance.timestamps = !messageAppearance.timestamps;
-                  messageAppearance.save();
-                },
-              ),
-              Tile(
-                prefix: const Icon(Icons.verified_outlined),
-                title: AppLocalizations.of(context)!.showBadges,
-                suffix: Toggle(
-                  value: messageAppearance.badges,
-                  onChanged: (value) {
-                    messageAppearance.badges = value;
-                    messageAppearance.save();
-                  },
-                ),
-                onTap: () {
-                  messageAppearance.badges = !messageAppearance.badges;
-                  messageAppearance.save();
-                },
-              ),
-              Tile(
-                prefix: const Icon(Icons.view_compact_outlined),
-                title: AppLocalizations.of(context)!.compactMessages,
-                suffix: Toggle(
-                  value: messageAppearance.compact,
-                  onChanged: (value) {
-                    messageAppearance.compact = value;
-                    messageAppearance.save();
-                  },
-                ),
-                onTap: () {
-                  messageAppearance.compact = !messageAppearance.compact;
-                  messageAppearance.save();
-                },
-              ),
-              Slider(
-                divisions: 24,
-                min: 1.0,
-                max: 4.0,
-                value: messageAppearance.scale,
-                label: '${messageAppearance.scale}',
-                onChanged: (value) {
-                  messageAppearance.scale = value;
-                  messageAppearance.save();
-                },
-              ),
-            ],
-          );
-        },
+    box: Hive.box('Settings'),
+    builder: (context, box) {
+      final MessageAppearance messageAppearance = box.get('messageAppearance') as MessageAppearance;
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ModalHeader(title: AppLocalizations.of(context)!.messageAppearance),
+          Tile(
+            prefix: const Icon(Icons.av_timer_rounded),
+            title: AppLocalizations.of(context)!.showTimestamps,
+            suffix: Toggle(
+              value: messageAppearance.timestamps,
+              onChanged: (value) {
+                messageAppearance.timestamps = value;
+                messageAppearance.save();
+              },
+            ),
+            onTap: () {
+              messageAppearance.timestamps = !messageAppearance.timestamps;
+              messageAppearance.save();
+            },
+          ),
+          Tile(
+            prefix: const Icon(Icons.verified_outlined),
+            title: AppLocalizations.of(context)!.showBadges,
+            suffix: Toggle(
+              value: messageAppearance.badges,
+              onChanged: (value) {
+                messageAppearance.badges = value;
+                messageAppearance.save();
+              },
+            ),
+            onTap: () {
+              messageAppearance.badges = !messageAppearance.badges;
+              messageAppearance.save();
+            },
+          ),
+          Tile(
+            prefix: const Icon(Icons.view_compact_outlined),
+            title: AppLocalizations.of(context)!.compactMessages,
+            suffix: Toggle(
+              value: messageAppearance.compact,
+              onChanged: (value) {
+                messageAppearance.compact = value;
+                messageAppearance.save();
+              },
+            ),
+            onTap: () {
+              messageAppearance.compact = !messageAppearance.compact;
+              messageAppearance.save();
+            },
+          ),
+          Slider(
+            divisions: 24,
+            min: 1.0,
+            max: 4.0,
+            value: messageAppearance.scale,
+            label: '${messageAppearance.scale}',
+            onChanged: (value) {
+              messageAppearance.scale = value;
+              messageAppearance.save();
+            },
+          ),
+        ],
       );
+    },
+  );
 }

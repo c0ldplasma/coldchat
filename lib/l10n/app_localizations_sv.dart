@@ -146,8 +146,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Ett fel uppstod när användardata verifierades:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Ett fel uppstod när användardata verifierades:';
 
   @override
   String get verifyingUserData => 'Verifierar användardata...';
@@ -156,8 +155,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get verifiedUserToken => 'Användartoken verifierad!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Ett fel uppstod när användartoken verifierades:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Ett fel uppstod när användartoken verifierades:';
 
   @override
   String get verifyingUserToken => 'Verifierar användartoken...';
@@ -276,8 +274,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get copyText => 'Kopiera text';
 
   @override
-  String get copyTextSubtitle =>
-      'Håll in för att kopiera texten med användarnamn';
+  String get copyTextSubtitle => 'Håll in för att kopiera texten med användarnamn';
 
   @override
   String get deleteMessage => 'Radera meddelande';
@@ -377,19 +374,16 @@ class AppLocalizationsSv extends AppLocalizations {
   String get notifications => 'Aviseringar';
 
   @override
-  String get noNotifications =>
-      'Någon, någonstans, kommer att nämna dig en dag.';
+  String get noNotifications => 'Någon, någonstans, kommer att nämna dig en dag.';
 
   @override
   String get backgroundNotifications => 'Aviseringar i bakgrunden';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Det här alternativet finns inte på din plattform.';
+  String get optionNotAvailableOnYourPlatform => 'Det här alternativet finns inte på din plattform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Det här alternativet är bara för ColdChat-supportrar.';
+  String get optionNotAvailablePaywalled => 'Det här alternativet är bara för ColdChat-supportrar.';
 
   @override
   String get clearAll => 'Rensa allt';
@@ -418,19 +412,16 @@ class AppLocalizationsSv extends AppLocalizations {
   String get emoteMenuButton => 'Knapp för emote-menyn';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Visa knappen för emote-menyn i gråskala';
+  String get emoteMenuButtonGrayscale => 'Visa knappen för emote-menyn i gråskala';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tryck på en emote för att använda den som knapp för emote-menyn';
+  String get chooseEmoteMenuButton => 'Tryck på en emote för att använda den som knapp för emote-menyn';
 
   @override
   String get resetToKappa => 'Återställ till Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Det gick inte att ladda ned den emoten. Knappen ändrades inte.';
+  String get emoteMenuButtonDownloadFailed => 'Det gick inte att ladda ned den emoten. Knappen ändrades inte.';
 
   @override
   String get takePhoto => 'Ta foto';
@@ -439,8 +430,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chooseFromLibrary => 'Välj från biblioteket';
 
   @override
-  String get cameraUnavailable =>
-      'Kameran kunde inte öppnas. Kontrollera att ColdChat har åtkomst till kameran.';
+  String get cameraUnavailable => 'Kameran kunde inte öppnas. Kontrollera att ColdChat har åtkomst till kameran.';
 
   @override
   String get about => 'Om';
@@ -481,8 +471,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get openOnTwitch => 'Öppna på Twitch';
 
   @override
-  String get blockFailed =>
-      'Blockeringslistan kunde inte ändras. Kontrollera din anslutning och försök igen.';
+  String get blockFailed => 'Blockeringslistan kunde inte ändras. Kontrollera din anslutning och försök igen.';
 
   @override
   String get contact => 'Kontakt och feedback';
@@ -521,16 +510,14 @@ class AppLocalizationsSv extends AppLocalizations {
       'Raderar meddelandena från den här enheten. Twitch sparar ingen historik över viskningar.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Logga in med Twitch för att skicka viskningar.';
+  String get whisperNeedsLogin => 'Logga in med Twitch för att skicka viskningar.';
 
   @override
   String get whisperNeedsScope =>
       'Logga in igen för att skicka och ta emot viskningar. Din inloggning är från innan ColdChat hade stöd för dem.';
 
   @override
-  String get whisperUserNotFound =>
-      'Det finns ingen Twitch-användare med det namnet.';
+  String get whisperUserNotFound => 'Det finns ingen Twitch-användare med det namnet.';
 
   @override
   String whisperFailed(String reason) {
@@ -556,8 +543,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get showImagesFromLinks => 'Visa bilder från länkar';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch granskar inte de här bilderna. De kan vara olämpliga.';
+  String get showImagesFromLinksSubtitle => 'Twitch granskar inte de här bilderna. De kan vara olämpliga.';
 
   @override
   String get showImagesAutomatically => 'Visa bilder från länkar automatiskt?';
@@ -602,8 +588,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get oledBlack => 'OLED-svart';
 
   @override
-  String get oledBlackSubtitle =>
-      'Svart chattbakgrund i mörkt läge, för OLED-skärmar';
+  String get oledBlackSubtitle => 'Svart chattbakgrund i mörkt läge, för OLED-skärmar';
 
   @override
   String get customColor => 'Egen';

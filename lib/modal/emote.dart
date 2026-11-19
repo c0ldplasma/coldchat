@@ -17,36 +17,36 @@ class EmoteModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            CachedNetworkImage(
-              imageUrl: emote.mipmap.last,
-              height: 64.0,
-            ),
-            const SizedBox(width: 16.0),
-            Expanded(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    emote.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Text(emote.provider.name),
-                ],
-              ),
-            ),
-            if (url != null)
-              ElevatedButton(
-                onPressed: () => launchUrl(
-                  Uri.parse(url!),
-                  mode: LaunchMode.externalApplication,
-                ),
-                child: Text(AppLocalizations.of(context)!.openInBrowser),
-              ),
-          ],
+    padding: const EdgeInsets.all(16.0),
+    child: Row(
+      children: [
+        CachedNetworkImage(
+          imageUrl: emote.mipmap.last,
+          height: 64.0,
         ),
-      );
+        const SizedBox(width: 16.0),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                emote.name,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Text(emote.provider.name),
+            ],
+          ),
+        ),
+        if (url != null)
+          ElevatedButton(
+            onPressed: () => launchUrl(
+              Uri.parse(url!),
+              mode: LaunchMode.externalApplication,
+            ),
+            child: Text(AppLocalizations.of(context)!.openInBrowser),
+          ),
+      ],
+    ),
+  );
 }

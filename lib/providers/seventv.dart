@@ -23,7 +23,8 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
           id: emote.id,
           name: emote.name,
           mipmap: [
-            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF')) 'https:${emote.data.host.url}/${urlArray.name}',
+            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
+              'https:${emote.data.host.url}/${urlArray.name}',
           ],
           provider: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
@@ -40,7 +41,8 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
           id: emote.id,
           name: emote.name,
           mipmap: [
-            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF')) 'https:${emote.data.host.url}/${urlArray.name}',
+            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
+              'https:${emote.data.host.url}/${urlArray.name}',
           ],
           provider: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,

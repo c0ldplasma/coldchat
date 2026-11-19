@@ -17,52 +17,52 @@ class ApplicationThemeModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('Settings'),
-        builder: (context, box) {
-          final current = ColdChatTheme.current(box);
-          final appearance = box.get('applicationAppearance') as ApplicationAppearance;
-          final brightness = Theme.of(context).brightness;
-          final isCustom = current.id == ColdChatTheme.customId;
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              ModalHeader(title: AppLocalizations.of(context)!.accentColor),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 8.0),
-                child: GridView.count(
-                  crossAxisCount: 4,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 0.9,
-                  children: [
-                    for (final accent in ColdChatTheme.accents)
-                      _Swatch(
-                        name: accent.name(AppLocalizations.of(context)!),
-                        color: accent.colorScheme(brightness, highContrast: appearance.highContrast).primary,
-                        selected: accent.id == current.id,
-                        onTap: () => box.put(ColdChatTheme.accentKey, accent.id),
-                      ),
-                    _Swatch(
-                      name: AppLocalizations.of(context)!.customColor,
-                      color: isCustom ? Theme.of(context).colorScheme.primary : null,
-                      selected: isCustom,
-                      // Brings back the last custom color, or starts from the accent picked so far.
-                      onTap: isCustom
-                          ? null
-                          : () => ColdChatTheme.setCustom(
-                                box,
-                                box.get(ColdChatTheme.customHueKey) as double? ?? current.hue,
-                                box.get(ColdChatTheme.customChromaKey) as double? ?? current.chroma,
-                              ),
-                    ),
-                  ],
+    box: Hive.box('Settings'),
+    builder: (context, box) {
+      final current = ColdChatTheme.current(box);
+      final appearance = box.get('applicationAppearance') as ApplicationAppearance;
+      final brightness = Theme.of(context).brightness;
+      final isCustom = current.id == ColdChatTheme.customId;
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ModalHeader(title: AppLocalizations.of(context)!.accentColor),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 8.0),
+            child: GridView.count(
+              crossAxisCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio: 0.9,
+              children: [
+                for (final accent in ColdChatTheme.accents)
+                  _Swatch(
+                    name: accent.name(AppLocalizations.of(context)!),
+                    color: accent.colorScheme(brightness, highContrast: appearance.highContrast).primary,
+                    selected: accent.id == current.id,
+                    onTap: () => box.put(ColdChatTheme.accentKey, accent.id),
+                  ),
+                _Swatch(
+                  name: AppLocalizations.of(context)!.customColor,
+                  color: isCustom ? Theme.of(context).colorScheme.primary : null,
+                  selected: isCustom,
+                  // Brings back the last custom color, or starts from the accent picked so far.
+                  onTap: isCustom
+                      ? null
+                      : () => ColdChatTheme.setCustom(
+                          box,
+                          box.get(ColdChatTheme.customHueKey) as double? ?? current.hue,
+                          box.get(ColdChatTheme.customChromaKey) as double? ?? current.chroma,
+                        ),
                 ),
-              ),
-              if (isCustom) _CustomColorEditor(box: box, hue: current.hue, chroma: current.chroma),
-            ],
-          );
-        },
+              ],
+            ),
+          ),
+          if (isCustom) _CustomColorEditor(box: box, hue: current.hue, chroma: current.chroma),
+        ],
       );
+    },
+  );
 }
 
 class _Swatch extends StatelessWidget {
@@ -75,19 +75,23 @@ class _Swatch extends StatelessWidget {
 
   const _Swatch({required this.name, required this.color, required this.selected, required this.onTap});
 
-  static const _rainbow = SweepGradient(colors: [
-    Color(0xFFFF5A5A),
-    Color(0xFFFFC23D),
-    Color(0xFF7BD86B),
-    Color(0xFF3FC9D9),
-    Color(0xFF6B7CFF),
-    Color(0xFFD86BE0),
-    Color(0xFFFF5A5A),
-  ]);
+  static const _rainbow = SweepGradient(
+    colors: [
+      Color(0xFFFF5A5A),
+      Color(0xFFFFC23D),
+      Color(0xFF7BD86B),
+      Color(0xFF3FC9D9),
+      Color(0xFF6B7CFF),
+      Color(0xFFD86BE0),
+      Color(0xFFFF5A5A),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
-    final onColor = color == null ? null : (ThemeData.estimateBrightnessForColor(color!) == Brightness.dark ? Colors.white : Colors.black);
+    final onColor = color == null
+        ? null
+        : (ThemeData.estimateBrightnessForColor(color!) == Brightness.dark ? Colors.white : Colors.black);
     return Semantics(
       selected: selected,
       button: true,
@@ -107,10 +111,17 @@ class _Swatch extends StatelessWidget {
               padding: const EdgeInsets.all(4.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: selected ? Theme.of(context).colorScheme.onSurface : Colors.transparent, width: 2.0),
+                border: Border.all(
+                  color: selected ? Theme.of(context).colorScheme.onSurface : Colors.transparent,
+                  width: 2.0,
+                ),
               ),
               child: DecoratedBox(
-                decoration: BoxDecoration(shape: BoxShape.circle, color: color, gradient: color == null ? _rainbow : null),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color,
+                  gradient: color == null ? _rainbow : null,
+                ),
                 child: selected ? Icon(Icons.check_rounded, color: onColor) : null,
               ),
             ),
@@ -120,8 +131,8 @@ class _Swatch extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-                  ),
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+              ),
             ),
           ],
         ),
@@ -171,9 +182,13 @@ class _CustomColorEditor extends StatelessWidget {
           const SizedBox(height: 20.0),
           Row(
             children: [
-              Expanded(child: _Preview(label: l10n.light, accent: accent, brightness: Brightness.light)),
+              Expanded(
+                child: _Preview(label: l10n.light, accent: accent, brightness: Brightness.light),
+              ),
               const SizedBox(width: 12.0),
-              Expanded(child: _Preview(label: l10n.dark, accent: accent, brightness: Brightness.dark)),
+              Expanded(
+                child: _Preview(label: l10n.dark, accent: accent, brightness: Brightness.dark),
+              ),
             ],
           ),
         ],
@@ -207,7 +222,8 @@ class _Preview extends StatelessWidget {
             child: Text(
               label,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(color: scheme.primary, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.labelLarge
+                  ?.copyWith(color: scheme.primary, fontWeight: FontWeight.bold),
             ),
           ),
           Icon(Icons.add_circle_outline_rounded, size: 20.0, color: scheme.primary),

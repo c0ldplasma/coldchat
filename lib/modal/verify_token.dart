@@ -45,41 +45,41 @@ class _VerifyTokenModalState extends State<VerifyTokenModal> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<TokenData>(
-          future: future,
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (snapshot.hasData) ...[
-                  Icon(
-                    Icons.check,
-                    size: 64.0,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.verifiedUserToken),
-                  Text(AppLocalizations.of(context)!.loggedInAs('${snapshot.data!.login} (${snapshot.data!.userId})')),
-                ],
-                if (snapshot.hasError) ...[
-                  Icon(
-                    Icons.block,
-                    size: 64.0,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserToken),
-                  Text('${snapshot.error}'),
-                ],
-                if (!snapshot.hasData && !snapshot.hasError) ...[
-                  const CircularProgressIndicator.adaptive(),
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.verifyingUserToken),
-                ],
-              ],
-            );
-          },
-        ),
-      );
+    padding: const EdgeInsets.all(16.0),
+    child: FutureBuilder<TokenData>(
+      future: future,
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (snapshot.hasData) ...[
+              Icon(
+                Icons.check,
+                size: 64.0,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.verifiedUserToken),
+              Text(AppLocalizations.of(context)!.loggedInAs('${snapshot.data!.login} (${snapshot.data!.userId})')),
+            ],
+            if (snapshot.hasError) ...[
+              Icon(
+                Icons.block,
+                size: 64.0,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserToken),
+              Text('${snapshot.error}'),
+            ],
+            if (!snapshot.hasData && !snapshot.hasError) ...[
+              const CircularProgressIndicator.adaptive(),
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.verifyingUserToken),
+            ],
+          ],
+        );
+      },
+    ),
+  );
 }

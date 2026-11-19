@@ -85,8 +85,7 @@ Future<void> main() async {
   // await settingsBox.clear();
 
   final activeTwitchAccount = twitchAccountsBox.values.firstWhere(
-    (element) =>
-        accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash,
+    (element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash,
     orElse: () => null,
   );
 

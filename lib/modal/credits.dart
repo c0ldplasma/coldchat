@@ -69,7 +69,8 @@ List<CreditedPerson> credits = const [
     url: 'https://twitch.tv/supdos',
   ),
   CreditedPerson(
-    avatarUrl: 'https://cdn.discordapp.com/attachments/1097848618091806730/1097925179029585970/ImageGlass_6wULGSK0yA.png',
+    avatarUrl:
+        'https://cdn.discordapp.com/attachments/1097848618091806730/1097925179029585970/ImageGlass_6wULGSK0yA.png',
     description: 'Brazilian Portugese translation',
     name: 'Boleto',
     url: 'https://twitch.tv/boletodosub',
@@ -93,26 +94,26 @@ class CreditsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ListView(
-        shrinkWrap: true,
-        children: [
-          ModalHeader(title: AppLocalizations.of(context)!.credits),
-          // Tile(
-          //   title: 'Midori',
-          //   subtitle: 'French translation',
-          //   prefix: CircleAvatar(
-          //     backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/25180625?v=4'),
-          //   ),
-          //   onTap: () => launchUrl(Uri.parse('https://google.com'), mode: LaunchMode.externalApplication),
-          // ),
-          for (final credit in credits)
-            Tile(
-              title: credit.name,
-              subtitle: credit.description,
-              prefix: CircleAvatar(
-                backgroundImage: NetworkImage(credit.avatarUrl),
-              ),
-              onTap: () => launchUrl(Uri.parse(credit.url), mode: LaunchMode.externalApplication),
-            ),
-        ],
-      );
+    shrinkWrap: true,
+    children: [
+      ModalHeader(title: AppLocalizations.of(context)!.credits),
+      // Tile(
+      //   title: 'Midori',
+      //   subtitle: 'French translation',
+      //   prefix: CircleAvatar(
+      //     backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/25180625?v=4'),
+      //   ),
+      //   onTap: () => launchUrl(Uri.parse('https://google.com'), mode: LaunchMode.externalApplication),
+      // ),
+      for (final credit in credits)
+        Tile(
+          title: credit.name,
+          subtitle: credit.description,
+          prefix: CircleAvatar(
+            backgroundImage: NetworkImage(credit.avatarUrl),
+          ),
+          onTap: () => launchUrl(Uri.parse(credit.url), mode: LaunchMode.externalApplication),
+        ),
+    ],
+  );
 }

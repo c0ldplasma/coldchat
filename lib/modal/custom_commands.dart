@@ -14,38 +14,38 @@ class CustomCommandsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('CustomCommands'),
-        builder: (context, box) {
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              ModalHeader(title: AppLocalizations.of(context)!.customCommands),
-              for (final customCommand in box.values.cast<CustomCommand>()) ...[
-                Tile(
-                  onTap: () => Modal.show(
-                    context: context,
-                    child: CustomCommandModal(customCommand: customCommand),
-                  ),
-                  prefix: const Icon(Icons.keyboard_command_key_rounded),
-                  suffix: InkWell(
-                    borderRadius: BorderRadius.circular(24.0),
-                    onTap: () => customCommand.delete(),
-                    child: const Icon(Icons.delete_forever_rounded),
-                  ),
-                  title: customCommand.trigger,
-                  subtitle: customCommand.command,
-                ),
-              ],
-              Tile(
-                onTap: () => Modal.show(
-                  context: context,
-                  child: const CustomCommandModal(),
-                ),
-                prefix: const Icon(Icons.add_rounded),
-                title: AppLocalizations.of(context)!.newCustomCommand,
+    box: Hive.box('CustomCommands'),
+    builder: (context, box) {
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ModalHeader(title: AppLocalizations.of(context)!.customCommands),
+          for (final customCommand in box.values.cast<CustomCommand>()) ...[
+            Tile(
+              onTap: () => Modal.show(
+                context: context,
+                child: CustomCommandModal(customCommand: customCommand),
               ),
-            ],
-          );
-        },
+              prefix: const Icon(Icons.keyboard_command_key_rounded),
+              suffix: InkWell(
+                borderRadius: BorderRadius.circular(24.0),
+                onTap: () => customCommand.delete(),
+                child: const Icon(Icons.delete_forever_rounded),
+              ),
+              title: customCommand.trigger,
+              subtitle: customCommand.command,
+            ),
+          ],
+          Tile(
+            onTap: () => Modal.show(
+              context: context,
+              child: const CustomCommandModal(),
+            ),
+            prefix: const Icon(Icons.add_rounded),
+            title: AppLocalizations.of(context)!.newCustomCommand,
+          ),
+        ],
       );
+    },
+  );
 }

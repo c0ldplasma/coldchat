@@ -14,37 +14,39 @@ class UserTriggersModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('UserTriggers'),
-        builder: (context, box) {
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              ModalHeader(title: AppLocalizations.of(context)!.userTriggers),
-              for (final userTrigger in box.values.cast<UserTrigger>()) ...[
-                Tile(
-                  onTap: () => Modal.show(
-                    context: context,
-                    child: UserTriggerModal(userTrigger: userTrigger),
-                  ),
-                  prefix: Icon(userTrigger.type == UserTriggerType.mention.index ? Icons.alternate_email_rounded : Icons.block_rounded),
-                  suffix: InkWell(
-                    borderRadius: BorderRadius.circular(24.0),
-                    onTap: () => userTrigger.delete(),
-                    child: const Icon(Icons.delete_forever_rounded),
-                  ),
-                  title: userTrigger.login,
-                ),
-              ],
-              Tile(
-                onTap: () => Modal.show(
-                  context: context,
-                  child: const UserTriggerModal(),
-                ),
-                prefix: const Icon(Icons.add_rounded),
-                title: AppLocalizations.of(context)!.newUserTrigger,
+    box: Hive.box('UserTriggers'),
+    builder: (context, box) {
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          ModalHeader(title: AppLocalizations.of(context)!.userTriggers),
+          for (final userTrigger in box.values.cast<UserTrigger>()) ...[
+            Tile(
+              onTap: () => Modal.show(
+                context: context,
+                child: UserTriggerModal(userTrigger: userTrigger),
               ),
-            ],
-          );
-        },
+              prefix: Icon(
+                userTrigger.type == UserTriggerType.mention.index ? Icons.alternate_email_rounded : Icons.block_rounded,
+              ),
+              suffix: InkWell(
+                borderRadius: BorderRadius.circular(24.0),
+                onTap: () => userTrigger.delete(),
+                child: const Icon(Icons.delete_forever_rounded),
+              ),
+              title: userTrigger.login,
+            ),
+          ],
+          Tile(
+            onTap: () => Modal.show(
+              context: context,
+              child: const UserTriggerModal(),
+            ),
+            prefix: const Icon(Icons.add_rounded),
+            title: AppLocalizations.of(context)!.newUserTrigger,
+          ),
+        ],
       );
+    },
+  );
 }

@@ -146,8 +146,7 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Došlo je do pogreške pri provjeri korisničkih podataka:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Došlo je do pogreške pri provjeri korisničkih podataka:';
 
   @override
   String get verifyingUserData => 'Provjera korisničkih podataka...';
@@ -156,8 +155,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get verifiedUserToken => 'Korisnički token provjeren!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Došlo je do pogreške pri provjeri korisničkog tokena:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Došlo je do pogreške pri provjeri korisničkog tokena:';
 
   @override
   String get verifyingUserToken => 'Provjera korisničkog tokena...';
@@ -276,8 +274,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get copyText => 'Kopiraj tekst';
 
   @override
-  String get copyTextSubtitle =>
-      'Zadrži za kopiranje teksta s korisničkim imenom';
+  String get copyTextSubtitle => 'Zadrži za kopiranje teksta s korisničkim imenom';
 
   @override
   String get deleteMessage => 'Izbriši poruku';
@@ -383,12 +380,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get backgroundNotifications => 'Obavijesti u pozadini';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Ova opcija nije dostupna na tvojoj platformi.';
+  String get optionNotAvailableOnYourPlatform => 'Ova opcija nije dostupna na tvojoj platformi.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Ova je opcija samo za one koji podržavaju ColdChat.';
+  String get optionNotAvailablePaywalled => 'Ova je opcija samo za one koji podržavaju ColdChat.';
 
   @override
   String get clearAll => 'Očisti sve';
@@ -417,19 +412,16 @@ class AppLocalizationsHr extends AppLocalizations {
   String get emoteMenuButton => 'Gumb izbornika emotikona';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Gumb izbornika emotikona u sivim tonovima';
+  String get emoteMenuButtonGrayscale => 'Gumb izbornika emotikona u sivim tonovima';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Dodirni emotikon koji želiš kao gumb izbornika emotikona';
+  String get chooseEmoteMenuButton => 'Dodirni emotikon koji želiš kao gumb izbornika emotikona';
 
   @override
   String get resetToKappa => 'Vrati na Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Preuzimanje emotikona nije uspjelo. Gumb nije promijenjen.';
+  String get emoteMenuButtonDownloadFailed => 'Preuzimanje emotikona nije uspjelo. Gumb nije promijenjen.';
 
   @override
   String get takePhoto => 'Snimi fotografiju';
@@ -438,8 +430,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get chooseFromLibrary => 'Odaberi iz galerije';
 
   @override
-  String get cameraUnavailable =>
-      'Kamera se nije mogla otvoriti. Provjeri ima li ColdChat pristup kameri.';
+  String get cameraUnavailable => 'Kamera se nije mogla otvoriti. Provjeri ima li ColdChat pristup kameri.';
 
   @override
   String get about => 'O aplikaciji';
@@ -480,8 +471,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get openOnTwitch => 'Otvori na Twitchu';
 
   @override
-  String get blockFailed =>
-      'Popis blokiranih nije moguće promijeniti. Provjeri vezu i pokušaj ponovno.';
+  String get blockFailed => 'Popis blokiranih nije moguće promijeniti. Provjeri vezu i pokušaj ponovno.';
 
   @override
   String get contact => 'Kontakt i povratne informacije';
@@ -509,15 +499,13 @@ class AppLocalizationsHr extends AppLocalizations {
   String get closeConversation => 'Zatvori razgovor';
 
   @override
-  String get closeConversationSubtitle =>
-      'Poruke ostaju na ovom uređaju i vraćaju se sa sljedećim šapatom.';
+  String get closeConversationSubtitle => 'Poruke ostaju na ovom uređaju i vraćaju se sa sljedećim šapatom.';
 
   @override
   String get deleteConversation => 'Izbriši razgovor';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Briše poruke s ovog uređaja. Twitch ne čuva povijest šapata.';
+  String get deleteConversationSubtitle => 'Briše poruke s ovog uređaja. Twitch ne čuva povijest šapata.';
 
   @override
   String get whisperNeedsLogin => 'Prijavi se na Twitch za slanje šapata.';
@@ -553,12 +541,10 @@ class AppLocalizationsHr extends AppLocalizations {
   String get showImagesFromLinks => 'Prikaži slike iz poveznica';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch ne provjerava te slike. Mogu biti neprikladne.';
+  String get showImagesFromLinksSubtitle => 'Twitch ne provjerava te slike. Mogu biti neprikladne.';
 
   @override
-  String get showImagesAutomatically =>
-      'Automatski prikazivati slike iz poveznica?';
+  String get showImagesAutomatically => 'Automatski prikazivati slike iz poveznica?';
 
   @override
   String get turnOn => 'Uključi';
@@ -600,8 +586,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get oledBlack => 'OLED crna';
 
   @override
-  String get oledBlackSubtitle =>
-      'Crna pozadina chata u tamnom načinu, za OLED zaslone';
+  String get oledBlackSubtitle => 'Crna pozadina chata u tamnom načinu, za OLED zaslone';
 
   @override
   String get customColor => 'Prilagođeno';

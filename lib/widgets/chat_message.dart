@@ -58,14 +58,19 @@ class _BlockedChatMessageState extends State<BlockedChatMessage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (widget.messageAppearance.compact ? 1.0 : 2.0)),
+              padding: EdgeInsets.symmetric(
+                horizontal: 12.0,
+                vertical: 2.0 * (widget.messageAppearance.compact ? 1.0 : 2.0),
+              ),
               child: Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(text: AppLocalizations.of(context)!.blockedMessage),
                     const TextSpan(text: ''),
                     TextSpan(
-                      text: hidden ? AppLocalizations.of(context)!.showMessage : AppLocalizations.of(context)!.hideMessage,
+                      text: hidden
+                          ? AppLocalizations.of(context)!.showMessage
+                          : AppLocalizations.of(context)!.hideMessage,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -74,7 +79,9 @@ class _BlockedChatMessageState extends State<BlockedChatMessage> {
                     ),
                   ],
                 ),
-                style: TextStyle(fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * widget.messageAppearance.scale),
+                style: TextStyle(
+                  fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * widget.messageAppearance.scale,
+                ),
               ),
             ),
             if (!hidden) widget.widget,
@@ -92,9 +99,39 @@ class ChatMessage extends StatelessWidget {
   // and look oversized when rendered at the same height as named emotes like
   // Kappa/PogChamp, so they get a smaller, near-text height.
   static const Set<String> _twitchClassicEmoticons = {
-    ':)', ':(', ':D', '>(', ':|', 'O_o', 'B)', ':O', '<3', ':/', ';)', ':P', ';P', 'R)',
-    ':-)', ':-(', ':-D', '>:(', ':-|', 'O_O', 'B-)', ':-O', ':-/', ';-)', ':-P', ';-P', 'R-)',
-    ':7', ':>', ':S', '#/', '<]', ':z',
+    ':)',
+    ':(',
+    ':D',
+    '>(',
+    ':|',
+    'O_o',
+    'B)',
+    ':O',
+    '<3',
+    ':/',
+    ';)',
+    ':P',
+    ';P',
+    'R)',
+    ':-)',
+    ':-(',
+    ':-D',
+    '>:(',
+    ':-|',
+    'O_O',
+    'B-)',
+    ':-O',
+    ':-/',
+    ';-)',
+    ':-P',
+    ';-P',
+    'R-)',
+    ':7',
+    ':>',
+    ':S',
+    '#/',
+    '<]',
+    ':z',
   };
 
   final ChannelMessage message;
@@ -111,98 +148,124 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Builder(
-        builder: (context) {
-          if (message is ChannelMessageChat) {
-            final chatMessage = message as ChannelMessageChat;
-            if (chatMessage.subInfo != null) {
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
-                child: Wrap(
-                  alignment: WrapAlignment.start,
-                  children: [
-                    Surface(
-                      type: SurfaceType.tertiary,
-                      borderRadius: BorderRadius.circular(18.0 * messageAppearance.scale),
-                      onTap: () async {},
-                      onLongPress: () => Modal.show(
-                        context: context,
-                        child: MessageModal(
-                          message: chatMessage,
-                          channelViewState: ChannelView.of(context),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12.0 * messageAppearance.scale, vertical: 8.0 * messageAppearance.scale),
-                        child: Wrap(
-                          alignment: WrapAlignment.start,
-                          children: [
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  WidgetSpan(child: Icon(chatMessage.subInfo!.msgParamWasGifted ? Icons.card_giftcard_outlined : Icons.star_border_outlined, size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale)),
-                                  WidgetSpan(child: SizedBox(height: 8.0 * messageAppearance.scale, width: 8.0 * messageAppearance.scale)),
-                                  TextSpan(text: '${chatMessage.subInfo?.systemMsg.replaceAll('\\s', ' ')}'),
-                                ],
-                              ),
-                              style: TextStyle(fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale),
-                            ),
-                            buildMessageContent(context, chatMessage, messageAppearance),
-                          ],
-                        ),
-                      ),
+    builder: (context) {
+      if (message is ChannelMessageChat) {
+        final chatMessage = message as ChannelMessageChat;
+        if (chatMessage.subInfo != null) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
+            child: Wrap(
+              alignment: WrapAlignment.start,
+              children: [
+                Surface(
+                  type: SurfaceType.tertiary,
+                  borderRadius: BorderRadius.circular(18.0 * messageAppearance.scale),
+                  onTap: () async {},
+                  onLongPress: () => Modal.show(
+                    context: context,
+                    child: MessageModal(
+                      message: chatMessage,
+                      channelViewState: ChannelView.of(context),
                     ),
-                  ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.0 * messageAppearance.scale,
+                      vertical: 8.0 * messageAppearance.scale,
+                    ),
+                    child: Wrap(
+                      alignment: WrapAlignment.start,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              WidgetSpan(
+                                child: Icon(
+                                  chatMessage.subInfo!.msgParamWasGifted
+                                      ? Icons.card_giftcard_outlined
+                                      : Icons.star_border_outlined,
+                                  size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale,
+                                ),
+                              ),
+                              WidgetSpan(
+                                child: SizedBox(
+                                  height: 8.0 * messageAppearance.scale,
+                                  width: 8.0 * messageAppearance.scale,
+                                ),
+                              ),
+                              TextSpan(text: '${chatMessage.subInfo?.systemMsg.replaceAll('\\s', ' ')}'),
+                            ],
+                          ),
+                          style: TextStyle(
+                            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale,
+                          ),
+                        ),
+                        buildMessageContent(context, chatMessage, messageAppearance),
+                      ],
+                    ),
+                  ),
                 ),
-              );
-            }
+              ],
+            ),
+          );
+        }
 
-            final widget = Surface(
-              type: chatMessage.blocked
-                  ? SurfaceType.error
-                  : chatMessage.mentionned && renderMentions
-                      ? SurfaceType.primary
-                      : SurfaceType.transparent,
-              onTap: () async {},
-              onLongPress: () => Modal.show(
-                context: context,
-                child: MessageModal(
-                  message: chatMessage,
-                  channelViewState: ChannelView.of(context),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
-                child: buildMessageContent(context, chatMessage, messageAppearance),
-              ),
-            );
-            if (chatMessage.blocked) {
-              return BlockedChatMessage(
-                widget: widget,
-                messageAppearance: messageAppearance,
-              );
-            }
+        final widget = Surface(
+          type: chatMessage.blocked
+              ? SurfaceType.error
+              : chatMessage.mentionned && renderMentions
+              ? SurfaceType.primary
+              : SurfaceType.transparent,
+          onTap: () async {},
+          onLongPress: () => Modal.show(
+            context: context,
+            child: MessageModal(
+              message: chatMessage,
+              channelViewState: ChannelView.of(context),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
+            child: buildMessageContent(context, chatMessage, messageAppearance),
+          ),
+        );
+        if (chatMessage.blocked) {
+          return BlockedChatMessage(
+            widget: widget,
+            messageAppearance: messageAppearance,
+          );
+        }
 
-            return widget;
-          } else if (message is ChannelMessageBan) {
-            return ChatBanChip(messageAppearance: messageAppearance, message: message as ChannelMessageBan);
-          } else if (message is ChannelMessageNotice) {
-            return ChatNoticeChip(messageAppearance: messageAppearance, message: message as ChannelMessageNotice);
-          } else if (message is ChannelMessageEvent) {
-            return Container();
-          } else if (message is ChannelMessageStateChange) {
-            return _ChannelStatusLine(message: message as ChannelMessageStateChange, messageAppearance: messageAppearance);
-          }
-          return Text('Unhandled message type: ${message.runtimeType}');
-        },
-      );
+        return widget;
+      } else if (message is ChannelMessageBan) {
+        return ChatBanChip(messageAppearance: messageAppearance, message: message as ChannelMessageBan);
+      } else if (message is ChannelMessageNotice) {
+        return ChatNoticeChip(messageAppearance: messageAppearance, message: message as ChannelMessageNotice);
+      } else if (message is ChannelMessageEvent) {
+        return Container();
+      } else if (message is ChannelMessageStateChange) {
+        return _ChannelStatusLine(message: message as ChannelMessageStateChange, messageAppearance: messageAppearance);
+      }
+      return Text('Unhandled message type: ${message.runtimeType}');
+    },
+  );
 
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
-        image: CachedNetworkImageProvider(emote.mipmap.last),
-        height: (emote.provider.name == 'Emoji' || (emote.provider.name == 'Twitch' && _twitchClassicEmoticons.contains(emote.name)) ? 24.0 : 32.0) * (1.0 / messageAppearance.scale),
-        filterQuality: FilterQuality.high,
-      );
+    image: CachedNetworkImageProvider(emote.mipmap.last),
+    height:
+        (emote.provider.name == 'Emoji' ||
+                (emote.provider.name == 'Twitch' && _twitchClassicEmoticons.contains(emote.name))
+            ? 24.0
+            : 32.0) *
+        (1.0 / messageAppearance.scale),
+    filterQuality: FilterQuality.high,
+  );
 
-  static Widget buildMessageContent(BuildContext context, ChannelMessageChat message, MessageAppearance messageAppearance) {
+  static Widget buildMessageContent(
+    BuildContext context,
+    ChannelMessageChat message,
+    MessageAppearance messageAppearance,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -228,7 +291,10 @@ class ChatMessage extends StatelessWidget {
                   child: Text.rich(
                     TextSpan(
                       children: [
-                        TextSpan(text: '@${message.replyInfo?.replyParentDisplayName}: ', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                          text: '@${message.replyInfo?.replyParentDisplayName}: ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         TextSpan(text: '${message.replyInfo?.replyParentMsgBody.replaceAll('\\s', ' ')}'),
                         // TextSpan(text: '${message.replyInfo?.replyParentMsgBody}'),
                       ],
@@ -302,7 +368,10 @@ class ChatMessage extends StatelessWidget {
                 if (split is Emote)
                   WidgetSpan(
                     child: GestureDetector(
-                      onTap: () => Modal.show(context: context, child: EmoteModal(emote: split)),
+                      onTap: () => Modal.show(
+                        context: context,
+                        child: EmoteModal(emote: split),
+                      ),
                       child: Tooltip(
                         message: split.name,
                         child: Padding(
@@ -342,9 +411,9 @@ class ChatMessage extends StatelessWidget {
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () => launchUrl(
-                            Uri.parse(split.url),
-                            mode: LaunchMode.externalApplication,
-                          ),
+                        Uri.parse(split.url),
+                        mode: LaunchMode.externalApplication,
+                      ),
                   ),
               ],
             ],
@@ -461,7 +530,10 @@ class _ChannelStatusLine extends StatelessWidget {
           children: [
             if (messageAppearance.timestamps)
               TextSpan(text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')}  '),
-            TextSpan(text: text, style: const TextStyle(fontStyle: FontStyle.italic)),
+            TextSpan(
+              text: text,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+            ),
           ],
         ),
         style: TextStyle(color: color, fontSize: fontSize),

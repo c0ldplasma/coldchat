@@ -45,7 +45,10 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
         final accountsBox = Hive.box('TwitchAccounts');
         final replacedHashes = [
           for (final entry in accountsBox.toMap().entries)
-            if (entry.key != widget.tokenData.hash && entry.value is TwitchAccount && (entry.value as TwitchAccount).tokenData.userId == widget.tokenData.userId) entry.key,
+            if (entry.key != widget.tokenData.hash &&
+                entry.value is TwitchAccount &&
+                (entry.value as TwitchAccount).tokenData.userId == widget.tokenData.userId)
+              entry.key,
         ];
         await accountsBox.deleteAll(replacedHashes);
         await accountsBox.put(widget.tokenData.hash, twitchAccount);
@@ -56,7 +59,8 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
         // restart. Adding a *second* account still doesn't steal the session.
         final accountSettingsBox = Hive.box('AccountSettings');
         final activeHash = accountSettingsBox.get('activeTwitchAccount');
-        final activeIsGone = activeHash == null || !accountsBox.containsKey(activeHash) || replacedHashes.contains(activeHash);
+        final activeIsGone =
+            activeHash == null || !accountsBox.containsKey(activeHash) || replacedHashes.contains(activeHash);
         if (activeIsGone || activeHash == widget.tokenData.hash) {
           await accountSettingsBox.put('activeTwitchAccount', widget.tokenData.hash);
           if (mounted) await context.read<Client>().connectAs(twitchAccount);
@@ -70,42 +74,42 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<UserData>(
-          future: future,
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (snapshot.hasData) ...[
-                  Icon(
-                    Icons.check,
-                    size: 64.0,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  // TODO: Display both background and avatar
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.verifiedUserData),
-                  Text(AppLocalizations.of(context)!.loggedInAs(snapshot.data!.displayName)),
-                ],
-                if (snapshot.hasError) ...[
-                  Icon(
-                    Icons.block,
-                    size: 64.0,
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserData),
-                  Text('${snapshot.error}'),
-                ],
-                if (!snapshot.hasData && !snapshot.hasError) ...[
-                  const CircularProgressIndicator.adaptive(),
-                  const SizedBox(height: 16.0),
-                  Text(AppLocalizations.of(context)!.verifyingUserData),
-                ],
-              ],
-            );
-          },
-        ),
-      );
+    padding: const EdgeInsets.all(16.0),
+    child: FutureBuilder<UserData>(
+      future: future,
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (snapshot.hasData) ...[
+              Icon(
+                Icons.check,
+                size: 64.0,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              // TODO: Display both background and avatar
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.verifiedUserData),
+              Text(AppLocalizations.of(context)!.loggedInAs(snapshot.data!.displayName)),
+            ],
+            if (snapshot.hasError) ...[
+              Icon(
+                Icons.block,
+                size: 64.0,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserData),
+              Text('${snapshot.error}'),
+            ],
+            if (!snapshot.hasData && !snapshot.hasError) ...[
+              const CircularProgressIndicator.adaptive(),
+              const SizedBox(height: 16.0),
+              Text(AppLocalizations.of(context)!.verifyingUserData),
+            ],
+          ],
+        );
+      },
+    ),
+  );
 }

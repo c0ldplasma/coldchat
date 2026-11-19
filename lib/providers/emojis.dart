@@ -24,7 +24,8 @@ class EmojiProvider extends Provider with EmoteProvider {
     // The file is in codepoint order. Use Unicode's order instead (Smileys &
     // Emotion first), with the bare skin tone swatches ("Component") at the end.
     int rank(dynamic entry) => (entry['category'] == 'Component' ? 100000 : 0) + (entry['sort_order'] as int);
-    final emojis = responseJson.where((entry) => entry[supportedKey] == true).toList()..sort((a, b) => rank(a).compareTo(rank(b)));
+    final emojis = responseJson.where((entry) => entry[supportedKey] == true).toList()
+      ..sort((a, b) => rank(a).compareTo(rank(b)));
     return [
       for (final emojiData in emojis)
         Emote(

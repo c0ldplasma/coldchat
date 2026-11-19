@@ -120,7 +120,9 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       login: message.prefix!.split('!').first,
       displayName: message.tags['display-name'],
       id: message.tags['user-id'],
-      color: (message.tags['color']?.isEmpty ?? true) ? null : Color(int.parse('FF${message.tags['color']!.substring(1)}', radix: 16)),
+      color: (message.tags['color']?.isEmpty ?? true)
+          ? null
+          : Color(int.parse('FF${message.tags['color']!.substring(1)}', radix: 16)),
     );
 
     var messageText = message.parameters.skip(1).join(':');
@@ -158,7 +160,13 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       twitchEmotes.sort((item, item2) => item2.start.compareTo(item.start));
 
       for (var twitchEmote in twitchEmotes) {
-        messageRunes.replaceRange(twitchEmote.start, twitchEmote.end + 1, utf8.encode(' ${twitchEmote.code}|${String.fromCharCodes(messageRunes.getRange(twitchEmote.start, twitchEmote.end + 1))} '));
+        messageRunes.replaceRange(
+          twitchEmote.start,
+          twitchEmote.end + 1,
+          utf8.encode(
+            ' ${twitchEmote.code}|${String.fromCharCodes(messageRunes.getRange(twitchEmote.start, twitchEmote.end + 1))} ',
+          ),
+        );
       }
 
       messageText = String.fromCharCodes(messageRunes).replaceAll(utf8.decode([0xF3, 0xA0, 0x80, 0x80]), '');
@@ -222,7 +230,9 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     if (receiver != null) {
       // Check user triggers
       final userTriggers = Hive.box('UserTriggers').values.cast<UserTrigger>();
-      final userTrigger = userTriggers.firstWhereOrNull((element) => element.login.toLowerCase() == user.login?.toLowerCase());
+      final userTrigger = userTriggers.firstWhereOrNull(
+        (element) => element.login.toLowerCase() == user.login?.toLowerCase(),
+      );
       if (userTrigger != null) {
         switch (UserTriggerType.values[userTrigger.type]) {
           case UserTriggerType.mention:
@@ -246,13 +256,21 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
             if (textSplits.length > 1) {
               return body.toLowerCase().contains(pattern);
             } else {
-              return textSplits.whereType<String>().map((e) => e.toLowerCase()).any((split) => (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'));
+              return textSplits
+                  .whereType<String>()
+                  .map((e) => e.toLowerCase())
+                  .any(
+                    (split) =>
+                        (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'),
+                  );
             }
           } else {
             if (textSplits.length > 1) {
               return body.contains(pattern);
             } else {
-              return textSplits.whereType<String>().any((split) => (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'));
+              return textSplits.whereType<String>().any(
+                (split) => (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'),
+              );
             }
           }
         }
@@ -271,7 +289,18 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       if (receiver.state is ConnectionConnected) {
         final connectedState = (receiver.state as ConnectionConnected);
         blocked = blocked || connectedState.blockedUserIds.contains(user.id);
-        mentionned = mentionned || textSplits.whereType<String>().map((e) => e.toLowerCase()).any((split) => (split == connectedState.twitchAccount.tokenData.login || split == '@${connectedState.twitchAccount.tokenData.login}' || split == '${connectedState.twitchAccount.tokenData.login},' || split == '@${connectedState.twitchAccount.tokenData.login},'));
+        mentionned =
+            mentionned ||
+            textSplits
+                .whereType<String>()
+                .map((e) => e.toLowerCase())
+                .any(
+                  (split) =>
+                      (split == connectedState.twitchAccount.tokenData.login ||
+                      split == '@${connectedState.twitchAccount.tokenData.login}' ||
+                      split == '${connectedState.twitchAccount.tokenData.login},' ||
+                      split == '@${connectedState.twitchAccount.tokenData.login},'),
+                );
       }
     }
   }
