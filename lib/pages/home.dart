@@ -60,8 +60,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   static const String _lastChannelKey = 'lastChannel';
 
   TabController? _tabController;
@@ -91,10 +90,12 @@ class _HomePageState extends State<HomePage>
     final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
-    messenger.showSnackBar(SnackBar(
-      content: Text(l10n.whisperFrom(conversation.partnerDisplayName)),
-      action: SnackBarAction(label: l10n.openWhisper, onPressed: () => _openChannel(conversation.name)),
-    ));
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.whisperFrom(conversation.partnerDisplayName)),
+        action: SnackBarAction(label: l10n.openWhisper, onPressed: () => _openChannel(conversation.name)),
+      ),
+    );
   }
 
   // Tells the whispers which conversation is on screen, so it isn't marked
@@ -148,9 +149,7 @@ class _HomePageState extends State<HomePage>
     final controller = _tabController;
     if (controller == null || controller.indexIsChanging) return;
     final index = controller.index;
-    final name = index == 0
-        ? ''
-        : (index - 1 < _channels.length ? _channels[index - 1].name : '');
+    final name = index == 0 ? '' : (index - 1 < _channels.length ? _channels[index - 1].name : '');
     Hive.box('Settings').put(_lastChannelKey, name);
     _updateActiveWhisper();
   }
@@ -186,131 +185,133 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) => BlocBuilder<ClientChannels, List<Channel>>(
-        bloc: context.read<Client>().channels,
-        builder: (context, channels) => BlocBuilder<Whispers, List<WhisperChannel>>(
-          bloc: context.read<Client>().whispers,
-          builder: (context, whispers) {
-            final state = [...channels, ...whispers];
-            final tabController = _ensureController(state);
-            return Provider<HomeTabSwitcher>.value(
-              value: _switcher,
-              child: Scaffold(
-                extendBody: true,
-                extendBodyBehindAppBar: true,
-                bottomNavigationBar: BottomBar(
-                  child: Builder(builder: (context) {
-                    final muted = ChatColors.of(context).muted;
-                    final accent = Theme.of(context).colorScheme.primary;
-                    // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: TabBar(
-                            controller: tabController,
-                            isScrollable: true,
-                            tabAlignment: TabAlignment.start,
-                            // The selected tab is one of the places the accent color shows.
-                            labelColor: accent,
-                            unselectedLabelColor: muted,
-                            // 12 instead of 16, so the home icon lines up with the composer's image button below it.
-                            labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-                            indicatorSize: TabBarIndicatorSize.label,
-                            indicator: UnderlineTabIndicator(
-                              borderSide: BorderSide(color: accent, width: 3.0),
-                              // A rounded pill a little below the label, not a bar cut off by the tab's bottom edge.
-                              borderRadius: BorderRadius.circular(3.0),
-                              insets: const EdgeInsets.only(bottom: 8.0),
+    bloc: context.read<Client>().channels,
+    builder: (context, channels) => BlocBuilder<Whispers, List<WhisperChannel>>(
+      bloc: context.read<Client>().whispers,
+      builder: (context, whispers) {
+        final state = [...channels, ...whispers];
+        final tabController = _ensureController(state);
+        return Provider<HomeTabSwitcher>.value(
+          value: _switcher,
+          child: Scaffold(
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            bottomNavigationBar: BottomBar(
+              child: Builder(
+                builder: (context) {
+                  final muted = ChatColors.of(context).muted;
+                  final accent = Theme.of(context).colorScheme.primary;
+                  // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: TabBar(
+                          controller: tabController,
+                          isScrollable: true,
+                          tabAlignment: TabAlignment.start,
+                          // The selected tab is one of the places the accent color shows.
+                          labelColor: accent,
+                          unselectedLabelColor: muted,
+                          // 12 instead of 16, so the home icon lines up with the composer's image button below it.
+                          labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicator: UnderlineTabIndicator(
+                            borderSide: BorderSide(color: accent, width: 3.0),
+                            // A rounded pill a little below the label, not a bar cut off by the tab's bottom edge.
+                            borderRadius: BorderRadius.circular(3.0),
+                            insets: const EdgeInsets.only(bottom: 8.0),
+                          ),
+                          dividerColor: Colors.transparent,
+                          tabs: [
+                            GestureDetector(
+                              onLongPress: () {
+                                Modal.show(
+                                  context: context,
+                                  child: const ColdChatModal(),
+                                );
+                              },
+                              child: const SizedBox(
+                                height: 48.0,
+                                child: Icon(Icons.home_outlined),
+                              ),
                             ),
-                            dividerColor: Colors.transparent,
-                            tabs: [
+                            for (final channel in channels)
                               GestureDetector(
                                 onLongPress: () {
                                   Modal.show(
                                     context: context,
-                                    child: const ColdChatModal(),
+                                    child: ChannelModal(channel: channel),
                                   );
                                 },
-                                child: const SizedBox(
+                                child: SizedBox(
                                   height: 48.0,
-                                  child: Icon(Icons.home_outlined),
+                                  child: Center(child: Text(channel.name)),
                                 ),
                               ),
-                              for (final channel in channels)
-                                GestureDetector(
-                                  onLongPress: () {
-                                    Modal.show(
-                                      context: context,
-                                      child: ChannelModal(channel: channel),
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    height: 48.0,
-                                    child: Center(child: Text(channel.name)),
-                                  ),
+                            for (final conversation in whispers)
+                              GestureDetector(
+                                onLongPress: () {
+                                  Modal.show(
+                                    context: context,
+                                    child: WhisperModal(conversation: conversation),
+                                  );
+                                },
+                                child: SizedBox(
+                                  height: 48.0,
+                                  child: Center(child: _WhisperTabLabel(conversation: conversation)),
                                 ),
-                              for (final conversation in whispers)
-                                GestureDetector(
-                                  onLongPress: () {
-                                    Modal.show(
-                                      context: context,
-                                      child: WhisperModal(conversation: conversation),
-                                    );
-                                  },
-                                  child: SizedBox(
-                                    height: 48.0,
-                                    child: Center(child: _WhisperTabLabel(conversation: conversation)),
-                                  ),
-                                ),
-                            ],
-                          ),
+                              ),
+                          ],
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.add_circle_outline_rounded),
-                          color: accent,
-                          tooltip: AppLocalizations.of(context)!.addChannel,
-                          onPressed: _openChannelSearch,
-                        ),
-                      ],
-                    );
-                  }),
-                ),
-                body: BlocBuilder<Connection, tmi.ConnectionState>(
-                  bloc: context.read<Client>().receiver,
-                  builder: (context, connectionState) {
-                    // The banner claims the status-bar inset itself, so drop the
-                    // top inset for everything below it — otherwise the home
-                    // tab's large app bar and the chat view would each add it a
-                    // second time and leave a gap under the banner.
-                    final loginExpired = connectionState is tmi.ConnectionInvalidCredentials;
-                    return Column(
-                      children: [
-                        const LoginExpiredBanner(),
-                        Expanded(
-                          child: MediaQuery.removePadding(
-                            context: context,
-                            removeTop: loginExpired,
-                            child: TabBarView(
-                              controller: tabController,
-                              children: [
-                                const HomeTab(),
-                                for (final channel in state)
-                                  ChannelView(
-                                    key: ObjectKey(channel),
-                                    channel: channel,
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add_circle_outline_rounded),
+                        color: accent,
+                        tooltip: AppLocalizations.of(context)!.addChannel,
+                        onPressed: _openChannelSearch,
+                      ),
+                    ],
+                  );
+                },
               ),
-            );
-          },
-        ),
-      );
+            ),
+            body: BlocBuilder<Connection, tmi.ConnectionState>(
+              bloc: context.read<Client>().receiver,
+              builder: (context, connectionState) {
+                // The banner claims the status-bar inset itself, so drop the
+                // top inset for everything below it — otherwise the home
+                // tab's large app bar and the chat view would each add it a
+                // second time and leave a gap under the banner.
+                final loginExpired = connectionState is tmi.ConnectionInvalidCredentials;
+                return Column(
+                  children: [
+                    const LoginExpiredBanner(),
+                    Expanded(
+                      child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: loginExpired,
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            const HomeTab(),
+                            for (final channel in state)
+                              ChannelView(
+                                key: ObjectKey(channel),
+                                channel: channel,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
+    ),
+  );
 }
 
 /// A whisper tab: the partner's name, on red while there are unread whispers.

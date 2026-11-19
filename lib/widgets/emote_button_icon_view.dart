@@ -21,21 +21,23 @@ class EmoteButtonIconView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(
-        valueListenable: Hive.box('Settings').listenable(keys: [EmoteButtonIcon.iconKey, EmoteButtonIcon.grayscaleKey]),
-        builder: (context, box, _) {
-          final file = EmoteButtonIcon.file;
-          final emoji = EmoteButtonIcon.emoji;
-          final Widget icon = file != null
-              ? Image.file(file, height: size, filterQuality: FilterQuality.medium)
-              : emoji != null
-                  ? SizedBox.square(
-                      dimension: size,
-                      child: FittedBox(child: Text(emoji, style: TextStyle(fontSize: size, height: 1.0))),
-                    )
-                  : Image.asset('assets/emote_providers/kappa.png', height: size, filterQuality: FilterQuality.medium);
-          return EmoteButtonIcon.grayscale ? ColorFiltered(colorFilter: _grayscale, child: icon) : icon;
-        },
-      );
+    valueListenable: Hive.box('Settings').listenable(keys: [EmoteButtonIcon.iconKey, EmoteButtonIcon.grayscaleKey]),
+    builder: (context, box, _) {
+      final file = EmoteButtonIcon.file;
+      final emoji = EmoteButtonIcon.emoji;
+      final Widget icon = file != null
+          ? Image.file(file, height: size, filterQuality: FilterQuality.medium)
+          : emoji != null
+          ? SizedBox.square(
+              dimension: size,
+              child: FittedBox(
+                child: Text(emoji, style: TextStyle(fontSize: size, height: 1.0)),
+              ),
+            )
+          : Image.asset('assets/emote_providers/kappa.png', height: size, filterQuality: FilterQuality.medium);
+      return EmoteButtonIcon.grayscale ? ColorFiltered(colorFilter: _grayscale, child: icon) : icon;
+    },
+  );
 }
 
 /// Makes [emote] the emote menu button, or resets it to Kappa when null.

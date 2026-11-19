@@ -146,8 +146,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'An error has occurred when verifying user data:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'An error has occurred when verifying user data:';
 
   @override
   String get verifyingUserData => 'Verifying user data...';
@@ -156,8 +155,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifiedUserToken => 'Verified user token!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'An error has occurred when verifying user token:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'An error has occurred when verifying user token:';
 
   @override
   String get verifyingUserToken => 'Verifying user token...';
@@ -382,12 +380,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backgroundNotifications => 'Background notifications';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+  String get optionNotAvailableOnYourPlatform => 'This option is not available on your platform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+  String get optionNotAvailablePaywalled => 'This option is for ColdChat supporters only.';
 
   @override
   String get clearAll => 'Clear all';
@@ -419,15 +415,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+  String get chooseEmoteMenuButton => 'Tap an emote to use it as the emote menu button';
 
   @override
   String get resetToKappa => 'Reset to Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+  String get emoteMenuButtonDownloadFailed => 'Couldn\'t download that emote. The button wasn\'t changed.';
 
   @override
   String get takePhoto => 'Take photo';
@@ -436,8 +430,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseFromLibrary => 'Choose from library';
 
   @override
-  String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+  String get cameraUnavailable => 'The camera couldn\'t be opened. Check that ColdChat has camera access.';
 
   @override
   String get about => 'About';
@@ -478,8 +471,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openOnTwitch => 'Open on Twitch';
 
   @override
-  String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+  String get blockFailed => 'The block list couldn\'t be changed. Check your connection and try again.';
 
   @override
   String get contact => 'Contact & feedback';
@@ -507,15 +499,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeConversation => 'Close conversation';
 
   @override
-  String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+  String get closeConversationSubtitle => 'The messages stay on this device and come back with the next whisper.';
 
   @override
   String get deleteConversation => 'Delete conversation';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+  String get deleteConversationSubtitle => 'Deletes the messages from this device. Twitch keeps no whisper history.';
 
   @override
   String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
@@ -551,8 +541,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showImagesFromLinks => 'Show images from links';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+  String get showImagesFromLinksSubtitle => 'Twitch doesn\'t check these images. They may be inappropriate.';
 
   @override
   String get showImagesAutomatically => 'Show images from links automatically?';
@@ -597,8 +586,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get oledBlack => 'OLED black';
 
   @override
-  String get oledBlackSubtitle =>
-      'Black chat background in dark mode, for OLED screens';
+  String get oledBlackSubtitle => 'Black chat background in dark mode, for OLED screens';
 
   @override
   String get customColor => 'Custom';
@@ -733,8 +721,7 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'An error has occurred when verifying user data:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'An error has occurred when verifying user data:';
 
   @override
   String get verifyingUserData => 'Verifying user data...';
@@ -743,8 +730,7 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get verifiedUserToken => 'Verified user token!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'An error has occurred when verifying user token:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'An error has occurred when verifying user token:';
 
   @override
   String get verifyingUserToken => 'Verifying user token...';
@@ -957,12 +943,10 @@ class AppLocalizationsEnCa extends AppLocalizationsEn {
   String get backgroundNotifications => 'Background notifications';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+  String get optionNotAvailableOnYourPlatform => 'This option is not available on your platform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+  String get optionNotAvailablePaywalled => 'This option is for ColdChat supporters only.';
 
   @override
   String get clearAll => 'Clear all';
@@ -1050,8 +1034,7 @@ class AppLocalizationsEnPt extends AppLocalizationsEn {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'An error has occurred when verifying user data:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'An error has occurred when verifying user data:';
 
   @override
   String get verifyingUserData => 'Verifying user data...';
@@ -1060,8 +1043,7 @@ class AppLocalizationsEnPt extends AppLocalizationsEn {
   String get verifiedUserToken => 'Verified user token!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'An error has occurred when verifying user token:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'An error has occurred when verifying user token:';
 
   @override
   String get verifyingUserToken => 'Verifying user token...';
@@ -1274,12 +1256,10 @@ class AppLocalizationsEnPt extends AppLocalizationsEn {
   String get backgroundNotifications => 'Background notifications';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+  String get optionNotAvailableOnYourPlatform => 'This option is not available on your platform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+  String get optionNotAvailablePaywalled => 'This option is for ColdChat supporters only.';
 
   @override
   String get clearAll => 'Clear all';

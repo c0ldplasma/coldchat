@@ -46,131 +46,133 @@ class _UserModalState extends State<UserModal> {
 
   @override
   Widget build(BuildContext context) => FutureBuilder<TwitchProfile?>(
-        future: future,
-        builder: (BuildContext context, AsyncSnapshot<TwitchProfile?> snapshot) {
-          final loading = snapshot.connectionState != ConnectionState.done;
-          final profile = snapshot.data;
-          return ListView(
-            shrinkWrap: true,
-            children: [
-              if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
-              if (profile != null) _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
-              // Moderation acts on a channel; a whisper conversation has none.
-              if (channel != null && channel is! WhisperChannel && profile != null)
-                Material(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  child: Row(
-                    children: [
-                      Tooltip(
-                        message: AppLocalizations.of(context)!.ban,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.block_rounded,
-                            color: Colors.red,
-                          ),
-                          onPressed: () async {
-                            try {
-                              await Twitch.ban(
-                                channel!.client.transmitter.twitchAccount!.tokenData,
-                                broadcasterId: channel!.id!,
-                                moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                                userId: profile.user.id,
-                              );
-                            } catch (e) {
-                              log('$e');
-                              // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                            }
-                            // channel?.send('/ban ${snapshot.data!.login}'),
-                          },
-                        ),
+    future: future,
+    builder: (BuildContext context, AsyncSnapshot<TwitchProfile?> snapshot) {
+      final loading = snapshot.connectionState != ConnectionState.done;
+      final profile = snapshot.data;
+      return ListView(
+        shrinkWrap: true,
+        children: [
+          if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
+          if (profile != null)
+            _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
+          // Moderation acts on a channel; a whisper conversation has none.
+          if (channel != null && channel is! WhisperChannel && profile != null)
+            Material(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              child: Row(
+                children: [
+                  Tooltip(
+                    message: AppLocalizations.of(context)!.ban,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.block_rounded,
+                        color: Colors.red,
                       ),
-                      Expanded(
-                        child: Center(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                for (final time in {
-                                  '1s': const Duration(seconds: 1),
-                                  '30s': const Duration(seconds: 30),
-                                  '1m': const Duration(minutes: 1),
-                                  '5m': const Duration(minutes: 5),
-                                  '30m': const Duration(minutes: 30),
-                                  '1h': const Duration(hours: 1),
-                                  '1d': const Duration(days: 1),
-                                  '1w': const Duration(days: 7),
-                                }.entries)
-                                  Tooltip(
-                                    message: AppLocalizations.of(context)!.timeoutUserForDuration(time.value.toString().split('.').first),
-                                    child: TextButton(
-                                      child: Text(time.key),
-                                      onPressed: () async {
-                                        try {
-                                          await Twitch.ban(
-                                            channel!.client.transmitter.twitchAccount!.tokenData,
-                                            broadcasterId: channel!.id!,
-                                            moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                                            userId: profile.user.id,
-                                            duration: time.value.inSeconds,
-                                          );
-                                        } catch (e) {
-                                          log('$e');
-                                          // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                                        }
-                                        // channel?.send('/timeout ${snapshot.data!.login} ${time.value.inSeconds}'),
-                                      },
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Tooltip(
-                        message: AppLocalizations.of(context)!.unban,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.block_rounded,
-                            color: Colors.green,
-                          ),
-                          onPressed: () async {
-                            try {
-                              await Twitch.unban(
-                                channel!.client.transmitter.twitchAccount!.tokenData,
-                                broadcasterId: channel!.id!,
-                                moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                                userId: profile.user.id,
-                              );
-                            } catch (e) {
-                              log('$e');
-                              // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                            }
-                            // channel?.send('/unban ${snapshot.data!.login}');
-                          },
-                        ),
-                      ),
-                    ],
+                      onPressed: () async {
+                        try {
+                          await Twitch.ban(
+                            channel!.client.transmitter.twitchAccount!.tokenData,
+                            broadcasterId: channel!.id!,
+                            moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
+                            userId: profile.user.id,
+                          );
+                        } catch (e) {
+                          log('$e');
+                          // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
+                        }
+                        // channel?.send('/ban ${snapshot.data!.login}'),
+                      },
+                    ),
                   ),
-                ),
-              if (channel != null)
-                SizedBox(
-                  width: double.infinity,
-                  height: 350.0,
-                  child: ChatView(
-                    channel: channel!,
-                    filter: (message) {
-                      if (message is! ChannelMessageChat) return false;
-                      // TODO: change when proper user storage is done
-                      return message.message.prefix?.split('!').first == widget.login;
-                    },
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            for (final time in {
+                              '1s': const Duration(seconds: 1),
+                              '30s': const Duration(seconds: 30),
+                              '1m': const Duration(minutes: 1),
+                              '5m': const Duration(minutes: 5),
+                              '30m': const Duration(minutes: 30),
+                              '1h': const Duration(hours: 1),
+                              '1d': const Duration(days: 1),
+                              '1w': const Duration(days: 7),
+                            }.entries)
+                              Tooltip(
+                                message: AppLocalizations.of(context)!
+                                    .timeoutUserForDuration(time.value.toString().split('.').first),
+                                child: TextButton(
+                                  child: Text(time.key),
+                                  onPressed: () async {
+                                    try {
+                                      await Twitch.ban(
+                                        channel!.client.transmitter.twitchAccount!.tokenData,
+                                        broadcasterId: channel!.id!,
+                                        moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
+                                        userId: profile.user.id,
+                                        duration: time.value.inSeconds,
+                                      );
+                                    } catch (e) {
+                                      log('$e');
+                                      // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
+                                    }
+                                    // channel?.send('/timeout ${snapshot.data!.login} ${time.value.inSeconds}'),
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-            ],
-          );
-        },
+                  Tooltip(
+                    message: AppLocalizations.of(context)!.unban,
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.block_rounded,
+                        color: Colors.green,
+                      ),
+                      onPressed: () async {
+                        try {
+                          await Twitch.unban(
+                            channel!.client.transmitter.twitchAccount!.tokenData,
+                            broadcasterId: channel!.id!,
+                            moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
+                            userId: profile.user.id,
+                          );
+                        } catch (e) {
+                          log('$e');
+                          // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
+                        }
+                        // channel?.send('/unban ${snapshot.data!.login}');
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (channel != null)
+            SizedBox(
+              width: double.infinity,
+              height: 350.0,
+              child: ChatView(
+                channel: channel!,
+                filter: (message) {
+                  if (message is! ChannelMessageChat) return false;
+                  // TODO: change when proper user storage is done
+                  return message.message.prefix?.split('!').first == widget.login;
+                },
+              ),
+            ),
+        ],
       );
+    },
+  );
 }
 
 /// Whisper, block and report. Block and report are what both stores require wherever users see each other's
@@ -200,7 +202,12 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
           context: context,
           builder: (context) => AlertDialog(
             content: Text(AppLocalizations.of(context)!.blockFailed),
-            actions: [TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.close))],
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(AppLocalizations.of(context)!.close),
+              ),
+            ],
           ),
         );
       }
@@ -216,27 +223,28 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
       navigator.popUntil((route) => route.isFirst);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(ChannelViewState.whisperErrorText(context, e))));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(ChannelViewState.whisperErrorText(context, e))));
     }
   }
 
   Future<void> report() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.reportUserTitle(widget.user.displayName)),
-          content: Text(AppLocalizations.of(context)!.reportUserDescription(widget.user.displayName)),
-          actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.cancel)),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication);
-              },
-              child: Text(AppLocalizations.of(context)!.openOnTwitch),
-            ),
-          ],
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(AppLocalizations.of(context)!.reportUserTitle(widget.user.displayName)),
+      content: Text(AppLocalizations.of(context)!.reportUserDescription(widget.user.displayName)),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.cancel)),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication);
+          },
+          child: Text(AppLocalizations.of(context)!.openOnTwitch),
         ),
-      );
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {

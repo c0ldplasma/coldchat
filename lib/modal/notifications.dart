@@ -43,10 +43,12 @@ class NotificationsModal extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
           ],
-          ...state.messages.map((e) => ChatMessage(
-                message: e,
-                renderMentions: false,
-              )),
+          ...state.messages.map(
+            (e) => ChatMessage(
+              message: e,
+              renderMentions: false,
+            ),
+          ),
         ],
       ),
     );

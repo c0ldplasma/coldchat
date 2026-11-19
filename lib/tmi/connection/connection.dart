@@ -16,7 +16,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   Function(Connection connection, ConnectionEvent event)? onEventTrigger;
   Function(Connection connection, Change<ConnectionState> change)? onStateChange;
   Function(Connection connection, irc.Message event)? onReceive;
-  TwitchAccount? get twitchAccount => (state is ConnectionStateWithCredentials) ? (state as ConnectionStateWithCredentials).twitchAccount : null;
+  TwitchAccount? get twitchAccount =>
+      (state is ConnectionStateWithCredentials) ? (state as ConnectionStateWithCredentials).twitchAccount : null;
   Logs logs = Logs();
 
   @override
@@ -42,7 +43,9 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       emit(ConnectionConnecting(event.twitchAccount));
       await connect(
         nick: event.twitchAccount.tokenData.login,
-        pass: event.twitchAccount.tokenData.accessToken != null ? 'oauth:${event.twitchAccount.tokenData.accessToken}' : null,
+        pass: event.twitchAccount.tokenData.accessToken != null
+            ? 'oauth:${event.twitchAccount.tokenData.accessToken}'
+            : null,
       );
     });
 
@@ -61,7 +64,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       // Fall back to the last account we connected with so a reconnect still
       // fires even from ConnectionDisconnected (the old guard silently dropped
       // it, leaving the chat stuck forever).
-      final account = event.twitchAccount ?? _lastAccount ?? (state is ConnectionStateWithCredentials ? (state as ConnectionStateWithCredentials).twitchAccount : null);
+      final account =
+          event.twitchAccount ??
+          _lastAccount ??
+          (state is ConnectionStateWithCredentials ? (state as ConnectionStateWithCredentials).twitchAccount : null);
       if (account == null) return;
       add(ConnectionConnect(account));
     });
@@ -97,7 +103,12 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
 
     subscription = channel?.stream.listen(
       (event) async {
-        for (final singleEvent in event.trim().split('\r\n').where((String singleEvent) => singleEvent.isNotEmpty).map((String singleEvent) => singleEvent.trim())) {
+        for (final singleEvent
+            in event
+                .trim()
+                .split('\r\n')
+                .where((String singleEvent) => singleEvent.isNotEmpty)
+                .map((String singleEvent) => singleEvent.trim())) {
           final message = irc.Message.fromEvent(singleEvent);
           receive(message);
         }

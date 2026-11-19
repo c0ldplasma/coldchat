@@ -78,190 +78,215 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-        box: Hive.box('Settings'),
-        keys: const ['messageAppearance'],
-        builder: (context, box) => BlocBuilder<ChannelMessages, List<ChannelMessage>>(
-          bloc: widget.channel.channelMessages,
-          buildWhen: (state1, state2) => scrollMessages == null,
-          builder: (context, state) {
-            final searching = searchController.text.isNotEmpty;
-            // Never fade out the search bar while it's in use, or the user can't
-            // tell why the chat is filtered.
-            final chromeShown = scrollMessages != null || _chromeVisible || searching || searchFocusNode.hasFocus;
-            var messages = (scrollMessages ?? state).reversed;
-            // Filter both the live list and the paused snapshot. Filtering only
-            // the snapshot made the search depend on the scroll position.
-            if (searching) messages = messages.where((element) => (element is ChannelMessageChat && '${(element.user.displayName ?? element.user.login)?.toLowerCase()}: ${element.body.toLowerCase()}'.contains(searchController.text.toLowerCase()))).toList();
-            if (widget.filter != null) messages = messages.where((element) => widget.filter!(element)).toList();
-            return Stack(
-              children: [
-                Positioned.fill(
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (scrollNotification) {
-                      if (scrollNotification is ScrollUpdateNotification || scrollNotification is ScrollStartNotification) {
-                        _showChrome();
-                      }
-                      if (scrollNotification is ScrollUpdateNotification && scrollMessages == null && scrollController.position.pixels > scrollController.position.minScrollExtent) {
-                        scrollMessages = state;
-                        setState(() {});
-                      }
-                      if (scrollNotification is ScrollEndNotification && scrollMessages != null && scrollController.position.pixels <= scrollController.position.minScrollExtent) {
-                        scrollMessages = null;
-                        setState(() {});
-                      }
-                      return true;
-                    },
-                    child: ListView.builder(
-                      // padding: MediaQuery.of(context).padding.copyWith(bottom: MediaQuery.of(context).padding.bottom + 8.0),
-                      padding: (widget.padding ?? EdgeInsets.zero).copyWith(top: (widget.padding?.top ?? 0) + 8.0, bottom: (widget.padding?.bottom ?? 0) + 8.0),
-                      reverse: true,
-                      itemCount: messages.length,
-                      controller: scrollController,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ChatMessage(
-                          key: ObjectKey(messages.elementAt(index)),
-                          message: messages.elementAt(index),
-                        );
-                      },
-                    ),
+    box: Hive.box('Settings'),
+    keys: const ['messageAppearance'],
+    builder: (context, box) => BlocBuilder<ChannelMessages, List<ChannelMessage>>(
+      bloc: widget.channel.channelMessages,
+      buildWhen: (state1, state2) => scrollMessages == null,
+      builder: (context, state) {
+        final searching = searchController.text.isNotEmpty;
+        // Never fade out the search bar while it's in use, or the user can't
+        // tell why the chat is filtered.
+        final chromeShown = scrollMessages != null || _chromeVisible || searching || searchFocusNode.hasFocus;
+        var messages = (scrollMessages ?? state).reversed;
+        // Filter both the live list and the paused snapshot. Filtering only
+        // the snapshot made the search depend on the scroll position.
+        if (searching) {
+          messages = messages
+              .where(
+                (element) =>
+                    (element is ChannelMessageChat &&
+                    '${(element.user.displayName ?? element.user.login)?.toLowerCase()}: ${element.body.toLowerCase()}'
+                        .contains(searchController.text.toLowerCase())),
+              )
+              .toList();
+        }
+        if (widget.filter != null) messages = messages.where((element) => widget.filter!(element)).toList();
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (scrollNotification) {
+                  if (scrollNotification is ScrollUpdateNotification || scrollNotification is ScrollStartNotification) {
+                    _showChrome();
+                  }
+                  if (scrollNotification is ScrollUpdateNotification &&
+                      scrollMessages == null &&
+                      scrollController.position.pixels > scrollController.position.minScrollExtent) {
+                    scrollMessages = state;
+                    setState(() {});
+                  }
+                  if (scrollNotification is ScrollEndNotification &&
+                      scrollMessages != null &&
+                      scrollController.position.pixels <= scrollController.position.minScrollExtent) {
+                    scrollMessages = null;
+                    setState(() {});
+                  }
+                  return true;
+                },
+                child: ListView.builder(
+                  // padding: MediaQuery.of(context).padding.copyWith(bottom: MediaQuery.of(context).padding.bottom + 8.0),
+                  padding: (widget.padding ?? EdgeInsets.zero).copyWith(
+                    top: (widget.padding?.top ?? 0) + 8.0,
+                    bottom: (widget.padding?.bottom ?? 0) + 8.0,
                   ),
+                  reverse: true,
+                  itemCount: messages.length,
+                  controller: scrollController,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ChatMessage(
+                      key: ObjectKey(messages.elementAt(index)),
+                      message: messages.elementAt(index),
+                    );
+                  },
                 ),
-                // Material(
-                //   color: Theme.of(context).colorScheme.primaryContainer,
-                //   child: Column(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       if (scrollMessages != null)
-                //         Ink(
-                //           color: Theme.of(context).colorScheme.tertiaryContainer,
-                //           height: 32.0 + 24.0,
-                //           child: InkWell(
-                //             onTap: () {
-                //               scrollMessages = null;
-                //               setState(() {});
-                //               WidgetsBinding.instance.scheduleFrameCallback((_) {
-                //                 scrollController.jumpTo(scrollController.position.minScrollExtent);
-                //               });
-                //             },
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.center,
-                //               children: [
-                //                 Icon(
-                //                   Icons.arrow_downward_rounded,
-                //                   color: Theme.of(context).colorScheme.onTertiaryContainer,
-                //                 ),
-                //                 const SizedBox(width: 4.0),
-                //                 Text(
-                //                   AppLocalizations.of(context)!.scrollToBottom,
-                //                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                //                         color: Theme.of(context).colorScheme.onTertiaryContainer,
-                //                       ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //     ],
-                //   ),
-                // ),
-                SafeArea(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 200),
-                          opacity: chromeShown ? 1.0 : 0.0,
-                          child: IgnorePointer(
-                            ignoring: !chromeShown,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(128.0), boxShadow: ChatColors.raisedShadow),
-                              child: Surface(
-                                borderRadius: BorderRadius.circular(128.0),
-                                type: SurfaceType.surfaceVariant,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: TextField(
-                                    controller: searchController,
-                                    focusNode: searchFocusNode,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: AppLocalizations.of(context)!.search,
-                                      isDense: true,
-                                      // Like the home tab's search field: accent icon on the neutral pill.
-                                      prefixIcon: Padding(
-                                        padding: const EdgeInsetsDirectional.only(end: 8.0),
-                                        child: Icon(Icons.search, size: 20.0, color: Theme.of(context).colorScheme.primary),
+              ),
+            ),
+            // Material(
+            //   color: Theme.of(context).colorScheme.primaryContainer,
+            //   child: Column(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       if (scrollMessages != null)
+            //         Ink(
+            //           color: Theme.of(context).colorScheme.tertiaryContainer,
+            //           height: 32.0 + 24.0,
+            //           child: InkWell(
+            //             onTap: () {
+            //               scrollMessages = null;
+            //               setState(() {});
+            //               WidgetsBinding.instance.scheduleFrameCallback((_) {
+            //                 scrollController.jumpTo(scrollController.position.minScrollExtent);
+            //               });
+            //             },
+            //             child: Row(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 Icon(
+            //                   Icons.arrow_downward_rounded,
+            //                   color: Theme.of(context).colorScheme.onTertiaryContainer,
+            //                 ),
+            //                 const SizedBox(width: 4.0),
+            //                 Text(
+            //                   AppLocalizations.of(context)!.scrollToBottom,
+            //                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            //                         color: Theme.of(context).colorScheme.onTertiaryContainer,
+            //                       ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         ),
+            //     ],
+            //   ),
+            // ),
+            SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: chromeShown ? 1.0 : 0.0,
+                      child: IgnorePointer(
+                        ignoring: !chromeShown,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(128.0),
+                              boxShadow: ChatColors.raisedShadow,
+                            ),
+                            child: Surface(
+                              borderRadius: BorderRadius.circular(128.0),
+                              type: SurfaceType.surfaceVariant,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                child: TextField(
+                                  controller: searchController,
+                                  focusNode: searchFocusNode,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: AppLocalizations.of(context)!.search,
+                                    isDense: true,
+                                    // Like the home tab's search field: accent icon on the neutral pill.
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsetsDirectional.only(end: 8.0),
+                                      child: Icon(
+                                        Icons.search,
+                                        size: 20.0,
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
-                                      prefixIconConstraints: const BoxConstraints(),
-                                      suffixIconConstraints: const BoxConstraints(),
-                                      suffixIcon: searching
-                                          ? GestureDetector(
-                                              onTap: () => setState(() => searchController.clear()),
-                                              child: const Icon(Icons.close_rounded, size: 20.0),
-                                            )
-                                          : null,
                                     ),
-                                    onChanged: (text) => setState(() {}),
+                                    prefixIconConstraints: const BoxConstraints(),
+                                    suffixIconConstraints: const BoxConstraints(),
+                                    suffixIcon: searching
+                                        ? GestureDetector(
+                                            onTap: () => setState(() => searchController.clear()),
+                                            child: const Icon(Icons.close_rounded, size: 20.0),
+                                          )
+                                        : null,
                                   ),
+                                  onChanged: (text) => setState(() {}),
                                 ),
                               ),
                             ),
                           ),
-                          ),
                         ),
                       ),
-                      if (widget.filter == null)
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 200),
-                          opacity: (chromeShown || BlocProvider.of<NotificationsCubit>(context).state.unread > 0) ? 1.0 : 0.0,
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                            child: AvatarButton(floating: true),
-                          ),
-                        ),
-                    ],
+                    ),
                   ),
-                ),
-                Positioned(
-                  bottom: 24.0,
-                  right: 24.0,
-                  child: SafeArea(
-                    bottom: false,
-                    child: AnimatedOpacity(
+                  if (widget.filter == null)
+                    AnimatedOpacity(
                       duration: const Duration(milliseconds: 200),
-                      opacity: scrollMessages != null ? 1.0 : 0.0,
-                      child: IgnorePointer(
-                        ignoring: scrollMessages == null,
-                      // Styled like the chat's other floating controls (the search pill), with a shadow to lift it off
-                      // the messages behind it.
-                      child: DecoratedBox(
-                        decoration: const BoxDecoration(shape: BoxShape.circle, boxShadow: ChatColors.raisedShadow),
-                        child: Surface(
-                          onTap: () {
-                            scrollMessages = null;
-                            setState(() {});
-                            WidgetsBinding.instance.scheduleFrameCallback((_) {
-                              scrollController.jumpTo(scrollController.position.minScrollExtent);
-                            });
-                            searchController.text = '';
-                          },
-                          borderRadius: BorderRadius.circular(128.0),
-                          type: SurfaceType.surfaceVariant,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.primary),
-                          ),
-                        ),
+                      opacity: (chromeShown || BlocProvider.of<NotificationsCubit>(context).state.unread > 0)
+                          ? 1.0
+                          : 0.0,
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                        child: AvatarButton(floating: true),
                       ),
+                    ),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 24.0,
+              right: 24.0,
+              child: SafeArea(
+                bottom: false,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: scrollMessages != null ? 1.0 : 0.0,
+                  child: IgnorePointer(
+                    ignoring: scrollMessages == null,
+                    // Styled like the chat's other floating controls (the search pill), with a shadow to lift it off
+                    // the messages behind it.
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(shape: BoxShape.circle, boxShadow: ChatColors.raisedShadow),
+                      child: Surface(
+                        onTap: () {
+                          scrollMessages = null;
+                          setState(() {});
+                          WidgetsBinding.instance.scheduleFrameCallback((_) {
+                            scrollController.jumpTo(scrollController.position.minScrollExtent);
+                          });
+                          searchController.text = '';
+                        },
+                        borderRadius: BorderRadius.circular(128.0),
+                        type: SurfaceType.surfaceVariant,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ],
-            );
-          },
-        ),
-      );
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
 }

@@ -110,11 +110,13 @@ class ChannelViewState extends State<ChannelView> {
     final response = await ImagePicker().retrieveLostData();
     final photo = response.file;
     if (photo == null) return;
-    unawaited(queue.uploadFile(
-      path: photo.path,
-      filename: photo.name,
-      channelName: widget.channel.name,
-    ));
+    unawaited(
+      queue.uploadFile(
+        path: photo.path,
+        filename: photo.name,
+        channelName: widget.channel.name,
+      ),
+    );
   }
 
   void setReplyChannelMessageChat(ChannelMessageChat? channelMessageChat) {
@@ -131,7 +133,9 @@ class ChannelViewState extends State<ChannelView> {
     final textSplits = text.trim().split(' ');
     if (textSplits.isNotEmpty) {
       final customCommands = Hive.box('CustomCommands').values.cast<CustomCommand>();
-      final customCommand = customCommands.firstWhereOrNull((element) => textSplits.first.toLowerCase() == element.trigger.toLowerCase());
+      final customCommand = customCommands.firstWhereOrNull(
+        (element) => textSplits.first.toLowerCase() == element.trigger.toLowerCase(),
+      );
       if (customCommand != null) {
         text = customCommand.command;
         text = text.replaceAllMapped(
@@ -169,20 +173,25 @@ class ChannelViewState extends State<ChannelView> {
       final whispers = widget.channel.client.whispers;
       final login = whisperCommand?.group(1);
       final whisperText = whisperCommand?.group(2)?.trim() ?? '';
-      unawaited(_sendWhisper(
-        () => login == null
-            ? widget.channel.send(text)
-            : whisperText.isEmpty
-                ? whispers.openAndFocus(login)
-                : whispers.sendTo(login, whisperText),
-        original,
-      ));
+      unawaited(
+        _sendWhisper(
+          () => login == null
+              ? widget.channel.send(text)
+              : whisperText.isEmpty
+              ? whispers.openAndFocus(login)
+              : whispers.sendTo(login, whisperText),
+          original,
+        ),
+      );
       return;
     }
 
-    widget.channel.send(text, tags: {
-      if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
-    });
+    widget.channel.send(
+      text,
+      tags: {
+        if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
+      },
+    );
 
     setReplyChannelMessageChat(null);
 
@@ -209,7 +218,9 @@ class ChannelViewState extends State<ChannelView> {
 
   static String whisperErrorText(BuildContext context, Object error) {
     final l10n = AppLocalizations.of(context)!;
-    if (error is WhisperUnavailableException) return error.missingScope ? l10n.whisperNeedsScope : l10n.whisperNeedsLogin;
+    if (error is WhisperUnavailableException) {
+      return error.missingScope ? l10n.whisperNeedsScope : l10n.whisperNeedsLogin;
+    }
     if (error is WhisperUserNotFoundException) return l10n.whisperUserNotFound;
     if (error is TwitchRequestException) return l10n.whisperFailed(error.message);
     return l10n.whisperFailed('$error');
@@ -260,16 +271,21 @@ class ChannelViewState extends State<ChannelView> {
       photo = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 90);
     } catch (e) {
       // Camera access denied or no camera on this device.
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.cameraUnavailable)));
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.cameraUnavailable)));
+      }
       return;
     }
     if (photo == null) return;
 
-    unawaited(queue.uploadFile(
-      path: photo.path,
-      filename: photo.name,
-      channelName: widget.channel.name,
-    ));
+    unawaited(
+      queue.uploadFile(
+        path: photo.path,
+        filename: photo.name,
+        channelName: widget.channel.name,
+      ),
+    );
   }
 
   Future<void> pickAndUploadFromLibrary() async {
@@ -282,11 +298,13 @@ class ChannelViewState extends State<ChannelView> {
     for (final file in files) {
       final path = file.path;
       if (path == null) continue;
-      unawaited(queue.uploadFile(
-        path: path,
-        filename: file.name,
-        channelName: widget.channel.name,
-      ));
+      unawaited(
+        queue.uploadFile(
+          path: path,
+          filename: file.name,
+          channelName: widget.channel.name,
+        ),
+      );
     }
   }
 
@@ -322,9 +340,15 @@ class ChannelViewState extends State<ChannelView> {
 
     final chatSettings = Hive.box('Settings').get('chatSettings') as ChatSettings;
 
-    final matchingEmotes = (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state + widget.channel.client.twitchUserEmotes.state).where((emote) {
-      return (chatSettings.emoteAutocompletionWithColon ? currentSearch.startsWith(':') : true) && ':${emote.name}:'.toLowerCase().contains(currentSearch);
-    }).toList();
+    final matchingEmotes =
+        (widget.channel.channelEmotes.state +
+                widget.channel.client.globalEmotes.state +
+                widget.channel.client.twitchUserEmotes.state)
+            .where((emote) {
+              return (chatSettings.emoteAutocompletionWithColon ? currentSearch.startsWith(':') : true) &&
+                  ':${emote.name}:'.toLowerCase().contains(currentSearch);
+            })
+            .toList();
     // Emotes whose name starts with the search go first, then the ones that
     // only match further into the name. Stable, so each group keeps its order.
     final emotePrefix = currentSearch.startsWith(':') ? currentSearch : ':$currentSearch';
@@ -336,7 +360,8 @@ class ChannelViewState extends State<ChannelView> {
 
     final chatters = widget.channel.recentChatters;
     final matchingChatters = chatters.where((chatter) {
-      return (chatSettings.userAutocompletionWithAt ? currentSearch.startsWith('@') : true) && '@${chatter.login}'.toLowerCase().contains(currentSearch);
+      return (chatSettings.userAutocompletionWithAt ? currentSearch.startsWith('@') : true) &&
+          '@${chatter.login}'.toLowerCase().contains(currentSearch);
     });
 
     return [
@@ -346,7 +371,10 @@ class ChannelViewState extends State<ChannelView> {
           prefix: const Icon(Icons.person_outline_rounded),
           shortened: Text(
             '@${user.displayName ?? user.login}',
-            style: TextStyle(color: ChatColors.of(context).nameColor(user.color, Theme.of(context).colorScheme), fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: ChatColors.of(context).nameColor(user.color, Theme.of(context).colorScheme),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           title: user.displayName ?? user.login!,
           subtitle: user.login,
@@ -363,7 +391,9 @@ class ChannelViewState extends State<ChannelView> {
             setState(() {});
           },
         ),
-      for (final customCommand in Hive.box('CustomCommands').values.cast<CustomCommand>().where((element) => element.trigger.toLowerCase().startsWith(textEditingController.text.toLowerCase())))
+      for (final customCommand in Hive.box('CustomCommands').values.cast<CustomCommand>().where(
+        (element) => element.trigger.toLowerCase().startsWith(textEditingController.text.toLowerCase()),
+      ))
         AutocompletionItem(
           type: AutocompletionType.customCommand,
           prefix: const Icon(Icons.keyboard_command_key_rounded),
@@ -386,8 +416,16 @@ class ChannelViewState extends State<ChannelView> {
       for (final emote in sortedEmotes)
         AutocompletionItem(
           type: AutocompletionType.emote,
-          prefix: EmoteGlyph(emote: emote, size: 24.0, image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0)),
-          shortened: EmoteGlyph(emote: emote, size: 24.0, image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0)),
+          prefix: EmoteGlyph(
+            emote: emote,
+            size: 24.0,
+            image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
+          ),
+          shortened: EmoteGlyph(
+            emote: emote,
+            size: 24.0,
+            image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
+          ),
           title: emote.name,
           subtitle: emote.provider.name,
           onTap: () {
@@ -430,254 +468,268 @@ class ChannelViewState extends State<ChannelView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-                UploadQueueBar(channelName: widget.channel.name),
-                if (widget.channel is WhisperChannel) const _WhisperHistoryHint(),
-                if (widget.channel is WhisperChannel && !widget.channel.client.whispers.hasScope)
-                  Surface(
-                    type: SurfaceType.error,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                      child: Text(AppLocalizations.of(context)!.whisperNeedsScope),
-                    ),
-                  ),
-                if (replyChannelMessageChat != null)
-                  Surface(
-                    type: SurfaceType.error,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                                child: Text(AppLocalizations.of(context)!.replyingTo),
-                              ),
-                              ChatMessage(message: replyChannelMessageChat!),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: 40.0,
-                          height: 40.0,
-                          child: Surface(
-                            onTap: () => setReplyChannelMessageChat(null),
-                            borderRadius: BorderRadius.circular(40.0),
-                            // type: SurfaceType.error,
-                            child: const Icon(Icons.close_outlined),
-                          ),
-                        ),
-                        const SizedBox(width: 12.0),
-                      ],
-                    ),
-                  ),
+              UploadQueueBar(channelName: widget.channel.name),
+              if (widget.channel is WhisperChannel) const _WhisperHistoryHint(),
+              if (widget.channel is WhisperChannel && !widget.channel.client.whispers.hasScope)
                 Surface(
-                  type: SurfaceType.secondary,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
-                    child: ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        for (final autocompletionItem in getAutocompletionItems())
-                          Tile(
-                            onTap: autocompletionItem.onTap,
-                            onLongPress: autocompletionItem.onLongPress,
-                            prefix: autocompletionItem.prefix,
-                            title: autocompletionItem.title,
-                            subtitle: autocompletionItem.subtitle,
-                          ),
-                      ],
-                    ),
+                  type: SurfaceType.error,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                    child: Text(AppLocalizations.of(context)!.whisperNeedsScope),
                   ),
                 ),
-                // Surface(
-                //   type: SurfaceType.tertiary,
-                //   child: SizedBox(
-                //     height: 56.0,
-                //     child: ListView(
-                //       padding: EdgeInsets.zero,
-                //       scrollDirection: Axis.horizontal,
-                //       children: [
-                //         for (final autocompletionItem in getAutocompletionItems())
-                //           InkWell(
-                //             onTap: autocompletionItem.onTap,
-                //             onLongPress: autocompletionItem.onLongPress,
-                //             child: ConstrainedBox(
-                //               constraints: BoxConstraints(minWidth: 56.0),
-                //               child: Padding(
-                //                 padding: const EdgeInsets.all(12.0),
-                //                 child: autocompletionItem.shortened,
-                //               ),
-                //             ),
-                //             // title: autocompletionItem.title,
-                //             // subtitle: autocompletionItem.subtitle,
-                //           ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
-                // if (textEditingController.text.split(' ').last.length >= 2 && (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).any((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
-                //   Ink(
-                //     color: Theme.of(context).colorScheme.secondaryContainer,
-                //     child: SizedBox(
-                //       height: 32.0 + 24.0,
-                //       child: ListView(
-                //         scrollDirection: Axis.horizontal,
-                //         children: [
-                //           for (final emote in (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).where((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
-                //             Tooltip(
-                //               message: emote.name,
-                //               child: InkWell(
-                //                 onTap: () {
-                //                   final splits = textEditingController.text.split(' ');
-                //                   splits.removeLast();
-                //                   splits.add('${emote.code ?? emote.name} ');
-                //                   textEditingController.text = splits.join(' ');
-                //                   textEditingController.selection = TextSelection.fromPosition(
-                //                     TextPosition(
-                //                       offset: textEditingController.text.length,
-                //                     ),
-                //                   );
-                //                   setState(() {});
-                //                 },
-                //                 child: Padding(
-                //                   padding: const EdgeInsets.all(12.0),
-                //                   child: Image.network(
-                //                     emote.mipmap.last,
-                //                   ),
-                //                 ),
-                //               ),
-                //             ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-
-                SizedBox(
-                  height: 48.0,
+              if (replyChannelMessageChat != null)
+                Surface(
+                  type: SurfaceType.error,
                   child: Row(
                     children: [
-                      InkWell(
-                        onTap: pickAndUploadFiles,
-                        child: const SizedBox(
-                          width: 48.0,
-                          height: 48.0,
-                          child: Icon(Icons.attach_file_rounded),
-                        ),
-                      ),
-                      // const Separator(axis: Axis.vertical),
                       Expanded(
-                        child: TextField(
-                          controller: textEditingController,
-                          focusNode: textFocusNode,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            hintText: widget.channel is WhisperChannel
-                                ? AppLocalizations.of(context)!.whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
-                                : AppLocalizations.of(context)!.sendMessageIn(widget.channel.name),
-                            border: InputBorder.none,
-                          ),
-                          onSubmitted: (text) {
-                            sendMessage();
-                            textFocusNode.requestFocus();
-                          },
-                          onChanged: (text) {
-                            setState(() {});
-                          },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                              child: Text(AppLocalizations.of(context)!.replyingTo),
+                            ),
+                            ChatMessage(message: replyChannelMessageChat!),
+                          ],
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            emoteKeyboard = !emoteKeyboard;
-                            pickingButtonIcon = false;
-                          });
-                        },
-                        onLongPress: () {
-                          setState(() {
-                            emoteKeyboard = true;
-                            pickingButtonIcon = true;
-                          });
-                        },
-                        child: const SizedBox(
-                          width: 48.0,
-                          height: 48.0,
-                          child: Center(
-                            child: EmoteButtonIconView(),
-                          ),
+                      SizedBox(
+                        width: 40.0,
+                        height: 40.0,
+                        child: Surface(
+                          onTap: () => setReplyChannelMessageChat(null),
+                          borderRadius: BorderRadius.circular(40.0),
+                          // type: SurfaceType.error,
+                          child: const Icon(Icons.close_outlined),
                         ),
                       ),
-                      // const Separator(axis: Axis.vertical),
-                      InkWell(
-                        onTap: () => sendMessage(),
-                        onLongPress: () {
-                          setState(() {
-                            spamming = !spamming;
-                          });
-                        },
-                        child: SizedBox(
-                          width: 48.0,
-                          height: 48.0,
-                          child: Icon(
-                            spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ),
+                      const SizedBox(width: 12.0),
                     ],
                   ),
                 ),
-                // Slides open and closed like a keyboard instead of popping in. The
-                // AnimatedSwitcher keeps the picker mounted while it collapses.
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 220),
-                  reverseDuration: const Duration(milliseconds: 180),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeInCubic,
-                  transitionBuilder: (child, animation) => SizeTransition(
-                    sizeFactor: animation,
-                    alignment: const Alignment(-1.0, -1.0),
-                    child: child,
-                  ),
-                  child: !emoteKeyboard
-                      ? const SizedBox.shrink(key: ValueKey(false))
-                      : SizedBox(
-                          key: const ValueKey(true),
-                          height: 350.0,
-                          child: EmotePicker(
-                            client: widget.channel.client,
-                            channel: widget.channel,
-                            onPickButtonIcon: pickingButtonIcon
-                                ? (emote) async {
-                                    if (await chooseEmoteButtonIcon(context, emote) && mounted) {
-                                      setState(() {
-                                        emoteKeyboard = false;
-                                        pickingButtonIcon = false;
-                                      });
-                                    }
-                                  }
-                                : null,
-                            getFieldInput: () => textEditingController.text,
-                            setFieldInput: (text) async {
-                              setState(() {
-                                textEditingController.text = text;
-                                textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: textEditingController.text.length));
-                              });
-                            },
-                            insertFieldInput: (text) async {
-                              setState(() {
-                                final cursorPosition = max(0, textEditingController.selection.baseOffset);
-                                if (textEditingController.text.isEmpty || cursorPosition >= textEditingController.text.length || textEditingController.text[cursorPosition] != ' ') text = '$text ';
-                                if (cursorPosition > 0 && textEditingController.text[cursorPosition - 1] != ' ') text = ' $text';
-                                textEditingController.text = textEditingController.text.substring(0, cursorPosition) + text + textEditingController.text.substring(cursorPosition);
-                                textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: cursorPosition + text.length));
-                              });
-                            },
-                          ),
+              Surface(
+                type: SurfaceType.secondary,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.vertical,
+                    children: [
+                      for (final autocompletionItem in getAutocompletionItems())
+                        Tile(
+                          onTap: autocompletionItem.onTap,
+                          onLongPress: autocompletionItem.onLongPress,
+                          prefix: autocompletionItem.prefix,
+                          title: autocompletionItem.title,
+                          subtitle: autocompletionItem.subtitle,
                         ),
+                    ],
+                  ),
                 ),
+              ),
+              // Surface(
+              //   type: SurfaceType.tertiary,
+              //   child: SizedBox(
+              //     height: 56.0,
+              //     child: ListView(
+              //       padding: EdgeInsets.zero,
+              //       scrollDirection: Axis.horizontal,
+              //       children: [
+              //         for (final autocompletionItem in getAutocompletionItems())
+              //           InkWell(
+              //             onTap: autocompletionItem.onTap,
+              //             onLongPress: autocompletionItem.onLongPress,
+              //             child: ConstrainedBox(
+              //               constraints: BoxConstraints(minWidth: 56.0),
+              //               child: Padding(
+              //                 padding: const EdgeInsets.all(12.0),
+              //                 child: autocompletionItem.shortened,
+              //               ),
+              //             ),
+              //             // title: autocompletionItem.title,
+              //             // subtitle: autocompletionItem.subtitle,
+              //           ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // if (textEditingController.text.split(' ').last.length >= 2 && (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).any((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
+              //   Ink(
+              //     color: Theme.of(context).colorScheme.secondaryContainer,
+              //     child: SizedBox(
+              //       height: 32.0 + 24.0,
+              //       child: ListView(
+              //         scrollDirection: Axis.horizontal,
+              //         children: [
+              //           for (final emote in (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).where((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
+              //             Tooltip(
+              //               message: emote.name,
+              //               child: InkWell(
+              //                 onTap: () {
+              //                   final splits = textEditingController.text.split(' ');
+              //                   splits.removeLast();
+              //                   splits.add('${emote.code ?? emote.name} ');
+              //                   textEditingController.text = splits.join(' ');
+              //                   textEditingController.selection = TextSelection.fromPosition(
+              //                     TextPosition(
+              //                       offset: textEditingController.text.length,
+              //                     ),
+              //                   );
+              //                   setState(() {});
+              //                 },
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(12.0),
+              //                   child: Image.network(
+              //                     emote.mipmap.last,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+
+              SizedBox(
+                height: 48.0,
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: pickAndUploadFiles,
+                      child: const SizedBox(
+                        width: 48.0,
+                        height: 48.0,
+                        child: Icon(Icons.attach_file_rounded),
+                      ),
+                    ),
+                    // const Separator(axis: Axis.vertical),
+                    Expanded(
+                      child: TextField(
+                        controller: textEditingController,
+                        focusNode: textFocusNode,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          hintText: widget.channel is WhisperChannel
+                              ? AppLocalizations.of(context)!
+                                    .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
+                              : AppLocalizations.of(context)!.sendMessageIn(widget.channel.name),
+                          border: InputBorder.none,
+                        ),
+                        onSubmitted: (text) {
+                          sendMessage();
+                          textFocusNode.requestFocus();
+                        },
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          emoteKeyboard = !emoteKeyboard;
+                          pickingButtonIcon = false;
+                        });
+                      },
+                      onLongPress: () {
+                        setState(() {
+                          emoteKeyboard = true;
+                          pickingButtonIcon = true;
+                        });
+                      },
+                      child: const SizedBox(
+                        width: 48.0,
+                        height: 48.0,
+                        child: Center(
+                          child: EmoteButtonIconView(),
+                        ),
+                      ),
+                    ),
+                    // const Separator(axis: Axis.vertical),
+                    InkWell(
+                      onTap: () => sendMessage(),
+                      onLongPress: () {
+                        setState(() {
+                          spamming = !spamming;
+                        });
+                      },
+                      child: SizedBox(
+                        width: 48.0,
+                        height: 48.0,
+                        child: Icon(
+                          spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Slides open and closed like a keyboard instead of popping in. The
+              // AnimatedSwitcher keeps the picker mounted while it collapses.
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 220),
+                reverseDuration: const Duration(milliseconds: 180),
+                switchInCurve: Curves.easeOutCubic,
+                switchOutCurve: Curves.easeInCubic,
+                transitionBuilder: (child, animation) => SizeTransition(
+                  sizeFactor: animation,
+                  alignment: const Alignment(-1.0, -1.0),
+                  child: child,
+                ),
+                child: !emoteKeyboard
+                    ? const SizedBox.shrink(key: ValueKey(false))
+                    : SizedBox(
+                        key: const ValueKey(true),
+                        height: 350.0,
+                        child: EmotePicker(
+                          client: widget.channel.client,
+                          channel: widget.channel,
+                          onPickButtonIcon: pickingButtonIcon
+                              ? (emote) async {
+                                  if (await chooseEmoteButtonIcon(context, emote) && mounted) {
+                                    setState(() {
+                                      emoteKeyboard = false;
+                                      pickingButtonIcon = false;
+                                    });
+                                  }
+                                }
+                              : null,
+                          getFieldInput: () => textEditingController.text,
+                          setFieldInput: (text) async {
+                            setState(() {
+                              textEditingController.text = text;
+                              textEditingController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: textEditingController.text.length),
+                              );
+                            });
+                          },
+                          insertFieldInput: (text) async {
+                            setState(() {
+                              final cursorPosition = max(0, textEditingController.selection.baseOffset);
+                              if (textEditingController.text.isEmpty ||
+                                  cursorPosition >= textEditingController.text.length ||
+                                  textEditingController.text[cursorPosition] != ' ') {
+                                text = '$text ';
+                              }
+                              if (cursorPosition > 0 && textEditingController.text[cursorPosition - 1] != ' ') {
+                                text = ' $text';
+                              }
+                              textEditingController.text =
+                                  textEditingController.text.substring(0, cursorPosition) +
+                                  text +
+                                  textEditingController.text.substring(cursorPosition);
+                              textEditingController.selection = TextSelection.fromPosition(
+                                TextPosition(offset: cursorPosition + text.length),
+                              );
+                            });
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),

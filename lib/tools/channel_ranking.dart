@@ -44,16 +44,16 @@ List<ChannelCandidate> rankChannels(String query, List<ChannelCandidate> candida
 
   final order = {for (var i = 0; i < candidates.length; i++) candidates[i]: i};
   return [...candidates]..sort((a, b) {
-      final byTier = tier(a).compareTo(tier(b));
-      if (byTier != 0) return byTier;
-      switch (tier(a)) {
-        case 1:
-          final byViewers = (b.viewerCount ?? 0).compareTo(a.viewerCount ?? 0);
-          if (byViewers != 0) return byViewers;
-        case 2:
-          final byLength = a.login.length.compareTo(b.login.length);
-          if (byLength != 0) return byLength;
-      }
-      return order[a]!.compareTo(order[b]!);
-    });
+    final byTier = tier(a).compareTo(tier(b));
+    if (byTier != 0) return byTier;
+    switch (tier(a)) {
+      case 1:
+        final byViewers = (b.viewerCount ?? 0).compareTo(a.viewerCount ?? 0);
+        if (byViewers != 0) return byViewers;
+      case 2:
+        final byLength = a.login.length.compareTo(b.login.length);
+        if (byLength != 0) return byLength;
+    }
+    return order[a]!.compareTo(order[b]!);
+  });
 }

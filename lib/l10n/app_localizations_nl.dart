@@ -276,8 +276,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get copyText => 'Tekst kopiëren';
 
   @override
-  String get copyTextSubtitle =>
-      'Houd vast om de tekst met gebruikersnaam te kopiëren';
+  String get copyTextSubtitle => 'Houd vast om de tekst met gebruikersnaam te kopiëren';
 
   @override
   String get deleteMessage => 'Bericht verwijderen';
@@ -383,12 +382,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get backgroundNotifications => 'Meldingen op de achtergrond';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Deze optie is niet beschikbaar op jouw platform.';
+  String get optionNotAvailableOnYourPlatform => 'Deze optie is niet beschikbaar op jouw platform.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Deze optie is alleen voor ColdChat-supporters.';
+  String get optionNotAvailablePaywalled => 'Deze optie is alleen voor ColdChat-supporters.';
 
   @override
   String get clearAll => 'Alles wissen';
@@ -420,15 +417,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get emoteMenuButtonGrayscale => 'Emotemenuknop in grijstinten tonen';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tik op een emote om die als emotemenuknop te gebruiken';
+  String get chooseEmoteMenuButton => 'Tik op een emote om die als emotemenuknop te gebruiken';
 
   @override
   String get resetToKappa => 'Terugzetten naar Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Kan die emote niet downloaden. De knop is niet gewijzigd.';
+  String get emoteMenuButtonDownloadFailed => 'Kan die emote niet downloaden. De knop is niet gewijzigd.';
 
   @override
   String get takePhoto => 'Foto maken';
@@ -519,8 +514,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Verwijdert de berichten van dit apparaat. Twitch bewaart geen geschiedenis van fluisterberichten.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Log in met Twitch om fluisterberichten te sturen.';
+  String get whisperNeedsLogin => 'Log in met Twitch om fluisterberichten te sturen.';
 
   @override
   String get whisperNeedsScope =>
@@ -553,12 +547,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get showImagesFromLinks => 'Afbeeldingen uit links tonen';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.';
+  String get showImagesFromLinksSubtitle => 'Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.';
 
   @override
-  String get showImagesAutomatically =>
-      'Afbeeldingen uit links automatisch tonen?';
+  String get showImagesAutomatically => 'Afbeeldingen uit links automatisch tonen?';
 
   @override
   String get turnOn => 'Inschakelen';
@@ -600,8 +592,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get oledBlack => 'OLED-zwart';
 
   @override
-  String get oledBlackSubtitle =>
-      'Zwarte chatachtergrond in donkere modus, voor OLED-schermen';
+  String get oledBlackSubtitle => 'Zwarte chatachtergrond in donkere modus, voor OLED-schermen';
 
   @override
   String get customColor => 'Eigen';

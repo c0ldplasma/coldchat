@@ -32,7 +32,7 @@ class ConnectionConnected extends ConnectionStateWithCredentials {
   ConnectionConnected(
     super.credentials, {
     List<String>? blockedUserIds,
-  })  : blockedUserIds = blockedUserIds ?? [];
+  }) : blockedUserIds = blockedUserIds ?? [];
 }
 
 class ConnectionReconnecting extends ConnectionStateWithCredentials {

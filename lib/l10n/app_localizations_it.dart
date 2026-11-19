@@ -146,8 +146,7 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Si è verificato un errore durante la verifica dei dati utente:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Si è verificato un errore durante la verifica dei dati utente:';
 
   @override
   String get verifyingUserData => 'Verifica dei dati utente...';
@@ -376,19 +375,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get notifications => 'Notifiche';
 
   @override
-  String get noNotifications =>
-      'Qualcuno, da qualche parte, prima o poi ti menzionerà.';
+  String get noNotifications => 'Qualcuno, da qualche parte, prima o poi ti menzionerà.';
 
   @override
   String get backgroundNotifications => 'Notifiche in background';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Questa opzione non è disponibile sulla tua piattaforma.';
+  String get optionNotAvailableOnYourPlatform => 'Questa opzione non è disponibile sulla tua piattaforma.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Questa opzione è riservata a chi sostiene ColdChat.';
+  String get optionNotAvailablePaywalled => 'Questa opzione è riservata a chi sostiene ColdChat.';
 
   @override
   String get clearAll => 'Cancella tutto';
@@ -417,19 +413,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get emoteMenuButton => 'Pulsante del menu emote';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Pulsante del menu emote in scala di grigi';
+  String get emoteMenuButtonGrayscale => 'Pulsante del menu emote in scala di grigi';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tocca un\'emote per usarla come pulsante del menu emote';
+  String get chooseEmoteMenuButton => 'Tocca un\'emote per usarla come pulsante del menu emote';
 
   @override
   String get resetToKappa => 'Ripristina Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Impossibile scaricare l\'emote. Il pulsante non è stato cambiato.';
+  String get emoteMenuButtonDownloadFailed => 'Impossibile scaricare l\'emote. Il pulsante non è stato cambiato.';
 
   @override
   String get takePhoto => 'Scatta foto';
@@ -480,8 +473,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get openOnTwitch => 'Apri su Twitch';
 
   @override
-  String get blockFailed =>
-      'Impossibile modificare la lista dei blocchi. Controlla la connessione e riprova.';
+  String get blockFailed => 'Impossibile modificare la lista dei blocchi. Controlla la connessione e riprova.';
 
   @override
   String get contact => 'Contatti e feedback';
@@ -527,8 +519,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Accedi di nuovo per inviare e ricevere sussurri. Il tuo accesso risale a prima che ColdChat li supportasse.';
 
   @override
-  String get whisperUserNotFound =>
-      'Non esiste nessun utente Twitch con questo nome.';
+  String get whisperUserNotFound => 'Non esiste nessun utente Twitch con questo nome.';
 
   @override
   String whisperFailed(String reason) {
@@ -554,12 +545,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get showImagesFromLinks => 'Mostra immagini dai link';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch non controlla queste immagini. Potrebbero essere inappropriate.';
+  String get showImagesFromLinksSubtitle => 'Twitch non controlla queste immagini. Potrebbero essere inappropriate.';
 
   @override
-  String get showImagesAutomatically =>
-      'Mostrare automaticamente le immagini dai link?';
+  String get showImagesAutomatically => 'Mostrare automaticamente le immagini dai link?';
 
   @override
   String get turnOn => 'Attiva';
@@ -601,8 +590,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get oledBlack => 'Nero OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Sfondo della chat nero in modalità scura, per schermi OLED';
+  String get oledBlackSubtitle => 'Sfondo della chat nero in modalità scura, per schermi OLED';
 
   @override
   String get customColor => 'Personalizzato';

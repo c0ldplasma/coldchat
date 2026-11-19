@@ -376,19 +376,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notifications => 'Benachrichtigungen';
 
   @override
-  String get noNotifications =>
-      'Irgendwer, irgendwo wird dich eines Tages erwähnen.';
+  String get noNotifications => 'Irgendwer, irgendwo wird dich eines Tages erwähnen.';
 
   @override
   String get backgroundNotifications => 'Hintergrundbenachrichtigungen';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Diese Option ist auf deiner Plattform nicht verfügbar.';
+  String get optionNotAvailableOnYourPlatform => 'Diese Option ist auf deiner Plattform nicht verfügbar.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Diese Option ist nur für ColdChat Unterstützer.';
+  String get optionNotAvailablePaywalled => 'Diese Option ist nur für ColdChat Unterstützer.';
 
   @override
   String get clearAll => 'Alles löschen';
@@ -420,8 +417,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get emoteMenuButtonGrayscale => 'Emote-Menü-Button in Graustufen';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tippe auf ein Emote, um es als Emote-Menü-Button zu verwenden';
+  String get chooseEmoteMenuButton => 'Tippe auf ein Emote, um es als Emote-Menü-Button zu verwenden';
 
   @override
   String get resetToKappa => 'Auf Kappa zurücksetzen';
@@ -519,16 +515,14 @@ class AppLocalizationsDe extends AppLocalizations {
       'Löscht die Nachrichten von diesem Gerät. Twitch speichert keinen Verlauf von Flüsternachrichten.';
 
   @override
-  String get whisperNeedsLogin =>
-      'Melde dich bei Twitch an, um Flüsternachrichten zu senden.';
+  String get whisperNeedsLogin => 'Melde dich bei Twitch an, um Flüsternachrichten zu senden.';
 
   @override
   String get whisperNeedsScope =>
       'Melde dich noch einmal an, um Flüsternachrichten zu senden und zu empfangen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat sie unterstützt hat.';
 
   @override
-  String get whisperUserNotFound =>
-      'Es gibt keinen Twitch-Nutzer mit diesem Namen.';
+  String get whisperUserNotFound => 'Es gibt keinen Twitch-Nutzer mit diesem Namen.';
 
   @override
   String whisperFailed(String reason) {
@@ -554,12 +548,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get showImagesFromLinks => 'Bilder aus Links anzeigen';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch prüft diese Bilder nicht. Sie können unangemessen sein.';
+  String get showImagesFromLinksSubtitle => 'Twitch prüft diese Bilder nicht. Sie können unangemessen sein.';
 
   @override
-  String get showImagesAutomatically =>
-      'Bilder aus Links automatisch anzeigen?';
+  String get showImagesAutomatically => 'Bilder aus Links automatisch anzeigen?';
 
   @override
   String get turnOn => 'Einschalten';
@@ -601,8 +593,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get oledBlack => 'OLED-Schwarz';
 
   @override
-  String get oledBlackSubtitle =>
-      'Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays';
+  String get oledBlackSubtitle => 'Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays';
 
   @override
   String get customColor => 'Eigene';

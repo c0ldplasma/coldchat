@@ -24,24 +24,24 @@ class UploadQueueBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<UploadQueueCubit, List<UploadTask>>(
-        bloc: context.read<UploadQueueCubit>(),
-        builder: (context, tasks) {
-          final mine = tasks.where((task) => task.channelName == channelName).toList();
-          if (mine.isEmpty) return const SizedBox.shrink();
+    bloc: context.read<UploadQueueCubit>(),
+    builder: (context, tasks) {
+      final mine = tasks.where((task) => task.channelName == channelName).toList();
+      if (mine.isEmpty) return const SizedBox.shrink();
 
-          return ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: _maxHeight),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (final task in mine) _UploadChip(task: task),
-                ],
-              ),
-            ),
-          );
-        },
+      return ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: _maxHeight),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final task in mine) _UploadChip(task: task),
+            ],
+          ),
+        ),
       );
+    },
+  );
 }
 
 class _UploadChip extends StatelessWidget {
@@ -117,8 +117,8 @@ class _UploadChip extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onErrorContainer,
-                            ),
+                          color: colorScheme.onErrorContainer,
+                        ),
                       ),
                     ),
                   // Only shown while a later host is carrying the upload, so

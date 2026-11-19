@@ -69,7 +69,10 @@ class _AvatarButtonState extends State<AvatarButton> {
                           return BoxListener(
                             box: Hive.box('TwitchAccounts'),
                             builder: (BuildContext context, Box twitchAccountsBox) {
-                              final twitchAccount = twitchAccountsBox.values.firstWhere((element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash, orElse: () => null);
+                              final twitchAccount = twitchAccountsBox.values.firstWhere(
+                                (element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash,
+                                orElse: () => null,
+                              );
                               return Material(
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(24.0),
@@ -90,20 +93,29 @@ class _AvatarButtonState extends State<AvatarButton> {
                                   onPanEnd: (details) {
                                     if (twitchAccountsBox.isEmpty) return;
                                     var activeAccountHash = accountSettingsBox.get('activeTwitchAccount');
-                                    var indexOfActiveAccountHash = twitchAccountsBox.keys.toList().indexOf(activeAccountHash);
+                                    var indexOfActiveAccountHash = twitchAccountsBox.keys.toList().indexOf(
+                                      activeAccountHash,
+                                    );
                                     switch (direction) {
                                       case AvatarButtonDirection.up:
                                         ++indexOfActiveAccountHash;
-                                        if (indexOfActiveAccountHash >= twitchAccountsBox.length) indexOfActiveAccountHash = 0;
+                                        if (indexOfActiveAccountHash >= twitchAccountsBox.length) {
+                                          indexOfActiveAccountHash = 0;
+                                        }
                                         break;
                                       case AvatarButtonDirection.down:
                                         --indexOfActiveAccountHash;
-                                        if (indexOfActiveAccountHash < 0) indexOfActiveAccountHash = twitchAccountsBox.keys.toList().length - 1;
+                                        if (indexOfActiveAccountHash < 0) {
+                                          indexOfActiveAccountHash = twitchAccountsBox.keys.toList().length - 1;
+                                        }
                                         break;
                                       case AvatarButtonDirection.none:
                                         break;
                                     }
-                                    accountSettingsBox.put('activeTwitchAccount', twitchAccountsBox.keys.elementAt(indexOfActiveAccountHash));
+                                    accountSettingsBox.put(
+                                      'activeTwitchAccount',
+                                      twitchAccountsBox.keys.elementAt(indexOfActiveAccountHash),
+                                    );
                                     direction = AvatarButtonDirection.none;
                                   },
                                   child: InkWell(

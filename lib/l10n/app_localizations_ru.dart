@@ -146,8 +146,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Ошибка при проверке данных пользователя:';
+  String get anErrorHasOccuredWhenVerifyingUserData => 'Ошибка при проверке данных пользователя:';
 
   @override
   String get verifyingUserData => 'Проверка данных пользователя...';
@@ -156,8 +155,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get verifiedUserToken => 'Токен пользователя подтверждён!';
 
   @override
-  String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Ошибка при проверке токена пользователя:';
+  String get anErrorHasOccuredWhenVerifyingUserToken => 'Ошибка при проверке токена пользователя:';
 
   @override
   String get verifyingUserToken => 'Проверка токена пользователя...';
@@ -276,8 +274,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get copyText => 'Копировать текст';
 
   @override
-  String get copyTextSubtitle =>
-      'Удерживай, чтобы скопировать с именем пользователя';
+  String get copyTextSubtitle => 'Удерживай, чтобы скопировать с именем пользователя';
 
   @override
   String get deleteMessage => 'Удалить сообщение';
@@ -377,19 +374,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notifications => 'Уведомления';
 
   @override
-  String get noNotifications =>
-      'Кто-нибудь, где-нибудь, когда-нибудь тебя упомянет.';
+  String get noNotifications => 'Кто-нибудь, где-нибудь, когда-нибудь тебя упомянет.';
 
   @override
   String get backgroundNotifications => 'Фоновые уведомления';
 
   @override
-  String get optionNotAvailableOnYourPlatform =>
-      'Эта функция недоступна на твоей платформе.';
+  String get optionNotAvailableOnYourPlatform => 'Эта функция недоступна на твоей платформе.';
 
   @override
-  String get optionNotAvailablePaywalled =>
-      'Эта функция только для тех, кто поддерживает ColdChat.';
+  String get optionNotAvailablePaywalled => 'Эта функция только для тех, кто поддерживает ColdChat.';
 
   @override
   String get clearAll => 'Очистить всё';
@@ -418,19 +412,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get emoteMenuButton => 'Кнопка меню смайликов';
 
   @override
-  String get emoteMenuButtonGrayscale =>
-      'Кнопка меню смайликов в оттенках серого';
+  String get emoteMenuButtonGrayscale => 'Кнопка меню смайликов в оттенках серого';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Нажми на смайлик, чтобы сделать его кнопкой меню смайликов';
+  String get chooseEmoteMenuButton => 'Нажми на смайлик, чтобы сделать его кнопкой меню смайликов';
 
   @override
   String get resetToKappa => 'Вернуть Kappa';
 
   @override
-  String get emoteMenuButtonDownloadFailed =>
-      'Не удалось скачать смайлик. Кнопка не изменилась.';
+  String get emoteMenuButtonDownloadFailed => 'Не удалось скачать смайлик. Кнопка не изменилась.';
 
   @override
   String get takePhoto => 'Сделать фото';
@@ -439,8 +430,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chooseFromLibrary => 'Выбрать из галереи';
 
   @override
-  String get cameraUnavailable =>
-      'Не удалось открыть камеру. Проверь, есть ли у ColdChat доступ к камере.';
+  String get cameraUnavailable => 'Не удалось открыть камеру. Проверь, есть ли у ColdChat доступ к камере.';
 
   @override
   String get about => 'О приложении';
@@ -481,8 +471,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get openOnTwitch => 'Открыть на Twitch';
 
   @override
-  String get blockFailed =>
-      'Не удалось изменить список блокировки. Проверь подключение и попробуй ещё раз.';
+  String get blockFailed => 'Не удалось изменить список блокировки. Проверь подключение и попробуй ещё раз.';
 
   @override
   String get contact => 'Связь и отзывы';
@@ -510,15 +499,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get closeConversation => 'Закрыть диалог';
 
   @override
-  String get closeConversationSubtitle =>
-      'Сообщения останутся на этом устройстве и вернутся со следующим шепотом.';
+  String get closeConversationSubtitle => 'Сообщения останутся на этом устройстве и вернутся со следующим шепотом.';
 
   @override
   String get deleteConversation => 'Удалить диалог';
 
   @override
-  String get deleteConversationSubtitle =>
-      'Удаляет сообщения с этого устройства. Twitch не хранит историю шепота.';
+  String get deleteConversationSubtitle => 'Удаляет сообщения с этого устройства. Twitch не хранит историю шепота.';
 
   @override
   String get whisperNeedsLogin => 'Войди через Twitch, чтобы отправлять шепот.';
@@ -554,12 +541,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get showImagesFromLinks => 'Показывать изображения из ссылок';
 
   @override
-  String get showImagesFromLinksSubtitle =>
-      'Twitch не проверяет эти изображения. Они могут быть неприемлемыми.';
+  String get showImagesFromLinksSubtitle => 'Twitch не проверяет эти изображения. Они могут быть неприемлемыми.';
 
   @override
-  String get showImagesAutomatically =>
-      'Показывать изображения из ссылок автоматически?';
+  String get showImagesAutomatically => 'Показывать изображения из ссылок автоматически?';
 
   @override
   String get turnOn => 'Включить';
@@ -601,8 +586,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get oledBlack => 'Чёрный OLED';
 
   @override
-  String get oledBlackSubtitle =>
-      'Чёрный фон чата в тёмном режиме, для OLED-экранов';
+  String get oledBlackSubtitle => 'Чёрный фон чата в тёмном режиме, для OLED-экранов';
 
   @override
   String get customColor => 'Свой';

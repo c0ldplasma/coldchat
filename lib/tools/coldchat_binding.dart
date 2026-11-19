@@ -22,7 +22,10 @@ class ColdChatBinding extends WidgetsFlutterBinding {
   }
 
   @override
-  Future<ui.Codec> instantiateImageCodecWithSize(ui.ImmutableBuffer buffer, {ui.TargetImageSizeCallback? getTargetSize}) async {
+  Future<ui.Codec> instantiateImageCodecWithSize(
+    ui.ImmutableBuffer buffer, {
+    ui.TargetImageSizeCallback? getTargetSize,
+  }) async {
     final codec = await super.instantiateImageCodecWithSize(buffer, getTargetSize: getTargetSize);
     return codec.frameCount > 1 ? BrowserTimedCodec(codec) : codec;
   }

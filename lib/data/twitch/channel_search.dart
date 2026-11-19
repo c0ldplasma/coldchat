@@ -15,7 +15,9 @@ Future<List<ChannelCandidate>> searchChannels(TokenData tokenData, String rawQue
 
   final (found, exactUsers) = await (
     Twitch.channelSearch(tokenData, query),
-    couldBeLogin(query) ? Twitch.usersByLogin(tokenData, [query.toLowerCase()]).catchError((_) => <TwitchUser>[]) : Future.value(<TwitchUser>[]),
+    couldBeLogin(query)
+        ? Twitch.usersByLogin(tokenData, [query.toLowerCase()]).catchError((_) => <TwitchUser>[])
+        : Future.value(<TwitchUser>[]),
   ).wait;
 
   final candidates = <String, ChannelCandidate>{

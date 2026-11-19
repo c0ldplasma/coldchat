@@ -35,7 +35,8 @@ class EmoteBadgeCache {
   void _purgeLegacyKeys() {
     final stale = box.keys.where((k) {
       if (k is! String) return false;
-      final isChannelScoped = k.startsWith('channelEmotes:') || k.startsWith('channelBadges:') || k.startsWith('history:');
+      final isChannelScoped =
+          k.startsWith('channelEmotes:') || k.startsWith('channelBadges:') || k.startsWith('history:');
       return isChannelScoped && !k.contains(':v2:');
     }).toList();
     if (stale.isNotEmpty) box.deleteAll(stale);
@@ -70,15 +71,15 @@ class EmoteBadgeCache {
   }
 
   Map<String, dynamic> _emoteToJson(Emote e) => {
-        'id': e.id,
-        'name': e.name,
-        'code': e.code,
-        'description': e.description,
-        'mipmap': e.mipmap,
-        'flags': e.flags,
-        'provider': e.provider.name,
-        'category': e.category,
-      };
+    'id': e.id,
+    'name': e.name,
+    'code': e.code,
+    'description': e.description,
+    'mipmap': e.mipmap,
+    'flags': e.flags,
+    'provider': e.provider.name,
+    'category': e.category,
+  };
 
   Emote? _emoteFromJson(Map<String, dynamic> m) {
     final provider = _providerByName(m['provider'] as String?);
@@ -99,13 +100,13 @@ class EmoteBadgeCache {
   }
 
   Map<String, dynamic> _badgeToJson(CustomBadge b) => {
-        'id': b.id,
-        'name': b.name,
-        'description': b.description,
-        'mipmap': b.mipmap,
-        'flags': b.flags,
-        'provider': b.provider.name,
-      };
+    'id': b.id,
+    'name': b.name,
+    'description': b.description,
+    'mipmap': b.mipmap,
+    'flags': b.flags,
+    'provider': b.provider.name,
+  };
 
   CustomBadge? _badgeFromJson(Map<String, dynamic> m) {
     final provider = _providerByName(m['provider'] as String?);
@@ -178,10 +179,12 @@ class EmoteBadgeCache {
         if (badgeMap is! Map) continue;
         final badge = _badgeFromJson(Map<String, dynamic>.from(badgeMap));
         if (badge == null) continue;
-        entries.add(BadgeUsers(
-          badge: badge,
-          users: List<String>.from(entry['users'] as List? ?? const []),
-        ));
+        entries.add(
+          BadgeUsers(
+            badge: badge,
+            users: List<String>.from(entry['users'] as List? ?? const []),
+          ),
+        );
       }
     }
     return entries;
@@ -191,10 +194,12 @@ class EmoteBadgeCache {
     return _encode(
       key,
       entries
-          .map((entry) => {
-                'badge': _badgeToJson(entry.badge),
-                'users': entry.users,
-              })
+          .map(
+            (entry) => {
+              'badge': _badgeToJson(entry.badge),
+              'users': entry.users,
+            },
+          )
           .toList(),
     );
   }

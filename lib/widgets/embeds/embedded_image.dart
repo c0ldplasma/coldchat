@@ -16,28 +16,28 @@ class EmbeddedImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Stack(
-          children: [
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 128.0 * 2.5) * scale,
-              child: CachedNetworkImage(
-                imageUrl: embed.url,
-                filterQuality: FilterQuality.high,
-              ),
-            ),
-            Positioned.fill(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => launchUrl(
-                    Uri.parse(embed.url),
-                    mode: LaunchMode.externalApplication,
-                  ),
-                ),
-              ),
-            ),
-          ],
+    borderRadius: BorderRadius.circular(8.0),
+    child: Stack(
+      children: [
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 128.0 * 2.5) * scale,
+          child: CachedNetworkImage(
+            imageUrl: embed.url,
+            filterQuality: FilterQuality.high,
+          ),
         ),
-      );
+        Positioned.fill(
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => launchUrl(
+                Uri.parse(embed.url),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
 }

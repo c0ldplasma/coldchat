@@ -77,11 +77,18 @@ class _ChattersModalState extends State<ChattersModal> {
             ),
           ),
         ),
-        for (final chatter in chatters.where((chatter) => chatter.login!.contains(search) || (chatter.displayName?.toLowerCase().contains(search) ?? false)))
+        for (final chatter in chatters.where(
+          (chatter) =>
+              chatter.login!.contains(search) || (chatter.displayName?.toLowerCase().contains(search) ?? false),
+        ))
           Tile(
             prefix: CircleAvatar(
-              backgroundImage: avatarUrls[chatter.login] == null ? null : CachedNetworkImageProvider(avatarUrls[chatter.login]!),
-              child: avatarUrls[chatter.login] == null ? Text((chatter.displayName ?? chatter.login!).characters.first.toUpperCase()) : null,
+              backgroundImage: avatarUrls[chatter.login] == null
+                  ? null
+                  : CachedNetworkImageProvider(avatarUrls[chatter.login]!),
+              child: avatarUrls[chatter.login] == null
+                  ? Text((chatter.displayName ?? chatter.login!).characters.first.toUpperCase())
+                  : null,
             ),
             title: chatter.displayName ?? chatter.login!,
             onTap: () {

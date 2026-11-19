@@ -23,35 +23,44 @@ class Toggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        shape: RoundedRectangleBorder(
-          borderRadius: _kBorderRadius,
-          side: value ? BorderSide.none : BorderSide(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: _kThumbOpacity), width: _kOutlineWidth),
-        ),
-        color: value ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface.withValues(alpha: _kTrackOpacity),
-        child: InkWell(
-          borderRadius: _kBorderRadius,
-          onTap: () => onChanged(!value),
-          child: SizedBox(
-            width: _kToggleWidth,
-            height: _kToggleHeight,
-            child: AnimatedAlign(
-              alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-              duration: _kAnimationDuration,
-              curve: _kAnimationCurve,
-              child: AnimatedContainer(
-                alignment: value ? Alignment.centerRight : Alignment.centerLeft,
-                duration: _kAnimationDuration,
-                curve: _kAnimationCurve,
-                width: value ? _kToggleActiveSize : _kToggleInactiveSize,
-                height: value ? _kToggleActiveSize : _kToggleInactiveSize,
-                margin: const EdgeInsets.only(right: 4.0, left: 8.0),
-                decoration: BoxDecoration(
-                  color: value ? Theme.of(context).colorScheme.primaryContainer : Theme.of(context).colorScheme.onSurface.withValues(alpha: _kThumbOpacity),
-                  shape: BoxShape.circle,
-                ),
-              ),
+    shape: RoundedRectangleBorder(
+      borderRadius: _kBorderRadius,
+      side: value
+          ? BorderSide.none
+          : BorderSide(
+              color: Theme.of(context).colorScheme.onSurface.withValues(alpha: _kThumbOpacity),
+              width: _kOutlineWidth,
+            ),
+    ),
+    color: value
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.onSurface.withValues(alpha: _kTrackOpacity),
+    child: InkWell(
+      borderRadius: _kBorderRadius,
+      onTap: () => onChanged(!value),
+      child: SizedBox(
+        width: _kToggleWidth,
+        height: _kToggleHeight,
+        child: AnimatedAlign(
+          alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+          duration: _kAnimationDuration,
+          curve: _kAnimationCurve,
+          child: AnimatedContainer(
+            alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+            duration: _kAnimationDuration,
+            curve: _kAnimationCurve,
+            width: value ? _kToggleActiveSize : _kToggleInactiveSize,
+            height: value ? _kToggleActiveSize : _kToggleInactiveSize,
+            margin: const EdgeInsets.only(right: 4.0, left: 8.0),
+            decoration: BoxDecoration(
+              color: value
+                  ? Theme.of(context).colorScheme.primaryContainer
+                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: _kThumbOpacity),
+              shape: BoxShape.circle,
             ),
           ),
         ),
-      );
+      ),
+    ),
+  );
 }

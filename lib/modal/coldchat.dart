@@ -29,7 +29,10 @@ class ColdChatModal extends StatelessWidget {
         return BoxListener(
           box: Hive.box('TwitchAccounts'),
           builder: (BuildContext context, Box twitchAccountsBox) {
-            final activeTwitchAccount = twitchAccountsBox.values.firstWhere((element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash, orElse: () => null);
+            final activeTwitchAccount = twitchAccountsBox.values.firstWhere(
+              (element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash,
+              orElse: () => null,
+            );
             return ListView(
               shrinkWrap: true,
               children: [
@@ -62,7 +65,9 @@ class ColdChatModal extends StatelessWidget {
                   ),
                   const Separator(),
                 ],
-                for (var twitchAccount in twitchAccountsBox.values.where((element) => accountSettingsBox.get('activeTwitchAccount') != element.tokenData.hash))
+                for (var twitchAccount in twitchAccountsBox.values.where(
+                  (element) => accountSettingsBox.get('activeTwitchAccount') != element.tokenData.hash,
+                ))
                   TwitchAccountButton(
                     // key: ObjectKey(twitchAccount),
                     twitchAccount: twitchAccount,

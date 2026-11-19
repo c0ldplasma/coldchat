@@ -162,7 +162,9 @@ class EventSubSocket {
           if (_seenMessageIds.contains(id)) return;
           _seenMessageIds.add(id);
           if (_seenMessageIds.length > 100) _seenMessageIds.removeAt(0);
-          if (metadata['subscription_type'] == 'user.whisper.message') _notifyWhisper(payload['event'] as Map<String, dynamic>);
+          if (metadata['subscription_type'] == 'user.whisper.message') {
+            _notifyWhisper(payload['event'] as Map<String, dynamic>);
+          }
           break;
         case 'revocation':
           log('EventSub subscription revoked: ${payload['subscription']?['status']}');
@@ -200,12 +202,14 @@ class EventSubSocket {
   }
 
   void _notifyWhisper(Map<String, dynamic> event) {
-    onWhisper(ReceivedWhisper(
-      id: event['whisper_id'] as String,
-      fromUserId: event['from_user_id'] as String,
-      fromLogin: event['from_user_login'] as String,
-      fromDisplayName: event['from_user_name'] as String,
-      text: (event['whisper'] as Map<String, dynamic>)['text'] as String,
-    ));
+    onWhisper(
+      ReceivedWhisper(
+        id: event['whisper_id'] as String,
+        fromUserId: event['from_user_id'] as String,
+        fromLogin: event['from_user_login'] as String,
+        fromDisplayName: event['from_user_name'] as String,
+        text: (event['whisper'] as Map<String, dynamic>)['text'] as String,
+      ),
+    );
   }
 }
