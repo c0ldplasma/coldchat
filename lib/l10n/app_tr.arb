@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "{provider} aracılığıyla giriş yapıldı",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "{provider} ile giriş yapıldı",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Kullanım Şartları",
   "privacyPolicy": "Gizlilik Politikası",
   "settings": "Ayarlar",
-  "expiresNever": "Asla sona ermez",
+  "expiresNever": "Süresi dolmaz",
+  "loginExpired": "Oturumun süresi doldu",
+  "loginExpiredDescription": "Twitch, {login} için girişi reddetti. Tekrar giriş yapana kadar sohbet bağlantısı kesik kalır.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Giriş başarısız",
+  "signInAgain": "Giriş yap",
+  "uploadingTo": "{host} sunucusuna yükleniyor",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "İşleniyor…",
+  "uploadFailed": "Yükleme başarısız",
+  "uploadDone": "Yüklendi",
+  "uploadRetry": "Tekrar dene",
+  "uploadDismiss": "Kapat",
+  "uploadCancel": "Yüklemeyi iptal et",
+  "uploadErrorOffline": "İnternet bağlantısı yok",
+  "uploadErrorTimeout": "{host} yanıt vermiyor",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} yüklemeyi reddetti (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} beklenmeyen bir yanıt gönderdi",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "{host} sunucusuna bağlanılamadı",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Dosya okunamadı",
+  "uploadErrorUnknown": "{host} sunucusuna yükleme başarısız",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Ayrıntılar",
+  "uploadRetryingWith": "{host} ile tekrar deneniyor…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
   "expiresIn": "{time} sonra sona erecek",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Kapat",
   "add": "Ekle",
   "cancel": "İptal",
-  "tokenInput": "Belirteç girişi",
+  "tokenInput": "Token girişi",
   "account": "Hesap",
   "refreshAccount": "Hesabı yenile",
   "removeAccount": "Hesabı kaldır",
   "addAnotherAccount": "Başka bir hesap ekle",
-  "verifiedUserData": "Kullanıcı verisi onaylandı!",
+  "verifiedUserData": "Kullanıcı verileri doğrulandı!",
   "loggedInAs": "{user} olarak giriş yapıldı",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Kullanıcı verisi onaylanırken bir sorun yaşandı:",
-  "verifyingUserData": "Kullanıcı verisi onaylanıyor...",
-  "verifiedUserToken": "Kullanıcı belirteci onaylandı!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Kullanıcı belirteci onaylanırken bir sorun yaşandı:",
-  "verifyingUserToken": "Kullanıcı belirteci onaylanıyor...",
+  "anErrorHasOccuredWhenVerifyingUserData": "Kullanıcı verileri doğrulanırken bir hata oluştu:",
+  "verifyingUserData": "Kullanıcı verileri doğrulanıyor...",
+  "verifiedUserToken": "Kullanıcı token'ı doğrulandı!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Kullanıcı token'ı doğrulanırken bir hata oluştu:",
+  "verifyingUserToken": "Kullanıcı token'ı doğrulanıyor...",
   "searchForChannels": "Kanal ara",
   "recommendedChannels": "Önerilen kanallar",
   "popularChannels": "Popüler kanallar",
   "channel": "Kanal",
   "leaveChannel": "Kanaldan ayrıl",
-  "joinUser": "{user} katıl",
+  "joinUser": "{user} kanalına katıl",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Yazım denetimi başarısız oldu! {username} için mi arama yapmak istemiştiniz?",
+  "spellCheckFailed": "Yazım hatası olabilir! {username} kullanıcısını mı arıyorsun?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "{channel} katıl",
+  "joinChannelName": "{channel} kanalına katıl",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "sendMessageIn": "{channel} kanalına mesaj gönder",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Light",
-  "dark": "Dark",
-  "system": "System",
-  "appearance": "Appearance",
-  "highContrast": "High contrast",
-  "customCommand": "Custom command",
-  "customCommands": "Custom commands",
-  "newCustomCommand": "New custom command",
-  "commandTrigger": "Trigger",
-  "command": "Command",
-  "save": "Save",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "light": "Açık",
+  "dark": "Koyu",
+  "system": "Sistem",
+  "appearance": "Görünüm",
+  "highContrast": "Yüksek kontrast",
+  "customCommand": "Özel komut",
+  "customCommands": "Özel komutlar",
+  "newCustomCommand": "Yeni özel komut",
+  "commandTrigger": "Tetikleyici",
+  "command": "Komut",
+  "save": "Kaydet",
+  "openInBrowser": "Tarayıcıda aç",
+  "messageAppearance": "Mesaj görünümü",
+  "showTimestamps": "Saati göster",
+  "compactMessages": "Kompakt mesajlar",
+  "showBadges": "Rozetleri göster",
+  "messageTrigger": "Mesaj tetikleyicisi",
+  "pattern": "Kalıp",
+  "mention": "Vurgula",
+  "block": "Engelle",
+  "enableRegex": "Regex kullan",
+  "caseSensitive": "Büyük/küçük harfe duyarlı",
+  "messageTriggers": "Mesaj tetikleyicileri",
+  "newMessageTrigger": "Yeni mesaj tetikleyicisi",
+  "reply": "Yanıtla",
+  "copyText": "Metni kopyala",
+  "copyTextSubtitle": "Kullanıcı adıyla kopyalamak için basılı tut",
+  "deleteMessage": "Mesajı sil",
+  "mentionUser": "Kullanıcıdan bahset",
+  "copyMessageId": "Mesaj kimliğini kopyala",
+  "theme": "Tema",
+  "userTrigger": "Kullanıcı tetikleyicisi",
+  "userTriggers": "Kullanıcı tetikleyicileri",
+  "chatHistory": "Sohbet geçmişi",
+  "login": "Kullanıcı adı",
+  "newUserTrigger": "Yeni kullanıcı tetikleyicisi",
+  "ban": "Yasakla",
+  "unban": "Yasağı kaldır",
+  "timeoutUserForDuration": "Kullanıcıya {duration} zaman aşımı ver",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "Sohbet temizlendi",
+  "permabanned": "kalıcı olarak yasaklandı",
+  "bannedForDuration": "{duration} süreyle yasaklandı",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "replyingTo": "Yanıtlanan:",
+  "blockedMessage": "Engellenen mesaj",
+  "showMessage": "Mesajı göster",
+  "hideMessage": "Mesajı gizle",
+  "scrollToBottom": "En alta kaydır",
+  "startUsingTheApp": "Uygulamayı kullanmaya başlamak için aşağıdan bir hesap ekle.",
+  "chatSettings": "Sohbet ayarları",
+  "autocompleteUsersWithAt": "@ ile kullanıcı adlarını tamamla",
+  "autocompleteEmotesWithColon": ": ile ifadeleri tamamla",
+  "language": "Dil",
+  "locale": "Dil ve bölge",
+  "systemDefault": "Sistem varsayılanı",
+  "justDefault": "Varsayılan",
+  "notifications": "Bildirimler",
+  "noNotifications": "Biri, bir yerde, bir gün senden bahsedecek.",
+  "backgroundNotifications": "Arka plan bildirimleri",
+  "optionNotAvailableOnYourPlatform": "Bu seçenek platformunda kullanılamıyor.",
+  "optionNotAvailablePaywalled": "Bu seçenek yalnızca ColdChat destekçileri için.",
+  "clearAll": "Tümünü temizle",
+  "cache": "Önbellek",
+  "clearCache": "Önbelleği temizle",
+  "chatters": "Sohbettekiler",
+  "lastSeenAgo": "Son görülme: {time} önce",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Emeği geçenler",
+  "search": "Ara",
+  "emoteMenuButton": "İfade menüsü düğmesi",
+  "emoteMenuButtonGrayscale": "İfade menüsü düğmesini gri tonlamalı göster",
+  "chooseEmoteMenuButton": "İfade menüsü düğmesi olarak kullanmak için bir ifadeye dokun",
+  "resetToKappa": "Kappa'ya sıfırla",
+  "emoteMenuButtonDownloadFailed": "İfade indirilemedi. Düğme değiştirilmedi.",
+  "takePhoto": "Fotoğraf çek",
+  "chooseFromLibrary": "Galeriden seç",
+  "cameraUnavailable": "Kamera açılamadı. ColdChat'in kameraya erişimi olup olmadığını kontrol et.",
+  "about": "Hakkında",
+  "sourceCode": "Kaynak kodu",
+  "license": "Lisans",
+  "basedOnChatsen": "Chatsen tabanlı",
+  "openSourceLicenses": "Açık kaynak lisansları",
+  "aboutLegalese": "ColdChat özgür bir yazılımdır: GNU Affero General Public License sürüm 3'ün koşulları altında yeniden dağıtabilir ve değiştirebilirsin. HİÇBİR GARANTİ OLMADAN sunulur.",
+  "unblock": "Engeli kaldır",
+  "report": "Bildir",
+  "reportUserTitle": "{name} adlı kullanıcıyı bildir",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Bildirimleri Twitch inceler. Twitch'te {name} kanalını aç ve orada Bildir'i seç. Mesajlarını gizlemek için {name} adlı kullanıcıyı burada engelleyebilirsin de.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Twitch'te aç",
+  "blockFailed": "Engellenenler listesi değiştirilemedi. Bağlantını kontrol et ve tekrar dene.",
+  "contact": "İletişim ve geri bildirim",
+  "whisper": "Fısıltı",
+  "whisperTo": "{name} kullanıcısına fısılda",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "{name} kullanıcısından fısıltı",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Aç",
+  "userCard": "Kullanıcı kartı",
+  "closeConversation": "Sohbeti kapat",
+  "closeConversationSubtitle": "Mesajlar bu cihazda kalır ve bir sonraki fısıltıyla geri gelir.",
+  "deleteConversation": "Sohbeti sil",
+  "deleteConversationSubtitle": "Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.",
+  "whisperNeedsLogin": "Fısıltı göndermek için Twitch ile giriş yap.",
+  "whisperNeedsScope": "Fısıltı gönderip almak için tekrar giriş yap. Girişin, ColdChat fısıltıları desteklemeden önceye ait.",
+  "whisperUserNotFound": "Bu adda bir Twitch kullanıcısı yok.",
+  "whisperFailed": "Fısıltı gönderilmedi: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "ColdChat kapalıyken gelen fısıltılar burada görünmez, çünkü Twitch fısıltı geçmişini uygulamalarla paylaşmaz. Onları Twitch'te sağ üstteki fısıltı simgesinden okuyabilirsin.",
+  "gotIt": "Anladım",
+  "openTwitch": "Twitch'i aç",
+  "showImage": "Görseli göster · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Bağlantılardaki görselleri göster",
+  "showImagesFromLinksSubtitle": "Twitch bu görselleri denetlemez. Uygunsuz olabilirler.",
+  "showImagesAutomatically": "Bağlantılardaki görseller otomatik gösterilsin mi?",
+  "turnOn": "Aç"
 }

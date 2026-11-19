@@ -88,7 +88,7 @@
       "user": {"type": "String"}
     }
   },
-  "spellCheckFailed": "Rechtschreibprüfung fehlgeschlagen! Meinen Sie {username}?",
+  "spellCheckFailed": "Rechtschreibprüfung fehlgeschlagen! Meinst du {username}?",
   "@spellCheckFailed": {
     "placeholders": {
       "username": {"type": "String"}
@@ -140,7 +140,7 @@
   "userTrigger": "Nutzerauslöser",
   "userTriggers": "Nutzerauslöser",
   "chatHistory": "Chatverlauf",
-  "login": "Login",
+  "login": "Nutzername",
   "newUserTrigger": "Neuer Auslöser",
   "ban": "Sperren",
   "unban": "Entsperren",
@@ -163,7 +163,7 @@
   "showMessage": "Nachricht anzeigen",
   "hideMessage": "Nachricht ausblenden",
   "scrollToBottom": "Zum Ende springen",
-  "startUsingTheApp": "Fügen Sie unten ein Konto hinzu, um die App zu verwenden.",
+  "startUsingTheApp": "Füge unten einen Account hinzu, um die App zu nutzen.",
   "chatSettings": "Chateinstellungen",
   "autocompleteUsersWithAt": "Benutzernamen mit @ vervollständigen",
   "autocompleteEmotesWithColon": "Emotes mit : vervollständigen",
@@ -172,13 +172,13 @@
   "systemDefault": "Standard",
   "justDefault": "Standard",
   "notifications": "Benachrichtigungen",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
+  "noNotifications": "Irgendwer, irgendwo wird dich eines Tages erwähnen.",
   "backgroundNotifications": "Hintergrundbenachrichtigungen",
-  "optionNotAvailableOnYourPlatform": "Diese Option ist nicht für Ihre Plattform verfügbar.",
+  "optionNotAvailableOnYourPlatform": "Diese Option ist auf deiner Plattform nicht verfügbar.",
   "optionNotAvailablePaywalled": "Diese Option ist nur für ColdChat Unterstützer.",
   "clearAll": "Alles löschen",
   "cache": "Cache",
-  "clearCache": "Chache löschen",
+  "clearCache": "Cache leeren",
   "chatters": "Chatter",
   "lastSeenAgo": "Zuletzt gesehen vor {time}",
   "@lastSeenAgo": {
@@ -187,7 +187,7 @@
     }
   },
   "credits": "Credits",
-  "search": "Search",
+  "search": "Suchen",
   "emoteMenuButton": "Emote-Menü-Button",
   "emoteMenuButtonGrayscale": "Emote-Menü-Button in Graustufen",
   "chooseEmoteMenuButton": "Tippe auf ein Emote, um es als Emote-Menü-Button zu verwenden",

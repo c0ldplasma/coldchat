@@ -17,7 +17,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Přihlášen jako $provider';
+    return 'Přihlášeno přes $provider';
   }
 
   @override
@@ -33,84 +33,84 @@ class AppLocalizationsCs extends AppLocalizations {
   String get expiresNever => 'Nikdy nevyprší';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Přihlášení vypršelo';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch odmítl přihlášení pro $login. Chat zůstane odpojený, dokud se znovu nepřihlásíš.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Přihlášení se nezdařilo';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Přihlásit se';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Nahrávání na $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Zpracování…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Nahrávání se nezdařilo';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Nahráno';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Zkusit znovu';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Skrýt';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Zrušit nahrávání';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Žádné připojení k internetu';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host neodpovídá';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return 'Server $host nahrání odmítl (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return 'Server $host vrátil neočekávanou odpověď';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Nelze se připojit k $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Soubor nelze přečíst';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Nahrávání na $host se nezdařilo';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Podrobnosti';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Nový pokus přes $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Vyprší v $time';
+    return 'Vyprší za $time';
   }
 
   @override
@@ -123,44 +123,44 @@ class AppLocalizationsCs extends AppLocalizations {
   String get cancel => 'Zrušit';
 
   @override
-  String get tokenInput => 'Vložení tokenu';
+  String get tokenInput => 'Zadání tokenu';
 
   @override
   String get account => 'Účet';
 
   @override
-  String get refreshAccount => 'Načíst účet';
+  String get refreshAccount => 'Obnovit účet';
 
   @override
-  String get removeAccount => 'Odstranit účet';
+  String get removeAccount => 'Odebrat účet';
 
   @override
-  String get addAnotherAccount => 'Přidat jiný účet';
+  String get addAnotherAccount => 'Přidat další účet';
 
   @override
-  String get verifiedUserData => 'Data úspěšně ověřena!';
+  String get verifiedUserData => 'Uživatelská data ověřena!';
 
   @override
   String loggedInAs(String user) {
-    return 'Přihlášen jako $user';
+    return 'Přihlášeno jako $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Při ověřování osobních dat se objevil problém:';
+      'Při ověřování uživatelských dat došlo k chybě:';
 
   @override
-  String get verifyingUserData => 'Ověřuji user data...';
+  String get verifyingUserData => 'Ověřování uživatelských dat...';
 
   @override
-  String get verifiedUserToken => 'Token ověřen!';
+  String get verifiedUserToken => 'Uživatelský token ověřen!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Při ověřování tokenu uživatele se objevil problém:';
+      'Při ověřování uživatelského tokenu došlo k chybě:';
 
   @override
-  String get verifyingUserToken => 'Ověřování tokenu uživatele...';
+  String get verifyingUserToken => 'Ověřování uživatelského tokenu...';
 
   @override
   String get searchForChannels => 'Hledat kanály';
@@ -184,7 +184,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String spellCheckFailed(String username) {
-    return 'Kontrola pravopisu se nezdařila! Měli jste na mysli $username?';
+    return 'Kontrola pravopisu selhala! Nehledáš $username?';
   }
 
   @override
@@ -194,7 +194,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String sendMessageIn(String channel) {
-    return 'Poslat zprávu v $channel';
+    return 'Poslat zprávu do $channel';
   }
 
   @override
@@ -204,7 +204,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get dark => 'Tmavý';
 
   @override
-  String get system => 'Systém';
+  String get system => 'Podle systému';
 
   @override
   String get appearance => 'Vzhled';
@@ -234,19 +234,19 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openInBrowser => 'Otevřít v prohlížeči';
 
   @override
-  String get messageAppearance => 'Vzhled zprávy';
+  String get messageAppearance => 'Vzhled zpráv';
 
   @override
-  String get showTimestamps => 'Zobrazit časové údaje';
+  String get showTimestamps => 'Zobrazit čas';
 
   @override
   String get compactMessages => 'Kompaktní zprávy';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Zobrazit odznaky';
 
   @override
-  String get messageTrigger => 'Spouštěč zprávy';
+  String get messageTrigger => 'Spouštěč zpráv';
 
   @override
   String get pattern => 'Vzor';
@@ -261,23 +261,23 @@ class AppLocalizationsCs extends AppLocalizations {
   String get enableRegex => 'Povolit regex';
 
   @override
-  String get caseSensitive => 'Rozlišit malá a velká písmena';
+  String get caseSensitive => 'Rozlišovat velká a malá písmena';
 
   @override
   String get messageTriggers => 'Spouštěče zpráv';
 
   @override
-  String get newMessageTrigger => 'Nový spouštěč zprávy';
+  String get newMessageTrigger => 'Nový spouštěč zpráv';
 
   @override
   String get reply => 'Odpovědět';
 
   @override
-  String get copyText => 'Zkopírovat text';
+  String get copyText => 'Kopírovat text';
 
   @override
   String get copyTextSubtitle =>
-      'Přidržením zkopírujete zprávu s uživatelským jménem';
+      'Podržením zkopíruješ text i s uživatelským jménem';
 
   @override
   String get deleteMessage => 'Smazat zprávu';
@@ -286,22 +286,22 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mentionUser => 'Zmínit uživatele';
 
   @override
-  String get copyMessageId => 'Zkopírovat ID zprávy';
+  String get copyMessageId => 'Kopírovat ID zprávy';
 
   @override
-  String get theme => 'Vzhled';
+  String get theme => 'Motiv';
 
   @override
   String get userTrigger => 'Spouštěč uživatele';
 
   @override
-  String get userTriggers => 'Spouštěče uživatele';
+  String get userTriggers => 'Spouštěče uživatelů';
 
   @override
-  String get chatHistory => 'Historie zpráv';
+  String get chatHistory => 'Historie chatu';
 
   @override
-  String get login => 'Přihlášení';
+  String get login => 'Uživatelské jméno';
 
   @override
   String get newUserTrigger => 'Nový spouštěč uživatele';
@@ -314,22 +314,22 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Dočasně zablokovat uživatele na $duration';
+    return 'Dát uživateli timeout na $duration';
   }
 
   @override
   String get chatCleared => 'Chat byl vymazán';
 
   @override
-  String get permabanned => 'trvale zabanován';
+  String get permabanned => 'dostává trvalý ban';
 
   @override
   String bannedForDuration(String duration) {
-    return 'zabanován po dobu $duration';
+    return 'dostává ban na $duration';
   }
 
   @override
-  String get replyingTo => 'Odpovědět na';
+  String get replyingTo => 'Odpověď na';
 
   @override
   String get blockedMessage => 'Zablokovaná zpráva';
@@ -345,214 +345,217 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get startUsingTheApp =>
-      'Chcete-li začít používat aplikaci, přidejte níže svůj účet.';
+      'Pokud chceš začít aplikaci používat, přidej níže účet.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'Nastavení chatu';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => 'Doplňovat uživatele pomocí @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => 'Doplňovat emotikony pomocí :';
 
   @override
-  String get language => 'Language';
+  String get language => 'Jazyk';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'Místní nastavení';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'Podle systému';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'Výchozí';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Oznámení';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications => 'Někdo, někde se o tobě jednou zmíní.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'Oznámení na pozadí';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'Tato možnost není na tvé platformě dostupná.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'Tato možnost je jen pro ty, kdo podporují ColdChat.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'Vymazat vše';
 
   @override
-  String get cache => 'Cache';
+  String get cache => 'Mezipaměť';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'Vymazat mezipaměť';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'Chatující';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'Naposledy aktivní před $time';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Poděkování';
 
   @override
-  String get search => 'Search';
+  String get search => 'Hledat';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Tlačítko nabídky emotikonů';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Tlačítko nabídky emotikonů ve stupních šedi';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Klepni na emotikon, který chceš použít jako tlačítko nabídky emotikonů';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Obnovit na Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Emotikon se nepodařilo stáhnout. Tlačítko zůstalo beze změny.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Vyfotit';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Vybrat z knihovny';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Fotoaparát se nepodařilo otevřít. Zkontroluj, jestli má ColdChat přístup k fotoaparátu.';
 
   @override
-  String get about => 'About';
+  String get about => 'O aplikaci';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Zdrojový kód';
 
   @override
-  String get license => 'License';
+  String get license => 'Licence';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Založeno na Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Licence open source';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat je svobodný software: můžeš ho šířit a upravovat za podmínek GNU Affero General Public License, verze 3. Je poskytován ABSOLUTNĚ BEZ ZÁRUKY.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Odblokovat';
 
   @override
-  String get report => 'Report';
+  String get report => 'Nahlásit';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Nahlásit $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Nahlášení vyřizuje Twitch. Otevři kanál $name na Twitchi a zvol tam Nahlásit. Nebo $name zablokuj tady a zprávy se ti přestanou zobrazovat.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Otevřít na Twitchi';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Seznam blokovaných se nepodařilo změnit. Zkontroluj připojení a zkus to znovu.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Kontakt a zpětná vazba';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Šeptat';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Šepot pro $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Šepot od $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Otevřít';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Karta uživatele';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Zavřít konverzaci';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Zprávy zůstanou v tomto zařízení a vrátí se s dalším šepotem.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Smazat konverzaci';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'Pro posílání šepotů se přihlas přes Twitch.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Pro posílání a příjem šepotů se přihlas znovu. Tvoje přihlášení je z doby, kdy je ColdChat ještě nepodporoval.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound =>
+      'Na Twitchi není žádný uživatel s tímto jménem.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Šepot nebyl odeslán: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Šepoty, které ti přijdou, když je ColdChat zavřený, se tu nezobrazí, protože Twitch aplikacím historii šepotů neposkytuje. Přečteš si je na Twitchi pod ikonou šepotů vpravo nahoře.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Rozumím';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Otevřít Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Zobrazit obrázek · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Zobrazovat obrázky z odkazů';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch tyto obrázky nekontroluje. Mohou být nevhodné.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Zobrazovat obrázky z odkazů automaticky?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Zapnout';
 }

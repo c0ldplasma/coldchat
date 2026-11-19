@@ -1,19 +1,106 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "{provider}経由でログイン",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "{provider}でログイン中",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "利用規約",
   "privacyPolicy": "プライバシーポリシー",
   "settings": "設定",
-  "expiresNever": "期限なし",
-  "expiresIn": "{time}で期限切れ",
+  "expiresNever": "無期限",
+  "loginExpired": "ログインの有効期限切れ",
+  "loginExpiredDescription": "Twitchが{login}のログインを拒否しました。再度ログインするまで、チャットは切断されたままになります。",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "ログインに失敗しました",
+  "signInAgain": "ログイン",
+  "uploadingTo": "{host}にアップロード中",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "処理中…",
+  "uploadFailed": "アップロードに失敗しました",
+  "uploadDone": "アップロード完了",
+  "uploadRetry": "再試行",
+  "uploadDismiss": "閉じる",
+  "uploadCancel": "アップロードをキャンセル",
+  "uploadErrorOffline": "インターネットに接続されていません",
+  "uploadErrorTimeout": "{host}が応答しません",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host}がアップロードを拒否しました（HTTP {status}）",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host}から予期しない応答がありました",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "{host}に接続できませんでした",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "ファイルを読み込めませんでした",
+  "uploadErrorUnknown": "{host}へのアップロードに失敗しました",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "詳細",
+  "uploadRetryingWith": "{host}で再試行中…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "あと{time}で期限切れ",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "閉じる",
@@ -24,45 +111,55 @@
   "refreshAccount": "アカウントを更新",
   "removeAccount": "アカウントを削除",
   "addAnotherAccount": "別のアカウントを追加",
-  "verifiedUserData": "認証済みユーザーデータ！",
-  "loggedInAs": "{user}としてログイン",
+  "verifiedUserData": "ユーザーデータを確認しました！",
+  "loggedInAs": "{user}としてログイン中",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
   "anErrorHasOccuredWhenVerifyingUserData": "ユーザーデータの確認中にエラーが発生しました：",
   "verifyingUserData": "ユーザーデータを確認中...",
-  "verifiedUserToken": "認証済みユーザートークン！",
+  "verifiedUserToken": "ユーザートークンを確認しました！",
   "anErrorHasOccuredWhenVerifyingUserToken": "ユーザートークンの確認中にエラーが発生しました：",
   "verifyingUserToken": "ユーザートークンを確認中...",
   "searchForChannels": "チャンネルを検索",
   "recommendedChannels": "おすすめチャンネル",
-  "popularChannels": "人気チャンネル",
+  "popularChannels": "人気のチャンネル",
   "channel": "チャンネル",
-  "leaveChannel": "チャンネルを退出",
+  "leaveChannel": "チャンネルから退出",
   "joinUser": "{user}に参加",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "スペルチェックに失敗しました！{username}を検索しようとしましたか？",
+  "spellCheckFailed": "スペルチェックに失敗しました！もしかして{username}ですか？",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "joinChannelName": "{channel}に参加",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "{channel}でメッセージを送信",
+  "sendMessageIn": "{channel}にメッセージを送信",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "ライト",
@@ -77,60 +174,65 @@
   "command": "コマンド",
   "save": "保存",
   "openInBrowser": "ブラウザで開く",
-  "messageAppearance": "メッセージの外観",
+  "messageAppearance": "メッセージの表示",
   "showTimestamps": "タイムスタンプを表示",
-  "compactMessages": "コンパクトメッセージ",
+  "compactMessages": "メッセージをコンパクトに表示",
+  "showBadges": "バッジを表示",
   "messageTrigger": "メッセージトリガー",
   "pattern": "パターン",
   "mention": "メンション",
   "block": "ブロック",
-  "enableRegex": "正規表現を有効にする",
-  "caseSensitive": "大文字小文字を区別する",
+  "enableRegex": "正規表現（regex）を使用",
+  "caseSensitive": "大文字と小文字を区別",
   "messageTriggers": "メッセージトリガー",
   "newMessageTrigger": "新しいメッセージトリガー",
   "reply": "返信",
   "copyText": "テキストをコピー",
-  "copyTextSubtitle": "ユーザー名とメッセージテキストをコピーするには長押し",
+  "copyTextSubtitle": "長押しでユーザー名ごとコピー",
   "deleteMessage": "メッセージを削除",
-  "mentionUser": "ユーザーにメンション",
+  "mentionUser": "ユーザーをメンション",
   "copyMessageId": "メッセージIDをコピー",
   "theme": "テーマ",
   "userTrigger": "ユーザートリガー",
   "userTriggers": "ユーザートリガー",
   "chatHistory": "チャット履歴",
-  "login": "ログイン",
+  "login": "ログイン名",
   "newUserTrigger": "新しいユーザートリガー",
   "ban": "BAN",
   "unban": "BAN解除",
-  "timeoutUserForDuration": "{duration}の間ユーザーをタイムアウト",
+  "timeoutUserForDuration": "ユーザーを{duration}タイムアウト",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "チャットがクリアされました",
   "permabanned": "永久BAN",
-  "bannedForDuration": "{duration}の間BAN",
+  "bannedForDuration": "{duration}のBAN",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "replyingTo": "返信先",
   "blockedMessage": "ブロックされたメッセージ",
   "showMessage": "メッセージを表示",
   "hideMessage": "メッセージを非表示",
-  "scrollToBottom": "下にスクロール",
-  "startUsingTheApp": "アプリを使用するには、以下からアカウントを追加してください。",
+  "scrollToBottom": "最下部へスクロール",
+  "startUsingTheApp": "アプリを使い始めるには、下からアカウントを追加してください。",
   "chatSettings": "チャット設定",
-  "autocompleteUsersWithAt": "@でユーザー名を自動補完",
-  "autocompleteEmotesWithColon": ":でエモートを自動補完",
+  "autocompleteUsersWithAt": "@でユーザー名を補完",
+  "autocompleteEmotesWithColon": ":でエモートを補完",
   "language": "言語",
-  "locale": "ロケール",
-  "systemDefault": "システムデフォルト",
+  "locale": "言語と地域",
+  "systemDefault": "システムのデフォルト",
   "justDefault": "デフォルト",
   "notifications": "通知",
-  "noNotifications": "いつか、どこかで誰かがあなたにメンションしてくれるでしょう。",
+  "noNotifications": "いつか、どこかで、誰かがあなたにメンションしてくれるはず。",
   "backgroundNotifications": "バックグラウンド通知",
   "optionNotAvailableOnYourPlatform": "このオプションはお使いのプラットフォームでは利用できません。",
   "optionNotAvailablePaywalled": "このオプションはColdChatサポーター専用です。",
@@ -138,10 +240,98 @@
   "cache": "キャッシュ",
   "clearCache": "キャッシュをクリア",
   "chatters": "チャッター",
-  "lastSeenAgo": "{time}前に最後に見た",
+  "lastSeenAgo": "最終確認：{time}前",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
-  }
+  },
+  "credits": "クレジット",
+  "search": "検索",
+  "emoteMenuButton": "エモートメニューボタン",
+  "emoteMenuButtonGrayscale": "エモートメニューボタンをグレースケールで表示",
+  "chooseEmoteMenuButton": "エモートをタップしてエモートメニューボタンに設定",
+  "resetToKappa": "Kappaに戻す",
+  "emoteMenuButtonDownloadFailed": "エモートをダウンロードできませんでした。ボタンは変更されていません。",
+  "takePhoto": "写真を撮る",
+  "chooseFromLibrary": "ライブラリから選択",
+  "cameraUnavailable": "カメラを開けませんでした。ColdChatにカメラへのアクセスが許可されているか確認してください。",
+  "about": "このアプリについて",
+  "sourceCode": "ソースコード",
+  "license": "ライセンス",
+  "basedOnChatsen": "Chatsenをベースに開発",
+  "openSourceLicenses": "オープンソースライセンス",
+  "aboutLegalese": "ColdChatはフリーソフトウェアです。GNU Affero General Public License バージョン3の条件に従って、再配布や改変を行うことができます。本ソフトウェアには一切の保証がありません。",
+  "unblock": "ブロック解除",
+  "report": "報告",
+  "reportUserTitle": "{name}を報告",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "報告はTwitchが対応します。Twitchで{name}のチャンネルを開き、そこで「報告」を選んでください。ここで{name}をブロックして、メッセージを非表示にすることもできます。",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Twitchで開く",
+  "blockFailed": "ブロックリストを変更できませんでした。接続を確認して、もう一度お試しください。",
+  "contact": "お問い合わせ・フィードバック",
+  "whisper": "ウィスパー",
+  "whisperTo": "{name}にウィスパー",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "{name}からのウィスパー",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "開く",
+  "userCard": "ユーザーカード",
+  "closeConversation": "会話を閉じる",
+  "closeConversationSubtitle": "メッセージはこの端末に残り、次のウィスパーで再び表示されます。",
+  "deleteConversation": "会話を削除",
+  "deleteConversationSubtitle": "この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。",
+  "whisperNeedsLogin": "ウィスパーを送るには、Twitchでログインしてください。",
+  "whisperNeedsScope": "ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。",
+  "whisperUserNotFound": "その名前のTwitchユーザーは存在しません。",
+  "whisperFailed": "ウィスパーを送信できませんでした：{reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "ColdChatを閉じている間に届いたウィスパーは、ここには表示されません。Twitchがウィスパーの履歴をアプリと共有しないためです。Twitchの右上にあるウィスパーアイコンから確認できます。",
+  "gotIt": "OK",
+  "openTwitch": "Twitchを開く",
+  "showImage": "画像を表示 · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "リンクの画像を表示",
+  "showImagesFromLinksSubtitle": "これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。",
+  "showImagesAutomatically": "リンクの画像を自動で表示しますか？",
+  "turnOn": "オンにする"
 }

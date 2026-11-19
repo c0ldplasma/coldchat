@@ -17,7 +17,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return '$provider aracılığıyla giriş yapıldı';
+    return '$provider ile giriş yapıldı';
   }
 
   @override
@@ -30,82 +30,82 @@ class AppLocalizationsTr extends AppLocalizations {
   String get settings => 'Ayarlar';
 
   @override
-  String get expiresNever => 'Asla sona ermez';
+  String get expiresNever => 'Süresi dolmaz';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Oturumun süresi doldu';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch, $login için girişi reddetti. Tekrar giriş yapana kadar sohbet bağlantısı kesik kalır.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Giriş başarısız';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Giriş yap';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return '$host sunucusuna yükleniyor';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'İşleniyor…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Yükleme başarısız';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Yüklendi';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Tekrar dene';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Kapat';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Yüklemeyi iptal et';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'İnternet bağlantısı yok';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host yanıt vermiyor';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host yüklemeyi reddetti (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host beklenmeyen bir yanıt gönderdi';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return '$host sunucusuna bağlanılamadı';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Dosya okunamadı';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return '$host sunucusuna yükleme başarısız';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Ayrıntılar';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return '$host ile tekrar deneniyor…';
   }
 
   @override
@@ -123,7 +123,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get cancel => 'İptal';
 
   @override
-  String get tokenInput => 'Belirteç girişi';
+  String get tokenInput => 'Token girişi';
 
   @override
   String get account => 'Hesap';
@@ -138,7 +138,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addAnotherAccount => 'Başka bir hesap ekle';
 
   @override
-  String get verifiedUserData => 'Kullanıcı verisi onaylandı!';
+  String get verifiedUserData => 'Kullanıcı verileri doğrulandı!';
 
   @override
   String loggedInAs(String user) {
@@ -147,20 +147,20 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Kullanıcı verisi onaylanırken bir sorun yaşandı:';
+      'Kullanıcı verileri doğrulanırken bir hata oluştu:';
 
   @override
-  String get verifyingUserData => 'Kullanıcı verisi onaylanıyor...';
+  String get verifyingUserData => 'Kullanıcı verileri doğrulanıyor...';
 
   @override
-  String get verifiedUserToken => 'Kullanıcı belirteci onaylandı!';
+  String get verifiedUserToken => 'Kullanıcı token\'ı doğrulandı!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Kullanıcı belirteci onaylanırken bir sorun yaşandı:';
+      'Kullanıcı token\'ı doğrulanırken bir hata oluştu:';
 
   @override
-  String get verifyingUserToken => 'Kullanıcı belirteci onaylanıyor...';
+  String get verifyingUserToken => 'Kullanıcı token\'ı doğrulanıyor...';
 
   @override
   String get searchForChannels => 'Kanal ara';
@@ -179,17 +179,17 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String joinUser(String user) {
-    return '$user katıl';
+    return '$user kanalına katıl';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Yazım denetimi başarısız oldu! $username için mi arama yapmak istemiştiniz?';
+    return 'Yazım hatası olabilir! $username kullanıcısını mı arıyorsun?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return '$channel katıl';
+    return '$channel kanalına katıl';
   }
 
   @override
@@ -198,360 +198,363 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get light => 'Light';
+  String get light => 'Açık';
 
   @override
-  String get dark => 'Dark';
+  String get dark => 'Koyu';
 
   @override
-  String get system => 'System';
+  String get system => 'Sistem';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Görünüm';
 
   @override
-  String get highContrast => 'High contrast';
+  String get highContrast => 'Yüksek kontrast';
 
   @override
-  String get customCommand => 'Custom command';
+  String get customCommand => 'Özel komut';
 
   @override
-  String get customCommands => 'Custom commands';
+  String get customCommands => 'Özel komutlar';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'Yeni özel komut';
 
   @override
-  String get commandTrigger => 'Trigger';
+  String get commandTrigger => 'Tetikleyici';
 
   @override
-  String get command => 'Command';
+  String get command => 'Komut';
 
   @override
-  String get save => 'Save';
+  String get save => 'Kaydet';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'Tarayıcıda aç';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'Mesaj görünümü';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'Saati göster';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'Kompakt mesajlar';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Rozetleri göster';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'Mesaj tetikleyicisi';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'Kalıp';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'Vurgula';
 
   @override
-  String get block => 'Block';
+  String get block => 'Engelle';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'Regex kullan';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'Büyük/küçük harfe duyarlı';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'Mesaj tetikleyicileri';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'Yeni mesaj tetikleyicisi';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'Yanıtla';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'Metni kopyala';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle => 'Kullanıcı adıyla kopyalamak için basılı tut';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'Mesajı sil';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'Kullanıcıdan bahset';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'Mesaj kimliğini kopyala';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'Tema';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'Kullanıcı tetikleyicisi';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'Kullanıcı tetikleyicileri';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'Sohbet geçmişi';
 
   @override
-  String get login => 'Login';
+  String get login => 'Kullanıcı adı';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'Yeni kullanıcı tetikleyicisi';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'Yasakla';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'Yasağı kaldır';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'Kullanıcıya $duration zaman aşımı ver';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'Sohbet temizlendi';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'kalıcı olarak yasaklandı';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return '$duration süreyle yasaklandı';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'Yanıtlanan:';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'Engellenen mesaj';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'Mesajı göster';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'Mesajı gizle';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'En alta kaydır';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'Uygulamayı kullanmaya başlamak için aşağıdan bir hesap ekle.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'Sohbet ayarları';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => '@ ile kullanıcı adlarını tamamla';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => ': ile ifadeleri tamamla';
 
   @override
-  String get language => 'Language';
+  String get language => 'Dil';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'Dil ve bölge';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'Sistem varsayılanı';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'Varsayılan';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Bildirimler';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications => 'Biri, bir yerde, bir gün senden bahsedecek.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'Arka plan bildirimleri';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'Bu seçenek platformunda kullanılamıyor.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'Bu seçenek yalnızca ColdChat destekçileri için.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'Tümünü temizle';
 
   @override
-  String get cache => 'Cache';
+  String get cache => 'Önbellek';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'Önbelleği temizle';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'Sohbettekiler';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'Son görülme: $time önce';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Emeği geçenler';
 
   @override
-  String get search => 'Search';
+  String get search => 'Ara';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'İfade menüsü düğmesi';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'İfade menüsü düğmesini gri tonlamalı göster';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'İfade menüsü düğmesi olarak kullanmak için bir ifadeye dokun';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Kappa\'ya sıfırla';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'İfade indirilemedi. Düğme değiştirilmedi.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Fotoğraf çek';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Galeriden seç';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Kamera açılamadı. ColdChat\'in kameraya erişimi olup olmadığını kontrol et.';
 
   @override
-  String get about => 'About';
+  String get about => 'Hakkında';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Kaynak kodu';
 
   @override
-  String get license => 'License';
+  String get license => 'Lisans';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Chatsen tabanlı';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Açık kaynak lisansları';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat özgür bir yazılımdır: GNU Affero General Public License sürüm 3\'ün koşulları altında yeniden dağıtabilir ve değiştirebilirsin. HİÇBİR GARANTİ OLMADAN sunulur.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Engeli kaldır';
 
   @override
-  String get report => 'Report';
+  String get report => 'Bildir';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return '$name adlı kullanıcıyı bildir';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Bildirimleri Twitch inceler. Twitch\'te $name kanalını aç ve orada Bildir\'i seç. Mesajlarını gizlemek için $name adlı kullanıcıyı burada engelleyebilirsin de.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Twitch\'te aç';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Engellenenler listesi değiştirilemedi. Bağlantını kontrol et ve tekrar dene.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'İletişim ve geri bildirim';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Fısıltı';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return '$name kullanıcısına fısılda';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return '$name kullanıcısından fısıltı';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Aç';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Kullanıcı kartı';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Sohbeti kapat';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Mesajlar bu cihazda kalır ve bir sonraki fısıltıyla geri gelir.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Sohbeti sil';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'Fısıltı göndermek için Twitch ile giriş yap.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Fısıltı gönderip almak için tekrar giriş yap. Girişin, ColdChat fısıltıları desteklemeden önceye ait.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'Bu adda bir Twitch kullanıcısı yok.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Fısıltı gönderilmedi: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'ColdChat kapalıyken gelen fısıltılar burada görünmez, çünkü Twitch fısıltı geçmişini uygulamalarla paylaşmaz. Onları Twitch\'te sağ üstteki fısıltı simgesinden okuyabilirsin.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Anladım';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Twitch\'i aç';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Görseli göster · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Bağlantılardaki görselleri göster';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch bu görselleri denetlemez. Uygunsuz olabilirler.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Bağlantılardaki görseller otomatik gösterilsin mi?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Aç';
 }

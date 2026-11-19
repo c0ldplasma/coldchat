@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
   "loggedInVia": "Đã đăng nhập qua {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Điều khoản dịch vụ",
   "privacyPolicy": "Chính sách quyền riêng tư",
   "settings": "Cài đặt",
   "expiresNever": "Không bao giờ hết hạn",
-  "expiresIn": "Hết hạn trong {time}",
+  "loginExpired": "Phiên đăng nhập đã hết hạn",
+  "loginExpiredDescription": "Twitch đã từ chối thông tin đăng nhập của {login}. Chat sẽ bị ngắt kết nối cho đến khi bạn đăng nhập lại.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Đăng nhập thất bại",
+  "signInAgain": "Đăng nhập",
+  "uploadingTo": "Đang tải lên {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Đang xử lý…",
+  "uploadFailed": "Tải lên thất bại",
+  "uploadDone": "Đã tải lên",
+  "uploadRetry": "Thử lại",
+  "uploadDismiss": "Bỏ qua",
+  "uploadCancel": "Hủy tải lên",
+  "uploadErrorOffline": "Không có kết nối Internet",
+  "uploadErrorTimeout": "{host} không phản hồi",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} đã từ chối tệp tải lên (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} đã gửi phản hồi không mong muốn",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Không thể kết nối với {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Không thể đọc tệp",
+  "uploadErrorUnknown": "Tải lên {host} thất bại",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Chi tiết",
+  "uploadRetryingWith": "Đang thử lại với {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Hết hạn sau {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Đóng",
   "add": "Thêm",
-  "cancel": "Hủy bỏ",
-  "tokenInput": "Nhập Token",
+  "cancel": "Hủy",
+  "tokenInput": "Nhập token",
   "account": "Tài khoản",
   "refreshAccount": "Làm mới tài khoản",
-  "removeAccount": "Gỡ bỏ tài khoản",
+  "removeAccount": "Xóa tài khoản",
   "addAnotherAccount": "Thêm tài khoản khác",
-  "verifiedUserData": "Đã xác nhận dữ liệu người dùng!",
-  "loggedInAs": "Đã đăng nhập với tư cách là {user}",
+  "verifiedUserData": "Đã xác minh dữ liệu người dùng!",
+  "loggedInAs": "Đã đăng nhập với tên {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Đã có lỗi xảy ra khi xác thực dữ liệu người dùng:",
-  "verifyingUserData": "Đang xác thực dữ liệu người dùng...",
-  "verifiedUserToken": "Đã xác nhận Token người dùng!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Đã có lỗi xảy ra khi xác thực mã Token người dùng:",
-  "verifyingUserToken": "Đang xác thực mã Token người dùng...",
+  "anErrorHasOccuredWhenVerifyingUserData": "Đã xảy ra lỗi khi xác minh dữ liệu người dùng:",
+  "verifyingUserData": "Đang xác minh dữ liệu người dùng...",
+  "verifiedUserToken": "Đã xác minh token người dùng!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Đã xảy ra lỗi khi xác minh token người dùng:",
+  "verifyingUserToken": "Đang xác minh token người dùng...",
   "searchForChannels": "Tìm kiếm kênh",
-  "recommendedChannels": "Các kênh đề xuất",
-  "popularChannels": "Các kênh phổ biến",
+  "recommendedChannels": "Kênh đề xuất",
+  "popularChannels": "Kênh phổ biến",
   "channel": "Kênh",
   "leaveChannel": "Rời kênh",
-  "joinUser": "Tham gia vào {user}",
+  "joinUser": "Vào kênh {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
   "spellCheckFailed": "Kiểm tra chính tả thất bại! Có phải bạn muốn tìm {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Tham gia vào {channel}",
+  "joinChannelName": "Vào kênh {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Gửi tin nhắn vào {channel}",
+  "sendMessageIn": "Gửi tin nhắn trong {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Sáng",
   "dark": "Tối",
-  "system": "Hệ thống",
+  "system": "Theo hệ thống",
   "appearance": "Giao diện",
   "highContrast": "Độ tương phản cao",
   "customCommand": "Lệnh tùy chỉnh",
   "customCommands": "Lệnh tùy chỉnh",
-  "newCustomCommand": "Tạo lệnh tùy chỉnh mới",
-  "commandTrigger": "Từ khóa Kích hoạt",
+  "newCustomCommand": "Lệnh tùy chỉnh mới",
+  "commandTrigger": "Từ khóa kích hoạt",
   "command": "Lệnh",
   "save": "Lưu",
   "openInBrowser": "Mở trong trình duyệt",
   "messageAppearance": "Giao diện tin nhắn",
   "showTimestamps": "Hiển thị thời gian",
-  "compactMessages": "Tin nhắn nhỏ gọn",
+  "compactMessages": "Tin nhắn thu gọn",
+  "showBadges": "Hiển thị huy hiệu",
   "messageTrigger": "Bộ lọc tin nhắn",
-  "pattern": "Nội dung",
+  "pattern": "Mẫu",
   "mention": "Nhắc đến",
   "block": "Chặn",
   "enableRegex": "Bật regex",
-  "caseSensitive": "Phân biệt in hoa",
+  "caseSensitive": "Phân biệt chữ hoa/thường",
   "messageTriggers": "Bộ lọc tin nhắn",
-  "newMessageTrigger": "Tạo bộ lọc tin nhắn mới",
+  "newMessageTrigger": "Bộ lọc tin nhắn mới",
   "reply": "Trả lời",
   "copyText": "Sao chép văn bản",
-  "copyTextSubtitle": "Giữ để sao chép tin nhắn với tên người dùng",
+  "copyTextSubtitle": "Nhấn giữ để sao chép kèm tên người dùng",
   "deleteMessage": "Xóa tin nhắn",
-  "mentionUser": "Nhắc tên người dùng",
+  "mentionUser": "Nhắc đến người dùng",
   "copyMessageId": "Sao chép ID tin nhắn",
-  "theme": "Màu chủ đề",
+  "theme": "Chủ đề",
   "userTrigger": "Bộ lọc người dùng",
   "userTriggers": "Bộ lọc người dùng",
   "chatHistory": "Lịch sử chat",
-  "login": "Tên người dùng",
-  "newUserTrigger": "Tạo bộ lọc người dùng mới",
+  "login": "Tên đăng nhập",
+  "newUserTrigger": "Bộ lọc người dùng mới",
   "ban": "Cấm",
-  "unban": "Gỡ cấm",
-  "timeoutUserForDuration": "Cấm chat người dùng trong {duration}",
+  "unban": "Bỏ cấm",
+  "timeoutUserForDuration": "Tạm khóa chat người dùng trong {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "Chat đã được xóa",
-  "permabanned": "đã bị cấm vĩnh viễn",
+  "permabanned": "bị cấm vĩnh viễn",
   "bannedForDuration": "bị cấm trong {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Trả lời cho",
+  "replyingTo": "Đang trả lời",
   "blockedMessage": "Tin nhắn bị chặn",
-  "showMessage": "Hiển thị tin nhắn",
+  "showMessage": "Hiện tin nhắn",
   "hideMessage": "Ẩn tin nhắn",
   "scrollToBottom": "Cuộn xuống cuối",
-  "startUsingTheApp": "Để bắt đầu sử dụng, hãy thêm một tài khoản bên dưới.",
-  "chatSettings": "Cài đặt Chat",
-  "autocompleteUsersWithAt": "Tự động gợi ý người dùng sau dấu @",
-  "autocompleteEmotesWithColon": "Tự động gợi ý emotes sau dấu :",
+  "startUsingTheApp": "Để bắt đầu sử dụng ứng dụng, hãy thêm tài khoản bên dưới.",
+  "chatSettings": "Cài đặt chat",
+  "autocompleteUsersWithAt": "Tự động gợi ý người dùng với @",
+  "autocompleteEmotesWithColon": "Tự động gợi ý biểu tượng cảm xúc với :",
   "language": "Ngôn ngữ",
-  "locale": "Ngôn ngữ",
-  "systemDefault": "Mặc định theo hệ thống",
+  "locale": "Ngôn ngữ và khu vực",
+  "systemDefault": "Mặc định của hệ thống",
   "justDefault": "Mặc định",
   "notifications": "Thông báo",
-  "noNotifications": "Một ai đó, ở đâu đó, sẽ nhắc đến bạn vào một ngày nào đó.",
-  "backgroundNotifications": "Thông báo trong nền",
-  "optionNotAvailableOnYourPlatform": "Tùy chọn này không có sẵn trên nền tảng của bạn.",
-  "optionNotAvailablePaywalled": "Tùy chọn này chỉ dành cho người dùng ủng hộ ColdChat.",
-  "clearAll": "Xoá tất cả",
+  "noNotifications": "Một ai đó, ở đâu đó, rồi sẽ nhắc đến bạn vào một ngày nào đó.",
+  "backgroundNotifications": "Thông báo chạy nền",
+  "optionNotAvailableOnYourPlatform": "Tùy chọn này không khả dụng trên nền tảng của bạn.",
+  "optionNotAvailablePaywalled": "Tùy chọn này chỉ dành cho người ủng hộ ColdChat.",
+  "clearAll": "Xóa tất cả",
   "cache": "Bộ nhớ đệm",
   "clearCache": "Xóa bộ nhớ đệm",
-  "chatters": "Người trò chuyện",
-  "lastSeenAgo": "Nhìn thấy lần cuối {time} trước",
+  "chatters": "Người chat",
+  "lastSeenAgo": "Hoạt động {time} trước",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Ghi công",
+  "search": "Tìm kiếm",
+  "emoteMenuButton": "Nút menu biểu tượng cảm xúc",
+  "emoteMenuButtonGrayscale": "Hiển thị nút menu biểu tượng cảm xúc dạng đen trắng",
+  "chooseEmoteMenuButton": "Nhấn vào một biểu tượng cảm xúc để dùng làm nút menu",
+  "resetToKappa": "Đặt lại về Kappa",
+  "emoteMenuButtonDownloadFailed": "Không thể tải biểu tượng cảm xúc đó. Nút chưa được thay đổi.",
+  "takePhoto": "Chụp ảnh",
+  "chooseFromLibrary": "Chọn từ thư viện",
+  "cameraUnavailable": "Không thể mở camera. Hãy kiểm tra xem ColdChat đã được cấp quyền truy cập camera chưa.",
+  "about": "Giới thiệu",
+  "sourceCode": "Mã nguồn",
+  "license": "Giấy phép",
+  "basedOnChatsen": "Dựa trên Chatsen",
+  "openSourceLicenses": "Giấy phép mã nguồn mở",
+  "aboutLegalese": "ColdChat là phần mềm tự do: bạn có thể phân phối lại và chỉnh sửa theo các điều khoản của GNU Affero General Public License, phiên bản 3. Phần mềm được cung cấp HOÀN TOÀN KHÔNG CÓ BẢO HÀNH.",
+  "unblock": "Bỏ chặn",
+  "report": "Báo cáo",
+  "reportUserTitle": "Báo cáo {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Báo cáo do Twitch xử lý. Hãy mở kênh của {name} trên Twitch và chọn Báo cáo ở đó. Bạn cũng có thể chặn {name} tại đây để ẩn tin nhắn của họ.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Mở trên Twitch",
+  "blockFailed": "Không thể thay đổi danh sách chặn. Hãy kiểm tra kết nối và thử lại.",
+  "contact": "Liên hệ & góp ý",
+  "whisper": "Thì thầm",
+  "whisperTo": "Thì thầm với {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Tin thì thầm từ {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Mở",
+  "userCard": "Thẻ người dùng",
+  "closeConversation": "Đóng cuộc trò chuyện",
+  "closeConversationSubtitle": "Tin nhắn vẫn được lưu trên thiết bị này và sẽ hiện lại khi có tin thì thầm tiếp theo.",
+  "deleteConversation": "Xóa cuộc trò chuyện",
+  "deleteConversationSubtitle": "Xóa tin nhắn khỏi thiết bị này. Twitch không lưu lịch sử tin thì thầm.",
+  "whisperNeedsLogin": "Hãy đăng nhập Twitch để gửi tin thì thầm.",
+  "whisperNeedsScope": "Hãy đăng nhập lại để gửi và nhận tin thì thầm. Phiên đăng nhập của bạn có từ trước khi ColdChat hỗ trợ tính năng này.",
+  "whisperUserNotFound": "Không có người dùng Twitch nào có tên này.",
+  "whisperFailed": "Chưa gửi được tin thì thầm: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Tin thì thầm bạn nhận được khi ColdChat đang đóng sẽ không hiện ở đây, vì Twitch không chia sẻ lịch sử tin thì thầm với các ứng dụng. Bạn có thể đọc chúng trên Twitch, qua biểu tượng thì thầm ở góc trên bên phải.",
+  "gotIt": "Đã hiểu",
+  "openTwitch": "Mở Twitch",
+  "showImage": "Hiện ảnh · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Hiện ảnh từ liên kết",
+  "showImagesFromLinksSubtitle": "Twitch không kiểm duyệt những ảnh này. Chúng có thể có nội dung không phù hợp.",
+  "showImagesAutomatically": "Tự động hiện ảnh từ liên kết?",
+  "turnOn": "Bật"
 }

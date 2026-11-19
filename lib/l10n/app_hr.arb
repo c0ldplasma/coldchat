@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Prijavljeno preko {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Prijavljeno putem {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Uvjeti korištenja",
-  "privacyPolicy": "Pravila o zaštiti privatnosti",
+  "privacyPolicy": "Pravila privatnosti",
   "settings": "Postavke",
-  "expiresNever": "Nikada ne ističe",
-  "expiresIn": "Ističe za {time}",
+  "expiresNever": "Nikad ne istječe",
+  "loginExpired": "Prijava je istekla",
+  "loginExpiredDescription": "Twitch je odbio prijavu za {login}. Chat ostaje odspojen dok se ponovno ne prijaviš.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Prijava nije uspjela",
+  "signInAgain": "Prijavi se",
+  "uploadingTo": "Prijenos na {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Obrada…",
+  "uploadFailed": "Prijenos nije uspio",
+  "uploadDone": "Preneseno",
+  "uploadRetry": "Pokušaj ponovno",
+  "uploadDismiss": "Odbaci",
+  "uploadCancel": "Otkaži prijenos",
+  "uploadErrorOffline": "Nema internetske veze",
+  "uploadErrorTimeout": "{host} ne odgovara",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "Poslužitelj {host} odbio je prijenos (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "Poslužitelj {host} poslao je neočekivan odgovor",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Povezivanje s {host} nije uspjelo",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Datoteku nije moguće pročitati",
+  "uploadErrorUnknown": "Prijenos na {host} nije uspio",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Pojedinosti",
+  "uploadRetryingWith": "Novi pokušaj preko {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Istječe za {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Zatvori",
   "add": "Dodaj",
-  "cancel": "Poništi",
+  "cancel": "Odustani",
   "tokenInput": "Unos tokena",
   "account": "Račun",
-  "refreshAccount": "Osvježavanje računa",
+  "refreshAccount": "Osvježi račun",
   "removeAccount": "Ukloni račun",
-  "addAnotherAccount": "Dodaj drugi račun",
-  "verifiedUserData": "Provjereni korisnički podaci!",
-  "loggedInAs": "Prijavljen kao {user}",
+  "addAnotherAccount": "Dodaj još jedan račun",
+  "verifiedUserData": "Korisnički podaci provjereni!",
+  "loggedInAs": "Prijavljeno kao {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Došlo je do pogreške prilikom provjere korisničkih podataka:",
+  "anErrorHasOccuredWhenVerifyingUserData": "Došlo je do pogreške pri provjeri korisničkih podataka:",
   "verifyingUserData": "Provjera korisničkih podataka...",
-  "verifiedUserToken": "Potvrđen korisnički token!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Dogodila se greška prilikom provjere korisničkog tokena:",
+  "verifiedUserToken": "Korisnički token provjeren!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Došlo je do pogreške pri provjeri korisničkog tokena:",
   "verifyingUserToken": "Provjera korisničkog tokena...",
   "searchForChannels": "Pretraži kanale",
   "recommendedChannels": "Preporučeni kanali",
   "popularChannels": "Popularni kanali",
   "channel": "Kanal",
   "leaveChannel": "Napusti kanal",
-  "joinUser": "Pridruži se {user}",
+  "joinUser": "Pridruži se kanalu {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Provjerite pravopis! Jeste li mislili {username}?",
+  "spellCheckFailed": "Provjera pravopisa nije uspjela! Tražiš li {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Pridruži se {channel}",
+  "joinChannelName": "Pridruži se kanalu {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "sendMessageIn": "Pošalji poruku u {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Svjetla",
+  "light": "Svijetla",
   "dark": "Tamna",
-  "system": "Tema sustava",
+  "system": "Prema sustavu",
   "appearance": "Izgled",
   "highContrast": "Visoki kontrast",
   "customCommand": "Prilagođena naredba",
   "customCommands": "Prilagođene naredbe",
-  "newCustomCommand": "New custom command",
+  "newCustomCommand": "Nova prilagođena naredba",
   "commandTrigger": "Okidač",
   "command": "Naredba",
   "save": "Spremi",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "openInBrowser": "Otvori u pregledniku",
+  "messageAppearance": "Izgled poruka",
+  "showTimestamps": "Prikaži vrijeme",
+  "compactMessages": "Kompaktne poruke",
+  "showBadges": "Prikaži značke",
+  "messageTrigger": "Okidač poruka",
+  "pattern": "Uzorak",
+  "mention": "Spominjanje",
+  "block": "Blokiraj",
+  "enableRegex": "Uključi regex",
+  "caseSensitive": "Razlikuj velika i mala slova",
+  "messageTriggers": "Okidači poruka",
+  "newMessageTrigger": "Novi okidač poruka",
+  "reply": "Odgovori",
+  "copyText": "Kopiraj tekst",
+  "copyTextSubtitle": "Zadrži za kopiranje teksta s korisničkim imenom",
+  "deleteMessage": "Izbriši poruku",
+  "mentionUser": "Spomeni korisnika",
+  "copyMessageId": "Kopiraj ID poruke",
+  "theme": "Tema",
+  "userTrigger": "Okidač korisnika",
+  "userTriggers": "Okidači korisnika",
+  "chatHistory": "Povijest chata",
+  "login": "Korisničko ime",
+  "newUserTrigger": "Novi okidač korisnika",
+  "ban": "Banaj",
+  "unban": "Odbanaj",
+  "timeoutUserForDuration": "Daj timeout na {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "Chat je očišćen",
+  "permabanned": "dobiva trajni ban",
+  "bannedForDuration": "dobiva ban na {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "replyingTo": "Odgovor na",
+  "blockedMessage": "Blokirana poruka",
+  "showMessage": "Prikaži poruku",
+  "hideMessage": "Sakrij poruku",
+  "scrollToBottom": "Skoči na dno",
+  "startUsingTheApp": "Za početak korištenja aplikacije dodaj račun u nastavku.",
+  "chatSettings": "Postavke chata",
+  "autocompleteUsersWithAt": "Dovršavanje korisnika s @",
+  "autocompleteEmotesWithColon": "Dovršavanje emotikona s :",
+  "language": "Jezik",
+  "locale": "Jezik i regija",
+  "systemDefault": "Zadano sustavom",
+  "justDefault": "Zadano",
+  "notifications": "Obavijesti",
+  "noNotifications": "Netko, negdje, jednog će te dana spomenuti.",
+  "backgroundNotifications": "Obavijesti u pozadini",
+  "optionNotAvailableOnYourPlatform": "Ova opcija nije dostupna na tvojoj platformi.",
+  "optionNotAvailablePaywalled": "Ova je opcija samo za one koji podržavaju ColdChat.",
+  "clearAll": "Očisti sve",
+  "cache": "Predmemorija",
+  "clearCache": "Očisti predmemoriju",
+  "chatters": "Sudionici chata",
+  "lastSeenAgo": "Zadnja aktivnost prije {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Zasluge",
+  "search": "Traži",
+  "emoteMenuButton": "Gumb izbornika emotikona",
+  "emoteMenuButtonGrayscale": "Gumb izbornika emotikona u sivim tonovima",
+  "chooseEmoteMenuButton": "Dodirni emotikon koji želiš kao gumb izbornika emotikona",
+  "resetToKappa": "Vrati na Kappa",
+  "emoteMenuButtonDownloadFailed": "Preuzimanje emotikona nije uspjelo. Gumb nije promijenjen.",
+  "takePhoto": "Snimi fotografiju",
+  "chooseFromLibrary": "Odaberi iz galerije",
+  "cameraUnavailable": "Kamera se nije mogla otvoriti. Provjeri ima li ColdChat pristup kameri.",
+  "about": "O aplikaciji",
+  "sourceCode": "Izvorni kôd",
+  "license": "Licenca",
+  "basedOnChatsen": "Temeljeno na Chatsenu",
+  "openSourceLicenses": "Licence otvorenog koda",
+  "aboutLegalese": "ColdChat je slobodan softver: možeš ga dijeliti i mijenjati pod uvjetima licence GNU Affero General Public License, verzija 3. Dolazi APSOLUTNO BEZ IKAKVOG JAMSTVA.",
+  "unblock": "Deblokiraj",
+  "report": "Prijavi",
+  "reportUserTitle": "Prijavi {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Prijave obrađuje Twitch. Otvori kanal {name} na Twitchu i ondje odaberi Prijavi. {name} možeš blokirati i ovdje pa ti se poruke više neće prikazivati.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Otvori na Twitchu",
+  "blockFailed": "Popis blokiranih nije moguće promijeniti. Provjeri vezu i pokušaj ponovno.",
+  "contact": "Kontakt i povratne informacije",
+  "whisper": "Šapni",
+  "whisperTo": "Šapni {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Šapat od {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Otvori",
+  "userCard": "Korisnička kartica",
+  "closeConversation": "Zatvori razgovor",
+  "closeConversationSubtitle": "Poruke ostaju na ovom uređaju i vraćaju se sa sljedećim šapatom.",
+  "deleteConversation": "Izbriši razgovor",
+  "deleteConversationSubtitle": "Briše poruke s ovog uređaja. Twitch ne čuva povijest šapata.",
+  "whisperNeedsLogin": "Prijavi se na Twitch za slanje šapata.",
+  "whisperNeedsScope": "Ponovno se prijavi za slanje i primanje šapata. Tvoja prijava potječe iz vremena prije nego što ih je ColdChat podržavao.",
+  "whisperUserNotFound": "Ne postoji Twitch korisnik s tim imenom.",
+  "whisperFailed": "Šapat nije poslan: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Šapati koje primiš dok je ColdChat zatvoren ne prikazuju se ovdje jer Twitch ne dijeli povijest šapata s aplikacijama. Možeš ih pročitati na Twitchu, iza ikone šapata gore desno.",
+  "gotIt": "Razumijem",
+  "openTwitch": "Otvori Twitch",
+  "showImage": "Prikaži sliku · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Prikaži slike iz poveznica",
+  "showImagesFromLinksSubtitle": "Twitch ne provjerava te slike. Mogu biti neprikladne.",
+  "showImagesAutomatically": "Automatski prikazivati slike iz poveznica?",
+  "turnOn": "Uključi"
 }

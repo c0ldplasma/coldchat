@@ -17,7 +17,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Logged in via $provider';
+    return '$provider से लॉग इन किया गया';
   }
 
   @override
@@ -30,106 +30,106 @@ class AppLocalizationsHi extends AppLocalizations {
   String get settings => 'सेटिंग्स';
 
   @override
-  String get expiresNever => 'कभी समाप्त नहीं';
+  String get expiresNever => 'कभी समाप्त नहीं होगा';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'लॉगिन की अवधि समाप्त हो गई';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch ने $login का लॉगिन अस्वीकार कर दिया। जब तक आप फिर से साइन इन नहीं करते, चैट डिस्कनेक्ट रहेगी।';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'लॉगिन विफल रहा';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'साइन इन करें';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return '$host पर अपलोड हो रहा है';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'प्रोसेस हो रहा है…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'अपलोड विफल रहा';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'अपलोड हो गया';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'फिर से कोशिश करें';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'खारिज करें';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'अपलोड रद्द करें';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'इंटरनेट कनेक्शन नहीं है';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host जवाब नहीं दे रहा है';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host ने अपलोड अस्वीकार कर दिया (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host ने अनपेक्षित जवाब भेजा';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return '$host से कनेक्ट नहीं हो सका';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'फ़ाइल पढ़ी नहीं जा सकी';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return '$host पर अपलोड विफल रहा';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'विवरण';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return '$host के साथ फिर से कोशिश की जा रही है…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Expires in $time';
+    return '$time में समाप्त होगा';
   }
 
   @override
   String get close => 'बंद करें';
 
   @override
-  String get add => 'जोडें';
+  String get add => 'जोड़ें';
 
   @override
-  String get cancel => 'कैंसिल';
+  String get cancel => 'रद्द करें';
 
   @override
-  String get tokenInput => 'Token input';
+  String get tokenInput => 'टोकन डालें';
 
   @override
   String get account => 'खाता';
 
   @override
-  String get refreshAccount => 'खाते रिफ्रेश हो रहें हैं';
+  String get refreshAccount => 'खाता रीफ़्रेश करें';
 
   @override
   String get removeAccount => 'खाता हटाएं';
@@ -138,63 +138,63 @@ class AppLocalizationsHi extends AppLocalizations {
   String get addAnotherAccount => 'एक और खाता जोड़ें';
 
   @override
-  String get verifiedUserData => 'लोग इन डेटा को परखना';
+  String get verifiedUserData => 'उपयोगकर्ता डेटा सत्यापित हो गया!';
 
   @override
   String loggedInAs(String user) {
-    return 'Logged in as $user';
+    return '$user के रूप में लॉग इन';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'An error has occurred when verifying user data:';
+      'उपयोगकर्ता डेटा सत्यापित करते समय एक त्रुटि हुई:';
 
   @override
-  String get verifyingUserData => 'लोग इन डेटा को परखना';
+  String get verifyingUserData => 'उपयोगकर्ता डेटा सत्यापित किया जा रहा है...';
 
   @override
-  String get verifiedUserToken => 'लोग इन डेटा को परखना';
+  String get verifiedUserToken => 'उपयोगकर्ता टोकन सत्यापित हो गया!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'An error has occurred when verifying user token:';
+      'उपयोगकर्ता टोकन सत्यापित करते समय एक त्रुटि हुई:';
 
   @override
-  String get verifyingUserToken => 'लोग इन डेटा को परखना';
+  String get verifyingUserToken => 'उपयोगकर्ता टोकन सत्यापित किया जा रहा है...';
 
   @override
-  String get searchForChannels => 'किसी चैनल को खोजें';
+  String get searchForChannels => 'चैनल खोजें';
 
   @override
-  String get recommendedChannels => 'अनुशंसित चैनल';
+  String get recommendedChannels => 'सुझाए गए चैनल';
 
   @override
-  String get popularChannels => 'लोकप्रिय लाइव चैनल';
+  String get popularChannels => 'लोकप्रिय चैनल';
 
   @override
-  String get channel => 'चैनल्स';
+  String get channel => 'चैनल';
 
   @override
-  String get leaveChannel => 'चैनल छोड़ दें?';
+  String get leaveChannel => 'चैनल छोड़ें';
 
   @override
   String joinUser(String user) {
-    return '$user चैनल से जुड़े';
+    return '$user से जुड़ें';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Spell check failed! Did you mean to search for $username?';
+    return 'वर्तनी जांच विफल रही! क्या आप $username खोजना चाहते थे?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return '$channel चैनल से जुड़े';
+    return '$channel से जुड़ें';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Send message in $channel';
+    return '$channel में संदेश भेजें';
   }
 
   @override
@@ -207,351 +207,354 @@ class AppLocalizationsHi extends AppLocalizations {
   String get system => 'सिस्टम';
 
   @override
-  String get appearance => 'स्वरूप';
+  String get appearance => 'रूप-रंग';
 
   @override
-  String get highContrast => 'जादा कॉन्ट्रास्ट';
+  String get highContrast => 'हाई कॉन्ट्रास्ट';
 
   @override
-  String get customCommand => 'कस्टम कमांड्स';
+  String get customCommand => 'कस्टम कमांड';
 
   @override
-  String get customCommands => 'कस्टम कमांड्स';
+  String get customCommands => 'कस्टम कमांड';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'नई कस्टम कमांड';
 
   @override
-  String get commandTrigger => 'Trigger';
+  String get commandTrigger => 'ट्रिगर';
 
   @override
-  String get command => 'आदेश:';
+  String get command => 'कमांड';
 
   @override
   String get save => 'सेव करें';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'ब्राउज़र में खोलें';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'संदेशों का रूप';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'टाइमस्टैम्प दिखाएं';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'कॉम्पैक्ट संदेश';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'बैज दिखाएं';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'संदेश ट्रिगर';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'पैटर्न';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'मेंशन';
 
   @override
-  String get block => 'Block';
+  String get block => 'ब्लॉक';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'regex चालू करें';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'केस-सेंसिटिव';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'संदेश ट्रिगर';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'नया संदेश ट्रिगर';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'जवाब दें';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'टेक्स्ट कॉपी करें';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle =>
+      'उपयोगकर्ता नाम के साथ कॉपी करने के लिए दबाकर रखें';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'संदेश मिटाएं';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'उपयोगकर्ता को मेंशन करें';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'संदेश ID कॉपी करें';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'थीम';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'उपयोगकर्ता ट्रिगर';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'उपयोगकर्ता ट्रिगर';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'चैट इतिहास';
 
   @override
-  String get login => 'Login';
+  String get login => 'लॉगिन नाम';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'नया उपयोगकर्ता ट्रिगर';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'बैन करें';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'बैन हटाएं';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'उपयोगकर्ता को $duration के लिए टाइमआउट करें';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'चैट साफ़ कर दी गई';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'स्थायी रूप से बैन';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return '$duration के लिए बैन';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'जवाब:';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'ब्लॉक किया गया संदेश';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'संदेश दिखाएं';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'संदेश छिपाएं';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'सबसे नीचे जाएं';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'ऐप का उपयोग शुरू करने के लिए, नीचे एक खाता जोड़ें।';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'चैट सेटिंग्स';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => '@ से उपयोगकर्ता नाम ऑटोकम्प्लीट करें';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => ': से इमोट ऑटोकम्प्लीट करें';
 
   @override
-  String get language => 'Language';
+  String get language => 'भाषा';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'भाषा और क्षेत्र';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'सिस्टम डिफ़ॉल्ट';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'डिफ़ॉल्ट';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'सूचनाएं';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications =>
+      'कोई न कोई, कहीं न कहीं, किसी दिन आपको मेंशन करेगा।';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'बैकग्राउंड सूचनाएं';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'यह विकल्प आपके प्लेटफ़ॉर्म पर उपलब्ध नहीं है।';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'यह विकल्प केवल ColdChat समर्थकों के लिए है।';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'सब साफ़ करें';
 
   @override
-  String get cache => 'Cache';
+  String get cache => 'कैश';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'कैश साफ़ करें';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'चैटर्स';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return '$time पहले देखा गया';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'क्रेडिट';
 
   @override
-  String get search => 'Search';
+  String get search => 'खोजें';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'इमोट मेनू बटन';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale => 'इमोट मेनू बटन ग्रेस्केल में दिखाएं';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'किसी इमोट को इमोट मेनू बटन बनाने के लिए उस पर टैप करें';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Kappa पर रीसेट करें';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'वह इमोट डाउनलोड नहीं हो सका। बटन नहीं बदला गया।';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'फ़ोटो लें';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'लाइब्रेरी से चुनें';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'कैमरा नहीं खुल सका। जांचें कि ColdChat को कैमरा एक्सेस की अनुमति है।';
 
   @override
-  String get about => 'About';
+  String get about => 'परिचय';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'सोर्स कोड';
 
   @override
-  String get license => 'License';
+  String get license => 'लाइसेंस';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Chatsen पर आधारित';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'ओपन सोर्स लाइसेंस';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat एक मुक्त सॉफ़्टवेयर है: आप इसे GNU Affero General Public License, संस्करण 3 की शर्तों के तहत पुनर्वितरित और संशोधित कर सकते हैं। इसके साथ कोई भी वारंटी नहीं दी जाती।';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'अनब्लॉक करें';
 
   @override
-  String get report => 'Report';
+  String get report => 'रिपोर्ट करें';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return '$name की रिपोर्ट करें';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'रिपोर्ट Twitch द्वारा संभाली जाती हैं। Twitch पर $name का चैनल खोलें और वहां रिपोर्ट करें चुनें। आप यहां $name को ब्लॉक करके उनके संदेश छिपा भी सकते हैं।';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Twitch पर खोलें';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'ब्लॉक सूची नहीं बदली जा सकी। अपना कनेक्शन जांचें और फिर से कोशिश करें।';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'संपर्क और फ़ीडबैक';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'व्हिस्पर';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return '$name को व्हिस्पर करें';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return '$name का व्हिस्पर';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'खोलें';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'यूज़र कार्ड';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'बातचीत बंद करें';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'संदेश इस डिवाइस पर रहेंगे और अगले व्हिस्पर के साथ वापस आ जाएंगे।';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'बातचीत मिटाएं';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'व्हिस्पर भेजने के लिए Twitch से साइन इन करें।';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'व्हिस्पर भेजने और पाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat इन्हें सपोर्ट नहीं करता था।';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'इस नाम का कोई Twitch उपयोगकर्ता नहीं है।';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'व्हिस्पर नहीं भेजा गया: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'ColdChat बंद रहने के दौरान आपको भेजे गए व्हिस्पर यहां नहीं दिखते, क्योंकि Twitch ऐप्स के साथ व्हिस्पर का इतिहास साझा नहीं करता। आप उन्हें Twitch पर, ऊपर दाईं ओर व्हिस्पर आइकन में पढ़ सकते हैं।';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'ठीक है';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Twitch खोलें';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'इमेज दिखाएं · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'लिंक से इमेज दिखाएं';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically => 'लिंक से इमेज अपने-आप दिखाएं?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'चालू करें';
 }

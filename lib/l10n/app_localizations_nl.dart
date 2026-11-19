@@ -33,71 +33,71 @@ class AppLocalizationsNl extends AppLocalizations {
   String get expiresNever => 'Verloopt nooit';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Login verlopen';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch heeft de login voor $login geweigerd. De chat blijft verbroken tot je opnieuw inlogt.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Inloggen mislukt';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Inloggen';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Uploaden naar $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Verwerken…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Uploaden mislukt';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Geüpload';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Opnieuw proberen';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Sluiten';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Upload annuleren';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Geen internetverbinding';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host reageert niet';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host heeft de upload geweigerd (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host gaf een onverwacht antwoord';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Kan geen verbinding maken met $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Kan het bestand niet lezen';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Uploaden naar $host mislukt';
   }
 
   @override
@@ -105,12 +105,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Opnieuw proberen met $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Verloopt in $time';
+    return 'Verloopt over $time';
   }
 
   @override
@@ -123,22 +123,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get cancel => 'Annuleren';
 
   @override
-  String get tokenInput => 'Token input';
+  String get tokenInput => 'Token invoeren';
 
   @override
   String get account => 'Account';
 
   @override
-  String get refreshAccount => 'Ververs account';
+  String get refreshAccount => 'Account vernieuwen';
 
   @override
-  String get removeAccount => 'Verwijder account';
+  String get removeAccount => 'Account verwijderen';
 
   @override
-  String get addAnotherAccount => 'Ander account toevoegen';
+  String get addAnotherAccount => 'Nog een account toevoegen';
 
   @override
-  String get verifiedUserData => 'Geverifieerde gebruikersgegevens!';
+  String get verifiedUserData => 'Gebruikersgegevens geverifieerd!';
 
   @override
   String loggedInAs(String user) {
@@ -147,13 +147,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Er is een fout opgetreden bij het verifiëren van gebruikersgegevens:';
+      'Er is een fout opgetreden bij het verifiëren van de gebruikersgegevens:';
 
   @override
   String get verifyingUserData => 'Gebruikersgegevens verifiëren...';
 
   @override
-  String get verifiedUserToken => 'Geverifieerde gebruikerstoken!';
+  String get verifiedUserToken => 'Gebruikerstoken geverifieerd!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
@@ -163,7 +163,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get verifyingUserToken => 'Gebruikerstoken verifiëren...';
 
   @override
-  String get searchForChannels => 'Zoeken naar kanalen';
+  String get searchForChannels => 'Kanalen zoeken';
 
   @override
   String get recommendedChannels => 'Aanbevolen kanalen';
@@ -172,386 +172,389 @@ class AppLocalizationsNl extends AppLocalizations {
   String get popularChannels => 'Populaire kanalen';
 
   @override
-  String get channel => 'Channel';
+  String get channel => 'Kanaal';
 
   @override
-  String get leaveChannel => 'Leave channel';
+  String get leaveChannel => 'Kanaal verlaten';
 
   @override
   String joinUser(String user) {
-    return 'Join $user';
+    return 'Kanaal van $user openen';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Spell check failed! Did you mean to search for $username?';
+    return 'Spellingcontrole mislukt! Bedoelde je $username?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'Join $channel';
+    return '$channel openen';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Send message in $channel';
+    return 'Bericht sturen in $channel';
   }
 
   @override
-  String get light => 'Light';
+  String get light => 'Licht';
 
   @override
-  String get dark => 'Dark';
+  String get dark => 'Donker';
 
   @override
-  String get system => 'System';
+  String get system => 'Systeem';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Weergave';
 
   @override
-  String get highContrast => 'High contrast';
+  String get highContrast => 'Hoog contrast';
 
   @override
-  String get customCommand => 'Custom command';
+  String get customCommand => 'Eigen commando';
 
   @override
-  String get customCommands => 'Custom commands';
+  String get customCommands => 'Eigen commando\'s';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'Nieuw commando';
 
   @override
   String get commandTrigger => 'Trigger';
 
   @override
-  String get command => 'Command';
+  String get command => 'Commando';
 
   @override
-  String get save => 'Save';
+  String get save => 'Opslaan';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'Openen in browser';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'Berichtweergave';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'Tijdstempels tonen';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'Compacte berichten';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Badges tonen';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'Berichttrigger';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'Patroon';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'Vermelding';
 
   @override
-  String get block => 'Block';
+  String get block => 'Blokkeren';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'Regex gebruiken';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'Hoofdlettergevoelig';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'Berichttriggers';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'Nieuwe berichttrigger';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'Beantwoorden';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'Tekst kopiëren';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle =>
+      'Houd vast om de tekst met gebruikersnaam te kopiëren';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'Bericht verwijderen';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'Gebruiker vermelden';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'Bericht-ID kopiëren';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'Thema';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'Gebruikerstrigger';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'Gebruikerstriggers';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'Chatgeschiedenis';
 
   @override
-  String get login => 'Login';
+  String get login => 'Gebruikersnaam';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'Nieuwe gebruikerstrigger';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'Verbannen';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'Verbanning opheffen';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'Gebruiker $duration time-out geven';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'Chat is gewist';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'permanent verbannen';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return 'verbannen voor $duration';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'Antwoord aan';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'Geblokkeerd bericht';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'Bericht tonen';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'Bericht verbergen';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'Naar beneden scrollen';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'Voeg hieronder een account toe om de app te gebruiken.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'Chatinstellingen';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => 'Gebruikers aanvullen met @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => 'Emotes aanvullen met :';
 
   @override
-  String get language => 'Language';
+  String get language => 'Taal';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'Regio';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'Systeemstandaard';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'Standaard';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Meldingen';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications => 'Iemand, ergens, gaat je ooit vermelden.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'Meldingen op de achtergrond';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'Deze optie is niet beschikbaar op jouw platform.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'Deze optie is alleen voor ColdChat-supporters.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'Alles wissen';
 
   @override
   String get cache => 'Cache';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'Cache wissen';
 
   @override
   String get chatters => 'Chatters';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return '$time geleden voor het laatst gezien';
   }
 
   @override
   String get credits => 'Credits';
 
   @override
-  String get search => 'Search';
+  String get search => 'Zoeken';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Emotemenuknop';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale => 'Emotemenuknop in grijstinten tonen';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Tik op een emote om die als emotemenuknop te gebruiken';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Terugzetten naar Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Kan die emote niet downloaden. De knop is niet gewijzigd.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Foto maken';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Kiezen uit bibliotheek';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'De camera kan niet worden geopend. Controleer of ColdChat toegang heeft tot de camera.';
 
   @override
-  String get about => 'About';
+  String get about => 'Over';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Broncode';
 
   @override
-  String get license => 'License';
+  String get license => 'Licentie';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Gebaseerd op Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Opensourcelicenties';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat is vrije software: je mag het verder verspreiden en aanpassen onder de voorwaarden van de GNU Affero General Public License, versie 3. Het wordt geleverd ZONDER ENIGE GARANTIE.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Deblokkeren';
 
   @override
-  String get report => 'Report';
+  String get report => 'Rapporteren';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return '$name rapporteren';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Meldingen worden door Twitch afgehandeld. Open het kanaal van $name op Twitch en kies daar Rapporteren. Je kunt $name hier ook blokkeren om de berichten te verbergen.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Openen op Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'De blokkeerlijst kan niet worden gewijzigd. Controleer je verbinding en probeer het opnieuw.';
 
   @override
   String get contact => 'Contact & feedback';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Fluisteren';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Fluisteren naar $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Fluisterbericht van $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Openen';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Gebruikerskaart';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Gesprek sluiten';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'De berichten blijven op dit apparaat en komen terug bij het volgende fluisterbericht.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Gesprek verwijderen';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Verwijdert de berichten van dit apparaat. Twitch bewaart geen geschiedenis van fluisterberichten.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'Log in met Twitch om fluisterberichten te sturen.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Log opnieuw in om fluisterberichten te sturen en te ontvangen. Je login is van voordat ColdChat ze ondersteunde.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'Er is geen Twitch-gebruiker met die naam.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Fluisterbericht niet verstuurd: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Fluisterberichten die je krijgt terwijl ColdChat gesloten is, verschijnen hier niet, omdat Twitch de geschiedenis niet met apps deelt. Je kunt ze op Twitch lezen, achter het fluistericoon rechtsboven.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Begrepen';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Twitch openen';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Afbeelding tonen · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Afbeeldingen uit links tonen';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Afbeeldingen uit links automatisch tonen?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Inschakelen';
 }

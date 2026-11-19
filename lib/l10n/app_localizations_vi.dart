@@ -33,84 +33,84 @@ class AppLocalizationsVi extends AppLocalizations {
   String get expiresNever => 'Không bao giờ hết hạn';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Phiên đăng nhập đã hết hạn';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch đã từ chối thông tin đăng nhập của $login. Chat sẽ bị ngắt kết nối cho đến khi bạn đăng nhập lại.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Đăng nhập thất bại';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Đăng nhập';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Đang tải lên $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Đang xử lý…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Tải lên thất bại';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Đã tải lên';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Thử lại';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Bỏ qua';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Hủy tải lên';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Không có kết nối Internet';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host không phản hồi';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host đã từ chối tệp tải lên (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host đã gửi phản hồi không mong muốn';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Không thể kết nối với $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Không thể đọc tệp';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Tải lên $host thất bại';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Chi tiết';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Đang thử lại với $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Hết hạn trong $time';
+    return 'Hết hạn sau $time';
   }
 
   @override
@@ -120,10 +120,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get add => 'Thêm';
 
   @override
-  String get cancel => 'Hủy bỏ';
+  String get cancel => 'Hủy';
 
   @override
-  String get tokenInput => 'Nhập Token';
+  String get tokenInput => 'Nhập token';
 
   @override
   String get account => 'Tài khoản';
@@ -132,44 +132,44 @@ class AppLocalizationsVi extends AppLocalizations {
   String get refreshAccount => 'Làm mới tài khoản';
 
   @override
-  String get removeAccount => 'Gỡ bỏ tài khoản';
+  String get removeAccount => 'Xóa tài khoản';
 
   @override
   String get addAnotherAccount => 'Thêm tài khoản khác';
 
   @override
-  String get verifiedUserData => 'Đã xác nhận dữ liệu người dùng!';
+  String get verifiedUserData => 'Đã xác minh dữ liệu người dùng!';
 
   @override
   String loggedInAs(String user) {
-    return 'Đã đăng nhập với tư cách là $user';
+    return 'Đã đăng nhập với tên $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Đã có lỗi xảy ra khi xác thực dữ liệu người dùng:';
+      'Đã xảy ra lỗi khi xác minh dữ liệu người dùng:';
 
   @override
-  String get verifyingUserData => 'Đang xác thực dữ liệu người dùng...';
+  String get verifyingUserData => 'Đang xác minh dữ liệu người dùng...';
 
   @override
-  String get verifiedUserToken => 'Đã xác nhận Token người dùng!';
+  String get verifiedUserToken => 'Đã xác minh token người dùng!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Đã có lỗi xảy ra khi xác thực mã Token người dùng:';
+      'Đã xảy ra lỗi khi xác minh token người dùng:';
 
   @override
-  String get verifyingUserToken => 'Đang xác thực mã Token người dùng...';
+  String get verifyingUserToken => 'Đang xác minh token người dùng...';
 
   @override
   String get searchForChannels => 'Tìm kiếm kênh';
 
   @override
-  String get recommendedChannels => 'Các kênh đề xuất';
+  String get recommendedChannels => 'Kênh đề xuất';
 
   @override
-  String get popularChannels => 'Các kênh phổ biến';
+  String get popularChannels => 'Kênh phổ biến';
 
   @override
   String get channel => 'Kênh';
@@ -179,7 +179,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String joinUser(String user) {
-    return 'Tham gia vào $user';
+    return 'Vào kênh $user';
   }
 
   @override
@@ -189,12 +189,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String joinChannelName(String channel) {
-    return 'Tham gia vào $channel';
+    return 'Vào kênh $channel';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Gửi tin nhắn vào $channel';
+    return 'Gửi tin nhắn trong $channel';
   }
 
   @override
@@ -204,7 +204,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dark => 'Tối';
 
   @override
-  String get system => 'Hệ thống';
+  String get system => 'Theo hệ thống';
 
   @override
   String get appearance => 'Giao diện';
@@ -219,10 +219,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get customCommands => 'Lệnh tùy chỉnh';
 
   @override
-  String get newCustomCommand => 'Tạo lệnh tùy chỉnh mới';
+  String get newCustomCommand => 'Lệnh tùy chỉnh mới';
 
   @override
-  String get commandTrigger => 'Từ khóa Kích hoạt';
+  String get commandTrigger => 'Từ khóa kích hoạt';
 
   @override
   String get command => 'Lệnh';
@@ -240,16 +240,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get showTimestamps => 'Hiển thị thời gian';
 
   @override
-  String get compactMessages => 'Tin nhắn nhỏ gọn';
+  String get compactMessages => 'Tin nhắn thu gọn';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Hiển thị huy hiệu';
 
   @override
   String get messageTrigger => 'Bộ lọc tin nhắn';
 
   @override
-  String get pattern => 'Nội dung';
+  String get pattern => 'Mẫu';
 
   @override
   String get mention => 'Nhắc đến';
@@ -261,13 +261,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enableRegex => 'Bật regex';
 
   @override
-  String get caseSensitive => 'Phân biệt in hoa';
+  String get caseSensitive => 'Phân biệt chữ hoa/thường';
 
   @override
   String get messageTriggers => 'Bộ lọc tin nhắn';
 
   @override
-  String get newMessageTrigger => 'Tạo bộ lọc tin nhắn mới';
+  String get newMessageTrigger => 'Bộ lọc tin nhắn mới';
 
   @override
   String get reply => 'Trả lời';
@@ -276,19 +276,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get copyText => 'Sao chép văn bản';
 
   @override
-  String get copyTextSubtitle => 'Giữ để sao chép tin nhắn với tên người dùng';
+  String get copyTextSubtitle => 'Nhấn giữ để sao chép kèm tên người dùng';
 
   @override
   String get deleteMessage => 'Xóa tin nhắn';
 
   @override
-  String get mentionUser => 'Nhắc tên người dùng';
+  String get mentionUser => 'Nhắc đến người dùng';
 
   @override
   String get copyMessageId => 'Sao chép ID tin nhắn';
 
   @override
-  String get theme => 'Màu chủ đề';
+  String get theme => 'Chủ đề';
 
   @override
   String get userTrigger => 'Bộ lọc người dùng';
@@ -300,27 +300,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chatHistory => 'Lịch sử chat';
 
   @override
-  String get login => 'Tên người dùng';
+  String get login => 'Tên đăng nhập';
 
   @override
-  String get newUserTrigger => 'Tạo bộ lọc người dùng mới';
+  String get newUserTrigger => 'Bộ lọc người dùng mới';
 
   @override
   String get ban => 'Cấm';
 
   @override
-  String get unban => 'Gỡ cấm';
+  String get unban => 'Bỏ cấm';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Cấm chat người dùng trong $duration';
+    return 'Tạm khóa chat người dùng trong $duration';
   }
 
   @override
   String get chatCleared => 'Chat đã được xóa';
 
   @override
-  String get permabanned => 'đã bị cấm vĩnh viễn';
+  String get permabanned => 'bị cấm vĩnh viễn';
 
   @override
   String bannedForDuration(String duration) {
@@ -328,13 +328,13 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get replyingTo => 'Trả lời cho';
+  String get replyingTo => 'Đang trả lời';
 
   @override
   String get blockedMessage => 'Tin nhắn bị chặn';
 
   @override
-  String get showMessage => 'Hiển thị tin nhắn';
+  String get showMessage => 'Hiện tin nhắn';
 
   @override
   String get hideMessage => 'Ẩn tin nhắn';
@@ -344,25 +344,26 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get startUsingTheApp =>
-      'Để bắt đầu sử dụng, hãy thêm một tài khoản bên dưới.';
+      'Để bắt đầu sử dụng ứng dụng, hãy thêm tài khoản bên dưới.';
 
   @override
-  String get chatSettings => 'Cài đặt Chat';
+  String get chatSettings => 'Cài đặt chat';
 
   @override
-  String get autocompleteUsersWithAt => 'Tự động gợi ý người dùng sau dấu @';
+  String get autocompleteUsersWithAt => 'Tự động gợi ý người dùng với @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Tự động gợi ý emotes sau dấu :';
+  String get autocompleteEmotesWithColon =>
+      'Tự động gợi ý biểu tượng cảm xúc với :';
 
   @override
   String get language => 'Ngôn ngữ';
 
   @override
-  String get locale => 'Ngôn ngữ';
+  String get locale => 'Ngôn ngữ và khu vực';
 
   @override
-  String get systemDefault => 'Mặc định theo hệ thống';
+  String get systemDefault => 'Mặc định của hệ thống';
 
   @override
   String get justDefault => 'Mặc định';
@@ -372,21 +373,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noNotifications =>
-      'Một ai đó, ở đâu đó, sẽ nhắc đến bạn vào một ngày nào đó.';
+      'Một ai đó, ở đâu đó, rồi sẽ nhắc đến bạn vào một ngày nào đó.';
 
   @override
-  String get backgroundNotifications => 'Thông báo trong nền';
+  String get backgroundNotifications => 'Thông báo chạy nền';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'Tùy chọn này không có sẵn trên nền tảng của bạn.';
+      'Tùy chọn này không khả dụng trên nền tảng của bạn.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'Tùy chọn này chỉ dành cho người dùng ủng hộ ColdChat.';
+      'Tùy chọn này chỉ dành cho người ủng hộ ColdChat.';
 
   @override
-  String get clearAll => 'Xoá tất cả';
+  String get clearAll => 'Xóa tất cả';
 
   @override
   String get cache => 'Bộ nhớ đệm';
@@ -395,164 +396,166 @@ class AppLocalizationsVi extends AppLocalizations {
   String get clearCache => 'Xóa bộ nhớ đệm';
 
   @override
-  String get chatters => 'Người trò chuyện';
+  String get chatters => 'Người chat';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Nhìn thấy lần cuối $time trước';
+    return 'Hoạt động $time trước';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Ghi công';
 
   @override
-  String get search => 'Search';
+  String get search => 'Tìm kiếm';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Nút menu biểu tượng cảm xúc';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Hiển thị nút menu biểu tượng cảm xúc dạng đen trắng';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Nhấn vào một biểu tượng cảm xúc để dùng làm nút menu';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Đặt lại về Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Không thể tải biểu tượng cảm xúc đó. Nút chưa được thay đổi.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Chụp ảnh';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Chọn từ thư viện';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Không thể mở camera. Hãy kiểm tra xem ColdChat đã được cấp quyền truy cập camera chưa.';
 
   @override
-  String get about => 'About';
+  String get about => 'Giới thiệu';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Mã nguồn';
 
   @override
-  String get license => 'License';
+  String get license => 'Giấy phép';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Dựa trên Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Giấy phép mã nguồn mở';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat là phần mềm tự do: bạn có thể phân phối lại và chỉnh sửa theo các điều khoản của GNU Affero General Public License, phiên bản 3. Phần mềm được cung cấp HOÀN TOÀN KHÔNG CÓ BẢO HÀNH.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Bỏ chặn';
 
   @override
-  String get report => 'Report';
+  String get report => 'Báo cáo';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Báo cáo $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Báo cáo do Twitch xử lý. Hãy mở kênh của $name trên Twitch và chọn Báo cáo ở đó. Bạn cũng có thể chặn $name tại đây để ẩn tin nhắn của họ.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Mở trên Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Không thể thay đổi danh sách chặn. Hãy kiểm tra kết nối và thử lại.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Liên hệ & góp ý';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Thì thầm';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Thì thầm với $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Tin thì thầm từ $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Mở';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Thẻ người dùng';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Đóng cuộc trò chuyện';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Tin nhắn vẫn được lưu trên thiết bị này và sẽ hiện lại khi có tin thì thầm tiếp theo.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Xóa cuộc trò chuyện';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Xóa tin nhắn khỏi thiết bị này. Twitch không lưu lịch sử tin thì thầm.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'Hãy đăng nhập Twitch để gửi tin thì thầm.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Hãy đăng nhập lại để gửi và nhận tin thì thầm. Phiên đăng nhập của bạn có từ trước khi ColdChat hỗ trợ tính năng này.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound =>
+      'Không có người dùng Twitch nào có tên này.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Chưa gửi được tin thì thầm: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Tin thì thầm bạn nhận được khi ColdChat đang đóng sẽ không hiện ở đây, vì Twitch không chia sẻ lịch sử tin thì thầm với các ứng dụng. Bạn có thể đọc chúng trên Twitch, qua biểu tượng thì thầm ở góc trên bên phải.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Đã hiểu';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Mở Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Hiện ảnh · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Hiện ảnh từ liên kết';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch không kiểm duyệt những ảnh này. Chúng có thể có nội dung không phù hợp.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically => 'Tự động hiện ảnh từ liên kết?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Bật';
 }

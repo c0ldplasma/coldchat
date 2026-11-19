@@ -17,14 +17,14 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Συνδέθηκε μέσω $provider';
+    return 'Σύνδεση μέσω $provider';
   }
 
   @override
-  String get termsOfService => 'Όροι Χρήσης';
+  String get termsOfService => 'Όροι χρήσης';
 
   @override
-  String get privacyPolicy => 'Πολιτική Απορρήτου';
+  String get privacyPolicy => 'Πολιτική απορρήτου';
 
   @override
   String get settings => 'Ρυθμίσεις';
@@ -33,79 +33,80 @@ class AppLocalizationsEl extends AppLocalizations {
   String get expiresNever => 'Δεν λήγει ποτέ';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Η σύνδεση έληξε';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Το Twitch απέρριψε τη σύνδεση για τον λογαριασμό $login. Η συνομιλία μένει αποσυνδεδεμένη μέχρι να συνδεθείς ξανά.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Η σύνδεση απέτυχε';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Σύνδεση';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Μεταφόρτωση στο $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Επεξεργασία…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Η μεταφόρτωση απέτυχε';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Μεταφορτώθηκε';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Επανάληψη';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Απόρριψη';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Ακύρωση μεταφόρτωσης';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Δεν υπάρχει σύνδεση στο διαδίκτυο';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return 'Το $host δεν αποκρίνεται';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return 'Το $host απέρριψε τη μεταφόρτωση (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return 'Το $host έστειλε μια απροσδόκητη απάντηση';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Δεν ήταν δυνατή η σύνδεση με το $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile =>
+      'Δεν ήταν δυνατή η ανάγνωση του αρχείου';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Η μεταφόρτωση στο $host απέτυχε';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Λεπτομέρειες';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Νέα προσπάθεια με $host…';
   }
 
   @override
@@ -138,32 +139,32 @@ class AppLocalizationsEl extends AppLocalizations {
   String get addAnotherAccount => 'Προσθήκη άλλου λογαριασμού';
 
   @override
-  String get verifiedUserData => 'Επαληθεύτηκαν τα δεδομένα χρήστη!';
+  String get verifiedUserData => 'Τα στοιχεία χρήστη επαληθεύτηκαν!';
 
   @override
   String loggedInAs(String user) {
-    return 'Συνδεθήκατε ως $user';
+    return 'Σύνδεση ως $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Παρουσιάστηκε ένα σφάλμα κατά την επαλήθευση δεδομένων χρήστη:';
+      'Παρουσιάστηκε σφάλμα κατά την επαλήθευση των στοιχείων χρήστη:';
 
   @override
-  String get verifyingUserData => 'Επαλήθευση δεδομένων χρήστη...';
+  String get verifyingUserData => 'Επαλήθευση στοιχείων χρήστη...';
 
   @override
-  String get verifiedUserToken => 'Επαληθεύτηκε το token χρήστη!';
+  String get verifiedUserToken => 'Το token χρήστη επαληθεύτηκε!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Παρουσιάστηκε ένα σφάλμα κατά την επαλήθευση του token χρήστη:';
+      'Παρουσιάστηκε σφάλμα κατά την επαλήθευση του token χρήστη:';
 
   @override
   String get verifyingUserToken => 'Επαλήθευση token χρήστη...';
 
   @override
-  String get searchForChannels => 'Αναζήτηση για κανάλια';
+  String get searchForChannels => 'Αναζήτηση καναλιών';
 
   @override
   String get recommendedChannels => 'Προτεινόμενα κανάλια';
@@ -175,33 +176,33 @@ class AppLocalizationsEl extends AppLocalizations {
   String get channel => 'Κανάλι';
 
   @override
-  String get leaveChannel => 'Αποχώρηση από κανάλι';
+  String get leaveChannel => 'Αποχώρηση από το κανάλι';
 
   @override
   String joinUser(String user) {
-    return 'Συμμετοχή στο $user';
+    return 'Είσοδος στο κανάλι $user';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Ο ορθογραφικός έλεγχος απέτυχε! Μήπως εννοούσατε να αναζητήσετε για $username;';
+    return 'Ωπ, μάλλον ορθογραφικό λάθος! Μήπως ψάχνεις τον χρήστη $username;';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'Συμμετοχή στο $channel';
+    return 'Είσοδος στο $channel';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Στείλτε μήνυμα στο $channel';
+    return 'Μήνυμα στο $channel';
   }
 
   @override
-  String get light => 'Φωτεινή';
+  String get light => 'Ανοιχτό';
 
   @override
-  String get dark => 'Σκοτεινή';
+  String get dark => 'Σκούρο';
 
   @override
   String get system => 'Συστήματος';
@@ -231,22 +232,22 @@ class AppLocalizationsEl extends AppLocalizations {
   String get save => 'Αποθήκευση';
 
   @override
-  String get openInBrowser => 'Άνοιγμα στον περιηγητή';
+  String get openInBrowser => 'Άνοιγμα στο πρόγραμμα περιήγησης';
 
   @override
-  String get messageAppearance => 'Εμφάνιση μηνύματος';
+  String get messageAppearance => 'Εμφάνιση μηνυμάτων';
 
   @override
-  String get showTimestamps => 'Εμφάνιση χρονικών σημείων';
+  String get showTimestamps => 'Εμφάνιση ώρας';
 
   @override
-  String get compactMessages => 'Συμπιεσμένα μηνύματα';
+  String get compactMessages => 'Συμπαγή μηνύματα';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Εμφάνιση εμβλημάτων';
 
   @override
-  String get messageTrigger => 'Συντόμευση μηνύματος';
+  String get messageTrigger => 'Κανόνας μηνυμάτων';
 
   @override
   String get pattern => 'Μοτίβο';
@@ -255,19 +256,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get mention => 'Επισήμανση';
 
   @override
-  String get block => 'Μπλοκ';
+  String get block => 'Φραγή';
 
   @override
-  String get enableRegex => 'Ενεργοποίηση regex';
+  String get enableRegex => 'Χρήση regex';
 
   @override
   String get caseSensitive => 'Διάκριση πεζών-κεφαλαίων';
 
   @override
-  String get messageTriggers => 'Συντομεύσεις μηνύματος';
+  String get messageTriggers => 'Κανόνες μηνυμάτων';
 
   @override
-  String get newMessageTrigger => 'Νέα συντόμευση μηνύματος';
+  String get newMessageTrigger => 'Νέος κανόνας μηνυμάτων';
 
   @override
   String get reply => 'Απάντηση';
@@ -277,13 +278,13 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get copyTextSubtitle =>
-      'Κρατήστε για αντιγραφή κειμένου μηνύματος με όνομα χρήστη';
+      'Κράτα πατημένο για αντιγραφή μαζί με το όνομα χρήστη';
 
   @override
   String get deleteMessage => 'Διαγραφή μηνύματος';
 
   @override
-  String get mentionUser => 'Επισήμανση χρήστη';
+  String get mentionUser => 'Αναφορά χρήστη';
 
   @override
   String get copyMessageId => 'Αντιγραφή ID μηνύματος';
@@ -292,19 +293,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get theme => 'Θέμα';
 
   @override
-  String get userTrigger => 'Συντόμευση χρήστη';
+  String get userTrigger => 'Κανόνας χρήστη';
 
   @override
-  String get userTriggers => 'Συντομεύσεις χρήστη';
+  String get userTriggers => 'Κανόνες χρηστών';
 
   @override
   String get chatHistory => 'Ιστορικό συνομιλίας';
 
   @override
-  String get login => 'Σύνδεση';
+  String get login => 'Όνομα σύνδεσης';
 
   @override
-  String get newUserTrigger => 'Νέα συντόμευση χρήστη';
+  String get newUserTrigger => 'Νέος κανόνας χρήστη';
 
   @override
   String get ban => 'Αποκλεισμός';
@@ -321,7 +322,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get chatCleared => 'Η συνομιλία εκκαθαρίστηκε';
 
   @override
-  String get permabanned => 'μόνιμα αποκλεισμένος';
+  String get permabanned => 'αποκλείστηκε μόνιμα';
 
   @override
   String bannedForDuration(String duration) {
@@ -332,7 +333,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get replyingTo => 'Απάντηση σε';
 
   @override
-  String get blockedMessage => 'Μπλοκαρισμένο μήνυμα';
+  String get blockedMessage => 'Κρυφό μήνυμα';
 
   @override
   String get showMessage => 'Εμφάνιση μηνύματος';
@@ -341,11 +342,11 @@ class AppLocalizationsEl extends AppLocalizations {
   String get hideMessage => 'Απόκρυψη μηνύματος';
 
   @override
-  String get scrollToBottom => 'Κύλιση προς τα κάτω';
+  String get scrollToBottom => 'Μετάβαση στο τέλος';
 
   @override
   String get startUsingTheApp =>
-      'Για να ξεκινήσετε να χρησιμοποιείτε την εφαρμογή, προσθέστε έναν λογαριασμό παρακάτω.';
+      'Για να ξεκινήσεις, πρόσθεσε έναν λογαριασμό παρακάτω.';
 
   @override
   String get chatSettings => 'Ρυθμίσεις συνομιλίας';
@@ -360,30 +361,30 @@ class AppLocalizationsEl extends AppLocalizations {
   String get language => 'Γλώσσα';
 
   @override
-  String get locale => 'Γλωσσικές Ρυθμίσεις';
+  String get locale => 'Γλώσσα και περιοχή';
 
   @override
   String get systemDefault => 'Προεπιλογή συστήματος';
 
   @override
-  String get justDefault => 'Προεπιλεγμένη';
+  String get justDefault => 'Προεπιλογή';
 
   @override
   String get notifications => 'Ειδοποιήσεις';
 
   @override
-  String get noNotifications => 'Κάποιος, κάπου, θα σας αναφέρει κάποια μέρα.';
+  String get noNotifications => 'Κάποιος, κάπου, κάποια μέρα θα σε αναφέρει.';
 
   @override
-  String get backgroundNotifications => 'Ειδοποιήσεις παρασκηνίου';
+  String get backgroundNotifications => 'Ειδοποιήσεις στο παρασκήνιο';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σας.';
+      'Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σου.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'Αυτή η επιλογή είναι μόνο για υποστηρικτές του ColdChat.';
+      'Αυτή η επιλογή είναι μόνο για όσους υποστηρίζουν το ColdChat.';
 
   @override
   String get clearAll => 'Εκκαθάριση όλων';
@@ -395,11 +396,11 @@ class AppLocalizationsEl extends AppLocalizations {
   String get clearCache => 'Εκκαθάριση προσωρινής μνήμης';
 
   @override
-  String get chatters => 'Συνομιλητές';
+  String get chatters => 'Συμμετέχοντες';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Τελευταία εμφάνιση $time πριν';
+    return 'Τελευταία δραστηριότητα πριν από $time';
   }
 
   @override
@@ -409,150 +410,154 @@ class AppLocalizationsEl extends AppLocalizations {
   String get search => 'Αναζήτηση';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Κουμπί μενού emote';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Κουμπί μενού emote σε αποχρώσεις του γκρι';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Πάτησε ένα emote για να το κάνεις κουμπί του μενού emote';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Επαναφορά σε Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Δεν ήταν δυνατή η λήψη του emote. Το κουμπί δεν άλλαξε.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Λήψη φωτογραφίας';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Επιλογή από τη βιβλιοθήκη';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Δεν ήταν δυνατό να ανοίξει η κάμερα. Έλεγξε αν το ColdChat έχει πρόσβαση στην κάμερα.';
 
   @override
-  String get about => 'About';
+  String get about => 'Σχετικά';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Πηγαίος κώδικας';
 
   @override
-  String get license => 'License';
+  String get license => 'Άδεια χρήσης';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Βασισμένο στο Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Άδειες ανοιχτού κώδικα';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'Το ColdChat είναι ελεύθερο λογισμικό: μπορείς να το αναδιανέμεις και να το τροποποιείς σύμφωνα με τους όρους της GNU Affero General Public License, έκδοση 3. Παρέχεται ΧΩΡΙΣ ΑΠΟΛΥΤΩΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Άρση φραγής';
 
   @override
-  String get report => 'Report';
+  String get report => 'Αναφορά';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Αναφορά χρήστη $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Τις αναφορές τις χειρίζεται το Twitch. Άνοιξε το κανάλι του χρήστη $name στο Twitch και επίλεξε εκεί «Αναφορά». Μπορείς επίσης να κάνεις εδώ φραγή στον χρήστη $name, για να κρύψεις τα μηνύματά του.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Άνοιγμα στο Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Δεν ήταν δυνατή η αλλαγή της λίστας φραγής. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Επικοινωνία & σχόλια';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Ψίθυρος';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Ψίθυρος προς $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Ψίθυρος από $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Άνοιγμα';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Κάρτα χρήστη';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Κλείσιμο συνομιλίας';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Τα μηνύματα μένουν σε αυτήν τη συσκευή και επιστρέφουν με τον επόμενο ψίθυρο.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Διαγραφή συνομιλίας';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Διαγράφει τα μηνύματα από αυτήν τη συσκευή. Το Twitch δεν κρατά ιστορικό ψιθύρων.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'Συνδέσου με το Twitch για να στέλνεις ψιθύρους.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Συνδέσου ξανά για να στέλνεις και να λαμβάνεις ψιθύρους. Η σύνδεσή σου είναι από πριν το ColdChat τους υποστηρίξει.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound =>
+      'Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Ο ψίθυρος δεν στάλθηκε: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Οι ψίθυροι που λαμβάνεις όσο το ColdChat είναι κλειστό δεν εμφανίζονται εδώ, γιατί το Twitch δεν δίνει το ιστορικό ψιθύρων σε εφαρμογές. Μπορείς να τους διαβάσεις στο Twitch, από το εικονίδιο ψιθύρων πάνω δεξιά.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Εντάξει';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Άνοιγμα Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Εμφάνιση εικόνας · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Εμφάνιση εικόνων από συνδέσμους';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Αυτόματη εμφάνιση εικόνων από συνδέσμους;';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Ενεργοποίηση';
 }

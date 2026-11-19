@@ -1,19 +1,106 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "S'ha iniciat la sessió mitjançant {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Sessió iniciada amb {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
-  "termsOfService": "Condicions del Servei",
-  "privacyPolicy": "Política de Privacitat",
+  "termsOfService": "Condicions del servei",
+  "privacyPolicy": "Política de privadesa",
   "settings": "Configuració",
   "expiresNever": "No caduca mai",
-  "expiresIn": "Caduca en {time}",
+  "loginExpired": "La sessió ha caducat",
+  "loginExpiredDescription": "Twitch ha rebutjat l'inici de sessió de {login}. El xat seguirà desconnectat fins que tornis a iniciar la sessió.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "No s'ha pogut iniciar la sessió",
+  "signInAgain": "Inicia la sessió",
+  "uploadingTo": "S'està pujant a {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "S'està processant…",
+  "uploadFailed": "No s'ha pogut pujar",
+  "uploadDone": "Pujat",
+  "uploadRetry": "Torna-ho a provar",
+  "uploadDismiss": "Descarta",
+  "uploadCancel": "Cancel·la la pujada",
+  "uploadErrorOffline": "No hi ha connexió a internet",
+  "uploadErrorTimeout": "{host} no respon",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} ha rebutjat la pujada (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} ha enviat una resposta inesperada",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "No s'ha pogut connectar amb {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "No s'ha pogut llegir el fitxer",
+  "uploadErrorUnknown": "No s'ha pogut pujar a {host}",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Detalls",
+  "uploadRetryingWith": "S'està tornant a provar amb {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Caduca d'aquí a {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Tanca",
@@ -23,127 +110,228 @@
   "account": "Compte",
   "refreshAccount": "Actualitza el compte",
   "removeAccount": "Suprimeix el compte",
-  "addAnotherAccount": "Afegeix un compte",
+  "addAnotherAccount": "Afegeix un altre compte",
   "verifiedUserData": "Dades d'usuari verificades!",
-  "loggedInAs": "S'ha iniciat la sessió com {user}",
+  "loggedInAs": "Sessió iniciada com a {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "S'ha produït un error en verificar les dades de l'usuari:",
-  "verifyingUserData": "Verificant les dades de l'usuari...",
-  "verifiedUserToken": "Token de l'usuari verificat!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "S'ha produït un error en verificar el token de l'usuari:",
-  "verifyingUserToken": "Verificant el token de l'usuari...",
+  "anErrorHasOccuredWhenVerifyingUserData": "S'ha produït un error en verificar les dades d'usuari:",
+  "verifyingUserData": "S'estan verificant les dades d'usuari...",
+  "verifiedUserToken": "Token d'usuari verificat!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "S'ha produït un error en verificar el token d'usuari:",
+  "verifyingUserToken": "S'està verificant el token d'usuari...",
   "searchForChannels": "Cerca canals",
   "recommendedChannels": "Canals recomanats",
   "popularChannels": "Canals populars",
   "channel": "Canal",
-  "leaveChannel": "Deixa el canal",
-  "joinUser": "Uneix-te a {user}",
+  "leaveChannel": "Surt del canal",
+  "joinUser": "Entra a {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "La revisió ha fallat! Potser has volgut cercar {username}?",
+  "spellCheckFailed": "T'has equivocat en escriure? Potser volies cercar {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Uneix-te a {channel}",
+  "joinChannelName": "Entra a {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Envia missatge en {channel}",
+  "sendMessageIn": "Envia un missatge a {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Clar",
   "dark": "Fosc",
   "system": "Sistema",
   "appearance": "Aparença",
-  "highContrast": "Alt contrast",
-  "customCommand": "Comanda personalitzada",
-  "customCommands": "Comandes personalitzades",
-  "newCustomCommand": "Nova comanda personalitzada",
+  "highContrast": "Contrast alt",
+  "customCommand": "Ordre personalitzada",
+  "customCommands": "Ordres personalitzades",
+  "newCustomCommand": "Ordre personalitzada nova",
   "commandTrigger": "Activador",
-  "command": "Comanda",
+  "command": "Ordre",
   "save": "Desa",
   "openInBrowser": "Obre al navegador",
-  "messageAppearance": "Aparença del missatge",
-  "showTimestamps": "Mostrar segells de temps",
+  "messageAppearance": "Aparença dels missatges",
+  "showTimestamps": "Mostra l'hora",
   "compactMessages": "Missatges compactes",
-  "messageTrigger": "Activador de missatge",
+  "showBadges": "Mostra les insígnies",
+  "messageTrigger": "Activador de missatges",
   "pattern": "Patró",
   "mention": "Menció",
-  "block": "Bloquejar",
-  "enableRegex": "Activar regex",
-  "caseSensitive": "Sensible a majúscules i minúscules",
-  "messageTriggers": "Activador de missatge",
-  "newMessageTrigger": "Nou activador de missatge",
-  "reply": "Respondre",
-  "copyText": "Copiar text",
-  "copyTextSubtitle": "Mantingueu premut per copiar el text del missatge amb el nom d'usuari",
-  "deleteMessage": "Eliminar missatge",
-  "mentionUser": "Mencionar l'usuari",
-  "copyMessageId": "Copia l'identificador del missatge",
-  "theme": "Aspecte",
-  "userTrigger": "Activador d'usuari",
-  "userTriggers": "Activadors d'usuari",
-  "chatHistory": "Historial de xat",
-  "login": "Inici de sessió",
-  "newUserTrigger": "Nou activador d'usuari",
-  "ban": "Expulsar",
-  "unban": "Cancel·lar Expulsió",
-  "timeoutUserForDuration": "Expulsar temporalment per {duration}",
+  "block": "Bloqueja",
+  "enableRegex": "Fes servir regex",
+  "caseSensitive": "Distingeix majúscules i minúscules",
+  "messageTriggers": "Activadors de missatges",
+  "newMessageTrigger": "Activador nou",
+  "reply": "Respon",
+  "copyText": "Copia el text",
+  "copyTextSubtitle": "Mantén premut per copiar amb el nom d'usuari",
+  "deleteMessage": "Suprimeix el missatge",
+  "mentionUser": "Esmenta l'usuari",
+  "copyMessageId": "Copia l'ID del missatge",
+  "theme": "Tema",
+  "userTrigger": "Activador d'usuaris",
+  "userTriggers": "Activadors d'usuaris",
+  "chatHistory": "Historial del xat",
+  "login": "Nom d'usuari",
+  "newUserTrigger": "Activador nou",
+  "ban": "Expulsa",
+  "unban": "Readmet",
+  "timeoutUserForDuration": "Expulsa l'usuari durant {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "El xat s'ha esborrat",
-  "permabanned": "expulsat indefinitivament",
-  "bannedForDuration": "expulsat per {duration}",
+  "chatCleared": "S'ha esborrat el xat",
+  "permabanned": "expulsat permanentment",
+  "bannedForDuration": "expulsat durant {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Responent a",
+  "replyingTo": "En resposta a",
   "blockedMessage": "Missatge bloquejat",
   "showMessage": "Mostra el missatge",
-  "hideMessage": "Amagar el missatge",
-  "scrollToBottom": "Desplaça al final",
-  "startUsingTheApp": "Per començar a utilitzar l'aplicació, afegiu un compte a continuació.",
+  "hideMessage": "Amaga el missatge",
+  "scrollToBottom": "Ves al final",
+  "startUsingTheApp": "Per començar a fer servir l'aplicació, afegeix un compte a sota.",
   "chatSettings": "Configuració del xat",
-  "autocompleteUsersWithAt": "Completa els usuaris automàticament amb @",
-  "autocompleteEmotesWithColon": "Completa els emotes automàticament amb :",
-  "language": "Llenguatge",
-  "locale": "Local",
-  "systemDefault": "Valors per defecte del sistema",
+  "autocompleteUsersWithAt": "Completa els usuaris amb @",
+  "autocompleteEmotesWithColon": "Completa els emotes amb :",
+  "language": "Llengua",
+  "locale": "Llengua i regió",
+  "systemDefault": "Predeterminat del sistema",
   "justDefault": "Predeterminat",
   "notifications": "Notificacions",
   "noNotifications": "Algú, en algun lloc, t'esmentarà algun dia.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "backgroundNotifications": "Notificacions en segon pla",
+  "optionNotAvailableOnYourPlatform": "Aquesta opció no està disponible a la teva plataforma.",
+  "optionNotAvailablePaywalled": "Aquesta opció és només per a qui dona suport a ColdChat.",
+  "clearAll": "Esborra-ho tot",
+  "cache": "Memòria cau",
+  "clearCache": "Buida la memòria cau",
+  "chatters": "Usuaris del xat",
+  "lastSeenAgo": "Vist per última vegada fa {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Crèdits",
+  "search": "Cerca",
+  "emoteMenuButton": "Botó del menú d'emotes",
+  "emoteMenuButtonGrayscale": "Botó del menú d'emotes en escala de grisos",
+  "chooseEmoteMenuButton": "Toca un emote per fer-lo servir com a botó del menú d'emotes",
+  "resetToKappa": "Restableix a Kappa",
+  "emoteMenuButtonDownloadFailed": "No s'ha pogut baixar aquest emote. El botó no s'ha canviat.",
+  "takePhoto": "Fes una foto",
+  "chooseFromLibrary": "Tria de la galeria",
+  "cameraUnavailable": "No s'ha pogut obrir la càmera. Comprova que ColdChat hi tingui accés.",
+  "about": "Quant a",
+  "sourceCode": "Codi font",
+  "license": "Llicència",
+  "basedOnChatsen": "Basat en Chatsen",
+  "openSourceLicenses": "Llicències de codi obert",
+  "aboutLegalese": "ColdChat és programari lliure: pots redistribuir-lo i modificar-lo d'acord amb els termes de la GNU Affero General Public License, versió 3. Es distribueix SENSE CAP GARANTIA.",
+  "unblock": "Desbloqueja",
+  "report": "Denuncia",
+  "reportUserTitle": "Denuncia {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Twitch gestiona les denúncies. Obre el canal de {name} a Twitch i tria Denuncia allà. També pots bloquejar {name} aquí per amagar-ne els missatges.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Obre a Twitch",
+  "blockFailed": "No s'ha pogut canviar la llista de bloquejos. Comprova la connexió i torna-ho a provar.",
+  "contact": "Contacte i comentaris",
+  "whisper": "Xiuxiueja",
+  "whisperTo": "Xiuxiueja a {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Xiuxiueig de {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Obre",
+  "userCard": "Fitxa d'usuari",
+  "closeConversation": "Tanca la conversa",
+  "closeConversationSubtitle": "Els missatges es queden en aquest dispositiu i tornen amb el proper xiuxiueig.",
+  "deleteConversation": "Suprimeix la conversa",
+  "deleteConversationSubtitle": "Suprimeix els missatges d'aquest dispositiu. Twitch no desa l'historial de xiuxiueigs.",
+  "whisperNeedsLogin": "Inicia la sessió amb Twitch per enviar xiuxiueigs.",
+  "whisperNeedsScope": "Torna a iniciar la sessió per enviar i rebre xiuxiueigs. La teva sessió és d'abans que ColdChat els admetés.",
+  "whisperUserNotFound": "No hi ha cap usuari de Twitch amb aquest nom.",
+  "whisperFailed": "No s'ha enviat el xiuxiueig: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Els xiuxiueigs que reps mentre ColdChat està tancat no apareixen aquí, perquè Twitch no comparteix l'historial de xiuxiueigs amb les aplicacions. Els pots llegir a Twitch, darrere la icona de xiuxiueigs a dalt a la dreta.",
+  "gotIt": "Entesos",
+  "openTwitch": "Obre Twitch",
+  "showImage": "Mostra la imatge · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Mostra les imatges dels enllaços",
+  "showImagesFromLinksSubtitle": "Twitch no revisa aquestes imatges. Poden ser inadequades.",
+  "showImagesAutomatically": "Vols mostrar automàticament les imatges dels enllaços?",
+  "turnOn": "Activa"
 }

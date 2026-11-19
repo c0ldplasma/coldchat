@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
   "loggedInVia": "Inloggad via {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Användarvillkor",
   "privacyPolicy": "Integritetspolicy",
   "settings": "Inställningar",
   "expiresNever": "Går aldrig ut",
-  "expiresIn": "Upphör att gälla om {time}",
+  "loginExpired": "Inloggningen har gått ut",
+  "loginExpiredDescription": "Twitch avvisade inloggningen för {login}. Chatten förblir frånkopplad tills du loggar in igen.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Inloggningen misslyckades",
+  "signInAgain": "Logga in",
+  "uploadingTo": "Laddar upp till {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Bearbetar…",
+  "uploadFailed": "Uppladdningen misslyckades",
+  "uploadDone": "Uppladdad",
+  "uploadRetry": "Försök igen",
+  "uploadDismiss": "Stäng",
+  "uploadCancel": "Avbryt uppladdning",
+  "uploadErrorOffline": "Ingen internetanslutning",
+  "uploadErrorTimeout": "{host} svarar inte",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} avvisade uppladdningen (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} skickade ett oväntat svar",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Kunde inte ansluta till {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Kunde inte läsa filen",
+  "uploadErrorUnknown": "Uppladdningen till {host} misslyckades",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Detaljer",
+  "uploadRetryingWith": "Försöker igen med {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Går ut om {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Stäng",
   "add": "Lägg till",
   "cancel": "Avbryt",
-  "tokenInput": "Tokeninmatning",
+  "tokenInput": "Ange token",
   "account": "Konto",
   "refreshAccount": "Uppdatera konto",
   "removeAccount": "Ta bort konto",
-  "addAnotherAccount": "Lägg till annat konto",
-  "verifiedUserData": "Verifierad användardata!",
+  "addAnotherAccount": "Lägg till ett konto till",
+  "verifiedUserData": "Användardata verifierad!",
   "loggedInAs": "Inloggad som {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Ett fel har uppstått vid verifiering av användardata:",
-  "verifyingUserData": "Veriferar användardata...",
-  "verifiedUserToken": "Veriferar användar-token!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Ett fel har uppstått med veriferiring vid användar-token:",
-  "verifyingUserToken": "Veriferar använder-token...",
-  "searchForChannels": "Söker efter kanaler",
-  "recommendedChannels": "Rekommenderad kanaler",
+  "anErrorHasOccuredWhenVerifyingUserData": "Ett fel uppstod när användardata verifierades:",
+  "verifyingUserData": "Verifierar användardata...",
+  "verifiedUserToken": "Användartoken verifierad!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Ett fel uppstod när användartoken verifierades:",
+  "verifyingUserToken": "Verifierar användartoken...",
+  "searchForChannels": "Sök efter kanaler",
+  "recommendedChannels": "Rekommenderade kanaler",
   "popularChannels": "Populära kanaler",
   "channel": "Kanal",
-  "leaveChannel": "Lämna Kanal",
-  "joinUser": "Användare {user}",
+  "leaveChannel": "Lämna kanal",
+  "joinUser": "Gå med i {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Stavningsfel misslyckades! Menade du att söka efter {username}?",
+  "spellCheckFailed": "Stavningskontrollen misslyckades! Menade du {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Delta {channel}",
+  "joinChannelName": "Gå med i {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "sendMessageIn": "Skicka meddelande i {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Ljus",
-  "dark": "Mörk",
+  "light": "Ljust",
+  "dark": "Mörkt",
   "system": "System",
   "appearance": "Utseende",
   "highContrast": "Hög kontrast",
-  "customCommand": "Anpassat kommando",
-  "customCommands": "Anpassade kommandon",
-  "newCustomCommand": "Nytt anpassat kommando",
+  "customCommand": "Eget kommando",
+  "customCommands": "Egna kommandon",
+  "newCustomCommand": "Nytt kommando",
   "commandTrigger": "Utlösare",
-  "command": "Kommandot",
+  "command": "Kommando",
   "save": "Spara",
-  "openInBrowser": "Öppna i webbläsare",
-  "messageAppearance": "Meddelandets utseende",
-  "showTimestamps": "Visa tidsstämpel",
+  "openInBrowser": "Öppna i webbläsaren",
+  "messageAppearance": "Meddelandenas utseende",
+  "showTimestamps": "Visa tidsstämplar",
   "compactMessages": "Kompakta meddelanden",
-  "messageTrigger": "Meddelande utlösare",
+  "showBadges": "Visa märken",
+  "messageTrigger": "Meddelandeutlösare",
   "pattern": "Mönster",
   "mention": "Omnämnande",
   "block": "Blockera",
-  "enableRegex": "Aktivera regex",
-  "caseSensitive": "Skiftlägeskänslighet",
-  "messageTriggers": "Meddelande utlösare",
-  "newMessageTrigger": "Nytt meddelande utlösare",
+  "enableRegex": "Använd regex",
+  "caseSensitive": "Skiftlägeskänslig",
+  "messageTriggers": "Meddelandeutlösare",
+  "newMessageTrigger": "Ny meddelandeutlösare",
   "reply": "Svara",
   "copyText": "Kopiera text",
-  "copyTextSubtitle": "Håll för att kopiera meddelandetext med användarnamn",
+  "copyTextSubtitle": "Håll in för att kopiera texten med användarnamn",
   "deleteMessage": "Radera meddelande",
   "mentionUser": "Nämn användare",
   "copyMessageId": "Kopiera meddelande-ID",
   "theme": "Tema",
-  "userTrigger": "Utlösare för användare",
-  "userTriggers": "Utlösare för användare",
+  "userTrigger": "Användarutlösare",
+  "userTriggers": "Användarutlösare",
   "chatHistory": "Chatthistorik",
-  "login": "Logga in",
-  "newUserTrigger": "Ny utlösare för användare",
+  "login": "Användarnamn",
+  "newUserTrigger": "Ny användarutlösare",
   "ban": "Bannlys",
-  "unban": "Unbanna",
-  "timeoutUserForDuration": "Timeout-användare för {duration}",
+  "unban": "Häv bannlysning",
+  "timeoutUserForDuration": "Ge användaren timeout i {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chatten var rensad",
-  "permabanned": "permabannad",
-  "bannedForDuration": "bannlyst för {duration}",
+  "chatCleared": "Chatten rensades",
+  "permabanned": "permanent bannlyst",
+  "bannedForDuration": "bannlyst i {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "replyingTo": "Svarar på",
   "blockedMessage": "Blockerat meddelande",
-  "showMessage": "Visa meddelandet",
-  "hideMessage": "Dölj meddelanden",
-  "scrollToBottom": "Skrolla till botten",
-  "startUsingTheApp": "För att börja använda appen, lägg till ett konto nedan.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
+  "showMessage": "Visa meddelande",
+  "hideMessage": "Dölj meddelande",
+  "scrollToBottom": "Rulla längst ned",
+  "startUsingTheApp": "Lägg till ett konto nedan för att börja använda appen.",
+  "chatSettings": "Chattinställningar",
+  "autocompleteUsersWithAt": "Autokomplettera användare med @",
+  "autocompleteEmotesWithColon": "Autokomplettera emotes med :",
+  "language": "Språk",
+  "locale": "Region",
+  "systemDefault": "Systemstandard",
+  "justDefault": "Standard",
+  "notifications": "Aviseringar",
+  "noNotifications": "Någon, någonstans, kommer att nämna dig en dag.",
+  "backgroundNotifications": "Aviseringar i bakgrunden",
+  "optionNotAvailableOnYourPlatform": "Det här alternativet finns inte på din plattform.",
+  "optionNotAvailablePaywalled": "Det här alternativet är bara för ColdChat-supportrar.",
+  "clearAll": "Rensa allt",
   "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "clearCache": "Rensa cache",
+  "chatters": "Chattare",
+  "lastSeenAgo": "Sågs senast för {time} sedan",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Medverkande",
+  "search": "Sök",
+  "emoteMenuButton": "Knapp för emote-menyn",
+  "emoteMenuButtonGrayscale": "Visa knappen för emote-menyn i gråskala",
+  "chooseEmoteMenuButton": "Tryck på en emote för att använda den som knapp för emote-menyn",
+  "resetToKappa": "Återställ till Kappa",
+  "emoteMenuButtonDownloadFailed": "Det gick inte att ladda ned den emoten. Knappen ändrades inte.",
+  "takePhoto": "Ta foto",
+  "chooseFromLibrary": "Välj från biblioteket",
+  "cameraUnavailable": "Kameran kunde inte öppnas. Kontrollera att ColdChat har åtkomst till kameran.",
+  "about": "Om",
+  "sourceCode": "Källkod",
+  "license": "Licens",
+  "basedOnChatsen": "Baserad på Chatsen",
+  "openSourceLicenses": "Licenser för öppen källkod",
+  "aboutLegalese": "ColdChat är fri programvara: du får vidaredistribuera och ändra den enligt villkoren i GNU Affero General Public License, version 3. Den levereras HELT UTAN GARANTI.",
+  "unblock": "Avblockera",
+  "report": "Rapportera",
+  "reportUserTitle": "Rapportera {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Rapporter hanteras av Twitch. Öppna {name}s kanal på Twitch och välj Rapportera där. Du kan också blockera {name} här för att dölja meddelandena.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Öppna på Twitch",
+  "blockFailed": "Blockeringslistan kunde inte ändras. Kontrollera din anslutning och försök igen.",
+  "contact": "Kontakt och feedback",
+  "whisper": "Viska",
+  "whisperTo": "Viska till {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Viskning från {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Öppna",
+  "userCard": "Användarkort",
+  "closeConversation": "Stäng konversation",
+  "closeConversationSubtitle": "Meddelandena finns kvar på den här enheten och kommer tillbaka med nästa viskning.",
+  "deleteConversation": "Radera konversation",
+  "deleteConversationSubtitle": "Raderar meddelandena från den här enheten. Twitch sparar ingen historik över viskningar.",
+  "whisperNeedsLogin": "Logga in med Twitch för att skicka viskningar.",
+  "whisperNeedsScope": "Logga in igen för att skicka och ta emot viskningar. Din inloggning är från innan ColdChat hade stöd för dem.",
+  "whisperUserNotFound": "Det finns ingen Twitch-användare med det namnet.",
+  "whisperFailed": "Viskningen skickades inte: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Viskningar du får medan ColdChat är stängt visas inte här, eftersom Twitch inte delar historiken med appar. Du kan läsa dem på Twitch, bakom viskningsikonen uppe till höger.",
+  "gotIt": "Uppfattat",
+  "openTwitch": "Öppna Twitch",
+  "showImage": "Visa bild · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Visa bilder från länkar",
+  "showImagesFromLinksSubtitle": "Twitch granskar inte de här bilderna. De kan vara olämpliga.",
+  "showImagesAutomatically": "Visa bilder från länkar automatiskt?",
+  "turnOn": "Slå på"
 }
