@@ -17,11 +17,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Вы вошли через $provider';
+    return 'Вход через $provider';
   }
 
   @override
-  String get termsOfService => 'Условия предоставления услуг';
+  String get termsOfService => 'Условия использования';
 
   @override
   String get privacyPolicy => 'Политика конфиденциальности';
@@ -30,87 +30,87 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settings => 'Настройки';
 
   @override
-  String get expiresNever => 'Никогда не истекает';
+  String get expiresNever => 'Бессрочно';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Срок входа истёк';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch отклонил вход для $login. Чат останется отключённым, пока ты не войдёшь снова.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Не удалось войти';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Войти';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Загрузка на $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Обработка…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Ошибка загрузки';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Загружено';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Повторить';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Скрыть';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Отменить загрузку';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Нет подключения к интернету';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host не отвечает';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host отклонил загрузку (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host прислал неожиданный ответ';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Не удалось подключиться к $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Не удалось прочитать файл';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Не удалось загрузить на $host';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Подробнее';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Повторная попытка через $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Срок истекает через $time';
+    return 'Истекает через $time';
   }
 
   @override
@@ -126,38 +126,38 @@ class AppLocalizationsRu extends AppLocalizations {
   String get tokenInput => 'Ввод токена';
 
   @override
-  String get account => 'Учётная запись';
+  String get account => 'Аккаунт';
 
   @override
-  String get refreshAccount => 'Обновить учётную запись';
+  String get refreshAccount => 'Обновить аккаунт';
 
   @override
-  String get removeAccount => 'Удалить учётную запись';
+  String get removeAccount => 'Удалить аккаунт';
 
   @override
-  String get addAnotherAccount => 'Добавить другую учётную запись';
+  String get addAnotherAccount => 'Добавить ещё аккаунт';
 
   @override
   String get verifiedUserData => 'Данные пользователя подтверждены!';
 
   @override
   String loggedInAs(String user) {
-    return 'Вы вошли как $user';
+    return 'Вход выполнен как $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Произошла ошибка при проверке данных пользователя:';
+      'Ошибка при проверке данных пользователя:';
 
   @override
   String get verifyingUserData => 'Проверка данных пользователя...';
 
   @override
-  String get verifiedUserToken => 'Токен пользователя подтвержден!';
+  String get verifiedUserToken => 'Токен пользователя подтверждён!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Произошла ошибка при проверке токена пользователя:';
+      'Ошибка при проверке токена пользователя:';
 
   @override
   String get verifyingUserToken => 'Проверка токена пользователя...';
@@ -166,7 +166,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchForChannels => 'Поиск каналов';
 
   @override
-  String get recommendedChannels => 'Рекомендованные каналы';
+  String get recommendedChannels => 'Рекомендуемые каналы';
 
   @override
   String get popularChannels => 'Популярные каналы';
@@ -179,22 +179,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String joinUser(String user) {
-    return 'Присоединиться к $user';
+    return 'Зайти в чат $user';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Ой, кажется очепятка! Вы хотели найти $username?';
+    return 'Ой, кажется, опечатка! Может, ищешь $username?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'Присоединиться к $channel';
+    return 'Зайти в чат $channel';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Отправить сообщение в $channel';
+    return 'Сообщение в $channel';
   }
 
   @override
@@ -204,25 +204,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dark => 'Тёмная';
 
   @override
-  String get system => 'Системная';
+  String get system => 'Как в системе';
 
   @override
   String get appearance => 'Внешний вид';
 
   @override
-  String get highContrast => 'Высокая контрастность';
+  String get highContrast => 'Высокий контраст';
 
   @override
-  String get customCommand => 'Собственная команда';
+  String get customCommand => 'Своя команда';
 
   @override
-  String get customCommands => 'Собственные команды';
+  String get customCommands => 'Свои команды';
 
   @override
-  String get newCustomCommand => 'Новая собственная команда';
+  String get newCustomCommand => 'Новая команда';
 
   @override
-  String get commandTrigger => 'Замена текста';
+  String get commandTrigger => 'Ключевое слово';
 
   @override
   String get command => 'Команда';
@@ -234,50 +234,50 @@ class AppLocalizationsRu extends AppLocalizations {
   String get openInBrowser => 'Открыть в браузере';
 
   @override
-  String get messageAppearance => 'Внешний вид сообщения';
+  String get messageAppearance => 'Вид сообщений';
 
   @override
-  String get showTimestamps => 'Показывать временные отметки';
+  String get showTimestamps => 'Показывать время';
 
   @override
-  String get compactMessages => 'Компактный вид сообщений';
+  String get compactMessages => 'Компактные сообщения';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Показывать значки';
 
   @override
-  String get messageTrigger => 'Ключевое слово';
+  String get messageTrigger => 'Правило для сообщений';
 
   @override
   String get pattern => 'Шаблон';
 
   @override
-  String get mention => 'Выделить в чате';
+  String get mention => 'Выделить';
 
   @override
   String get block => 'Заблокировать';
 
   @override
-  String get enableRegex => 'Включить regex';
+  String get enableRegex => 'Использовать regex';
 
   @override
   String get caseSensitive => 'Учитывать регистр';
 
   @override
-  String get messageTriggers => 'Ключевые слова в сообщениях';
+  String get messageTriggers => 'Правила для сообщений';
 
   @override
-  String get newMessageTrigger => 'Добавить новое ключевое слово';
+  String get newMessageTrigger => 'Новое правило';
 
   @override
   String get reply => 'Ответить';
 
   @override
-  String get copyText => 'Скопировать текст';
+  String get copyText => 'Копировать текст';
 
   @override
   String get copyTextSubtitle =>
-      'Удерживайте, чтобы скопировать текст сообщения с именем пользователя';
+      'Удерживай, чтобы скопировать с именем пользователя';
 
   @override
   String get deleteMessage => 'Удалить сообщение';
@@ -286,25 +286,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mentionUser => 'Упомянуть пользователя';
 
   @override
-  String get copyMessageId => 'Скопировать ID сообщения';
+  String get copyMessageId => 'Копировать ID сообщения';
 
   @override
   String get theme => 'Тема';
 
   @override
-  String get userTrigger => 'Действия при определённом пользователе';
+  String get userTrigger => 'Правило для пользователя';
 
   @override
-  String get userTriggers => 'Действия при пользователях';
+  String get userTriggers => 'Правила для пользователей';
 
   @override
-  String get chatHistory => 'История сообщений';
+  String get chatHistory => 'История чата';
 
   @override
-  String get login => 'Имя пользователя';
+  String get login => 'Логин';
 
   @override
-  String get newUserTrigger => 'Добавить новое действие при пользователе';
+  String get newUserTrigger => 'Новое правило';
 
   @override
   String get ban => 'Забанить';
@@ -314,22 +314,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Временно отстранить пользователя на $duration';
+    return 'Тайм-аут на $duration';
   }
 
   @override
-  String get chatCleared => 'Чат был очищен';
+  String get chatCleared => 'Чат очищен';
 
   @override
-  String get permabanned => 'забанен';
+  String get permabanned => 'бан навсегда';
 
   @override
   String bannedForDuration(String duration) {
-    return 'отстранён на $duration';
+    return 'бан на $duration';
   }
 
   @override
-  String get replyingTo => 'Ответить на';
+  String get replyingTo => 'Ответ для';
 
   @override
   String get blockedMessage => 'Скрытое сообщение';
@@ -344,27 +344,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get scrollToBottom => 'Прокрутить вниз';
 
   @override
-  String get startUsingTheApp =>
-      'Чтобы начать использовать приложение, добавьте учётную запись ниже.';
+  String get startUsingTheApp => 'Чтобы начать, добавь аккаунт ниже.';
 
   @override
   String get chatSettings => 'Настройки чата';
 
   @override
-  String get autocompleteUsersWithAt =>
-      'Предлагать имена пользователей после ввода @';
+  String get autocompleteUsersWithAt => 'Дополнять имена пользователей после @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Предлагать смайлики после ввода :';
+  String get autocompleteEmotesWithColon => 'Дополнять смайлики после :';
 
   @override
   String get language => 'Язык';
 
   @override
-  String get locale => 'Настройки языка';
+  String get locale => 'Язык и регион';
 
   @override
-  String get systemDefault => 'Системные настройки';
+  String get systemDefault => 'Как в системе';
 
   @override
   String get justDefault => 'По умолчанию';
@@ -374,18 +372,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noNotifications =>
-      'Кто-то, где-то, обязательно упомянет вас когда-нибудь.';
+      'Кто-нибудь, где-нибудь, когда-нибудь тебя упомянет.';
 
   @override
   String get backgroundNotifications => 'Фоновые уведомления';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'Эта опция недоступна на вашей операционной системе.';
+      'Эта функция недоступна на твоей платформе.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'Эта опция предназначена только для спонсоров ColdChat.';
+      'Эта функция только для тех, кто поддерживает ColdChat.';
 
   @override
   String get clearAll => 'Очистить всё';
@@ -401,7 +399,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String lastSeenAgo(String time) {
-    return 'Последний раз видели $time назад';
+    return 'Последняя активность $time назад';
   }
 
   @override
@@ -411,150 +409,152 @@ class AppLocalizationsRu extends AppLocalizations {
   String get search => 'Поиск';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Кнопка меню смайликов';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Кнопка меню смайликов в оттенках серого';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Нажми на смайлик, чтобы сделать его кнопкой меню смайликов';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Вернуть Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Не удалось скачать смайлик. Кнопка не изменилась.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Сделать фото';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Выбрать из галереи';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Не удалось открыть камеру. Проверь, есть ли у ColdChat доступ к камере.';
 
   @override
-  String get about => 'About';
+  String get about => 'О приложении';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Исходный код';
 
   @override
-  String get license => 'License';
+  String get license => 'Лицензия';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'На основе Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Лицензии открытого ПО';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat — свободное программное обеспечение: ты можешь распространять и изменять его на условиях GNU Affero General Public License версии 3. Оно предоставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Разблокировать';
 
   @override
-  String get report => 'Report';
+  String get report => 'Пожаловаться';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Пожаловаться на $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Жалобы рассматривает Twitch. Открой канал $name на Twitch и выбери там «Пожаловаться». Ещё ты можешь заблокировать $name здесь, чтобы скрыть сообщения.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Открыть на Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Не удалось изменить список блокировки. Проверь подключение и попробуй ещё раз.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Связь и отзывы';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Шепот';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Шепнуть $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Шепот от $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Открыть';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Карточка пользователя';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Закрыть диалог';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Сообщения останутся на этом устройстве и вернутся со следующим шепотом.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Удалить диалог';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Удаляет сообщения с этого устройства. Twitch не хранит историю шепота.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'Войди через Twitch, чтобы отправлять шепот.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Войди снова, чтобы отправлять и получать шепот. Твой вход сделан ещё до того, как ColdChat начал его поддерживать.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'Пользователя Twitch с таким именем нет.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Шепот не отправлен: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Шепот, который приходит, пока ColdChat закрыт, здесь не появится: Twitch не передаёт историю шепота приложениям. Его можно прочитать на Twitch, нажав значок шепота справа вверху.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Понятно';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Открыть Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Показать изображение · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Показывать изображения из ссылок';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch не проверяет эти изображения. Они могут быть неприемлемыми.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Показывать изображения из ссылок автоматически?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Включить';
 }

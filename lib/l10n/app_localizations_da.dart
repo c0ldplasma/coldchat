@@ -17,95 +17,95 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Logget ind som $provider';
+    return 'Logget ind via $provider';
   }
 
   @override
   String get termsOfService => 'Servicevilkår';
 
   @override
-  String get privacyPolicy => 'Fortrolighedspolitik';
+  String get privacyPolicy => 'Privatlivspolitik';
 
   @override
   String get settings => 'Indstillinger';
 
   @override
-  String get expiresNever => 'Aldrig udløber';
+  String get expiresNever => 'Udløber aldrig';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Login udløbet';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch afviste login for $login. Chatten forbliver afbrudt, indtil du logger ind igen.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Login mislykkedes';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Log ind';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Uploader til $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Behandler…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Upload mislykkedes';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Uploadet';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Prøv igen';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Luk';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Annuller upload';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Ingen internetforbindelse';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host svarer ikke';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host afviste uploaden (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host sendte et uventet svar';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Kunne ikke oprette forbindelse til $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Kunne ikke læse filen';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Upload til $host mislykkedes';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Detaljer';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Prøver igen med $host…';
   }
 
   @override
@@ -120,25 +120,25 @@ class AppLocalizationsDa extends AppLocalizations {
   String get add => 'Tilføj';
 
   @override
-  String get cancel => 'Afbryd';
+  String get cancel => 'Annuller';
 
   @override
-  String get tokenInput => 'Token indsat';
+  String get tokenInput => 'Indtast token';
 
   @override
   String get account => 'Konto';
 
   @override
-  String get refreshAccount => 'Opdatere konto';
+  String get refreshAccount => 'Opdater konto';
 
   @override
-  String get removeAccount => 'Fjern Konto';
+  String get removeAccount => 'Fjern konto';
 
   @override
-  String get addAnotherAccount => 'Tilføj en anden kanal';
+  String get addAnotherAccount => 'Tilføj en konto mere';
 
   @override
-  String get verifiedUserData => 'Verificeret bruger data!';
+  String get verifiedUserData => 'Brugerdata bekræftet!';
 
   @override
   String loggedInAs(String user) {
@@ -147,20 +147,20 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'En fejl har opstået, da verificering af brugerdata:';
+      'Der opstod en fejl under bekræftelse af brugerdata:';
 
   @override
-  String get verifyingUserData => 'Verificere dine data...';
+  String get verifyingUserData => 'Bekræfter brugerdata...';
 
   @override
-  String get verifiedUserToken => 'Verificere bruger-token!';
+  String get verifiedUserToken => 'Brugertoken bekræftet!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'En systemfejl af indlæsning af konto:';
+      'Der opstod en fejl under bekræftelse af brugertoken:';
 
   @override
-  String get verifyingUserToken => 'Bekræfter dine data...';
+  String get verifyingUserToken => 'Bekræfter brugertoken...';
 
   @override
   String get searchForChannels => 'Søg efter kanaler';
@@ -172,386 +172,391 @@ class AppLocalizationsDa extends AppLocalizations {
   String get popularChannels => 'Populære kanaler';
 
   @override
-  String get channel => 'Channel';
+  String get channel => 'Kanal';
 
   @override
-  String get leaveChannel => 'Leave channel';
+  String get leaveChannel => 'Forlad kanal';
 
   @override
   String joinUser(String user) {
-    return 'Join $user';
+    return 'Deltag i $user';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Spell check failed! Did you mean to search for $username?';
+    return 'Stavekontrollen mislykkedes! Mente du $username?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'Join $channel';
+    return 'Deltag i $channel';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'Send message in $channel';
+    return 'Send besked i $channel';
   }
 
   @override
-  String get light => 'Light';
+  String get light => 'Lyst';
 
   @override
-  String get dark => 'Dark';
+  String get dark => 'Mørkt';
 
   @override
   String get system => 'System';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Udseende';
 
   @override
-  String get highContrast => 'High contrast';
+  String get highContrast => 'Høj kontrast';
 
   @override
-  String get customCommand => 'Custom command';
+  String get customCommand => 'Egen kommando';
 
   @override
-  String get customCommands => 'Custom commands';
+  String get customCommands => 'Egne kommandoer';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'Ny kommando';
 
   @override
-  String get commandTrigger => 'Trigger';
+  String get commandTrigger => 'Udløser';
 
   @override
-  String get command => 'Command';
+  String get command => 'Kommando';
 
   @override
-  String get save => 'Save';
+  String get save => 'Gem';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'Åbn i browser';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'Beskeders udseende';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'Vis tidsstempler';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'Kompakte beskeder';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Vis emblemer';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'Beskedudløser';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'Mønster';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'Omtale';
 
   @override
-  String get block => 'Block';
+  String get block => 'Bloker';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'Brug regex';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'Skeln mellem store og små bogstaver';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'Beskedudløsere';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'Ny beskedudløser';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'Svar';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'Kopier tekst';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle =>
+      'Hold nede for at kopiere teksten med brugernavn';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'Slet besked';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'Omtal bruger';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'Kopier besked-id';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'Tema';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'Brugerudløser';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'Brugerudløsere';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'Chathistorik';
 
   @override
-  String get login => 'Login';
+  String get login => 'Brugernavn';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'Ny brugerudløser';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'Udeluk';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'Ophæv udelukkelse';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'Giv bruger timeout i $duration';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'Chatten blev ryddet';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'permanent udelukket';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return 'udelukket i $duration';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'Svarer på';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'Blokeret besked';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'Vis besked';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'Skjul besked';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'Rul til bunden';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'Tilføj en konto herunder for at komme i gang med appen.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'Chatindstillinger';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => 'Autofuldfør brugere med @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => 'Autofuldfør emotes med :';
 
   @override
-  String get language => 'Language';
+  String get language => 'Sprog';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'Område';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'Systemstandard';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'Standard';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Notifikationer';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications =>
+      'En eller anden, et eller andet sted, nævner dig en dag.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'Notifikationer i baggrunden';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'Denne indstilling er ikke tilgængelig på din platform.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'Denne indstilling er kun for ColdChat-supportere.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'Ryd alt';
 
   @override
   String get cache => 'Cache';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'Ryd cache';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'Chattere';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'Sidst set for $time siden';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Krediteringer';
 
   @override
-  String get search => 'Search';
+  String get search => 'Søg';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Knap til emote-menuen';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Vis knappen til emote-menuen i gråtoner';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Tryk på en emote for at bruge den som knap til emote-menuen';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Nulstil til Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Kunne ikke downloade den emote. Knappen blev ikke ændret.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Tag billede';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Vælg fra biblioteket';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Kameraet kunne ikke åbnes. Tjek, at ColdChat har adgang til kameraet.';
 
   @override
-  String get about => 'About';
+  String get about => 'Om';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Kildekode';
 
   @override
-  String get license => 'License';
+  String get license => 'Licens';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Baseret på Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Open source-licenser';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat er fri software: Du må videredistribuere og ændre den under betingelserne i GNU Affero General Public License, version 3. Den leveres UDEN NOGEN FORM FOR GARANTI.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Fjern blokering';
 
   @override
-  String get report => 'Report';
+  String get report => 'Anmeld';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Anmeld $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Anmeldelser håndteres af Twitch. Åbn kanalen for $name på Twitch, og vælg Anmeld dér. Du kan også blokere $name her for at skjule beskederne.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Åbn på Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Bloklisten kunne ikke ændres. Tjek din forbindelse, og prøv igen.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Kontakt og feedback';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Hvisk';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Hvisk til $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Hviskebesked fra $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Åbn';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Brugerkort';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Luk samtale';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Beskederne bliver på denne enhed og kommer tilbage med næste hviskebesked.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Slet samtale';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Sletter beskederne fra denne enhed. Twitch gemmer ingen historik over hviskebeskeder.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'Log ind med Twitch for at sende hviskebeskeder.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Log ind igen for at sende og modtage hviskebeskeder. Dit login er fra før ColdChat understøttede dem.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound =>
+      'Der findes ingen Twitch-bruger med det navn.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Hviskebesked ikke sendt: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Hviskebeskeder, du får, mens ColdChat er lukket, vises ikke her, fordi Twitch ikke deler historikken med apps. Du kan læse dem på Twitch bag hviske-ikonet øverst til højre.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Forstået';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Åbn Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Vis billede · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Vis billeder fra links';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch tjekker ikke disse billeder. De kan være upassende.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically => 'Vis billeder fra links automatisk?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Slå til';
 }

@@ -17,100 +17,100 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Prijavljeno preko $provider';
+    return 'Prijavljeno putem $provider';
   }
 
   @override
   String get termsOfService => 'Uvjeti korištenja';
 
   @override
-  String get privacyPolicy => 'Pravila o zaštiti privatnosti';
+  String get privacyPolicy => 'Pravila privatnosti';
 
   @override
   String get settings => 'Postavke';
 
   @override
-  String get expiresNever => 'Nikada ne ističe';
+  String get expiresNever => 'Nikad ne istječe';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Prijava je istekla';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch je odbio prijavu za $login. Chat ostaje odspojen dok se ponovno ne prijaviš.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Prijava nije uspjela';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Prijavi se';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Prijenos na $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Obrada…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Prijenos nije uspio';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Preneseno';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Pokušaj ponovno';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Odbaci';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Otkaži prijenos';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Nema internetske veze';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host ne odgovara';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return 'Poslužitelj $host odbio je prijenos (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return 'Poslužitelj $host poslao je neočekivan odgovor';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'Povezivanje s $host nije uspjelo';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'Datoteku nije moguće pročitati';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Prijenos na $host nije uspio';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Pojedinosti';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Novi pokušaj preko $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Ističe za $time';
+    return 'Istječe za $time';
   }
 
   @override
@@ -120,7 +120,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get add => 'Dodaj';
 
   @override
-  String get cancel => 'Poništi';
+  String get cancel => 'Odustani';
 
   @override
   String get tokenInput => 'Unos tokena';
@@ -129,35 +129,35 @@ class AppLocalizationsHr extends AppLocalizations {
   String get account => 'Račun';
 
   @override
-  String get refreshAccount => 'Osvježavanje računa';
+  String get refreshAccount => 'Osvježi račun';
 
   @override
   String get removeAccount => 'Ukloni račun';
 
   @override
-  String get addAnotherAccount => 'Dodaj drugi račun';
+  String get addAnotherAccount => 'Dodaj još jedan račun';
 
   @override
-  String get verifiedUserData => 'Provjereni korisnički podaci!';
+  String get verifiedUserData => 'Korisnički podaci provjereni!';
 
   @override
   String loggedInAs(String user) {
-    return 'Prijavljen kao $user';
+    return 'Prijavljeno kao $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'Došlo je do pogreške prilikom provjere korisničkih podataka:';
+      'Došlo je do pogreške pri provjeri korisničkih podataka:';
 
   @override
   String get verifyingUserData => 'Provjera korisničkih podataka...';
 
   @override
-  String get verifiedUserToken => 'Potvrđen korisnički token!';
+  String get verifiedUserToken => 'Korisnički token provjeren!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'Dogodila se greška prilikom provjere korisničkog tokena:';
+      'Došlo je do pogreške pri provjeri korisničkog tokena:';
 
   @override
   String get verifyingUserToken => 'Provjera korisničkog tokena...';
@@ -179,17 +179,17 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String joinUser(String user) {
-    return 'Pridruži se $user';
+    return 'Pridruži se kanalu $user';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'Provjerite pravopis! Jeste li mislili $username?';
+    return 'Provjera pravopisa nije uspjela! Tražiš li $username?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'Pridruži se $channel';
+    return 'Pridruži se kanalu $channel';
   }
 
   @override
@@ -198,13 +198,13 @@ class AppLocalizationsHr extends AppLocalizations {
   }
 
   @override
-  String get light => 'Svjetla';
+  String get light => 'Svijetla';
 
   @override
   String get dark => 'Tamna';
 
   @override
-  String get system => 'Tema sustava';
+  String get system => 'Prema sustavu';
 
   @override
   String get appearance => 'Izgled';
@@ -219,7 +219,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get customCommands => 'Prilagođene naredbe';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'Nova prilagođena naredba';
 
   @override
   String get commandTrigger => 'Okidač';
@@ -231,327 +231,330 @@ class AppLocalizationsHr extends AppLocalizations {
   String get save => 'Spremi';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'Otvori u pregledniku';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'Izgled poruka';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'Prikaži vrijeme';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'Kompaktne poruke';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Prikaži značke';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'Okidač poruka';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'Uzorak';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'Spominjanje';
 
   @override
-  String get block => 'Block';
+  String get block => 'Blokiraj';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'Uključi regex';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'Razlikuj velika i mala slova';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'Okidači poruka';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'Novi okidač poruka';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'Odgovori';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'Kopiraj tekst';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle =>
+      'Zadrži za kopiranje teksta s korisničkim imenom';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'Izbriši poruku';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'Spomeni korisnika';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'Kopiraj ID poruke';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'Tema';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'Okidač korisnika';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'Okidači korisnika';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'Povijest chata';
 
   @override
-  String get login => 'Login';
+  String get login => 'Korisničko ime';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'Novi okidač korisnika';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'Banaj';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'Odbanaj';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'Daj timeout na $duration';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'Chat je očišćen';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'dobiva trajni ban';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return 'dobiva ban na $duration';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'Odgovor na';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'Blokirana poruka';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'Prikaži poruku';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'Sakrij poruku';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'Skoči na dno';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'Za početak korištenja aplikacije dodaj račun u nastavku.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'Postavke chata';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => 'Dovršavanje korisnika s @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => 'Dovršavanje emotikona s :';
 
   @override
-  String get language => 'Language';
+  String get language => 'Jezik';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'Jezik i regija';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'Zadano sustavom';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'Zadano';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Obavijesti';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications => 'Netko, negdje, jednog će te dana spomenuti.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'Obavijesti u pozadini';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'Ova opcija nije dostupna na tvojoj platformi.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'Ova je opcija samo za one koji podržavaju ColdChat.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'Očisti sve';
 
   @override
-  String get cache => 'Cache';
+  String get cache => 'Predmemorija';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'Očisti predmemoriju';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'Sudionici chata';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'Zadnja aktivnost prije $time';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Zasluge';
 
   @override
-  String get search => 'Search';
+  String get search => 'Traži';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Gumb izbornika emotikona';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Gumb izbornika emotikona u sivim tonovima';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Dodirni emotikon koji želiš kao gumb izbornika emotikona';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Vrati na Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'Preuzimanje emotikona nije uspjelo. Gumb nije promijenjen.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Snimi fotografiju';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Odaberi iz galerije';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'Kamera se nije mogla otvoriti. Provjeri ima li ColdChat pristup kameri.';
 
   @override
-  String get about => 'About';
+  String get about => 'O aplikaciji';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Izvorni kôd';
 
   @override
-  String get license => 'License';
+  String get license => 'Licenca';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Temeljeno na Chatsenu';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Licence otvorenog koda';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat je slobodan softver: možeš ga dijeliti i mijenjati pod uvjetima licence GNU Affero General Public License, verzija 3. Dolazi APSOLUTNO BEZ IKAKVOG JAMSTVA.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Deblokiraj';
 
   @override
-  String get report => 'Report';
+  String get report => 'Prijavi';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Prijavi $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Prijave obrađuje Twitch. Otvori kanal $name na Twitchu i ondje odaberi Prijavi. $name možeš blokirati i ovdje pa ti se poruke više neće prikazivati.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Otvori na Twitchu';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'Popis blokiranih nije moguće promijeniti. Provjeri vezu i pokušaj ponovno.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Kontakt i povratne informacije';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Šapni';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Šapni $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Šapat od $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Otvori';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Korisnička kartica';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Zatvori razgovor';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Poruke ostaju na ovom uređaju i vraćaju se sa sljedećim šapatom.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Izbriši razgovor';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Briše poruke s ovog uređaja. Twitch ne čuva povijest šapata.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'Prijavi se na Twitch za slanje šapata.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Ponovno se prijavi za slanje i primanje šapata. Tvoja prijava potječe iz vremena prije nego što ih je ColdChat podržavao.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'Ne postoji Twitch korisnik s tim imenom.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Šapat nije poslan: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Šapati koje primiš dok je ColdChat zatvoren ne prikazuju se ovdje jer Twitch ne dijeli povijest šapata s aplikacijama. Možeš ih pročitati na Twitchu, iza ikone šapata gore desno.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Razumijem';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Otvori Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Prikaži sliku · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Prikaži slike iz poveznica';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch ne provjerava te slike. Mogu biti neprikladne.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      'Automatski prikazivati slike iz poveznica?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Uključi';
 }

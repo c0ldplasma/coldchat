@@ -17,100 +17,100 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'Sesión iniciada a través de $provider';
+    return 'Sesión iniciada con $provider';
   }
 
   @override
-  String get termsOfService => 'Términos del Servicio';
+  String get termsOfService => 'Términos del servicio';
 
   @override
-  String get privacyPolicy => 'Política de Privacidad';
+  String get privacyPolicy => 'Política de privacidad';
 
   @override
   String get settings => 'Ajustes';
 
   @override
-  String get expiresNever => 'Nunca expira';
+  String get expiresNever => 'No caduca nunca';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'Sesión caducada';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch ha rechazado el inicio de sesión de $login. El chat seguirá desconectado hasta que vuelvas a iniciar sesión.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'Error al iniciar sesión';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'Iniciar sesión';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'Subiendo a $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'Procesando…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'Error al subir';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'Subido';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'Reintentar';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'Descartar';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'Cancelar subida';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'Sin conexión a internet';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host no responde';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host ha rechazado la subida (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host ha enviado una respuesta inesperada';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'No se ha podido conectar con $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'No se ha podido leer el archivo';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'Error al subir a $host';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'Detalles';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'Reintentando con $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'Expira en $time';
+    return 'Caduca en $time';
   }
 
   @override
@@ -123,16 +123,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String get tokenInput => 'Introduzca un token';
+  String get tokenInput => 'Introducir token';
 
   @override
   String get account => 'Cuenta';
 
   @override
-  String get refreshAccount => 'Actualizar la cuenta';
+  String get refreshAccount => 'Actualizar cuenta';
 
   @override
-  String get removeAccount => 'Eliminar la cuenta';
+  String get removeAccount => 'Eliminar cuenta';
 
   @override
   String get addAnotherAccount => 'Añadir otra cuenta';
@@ -184,7 +184,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String spellCheckFailed(String username) {
-    return 'La revisión ortográfica falló! Quizás quisiste buscar $username?';
+    return '¿Error al escribir? ¿Quizás querías buscar $username?';
   }
 
   @override
@@ -210,7 +210,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appearance => 'Apariencia';
 
   @override
-  String get highContrast => 'Contraste alto';
+  String get highContrast => 'Alto contraste';
 
   @override
   String get customCommand => 'Comando personalizado';
@@ -234,16 +234,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get openInBrowser => 'Abrir en el navegador';
 
   @override
-  String get messageAppearance => 'Apariencia del mensaje';
+  String get messageAppearance => 'Apariencia de los mensajes';
 
   @override
-  String get showTimestamps => 'Mostrar marcas de tiempo';
+  String get showTimestamps => 'Mostrar hora';
 
   @override
   String get compactMessages => 'Mensajes compactos';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'Mostrar insignias';
 
   @override
   String get messageTrigger => 'Activador de mensaje';
@@ -258,16 +258,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get block => 'Bloquear';
 
   @override
-  String get enableRegex => 'Activar regex';
+  String get enableRegex => 'Usar regex';
 
   @override
-  String get caseSensitive => 'Distingue mayúsculas y minúsculas';
+  String get caseSensitive => 'Distinguir mayúsculas y minúsculas';
 
   @override
   String get messageTriggers => 'Activadores de mensajes';
 
   @override
-  String get newMessageTrigger => 'Nuevo activador de mensaje';
+  String get newMessageTrigger => 'Nuevo activador';
 
   @override
   String get reply => 'Responder';
@@ -277,7 +277,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get copyTextSubtitle =>
-      'Mantén pulsado para copiar el texto del mensaje con el nombre de usuario';
+      'Mantén pulsado para copiar con el nombre de usuario';
 
   @override
   String get deleteMessage => 'Eliminar mensaje';
@@ -301,31 +301,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chatHistory => 'Historial del chat';
 
   @override
-  String get login => 'Iniciar sessión';
+  String get login => 'Usuario';
 
   @override
-  String get newUserTrigger => 'Nuevo activador de usuario';
+  String get newUserTrigger => 'Nuevo activador';
 
   @override
-  String get ban => 'Banear';
+  String get ban => 'Expulsar';
 
   @override
-  String get unban => 'Desbanear';
+  String get unban => 'Readmitir';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Banear usuario temporalmente por $duration';
+    return 'Expulsar al usuario durante $duration';
   }
 
   @override
-  String get chatCleared => 'El chat ha sido borrado';
+  String get chatCleared => 'Se ha borrado el chat';
 
   @override
-  String get permabanned => 'baneado permanentemente';
+  String get permabanned => 'expulsado permanentemente';
 
   @override
   String bannedForDuration(String duration) {
-    return 'baneado por $duration';
+    return 'expulsado durante $duration';
   }
 
   @override
@@ -341,32 +341,32 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hideMessage => 'Ocultar mensaje';
 
   @override
-  String get scrollToBottom => 'Ir hasta abajo';
+  String get scrollToBottom => 'Ir al final';
 
   @override
   String get startUsingTheApp =>
-      'Para empezar a utilizar la aplicación, añade una cuenta a continuación.';
+      'Para empezar a usar la app, añade una cuenta abajo.';
 
   @override
-  String get chatSettings => 'Ajustes del Chat';
+  String get chatSettings => 'Ajustes del chat';
 
   @override
   String get autocompleteUsersWithAt => 'Autocompletar usuarios con @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocompletar emotes con:';
+  String get autocompleteEmotesWithColon => 'Autocompletar emotes con :';
 
   @override
   String get language => 'Idioma';
 
   @override
-  String get locale => 'Local';
+  String get locale => 'Idioma y región';
 
   @override
-  String get systemDefault => 'Utilizar valores por defecto';
+  String get systemDefault => 'Predeterminado del sistema';
 
   @override
-  String get justDefault => 'Por defecto';
+  String get justDefault => 'Predeterminado';
 
   @override
   String get notifications => 'Notificaciones';
@@ -384,7 +384,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get optionNotAvailablePaywalled =>
-      'Esta opción es sólo para simpatizantes de ColdChat.';
+      'Esta opción es solo para quienes apoyan ColdChat.';
 
   @override
   String get clearAll => 'Borrar todo';
@@ -396,164 +396,168 @@ class AppLocalizationsEs extends AppLocalizations {
   String get clearCache => 'Borrar caché';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'Usuarios en el chat';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'Visto por última vez hace $time';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'Créditos';
 
   @override
-  String get search => 'Search';
+  String get search => 'Buscar';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'Botón del menú de emotes';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'Botón del menú de emotes en escala de grises';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'Toca un emote para usarlo como botón del menú de emotes';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Restablecer a Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'No se ha podido descargar ese emote. El botón no ha cambiado.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'Hacer foto';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'Elegir de la galería';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'No se ha podido abrir la cámara. Comprueba que ColdChat tenga acceso a la cámara.';
 
   @override
-  String get about => 'About';
+  String get about => 'Acerca de';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'Código fuente';
 
   @override
-  String get license => 'License';
+  String get license => 'Licencia';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Basado en Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'Licencias de código abierto';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat es software libre: puedes redistribuirlo y modificarlo según los términos de la GNU Affero General Public License, versión 3. Se ofrece SIN NINGUNA GARANTÍA.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'Desbloquear';
 
   @override
-  String get report => 'Report';
+  String get report => 'Denunciar';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'Denunciar a $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Twitch se encarga de las denuncias. Abre el canal de $name en Twitch y elige Denunciar allí. También puedes bloquear a $name aquí para ocultar sus mensajes.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Abrir en Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'No se ha podido cambiar la lista de bloqueos. Comprueba tu conexión e inténtalo de nuevo.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'Contacto y comentarios';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'Susurrar';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'Susurrar a $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'Susurro de $name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'Abrir';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'Tarjeta de usuario';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'Cerrar conversación';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'Los mensajes se quedan en este dispositivo y vuelven con el próximo susurro.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'Eliminar conversación';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'Elimina los mensajes de este dispositivo. Twitch no guarda el historial de susurros.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin =>
+      'Inicia sesión con Twitch para enviar susurros.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'Vuelve a iniciar sesión para enviar y recibir susurros. Tu sesión es de antes de que ColdChat los admitiera.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound =>
+      'No hay ningún usuario de Twitch con ese nombre.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'Susurro no enviado: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'Los susurros que recibes mientras ColdChat está cerrado no aparecen aquí, porque Twitch no comparte el historial de susurros con las apps. Puedes leerlos en Twitch, en el icono de susurros de arriba a la derecha.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'Entendido';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Abrir Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'Mostrar imagen · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'Mostrar imágenes de enlaces';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch no revisa estas imágenes. Pueden ser inapropiadas.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically =>
+      '¿Mostrar automáticamente las imágenes de los enlaces?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'Activar';
 }

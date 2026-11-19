@@ -1,68 +1,165 @@
 {
   "appName": "ColdChat",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
   "loggedInVia": "Connecté via {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Conditions d'utilisation",
   "privacyPolicy": "Politique de confidentialité",
   "settings": "Paramètres",
   "expiresNever": "N'expire jamais",
+  "loginExpired": "Connexion expirée",
+  "loginExpiredDescription": "Twitch a refusé la connexion de {login}. Le chat reste déconnecté jusqu'à ce que tu te reconnectes.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Échec de la connexion",
+  "signInAgain": "Se connecter",
+  "uploadingTo": "Envoi vers {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Traitement…",
+  "uploadFailed": "Échec de l'envoi",
+  "uploadDone": "Envoyé",
+  "uploadRetry": "Réessayer",
+  "uploadDismiss": "Ignorer",
+  "uploadCancel": "Annuler l'envoi",
+  "uploadErrorOffline": "Pas de connexion Internet",
+  "uploadErrorTimeout": "{host} ne répond pas",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} a refusé l'envoi (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} a envoyé une réponse inattendue",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Impossible de se connecter à {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Impossible de lire le fichier",
+  "uploadErrorUnknown": "Échec de l'envoi vers {host}",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Détails",
+  "uploadRetryingWith": "Nouvel essai avec {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
   "expiresIn": "Expire dans {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Fermer",
   "add": "Ajouter",
   "cancel": "Annuler",
-  "tokenInput": "Entrer un token",
+  "tokenInput": "Saisir un token",
   "account": "Compte",
-  "refreshAccount": "Recharger le compte",
+  "refreshAccount": "Actualiser le compte",
   "removeAccount": "Supprimer le compte",
   "addAnotherAccount": "Ajouter un autre compte",
-  "verifiedUserData": "Données utilisateur vérifiées!",
+  "verifiedUserData": "Données utilisateur vérifiées !",
   "loggedInAs": "Connecté en tant que {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Une erreur est survenue lors de la vérification des données utilisateur:",
+  "anErrorHasOccuredWhenVerifyingUserData": "Une erreur est survenue lors de la vérification des données utilisateur :",
   "verifyingUserData": "Vérification des données utilisateur...",
-  "verifiedUserToken": "Token utilisateur vérifié!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Une erreur est survenue lors de la vérification du token utilisateur:",
+  "verifiedUserToken": "Token utilisateur vérifié !",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Une erreur est survenue lors de la vérification du token utilisateur :",
   "verifyingUserToken": "Vérification du token utilisateur...",
-  "searchForChannels": "Rechercher une chaîne",
+  "searchForChannels": "Rechercher des chaînes",
   "recommendedChannels": "Chaînes recommandées",
   "popularChannels": "Chaînes populaires",
   "channel": "Chaîne",
   "leaveChannel": "Quitter la chaîne",
-  "joinUser": "Joindre {user}",
+  "joinUser": "Rejoindre {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Saisie potentiellement incorrecte ! Essayez-vous de rechercher {username} ?",
+  "spellCheckFailed": "Faute de frappe ? Tu voulais peut-être chercher {username} ?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Joindre {channel}",
+  "joinChannelName": "Rejoindre {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "sendMessageIn": "Envoyer un message dans {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Clair",
@@ -72,78 +169,169 @@
   "highContrast": "Contraste élevé",
   "customCommand": "Commande personnalisée",
   "customCommands": "Commandes personnalisées",
-  "newCustomCommand": "New custom command",
+  "newCustomCommand": "Nouvelle commande personnalisée",
   "commandTrigger": "Déclencheur",
   "command": "Commande",
-  "save": "Sauvegarder",
+  "save": "Enregistrer",
   "openInBrowser": "Ouvrir dans le navigateur",
   "messageAppearance": "Apparence des messages",
-  "showTimestamps": "Afficher l'heure des messages",
-  "compactMessages": "Messages compactes",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
+  "showTimestamps": "Afficher l'heure",
+  "compactMessages": "Messages compacts",
+  "showBadges": "Afficher les badges",
+  "messageTrigger": "Déclencheur de message",
+  "pattern": "Motif",
   "mention": "Mention",
   "block": "Bloquer",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
+  "enableRegex": "Activer les regex",
+  "caseSensitive": "Respecter la casse",
+  "messageTriggers": "Déclencheurs de message",
+  "newMessageTrigger": "Nouveau déclencheur",
   "reply": "Répondre",
   "copyText": "Copier le texte",
-  "copyTextSubtitle": "Maintenez pour copier le texte du message avec le nom d'utilisateur",
+  "copyTextSubtitle": "Maintiens pour copier avec le nom d'utilisateur",
   "deleteMessage": "Supprimer le message",
   "mentionUser": "Mentionner l'utilisateur",
   "copyMessageId": "Copier l'ID du message",
-  "theme": "Mode",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
+  "theme": "Thème",
+  "userTrigger": "Déclencheur d'utilisateur",
+  "userTriggers": "Déclencheurs d'utilisateur",
   "chatHistory": "Historique du chat",
-  "login": "Se connecter",
-  "newUserTrigger": "New user trigger",
+  "login": "Identifiant",
+  "newUserTrigger": "Nouveau déclencheur",
   "ban": "Bannir",
   "unban": "Débannir",
-  "timeoutUserForDuration": "Bannir temporairement l'utilisateur pendant {duration}",
+  "timeoutUserForDuration": "Exclure l'utilisateur pendant {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "Le chat a été effacé",
-  "permabanned": "permaban",
-  "bannedForDuration": "banni pour {duration}",
+  "permabanned": "banni définitivement",
+  "bannedForDuration": "banni pendant {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Répondre à",
+  "replyingTo": "En réponse à",
   "blockedMessage": "Message bloqué",
-  "showMessage": "Voir le message",
+  "showMessage": "Afficher le message",
   "hideMessage": "Masquer le message",
-  "scrollToBottom": "Défiler vers le bas",
-  "startUsingTheApp": "Pour commencer à utiliser l'appli, ajoutez un compte ci-dessous.",
+  "scrollToBottom": "Aller en bas",
+  "startUsingTheApp": "Pour commencer, ajoute un compte ci-dessous.",
   "chatSettings": "Paramètres du chat",
-  "autocompleteUsersWithAt": "Auto-complétion des noms d'utilisateurs avec @",
-  "autocompleteEmotesWithColon": "Auto-complétion des emotes avec :",
+  "autocompleteUsersWithAt": "Compléter les noms d'utilisateur avec @",
+  "autocompleteEmotesWithColon": "Compléter les emotes avec :",
   "language": "Langue",
-  "locale": "Locale",
-  "systemDefault": "Par défaut",
+  "locale": "Langue et région",
+  "systemDefault": "Par défaut du système",
   "justDefault": "Par défaut",
   "notifications": "Notifications",
-  "noNotifications": "Quelqu'un vous mentionnera un jour.",
+  "noNotifications": "Quelqu'un, quelque part, te mentionnera un jour.",
   "backgroundNotifications": "Notifications en arrière-plan",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "Cette option est réservée aux supporters de ColdChat.",
+  "optionNotAvailableOnYourPlatform": "Cette option n'est pas disponible sur ta plateforme.",
+  "optionNotAvailablePaywalled": "Cette option est réservée aux soutiens de ColdChat.",
   "clearAll": "Tout effacer",
   "cache": "Cache",
-  "clearCache": "Effacer le cache",
-  "chatters": "Chatteurs",
+  "clearCache": "Vider le cache",
+  "chatters": "Utilisateurs du chat",
   "lastSeenAgo": "Vu il y a {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Crédits",
+  "search": "Rechercher",
+  "emoteMenuButton": "Bouton du menu des emotes",
+  "emoteMenuButtonGrayscale": "Bouton du menu des emotes en niveaux de gris",
+  "chooseEmoteMenuButton": "Touche une emote pour l'utiliser comme bouton du menu des emotes",
+  "resetToKappa": "Revenir à Kappa",
+  "emoteMenuButtonDownloadFailed": "Impossible de télécharger cette emote. Le bouton n'a pas été modifié.",
+  "takePhoto": "Prendre une photo",
+  "chooseFromLibrary": "Choisir dans la photothèque",
+  "cameraUnavailable": "Impossible d'ouvrir l'appareil photo. Vérifie que ColdChat a accès à l'appareil photo.",
+  "about": "À propos",
+  "sourceCode": "Code source",
+  "license": "Licence",
+  "basedOnChatsen": "Basé sur Chatsen",
+  "openSourceLicenses": "Licences open source",
+  "aboutLegalese": "ColdChat est un logiciel libre : tu peux le redistribuer et le modifier selon les termes de la GNU Affero General Public License, version 3. Il est fourni SANS AUCUNE GARANTIE.",
+  "unblock": "Débloquer",
+  "report": "Signaler",
+  "reportUserTitle": "Signaler {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Les signalements sont traités par Twitch. Ouvre la chaîne de {name} sur Twitch et choisis Signaler. Tu peux aussi bloquer {name} ici pour masquer ses messages.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Ouvrir sur Twitch",
+  "blockFailed": "Impossible de modifier la liste de blocage. Vérifie ta connexion et réessaie.",
+  "contact": "Contact et avis",
+  "whisper": "Chuchoter",
+  "whisperTo": "Chuchoter à {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Chuchotement de {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Ouvrir",
+  "userCard": "Carte utilisateur",
+  "closeConversation": "Fermer la conversation",
+  "closeConversationSubtitle": "Les messages restent sur cet appareil et reviennent au prochain chuchotement.",
+  "deleteConversation": "Supprimer la conversation",
+  "deleteConversationSubtitle": "Supprime les messages de cet appareil. Twitch ne conserve aucun historique des chuchotements.",
+  "whisperNeedsLogin": "Connecte-toi avec Twitch pour envoyer des chuchotements.",
+  "whisperNeedsScope": "Reconnecte-toi pour envoyer et recevoir des chuchotements. Ta connexion date d'avant leur prise en charge par ColdChat.",
+  "whisperUserNotFound": "Aucun utilisateur Twitch ne porte ce nom.",
+  "whisperFailed": "Chuchotement non envoyé : {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Les chuchotements reçus pendant que ColdChat était fermé n'apparaissent pas ici, car Twitch ne partage pas l'historique des chuchotements avec les applis. Tu peux les lire sur Twitch, derrière l'icône des chuchotements en haut à droite.",
+  "gotIt": "Compris",
+  "openTwitch": "Ouvrir Twitch",
+  "showImage": "Afficher l'image · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Afficher les images des liens",
+  "showImagesFromLinksSubtitle": "Twitch ne vérifie pas ces images. Elles peuvent être inappropriées.",
+  "showImagesAutomatically": "Afficher automatiquement les images des liens ?",
+  "turnOn": "Activer"
 }

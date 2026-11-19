@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "מחובר דרך {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "התחברת דרך {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "תנאי השירות",
-  "privacyPolicy": "מדיניות פרטיות",
+  "privacyPolicy": "מדיניות הפרטיות",
   "settings": "הגדרות",
-  "expiresNever": "לעולם לא יפוג",
-  "expiresIn": "פג תוקף ב-{time}",
+  "expiresNever": "ללא תפוגה",
+  "loginExpired": "פג תוקף ההתחברות",
+  "loginExpiredDescription": "Twitch דחתה את ההתחברות של {login}. הצ׳אט יישאר מנותק עד להתחברות מחדש.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "ההתחברות נכשלה",
+  "signInAgain": "התחברות",
+  "uploadingTo": "העלאה אל {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "בעיבוד…",
+  "uploadFailed": "ההעלאה נכשלה",
+  "uploadDone": "הועלה",
+  "uploadRetry": "ניסיון חוזר",
+  "uploadDismiss": "סגירה",
+  "uploadCancel": "ביטול ההעלאה",
+  "uploadErrorOffline": "אין חיבור לאינטרנט",
+  "uploadErrorTimeout": "{host} לא מגיב",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} דחה את ההעלאה (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} שלח תגובה לא צפויה",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "לא ניתן להתחבר אל {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "לא ניתן לקרוא את הקובץ",
+  "uploadErrorUnknown": "ההעלאה אל {host} נכשלה",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "פרטים",
+  "uploadRetryingWith": "ניסיון חוזר עם {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "פג תוקף בעוד {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "close": "סגור",
-  "add": "הוסף",
+  "close": "סגירה",
+  "add": "הוספה",
   "cancel": "ביטול",
-  "tokenInput": "טוקן",
+  "tokenInput": "הזנת טוקן",
   "account": "חשבון",
-  "refreshAccount": "רענן חשבון",
-  "removeAccount": "הסר חשבון",
-  "addAnotherAccount": "הוסף חשבון נוסף",
-  "verifiedUserData": "נתוני משתמש מאומתים!",
-  "loggedInAs": "מחובר כ{user}",
+  "refreshAccount": "רענון החשבון",
+  "removeAccount": "הסרת החשבון",
+  "addAnotherAccount": "הוספת חשבון נוסף",
+  "verifiedUserData": "נתוני המשתמש אומתו!",
+  "loggedInAs": "התחברת בתור {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "שגיאה בעת אימות נתוני משתמש:",
-  "verifyingUserData": "מאמת את נתוני המשתמש...",
-  "verifiedUserToken": "טוקן משתמש מאומת!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "שגיאה בעת אימות טוקן משתמש:",
-  "verifyingUserToken": "מאמת טוקן משתמש...",
-  "searchForChannels": "חפש ערוצים",
+  "anErrorHasOccuredWhenVerifyingUserData": "אירעה שגיאה באימות נתוני המשתמש:",
+  "verifyingUserData": "אימות נתוני המשתמש...",
+  "verifiedUserToken": "טוקן המשתמש אומת!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "אירעה שגיאה באימות טוקן המשתמש:",
+  "verifyingUserToken": "אימות טוקן המשתמש...",
+  "searchForChannels": "חיפוש ערוצים",
   "recommendedChannels": "ערוצים מומלצים",
-  "popularChannels": "ערוצים פופולרים",
+  "popularChannels": "ערוצים פופולריים",
   "channel": "ערוץ",
-  "leaveChannel": "עזוב ערוץ",
-  "joinUser": "הצטרף ל-{user}",
+  "leaveChannel": "יציאה מהערוץ",
+  "joinUser": "הצטרפות אל {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "בדיקת האיות נכשלה! האם התכוונת לחפש את {username}?",
+  "spellCheckFailed": "בדיקת האיות נכשלה! אולי הכוונה ל-{username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "הצטרף ל-{channel}",
+  "joinChannelName": "הצטרפות אל {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "שלח הודעה ב-{channel}",
+  "sendMessageIn": "שליחת הודעה ב-{channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Light",
-  "dark": "Dark",
-  "system": "System",
-  "appearance": "Appearance",
-  "highContrast": "High contrast",
-  "customCommand": "Custom command",
-  "customCommands": "Custom commands",
-  "newCustomCommand": "New custom command",
-  "commandTrigger": "Trigger",
-  "command": "Command",
-  "save": "Save",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "light": "בהיר",
+  "dark": "כהה",
+  "system": "לפי המערכת",
+  "appearance": "מראה",
+  "highContrast": "ניגודיות גבוהה",
+  "customCommand": "פקודה מותאמת אישית",
+  "customCommands": "פקודות מותאמות אישית",
+  "newCustomCommand": "פקודה מותאמת אישית חדשה",
+  "commandTrigger": "מילת הפעלה",
+  "command": "פקודה",
+  "save": "שמירה",
+  "openInBrowser": "פתיחה בדפדפן",
+  "messageAppearance": "מראה ההודעות",
+  "showTimestamps": "הצגת שעה",
+  "compactMessages": "הודעות דחוסות",
+  "showBadges": "הצגת תגים",
+  "messageTrigger": "טריגר הודעה",
+  "pattern": "תבנית",
+  "mention": "אזכור",
+  "block": "חסימה",
+  "enableRegex": "שימוש ב-regex",
+  "caseSensitive": "תלוי רישיות",
+  "messageTriggers": "טריגרים להודעות",
+  "newMessageTrigger": "טריגר הודעה חדש",
+  "reply": "תגובה",
+  "copyText": "העתקת טקסט",
+  "copyTextSubtitle": "לחיצה ארוכה מעתיקה יחד עם שם המשתמש",
+  "deleteMessage": "מחיקת ההודעה",
+  "mentionUser": "אזכור המשתמש",
+  "copyMessageId": "העתקת מזהה ההודעה",
+  "theme": "ערכת נושא",
+  "userTrigger": "טריגר משתמש",
+  "userTriggers": "טריגרים למשתמשים",
+  "chatHistory": "היסטוריית צ׳אט",
+  "login": "שם משתמש",
+  "newUserTrigger": "טריגר משתמש חדש",
+  "ban": "הרחקה",
+  "unban": "ביטול הרחקה",
+  "timeoutUserForDuration": "השעיית המשתמש ל-{duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "הצ׳אט נוקה",
+  "permabanned": "הרחקה לצמיתות",
+  "bannedForDuration": "הרחקה ל-{duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "replyingTo": "תגובה אל",
+  "blockedMessage": "הודעה חסומה",
+  "showMessage": "הצגת ההודעה",
+  "hideMessage": "הסתרת ההודעה",
+  "scrollToBottom": "גלילה לסוף",
+  "startUsingTheApp": "כדי להתחיל להשתמש באפליקציה, יש להוסיף חשבון למטה.",
+  "chatSettings": "הגדרות צ׳אט",
+  "autocompleteUsersWithAt": "השלמה אוטומטית של משתמשים עם @",
+  "autocompleteEmotesWithColon": "השלמה אוטומטית של אימוטים עם :",
+  "language": "שפה",
+  "locale": "שפה ואזור",
+  "systemDefault": "ברירת המחדל של המערכת",
+  "justDefault": "ברירת מחדל",
+  "notifications": "התראות",
+  "noNotifications": "מישהו, איפשהו, יזכיר אותך מתישהו.",
+  "backgroundNotifications": "התראות ברקע",
+  "optionNotAvailableOnYourPlatform": "האפשרות הזו אינה זמינה בפלטפורמה שלך.",
+  "optionNotAvailablePaywalled": "האפשרות הזו זמינה רק לתומכי ColdChat.",
+  "clearAll": "ניקוי הכול",
+  "cache": "מטמון",
+  "clearCache": "ניקוי המטמון",
+  "chatters": "משתתפי הצ׳אט",
+  "lastSeenAgo": "פעילות אחרונה: לפני {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "קרדיטים",
+  "search": "חיפוש",
+  "emoteMenuButton": "כפתור תפריט האימוטים",
+  "emoteMenuButtonGrayscale": "הצגת כפתור תפריט האימוטים בגווני אפור",
+  "chooseEmoteMenuButton": "הקשה על אימוט תהפוך אותו לכפתור תפריט האימוטים",
+  "resetToKappa": "איפוס ל-Kappa",
+  "emoteMenuButtonDownloadFailed": "לא ניתן להוריד את האימוט. הכפתור לא שונה.",
+  "takePhoto": "צילום תמונה",
+  "chooseFromLibrary": "בחירה מהספרייה",
+  "cameraUnavailable": "לא ניתן לפתוח את המצלמה. יש לוודא של-ColdChat יש גישה למצלמה.",
+  "about": "אודות",
+  "sourceCode": "קוד מקור",
+  "license": "רישיון",
+  "basedOnChatsen": "מבוסס על Chatsen",
+  "openSourceLicenses": "רישיונות קוד פתוח",
+  "aboutLegalese": "ColdChat היא תוכנה חופשית: מותר להפיץ אותה מחדש ולשנות אותה בהתאם לתנאי GNU Affero General Public License, גרסה 3. היא מסופקת ללא כל אחריות.",
+  "unblock": "ביטול חסימה",
+  "report": "דיווח",
+  "reportUserTitle": "דיווח על {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Twitch מטפלת בדיווחים. יש לפתוח את הערוץ של {name} ב-Twitch ולבחור שם ״דיווח״. אפשר גם לחסום את {name} כאן כדי להסתיר את ההודעות.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "פתיחה ב-Twitch",
+  "blockFailed": "לא ניתן לשנות את רשימת החסימות. יש לבדוק את החיבור ולנסות שוב.",
+  "contact": "יצירת קשר ומשוב",
+  "whisper": "לחישה",
+  "whisperTo": "לחישה אל {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "לחישה מ-{name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "פתיחה",
+  "userCard": "כרטיס משתמש",
+  "closeConversation": "סגירת השיחה",
+  "closeConversationSubtitle": "ההודעות נשמרות במכשיר הזה ויחזרו עם הלחישה הבאה.",
+  "deleteConversation": "מחיקת השיחה",
+  "deleteConversationSubtitle": "מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.",
+  "whisperNeedsLogin": "כדי לשלוח לחישות, יש להתחבר עם Twitch.",
+  "whisperNeedsScope": "כדי לשלוח ולקבל לחישות, יש להתחבר מחדש. ההתחברות הנוכחית היא מלפני ש-ColdChat תמכה בהן.",
+  "whisperUserNotFound": "אין משתמש Twitch בשם הזה.",
+  "whisperFailed": "הלחישה לא נשלחה: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "לחישות שנשלחו אליך בזמן ש-ColdChat הייתה סגורה לא מופיעות כאן, כי Twitch לא משתפת את היסטוריית הלחישות עם אפליקציות. אפשר לקרוא אותן ב-Twitch, מאחורי סמל הלחישות בפינה הימנית העליונה.",
+  "gotIt": "הבנתי",
+  "openTwitch": "פתיחת Twitch",
+  "showImage": "הצגת התמונה · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "הצגת תמונות מקישורים",
+  "showImagesFromLinksSubtitle": "Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.",
+  "showImagesAutomatically": "להציג תמונות מקישורים באופן אוטומטי?",
+  "turnOn": "הפעלה"
 }

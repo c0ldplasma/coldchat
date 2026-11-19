@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Logget ind som {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Logget ind via {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Servicevilkår",
-  "privacyPolicy": "Fortrolighedspolitik",
+  "privacyPolicy": "Privatlivspolitik",
   "settings": "Indstillinger",
-  "expiresNever": "Aldrig udløber",
+  "expiresNever": "Udløber aldrig",
+  "loginExpired": "Login udløbet",
+  "loginExpiredDescription": "Twitch afviste login for {login}. Chatten forbliver afbrudt, indtil du logger ind igen.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Login mislykkedes",
+  "signInAgain": "Log ind",
+  "uploadingTo": "Uploader til {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Behandler…",
+  "uploadFailed": "Upload mislykkedes",
+  "uploadDone": "Uploadet",
+  "uploadRetry": "Prøv igen",
+  "uploadDismiss": "Luk",
+  "uploadCancel": "Annuller upload",
+  "uploadErrorOffline": "Ingen internetforbindelse",
+  "uploadErrorTimeout": "{host} svarer ikke",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} afviste uploaden (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} sendte et uventet svar",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Kunne ikke oprette forbindelse til {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Kunne ikke læse filen",
+  "uploadErrorUnknown": "Upload til {host} mislykkedes",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Detaljer",
+  "uploadRetryingWith": "Prøver igen med {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
   "expiresIn": "Udløber om {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Luk",
   "add": "Tilføj",
-  "cancel": "Afbryd",
-  "tokenInput": "Token indsat",
+  "cancel": "Annuller",
+  "tokenInput": "Indtast token",
   "account": "Konto",
-  "refreshAccount": "Opdatere konto",
-  "removeAccount": "Fjern Konto",
-  "addAnotherAccount": "Tilføj en anden kanal",
-  "verifiedUserData": "Verificeret bruger data!",
+  "refreshAccount": "Opdater konto",
+  "removeAccount": "Fjern konto",
+  "addAnotherAccount": "Tilføj en konto mere",
+  "verifiedUserData": "Brugerdata bekræftet!",
   "loggedInAs": "Logget ind som {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "En fejl har opstået, da verificering af brugerdata:",
-  "verifyingUserData": "Verificere dine data...",
-  "verifiedUserToken": "Verificere bruger-token!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "En systemfejl af indlæsning af konto:",
-  "verifyingUserToken": "Bekræfter dine data...",
+  "anErrorHasOccuredWhenVerifyingUserData": "Der opstod en fejl under bekræftelse af brugerdata:",
+  "verifyingUserData": "Bekræfter brugerdata...",
+  "verifiedUserToken": "Brugertoken bekræftet!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Der opstod en fejl under bekræftelse af brugertoken:",
+  "verifyingUserToken": "Bekræfter brugertoken...",
   "searchForChannels": "Søg efter kanaler",
   "recommendedChannels": "Anbefalede kanaler",
   "popularChannels": "Populære kanaler",
-  "channel": "Channel",
-  "leaveChannel": "Leave channel",
-  "joinUser": "Join {user}",
+  "channel": "Kanal",
+  "leaveChannel": "Forlad kanal",
+  "joinUser": "Deltag i {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Spell check failed! Did you mean to search for {username}?",
+  "spellCheckFailed": "Stavekontrollen mislykkedes! Mente du {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Join {channel}",
+  "joinChannelName": "Deltag i {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Send message in {channel}",
+  "sendMessageIn": "Send besked i {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Light",
-  "dark": "Dark",
+  "light": "Lyst",
+  "dark": "Mørkt",
   "system": "System",
-  "appearance": "Appearance",
-  "highContrast": "High contrast",
-  "customCommand": "Custom command",
-  "customCommands": "Custom commands",
-  "newCustomCommand": "New custom command",
-  "commandTrigger": "Trigger",
-  "command": "Command",
-  "save": "Save",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "appearance": "Udseende",
+  "highContrast": "Høj kontrast",
+  "customCommand": "Egen kommando",
+  "customCommands": "Egne kommandoer",
+  "newCustomCommand": "Ny kommando",
+  "commandTrigger": "Udløser",
+  "command": "Kommando",
+  "save": "Gem",
+  "openInBrowser": "Åbn i browser",
+  "messageAppearance": "Beskeders udseende",
+  "showTimestamps": "Vis tidsstempler",
+  "compactMessages": "Kompakte beskeder",
+  "showBadges": "Vis emblemer",
+  "messageTrigger": "Beskedudløser",
+  "pattern": "Mønster",
+  "mention": "Omtale",
+  "block": "Bloker",
+  "enableRegex": "Brug regex",
+  "caseSensitive": "Skeln mellem store og små bogstaver",
+  "messageTriggers": "Beskedudløsere",
+  "newMessageTrigger": "Ny beskedudløser",
+  "reply": "Svar",
+  "copyText": "Kopier tekst",
+  "copyTextSubtitle": "Hold nede for at kopiere teksten med brugernavn",
+  "deleteMessage": "Slet besked",
+  "mentionUser": "Omtal bruger",
+  "copyMessageId": "Kopier besked-id",
+  "theme": "Tema",
+  "userTrigger": "Brugerudløser",
+  "userTriggers": "Brugerudløsere",
+  "chatHistory": "Chathistorik",
+  "login": "Brugernavn",
+  "newUserTrigger": "Ny brugerudløser",
+  "ban": "Udeluk",
+  "unban": "Ophæv udelukkelse",
+  "timeoutUserForDuration": "Giv bruger timeout i {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "Chatten blev ryddet",
+  "permabanned": "permanent udelukket",
+  "bannedForDuration": "udelukket i {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
+  "replyingTo": "Svarer på",
+  "blockedMessage": "Blokeret besked",
+  "showMessage": "Vis besked",
+  "hideMessage": "Skjul besked",
+  "scrollToBottom": "Rul til bunden",
+  "startUsingTheApp": "Tilføj en konto herunder for at komme i gang med appen.",
+  "chatSettings": "Chatindstillinger",
+  "autocompleteUsersWithAt": "Autofuldfør brugere med @",
+  "autocompleteEmotesWithColon": "Autofuldfør emotes med :",
+  "language": "Sprog",
+  "locale": "Område",
+  "systemDefault": "Systemstandard",
+  "justDefault": "Standard",
+  "notifications": "Notifikationer",
+  "noNotifications": "En eller anden, et eller andet sted, nævner dig en dag.",
+  "backgroundNotifications": "Notifikationer i baggrunden",
+  "optionNotAvailableOnYourPlatform": "Denne indstilling er ikke tilgængelig på din platform.",
+  "optionNotAvailablePaywalled": "Denne indstilling er kun for ColdChat-supportere.",
+  "clearAll": "Ryd alt",
   "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "clearCache": "Ryd cache",
+  "chatters": "Chattere",
+  "lastSeenAgo": "Sidst set for {time} siden",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Krediteringer",
+  "search": "Søg",
+  "emoteMenuButton": "Knap til emote-menuen",
+  "emoteMenuButtonGrayscale": "Vis knappen til emote-menuen i gråtoner",
+  "chooseEmoteMenuButton": "Tryk på en emote for at bruge den som knap til emote-menuen",
+  "resetToKappa": "Nulstil til Kappa",
+  "emoteMenuButtonDownloadFailed": "Kunne ikke downloade den emote. Knappen blev ikke ændret.",
+  "takePhoto": "Tag billede",
+  "chooseFromLibrary": "Vælg fra biblioteket",
+  "cameraUnavailable": "Kameraet kunne ikke åbnes. Tjek, at ColdChat har adgang til kameraet.",
+  "about": "Om",
+  "sourceCode": "Kildekode",
+  "license": "Licens",
+  "basedOnChatsen": "Baseret på Chatsen",
+  "openSourceLicenses": "Open source-licenser",
+  "aboutLegalese": "ColdChat er fri software: Du må videredistribuere og ændre den under betingelserne i GNU Affero General Public License, version 3. Den leveres UDEN NOGEN FORM FOR GARANTI.",
+  "unblock": "Fjern blokering",
+  "report": "Anmeld",
+  "reportUserTitle": "Anmeld {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Anmeldelser håndteres af Twitch. Åbn kanalen for {name} på Twitch, og vælg Anmeld dér. Du kan også blokere {name} her for at skjule beskederne.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Åbn på Twitch",
+  "blockFailed": "Bloklisten kunne ikke ændres. Tjek din forbindelse, og prøv igen.",
+  "contact": "Kontakt og feedback",
+  "whisper": "Hvisk",
+  "whisperTo": "Hvisk til {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Hviskebesked fra {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Åbn",
+  "userCard": "Brugerkort",
+  "closeConversation": "Luk samtale",
+  "closeConversationSubtitle": "Beskederne bliver på denne enhed og kommer tilbage med næste hviskebesked.",
+  "deleteConversation": "Slet samtale",
+  "deleteConversationSubtitle": "Sletter beskederne fra denne enhed. Twitch gemmer ingen historik over hviskebeskeder.",
+  "whisperNeedsLogin": "Log ind med Twitch for at sende hviskebeskeder.",
+  "whisperNeedsScope": "Log ind igen for at sende og modtage hviskebeskeder. Dit login er fra før ColdChat understøttede dem.",
+  "whisperUserNotFound": "Der findes ingen Twitch-bruger med det navn.",
+  "whisperFailed": "Hviskebesked ikke sendt: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Hviskebeskeder, du får, mens ColdChat er lukket, vises ikke her, fordi Twitch ikke deler historikken med apps. Du kan læse dem på Twitch bag hviske-ikonet øverst til højre.",
+  "gotIt": "Forstået",
+  "openTwitch": "Åbn Twitch",
+  "showImage": "Vis billede · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Vis billeder fra links",
+  "showImagesFromLinksSubtitle": "Twitch tjekker ikke disse billeder. De kan være upassende.",
+  "showImagesAutomatically": "Vis billeder fra links automatisk?",
+  "turnOn": "Slå til"
 }

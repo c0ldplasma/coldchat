@@ -184,7 +184,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String spellCheckFailed(String username) {
-    return 'Rechtschreibprüfung fehlgeschlagen! Meinen Sie $username?';
+    return 'Rechtschreibprüfung fehlgeschlagen! Meinst du $username?';
   }
 
   @override
@@ -300,7 +300,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chatHistory => 'Chatverlauf';
 
   @override
-  String get login => 'Login';
+  String get login => 'Nutzername';
 
   @override
   String get newUserTrigger => 'Neuer Auslöser';
@@ -344,7 +344,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get startUsingTheApp =>
-      'Fügen Sie unten ein Konto hinzu, um die App zu verwenden.';
+      'Füge unten einen Account hinzu, um die App zu nutzen.';
 
   @override
   String get chatSettings => 'Chateinstellungen';
@@ -371,14 +371,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notifications => 'Benachrichtigungen';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications =>
+      'Irgendwer, irgendwo wird dich eines Tages erwähnen.';
 
   @override
   String get backgroundNotifications => 'Hintergrundbenachrichtigungen';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'Diese Option ist nicht für Ihre Plattform verfügbar.';
+      'Diese Option ist auf deiner Plattform nicht verfügbar.';
 
   @override
   String get optionNotAvailablePaywalled =>
@@ -391,7 +392,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cache => 'Cache';
 
   @override
-  String get clearCache => 'Chache löschen';
+  String get clearCache => 'Cache leeren';
 
   @override
   String get chatters => 'Chatter';
@@ -405,7 +406,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get credits => 'Credits';
 
   @override
-  String get search => 'Search';
+  String get search => 'Suchen';
 
   @override
   String get emoteMenuButton => 'Emote-Menü-Button';

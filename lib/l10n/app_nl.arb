@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
   "loggedInVia": "Ingelogd via {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Servicevoorwaarden",
   "privacyPolicy": "Privacybeleid",
   "settings": "Instellingen",
   "expiresNever": "Verloopt nooit",
-  "expiresIn": "Verloopt in {time}",
+  "loginExpired": "Login verlopen",
+  "loginExpiredDescription": "Twitch heeft de login voor {login} geweigerd. De chat blijft verbroken tot je opnieuw inlogt.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Inloggen mislukt",
+  "signInAgain": "Inloggen",
+  "uploadingTo": "Uploaden naar {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Verwerken…",
+  "uploadFailed": "Uploaden mislukt",
+  "uploadDone": "Geüpload",
+  "uploadRetry": "Opnieuw proberen",
+  "uploadDismiss": "Sluiten",
+  "uploadCancel": "Upload annuleren",
+  "uploadErrorOffline": "Geen internetverbinding",
+  "uploadErrorTimeout": "{host} reageert niet",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} heeft de upload geweigerd (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} gaf een onverwacht antwoord",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Kan geen verbinding maken met {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Kan het bestand niet lezen",
+  "uploadErrorUnknown": "Uploaden naar {host} mislukt",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Details",
+  "uploadRetryingWith": "Opnieuw proberen met {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Verloopt over {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Sluiten",
   "add": "Toevoegen",
   "cancel": "Annuleren",
-  "tokenInput": "Token input",
+  "tokenInput": "Token invoeren",
   "account": "Account",
-  "refreshAccount": "Ververs account",
-  "removeAccount": "Verwijder account",
-  "addAnotherAccount": "Ander account toevoegen",
-  "verifiedUserData": "Geverifieerde gebruikersgegevens!",
+  "refreshAccount": "Account vernieuwen",
+  "removeAccount": "Account verwijderen",
+  "addAnotherAccount": "Nog een account toevoegen",
+  "verifiedUserData": "Gebruikersgegevens geverifieerd!",
   "loggedInAs": "Ingelogd als {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Er is een fout opgetreden bij het verifiëren van gebruikersgegevens:",
+  "anErrorHasOccuredWhenVerifyingUserData": "Er is een fout opgetreden bij het verifiëren van de gebruikersgegevens:",
   "verifyingUserData": "Gebruikersgegevens verifiëren...",
-  "verifiedUserToken": "Geverifieerde gebruikerstoken!",
+  "verifiedUserToken": "Gebruikerstoken geverifieerd!",
   "anErrorHasOccuredWhenVerifyingUserToken": "Er is een fout opgetreden bij het verifiëren van de gebruikerstoken:",
   "verifyingUserToken": "Gebruikerstoken verifiëren...",
-  "searchForChannels": "Zoeken naar kanalen",
+  "searchForChannels": "Kanalen zoeken",
   "recommendedChannels": "Aanbevolen kanalen",
   "popularChannels": "Populaire kanalen",
-  "channel": "Channel",
-  "leaveChannel": "Leave channel",
-  "joinUser": "Join {user}",
+  "channel": "Kanaal",
+  "leaveChannel": "Kanaal verlaten",
+  "joinUser": "Kanaal van {user} openen",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Spell check failed! Did you mean to search for {username}?",
+  "spellCheckFailed": "Spellingcontrole mislukt! Bedoelde je {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Join {channel}",
+  "joinChannelName": "{channel} openen",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Send message in {channel}",
+  "sendMessageIn": "Bericht sturen in {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Light",
-  "dark": "Dark",
-  "system": "System",
-  "appearance": "Appearance",
-  "highContrast": "High contrast",
-  "customCommand": "Custom command",
-  "customCommands": "Custom commands",
-  "newCustomCommand": "New custom command",
+  "light": "Licht",
+  "dark": "Donker",
+  "system": "Systeem",
+  "appearance": "Weergave",
+  "highContrast": "Hoog contrast",
+  "customCommand": "Eigen commando",
+  "customCommands": "Eigen commando's",
+  "newCustomCommand": "Nieuw commando",
   "commandTrigger": "Trigger",
-  "command": "Command",
-  "save": "Save",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "command": "Commando",
+  "save": "Opslaan",
+  "openInBrowser": "Openen in browser",
+  "messageAppearance": "Berichtweergave",
+  "showTimestamps": "Tijdstempels tonen",
+  "compactMessages": "Compacte berichten",
+  "showBadges": "Badges tonen",
+  "messageTrigger": "Berichttrigger",
+  "pattern": "Patroon",
+  "mention": "Vermelding",
+  "block": "Blokkeren",
+  "enableRegex": "Regex gebruiken",
+  "caseSensitive": "Hoofdlettergevoelig",
+  "messageTriggers": "Berichttriggers",
+  "newMessageTrigger": "Nieuwe berichttrigger",
+  "reply": "Beantwoorden",
+  "copyText": "Tekst kopiëren",
+  "copyTextSubtitle": "Houd vast om de tekst met gebruikersnaam te kopiëren",
+  "deleteMessage": "Bericht verwijderen",
+  "mentionUser": "Gebruiker vermelden",
+  "copyMessageId": "Bericht-ID kopiëren",
+  "theme": "Thema",
+  "userTrigger": "Gebruikerstrigger",
+  "userTriggers": "Gebruikerstriggers",
+  "chatHistory": "Chatgeschiedenis",
+  "login": "Gebruikersnaam",
+  "newUserTrigger": "Nieuwe gebruikerstrigger",
+  "ban": "Verbannen",
+  "unban": "Verbanning opheffen",
+  "timeoutUserForDuration": "Gebruiker {duration} time-out geven",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "Chat is gewist",
+  "permabanned": "permanent verbannen",
+  "bannedForDuration": "verbannen voor {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
+  "replyingTo": "Antwoord aan",
+  "blockedMessage": "Geblokkeerd bericht",
+  "showMessage": "Bericht tonen",
+  "hideMessage": "Bericht verbergen",
+  "scrollToBottom": "Naar beneden scrollen",
+  "startUsingTheApp": "Voeg hieronder een account toe om de app te gebruiken.",
+  "chatSettings": "Chatinstellingen",
+  "autocompleteUsersWithAt": "Gebruikers aanvullen met @",
+  "autocompleteEmotesWithColon": "Emotes aanvullen met :",
+  "language": "Taal",
+  "locale": "Regio",
+  "systemDefault": "Systeemstandaard",
+  "justDefault": "Standaard",
+  "notifications": "Meldingen",
+  "noNotifications": "Iemand, ergens, gaat je ooit vermelden.",
+  "backgroundNotifications": "Meldingen op de achtergrond",
+  "optionNotAvailableOnYourPlatform": "Deze optie is niet beschikbaar op jouw platform.",
+  "optionNotAvailablePaywalled": "Deze optie is alleen voor ColdChat-supporters.",
+  "clearAll": "Alles wissen",
   "cache": "Cache",
-  "clearCache": "Clear cache",
+  "clearCache": "Cache wissen",
   "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "lastSeenAgo": "{time} geleden voor het laatst gezien",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "credits": "Credits",
-  "search": "Search"
+  "search": "Zoeken",
+  "emoteMenuButton": "Emotemenuknop",
+  "emoteMenuButtonGrayscale": "Emotemenuknop in grijstinten tonen",
+  "chooseEmoteMenuButton": "Tik op een emote om die als emotemenuknop te gebruiken",
+  "resetToKappa": "Terugzetten naar Kappa",
+  "emoteMenuButtonDownloadFailed": "Kan die emote niet downloaden. De knop is niet gewijzigd.",
+  "takePhoto": "Foto maken",
+  "chooseFromLibrary": "Kiezen uit bibliotheek",
+  "cameraUnavailable": "De camera kan niet worden geopend. Controleer of ColdChat toegang heeft tot de camera.",
+  "about": "Over",
+  "sourceCode": "Broncode",
+  "license": "Licentie",
+  "basedOnChatsen": "Gebaseerd op Chatsen",
+  "openSourceLicenses": "Opensourcelicenties",
+  "aboutLegalese": "ColdChat is vrije software: je mag het verder verspreiden en aanpassen onder de voorwaarden van de GNU Affero General Public License, versie 3. Het wordt geleverd ZONDER ENIGE GARANTIE.",
+  "unblock": "Deblokkeren",
+  "report": "Rapporteren",
+  "reportUserTitle": "{name} rapporteren",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Meldingen worden door Twitch afgehandeld. Open het kanaal van {name} op Twitch en kies daar Rapporteren. Je kunt {name} hier ook blokkeren om de berichten te verbergen.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Openen op Twitch",
+  "blockFailed": "De blokkeerlijst kan niet worden gewijzigd. Controleer je verbinding en probeer het opnieuw.",
+  "contact": "Contact & feedback",
+  "whisper": "Fluisteren",
+  "whisperTo": "Fluisteren naar {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Fluisterbericht van {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Openen",
+  "userCard": "Gebruikerskaart",
+  "closeConversation": "Gesprek sluiten",
+  "closeConversationSubtitle": "De berichten blijven op dit apparaat en komen terug bij het volgende fluisterbericht.",
+  "deleteConversation": "Gesprek verwijderen",
+  "deleteConversationSubtitle": "Verwijdert de berichten van dit apparaat. Twitch bewaart geen geschiedenis van fluisterberichten.",
+  "whisperNeedsLogin": "Log in met Twitch om fluisterberichten te sturen.",
+  "whisperNeedsScope": "Log opnieuw in om fluisterberichten te sturen en te ontvangen. Je login is van voordat ColdChat ze ondersteunde.",
+  "whisperUserNotFound": "Er is geen Twitch-gebruiker met die naam.",
+  "whisperFailed": "Fluisterbericht niet verstuurd: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Fluisterberichten die je krijgt terwijl ColdChat gesloten is, verschijnen hier niet, omdat Twitch de geschiedenis niet met apps deelt. Je kunt ze op Twitch lezen, achter het fluistericoon rechtsboven.",
+  "gotIt": "Begrepen",
+  "openTwitch": "Twitch openen",
+  "showImage": "Afbeelding tonen · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Afbeeldingen uit links tonen",
+  "showImagesFromLinksSubtitle": "Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.",
+  "showImagesAutomatically": "Afbeeldingen uit links automatisch tonen?",
+  "turnOn": "Inschakelen"
 }

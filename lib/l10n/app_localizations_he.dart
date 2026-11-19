@@ -17,541 +17,542 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return 'מחובר דרך $provider';
+    return 'התחברת דרך $provider';
   }
 
   @override
   String get termsOfService => 'תנאי השירות';
 
   @override
-  String get privacyPolicy => 'מדיניות פרטיות';
+  String get privacyPolicy => 'מדיניות הפרטיות';
 
   @override
   String get settings => 'הגדרות';
 
   @override
-  String get expiresNever => 'לעולם לא יפוג';
+  String get expiresNever => 'ללא תפוגה';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'פג תוקף ההתחברות';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitch דחתה את ההתחברות של $login. הצ׳אט יישאר מנותק עד להתחברות מחדש.';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'ההתחברות נכשלה';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'התחברות';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return 'העלאה אל $host';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => 'בעיבוד…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'ההעלאה נכשלה';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'הועלה';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => 'ניסיון חוזר';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => 'סגירה';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'ביטול ההעלאה';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'אין חיבור לאינטרנט';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$host לא מגיב';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$host דחה את ההעלאה (HTTP $status)';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$host שלח תגובה לא צפויה';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return 'לא ניתן להתחבר אל $host';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'לא ניתן לקרוא את הקובץ';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return 'ההעלאה אל $host נכשלה';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => 'פרטים';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return 'ניסיון חוזר עם $host…';
   }
 
   @override
   String expiresIn(String time) {
-    return 'פג תוקף ב-$time';
+    return 'פג תוקף בעוד $time';
   }
 
   @override
-  String get close => 'סגור';
+  String get close => 'סגירה';
 
   @override
-  String get add => 'הוסף';
+  String get add => 'הוספה';
 
   @override
   String get cancel => 'ביטול';
 
   @override
-  String get tokenInput => 'טוקן';
+  String get tokenInput => 'הזנת טוקן';
 
   @override
   String get account => 'חשבון';
 
   @override
-  String get refreshAccount => 'רענן חשבון';
+  String get refreshAccount => 'רענון החשבון';
 
   @override
-  String get removeAccount => 'הסר חשבון';
+  String get removeAccount => 'הסרת החשבון';
 
   @override
-  String get addAnotherAccount => 'הוסף חשבון נוסף';
+  String get addAnotherAccount => 'הוספת חשבון נוסף';
 
   @override
-  String get verifiedUserData => 'נתוני משתמש מאומתים!';
+  String get verifiedUserData => 'נתוני המשתמש אומתו!';
 
   @override
   String loggedInAs(String user) {
-    return 'מחובר כ$user';
+    return 'התחברת בתור $user';
   }
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserData =>
-      'שגיאה בעת אימות נתוני משתמש:';
+      'אירעה שגיאה באימות נתוני המשתמש:';
 
   @override
-  String get verifyingUserData => 'מאמת את נתוני המשתמש...';
+  String get verifyingUserData => 'אימות נתוני המשתמש...';
 
   @override
-  String get verifiedUserToken => 'טוקן משתמש מאומת!';
+  String get verifiedUserToken => 'טוקן המשתמש אומת!';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
-      'שגיאה בעת אימות טוקן משתמש:';
+      'אירעה שגיאה באימות טוקן המשתמש:';
 
   @override
-  String get verifyingUserToken => 'מאמת טוקן משתמש...';
+  String get verifyingUserToken => 'אימות טוקן המשתמש...';
 
   @override
-  String get searchForChannels => 'חפש ערוצים';
+  String get searchForChannels => 'חיפוש ערוצים';
 
   @override
   String get recommendedChannels => 'ערוצים מומלצים';
 
   @override
-  String get popularChannels => 'ערוצים פופולרים';
+  String get popularChannels => 'ערוצים פופולריים';
 
   @override
   String get channel => 'ערוץ';
 
   @override
-  String get leaveChannel => 'עזוב ערוץ';
+  String get leaveChannel => 'יציאה מהערוץ';
 
   @override
   String joinUser(String user) {
-    return 'הצטרף ל-$user';
+    return 'הצטרפות אל $user';
   }
 
   @override
   String spellCheckFailed(String username) {
-    return 'בדיקת האיות נכשלה! האם התכוונת לחפש את $username?';
+    return 'בדיקת האיות נכשלה! אולי הכוונה ל-$username?';
   }
 
   @override
   String joinChannelName(String channel) {
-    return 'הצטרף ל-$channel';
+    return 'הצטרפות אל $channel';
   }
 
   @override
   String sendMessageIn(String channel) {
-    return 'שלח הודעה ב-$channel';
+    return 'שליחת הודעה ב-$channel';
   }
 
   @override
-  String get light => 'Light';
+  String get light => 'בהיר';
 
   @override
-  String get dark => 'Dark';
+  String get dark => 'כהה';
 
   @override
-  String get system => 'System';
+  String get system => 'לפי המערכת';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'מראה';
 
   @override
-  String get highContrast => 'High contrast';
+  String get highContrast => 'ניגודיות גבוהה';
 
   @override
-  String get customCommand => 'Custom command';
+  String get customCommand => 'פקודה מותאמת אישית';
 
   @override
-  String get customCommands => 'Custom commands';
+  String get customCommands => 'פקודות מותאמות אישית';
 
   @override
-  String get newCustomCommand => 'New custom command';
+  String get newCustomCommand => 'פקודה מותאמת אישית חדשה';
 
   @override
-  String get commandTrigger => 'Trigger';
+  String get commandTrigger => 'מילת הפעלה';
 
   @override
-  String get command => 'Command';
+  String get command => 'פקודה';
 
   @override
-  String get save => 'Save';
+  String get save => 'שמירה';
 
   @override
-  String get openInBrowser => 'Open in browser';
+  String get openInBrowser => 'פתיחה בדפדפן';
 
   @override
-  String get messageAppearance => 'Message appearance';
+  String get messageAppearance => 'מראה ההודעות';
 
   @override
-  String get showTimestamps => 'Show timestamps';
+  String get showTimestamps => 'הצגת שעה';
 
   @override
-  String get compactMessages => 'Compact messages';
+  String get compactMessages => 'הודעות דחוסות';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'הצגת תגים';
 
   @override
-  String get messageTrigger => 'Message trigger';
+  String get messageTrigger => 'טריגר הודעה';
 
   @override
-  String get pattern => 'Pattern';
+  String get pattern => 'תבנית';
 
   @override
-  String get mention => 'Mention';
+  String get mention => 'אזכור';
 
   @override
-  String get block => 'Block';
+  String get block => 'חסימה';
 
   @override
-  String get enableRegex => 'Enable regex';
+  String get enableRegex => 'שימוש ב-regex';
 
   @override
-  String get caseSensitive => 'Case sensitive';
+  String get caseSensitive => 'תלוי רישיות';
 
   @override
-  String get messageTriggers => 'Message triggers';
+  String get messageTriggers => 'טריגרים להודעות';
 
   @override
-  String get newMessageTrigger => 'New message trigger';
+  String get newMessageTrigger => 'טריגר הודעה חדש';
 
   @override
-  String get reply => 'Reply';
+  String get reply => 'תגובה';
 
   @override
-  String get copyText => 'Copy text';
+  String get copyText => 'העתקת טקסט';
 
   @override
-  String get copyTextSubtitle => 'Hold to copy message text with username';
+  String get copyTextSubtitle => 'לחיצה ארוכה מעתיקה יחד עם שם המשתמש';
 
   @override
-  String get deleteMessage => 'Delete message';
+  String get deleteMessage => 'מחיקת ההודעה';
 
   @override
-  String get mentionUser => 'Mention user';
+  String get mentionUser => 'אזכור המשתמש';
 
   @override
-  String get copyMessageId => 'Copy message ID';
+  String get copyMessageId => 'העתקת מזהה ההודעה';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'ערכת נושא';
 
   @override
-  String get userTrigger => 'User trigger';
+  String get userTrigger => 'טריגר משתמש';
 
   @override
-  String get userTriggers => 'User triggers';
+  String get userTriggers => 'טריגרים למשתמשים';
 
   @override
-  String get chatHistory => 'Chat history';
+  String get chatHistory => 'היסטוריית צ׳אט';
 
   @override
-  String get login => 'Login';
+  String get login => 'שם משתמש';
 
   @override
-  String get newUserTrigger => 'New user trigger';
+  String get newUserTrigger => 'טריגר משתמש חדש';
 
   @override
-  String get ban => 'Ban';
+  String get ban => 'הרחקה';
 
   @override
-  String get unban => 'Unban';
+  String get unban => 'ביטול הרחקה';
 
   @override
   String timeoutUserForDuration(String duration) {
-    return 'Timeout user for $duration';
+    return 'השעיית המשתמש ל-$duration';
   }
 
   @override
-  String get chatCleared => 'Chat was cleared';
+  String get chatCleared => 'הצ׳אט נוקה';
 
   @override
-  String get permabanned => 'permabanned';
+  String get permabanned => 'הרחקה לצמיתות';
 
   @override
   String bannedForDuration(String duration) {
-    return 'banned for $duration';
+    return 'הרחקה ל-$duration';
   }
 
   @override
-  String get replyingTo => 'Replying to';
+  String get replyingTo => 'תגובה אל';
 
   @override
-  String get blockedMessage => 'Blocked message';
+  String get blockedMessage => 'הודעה חסומה';
 
   @override
-  String get showMessage => 'Show message';
+  String get showMessage => 'הצגת ההודעה';
 
   @override
-  String get hideMessage => 'Hide message';
+  String get hideMessage => 'הסתרת ההודעה';
 
   @override
-  String get scrollToBottom => 'Scroll to bottom';
+  String get scrollToBottom => 'גלילה לסוף';
 
   @override
   String get startUsingTheApp =>
-      'To start using the app, add an account below.';
+      'כדי להתחיל להשתמש באפליקציה, יש להוסיף חשבון למטה.';
 
   @override
-  String get chatSettings => 'Chat settings';
+  String get chatSettings => 'הגדרות צ׳אט';
 
   @override
-  String get autocompleteUsersWithAt => 'Autocomplete users with @';
+  String get autocompleteUsersWithAt => 'השלמה אוטומטית של משתמשים עם @';
 
   @override
-  String get autocompleteEmotesWithColon => 'Autocomplete emotes with :';
+  String get autocompleteEmotesWithColon => 'השלמה אוטומטית של אימוטים עם :';
 
   @override
-  String get language => 'Language';
+  String get language => 'שפה';
 
   @override
-  String get locale => 'Locale';
+  String get locale => 'שפה ואזור';
 
   @override
-  String get systemDefault => 'System default';
+  String get systemDefault => 'ברירת המחדל של המערכת';
 
   @override
-  String get justDefault => 'Default';
+  String get justDefault => 'ברירת מחדל';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'התראות';
 
   @override
-  String get noNotifications => 'Someone, somewhere, will mention you someday.';
+  String get noNotifications => 'מישהו, איפשהו, יזכיר אותך מתישהו.';
 
   @override
-  String get backgroundNotifications => 'Background notifications';
+  String get backgroundNotifications => 'התראות ברקע';
 
   @override
   String get optionNotAvailableOnYourPlatform =>
-      'This option is not available on your platform.';
+      'האפשרות הזו אינה זמינה בפלטפורמה שלך.';
 
   @override
   String get optionNotAvailablePaywalled =>
-      'This option is for ColdChat supporters only.';
+      'האפשרות הזו זמינה רק לתומכי ColdChat.';
 
   @override
-  String get clearAll => 'Clear all';
+  String get clearAll => 'ניקוי הכול';
 
   @override
-  String get cache => 'Cache';
+  String get cache => 'מטמון';
 
   @override
-  String get clearCache => 'Clear cache';
+  String get clearCache => 'ניקוי המטמון';
 
   @override
-  String get chatters => 'Chatters';
+  String get chatters => 'משתתפי הצ׳אט';
 
   @override
   String lastSeenAgo(String time) {
-    return 'Last seen $time ago';
+    return 'פעילות אחרונה: לפני $time';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'קרדיטים';
 
   @override
-  String get search => 'Search';
+  String get search => 'חיפוש';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'כפתור תפריט האימוטים';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale =>
+      'הצגת כפתור תפריט האימוטים בגווני אפור';
 
   @override
   String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+      'הקשה על אימוט תהפוך אותו לכפתור תפריט האימוטים';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'איפוס ל-Kappa';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'לא ניתן להוריד את האימוט. הכפתור לא שונה.';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => 'צילום תמונה';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'בחירה מהספרייה';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'לא ניתן לפתוח את המצלמה. יש לוודא של-ColdChat יש גישה למצלמה.';
 
   @override
-  String get about => 'About';
+  String get about => 'אודות';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'קוד מקור';
 
   @override
-  String get license => 'License';
+  String get license => 'רישיון';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'מבוסס על Chatsen';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'רישיונות קוד פתוח';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChat היא תוכנה חופשית: מותר להפיץ אותה מחדש ולשנות אותה בהתאם לתנאי GNU Affero General Public License, גרסה 3. היא מסופקת ללא כל אחריות.';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'ביטול חסימה';
 
   @override
-  String get report => 'Report';
+  String get report => 'דיווח';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return 'דיווח על $name';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return 'Twitch מטפלת בדיווחים. יש לפתוח את הערוץ של $name ב-Twitch ולבחור שם ״דיווח״. אפשר גם לחסום את $name כאן כדי להסתיר את ההודעות.';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'פתיחה ב-Twitch';
 
   @override
   String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+      'לא ניתן לשנות את רשימת החסימות. יש לבדוק את החיבור ולנסות שוב.';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'יצירת קשר ומשוב';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'לחישה';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return 'לחישה אל $name';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return 'לחישה מ-$name';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => 'פתיחה';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'כרטיס משתמש';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => 'סגירת השיחה';
 
   @override
   String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+      'ההודעות נשמרות במכשיר הזה ויחזרו עם הלחישה הבאה.';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => 'מחיקת השיחה';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'כדי לשלוח לחישות, יש להתחבר עם Twitch.';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'כדי לשלוח ולקבל לחישות, יש להתחבר מחדש. ההתחברות הנוכחית היא מלפני ש-ColdChat תמכה בהן.';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'אין משתמש Twitch בשם הזה.';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'הלחישה לא נשלחה: $reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'לחישות שנשלחו אליך בזמן ש-ColdChat הייתה סגורה לא מופיעות כאן, כי Twitch לא משתפת את היסטוריית הלחישות עם אפליקציות. אפשר לקרוא אותן ב-Twitch, מאחורי סמל הלחישות בפינה הימנית העליונה.';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'הבנתי';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'פתיחת Twitch';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return 'הצגת התמונה · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'הצגת תמונות מקישורים';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically => 'להציג תמונות מקישורים באופן אוטומטי?';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'הפעלה';
 }

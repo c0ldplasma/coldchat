@@ -1,19 +1,106 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Συνδέθηκε μέσω {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Σύνδεση μέσω {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
-  "termsOfService": "Όροι Χρήσης",
-  "privacyPolicy": "Πολιτική Απορρήτου",
+  "termsOfService": "Όροι χρήσης",
+  "privacyPolicy": "Πολιτική απορρήτου",
   "settings": "Ρυθμίσεις",
   "expiresNever": "Δεν λήγει ποτέ",
+  "loginExpired": "Η σύνδεση έληξε",
+  "loginExpiredDescription": "Το Twitch απέρριψε τη σύνδεση για τον λογαριασμό {login}. Η συνομιλία μένει αποσυνδεδεμένη μέχρι να συνδεθείς ξανά.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Η σύνδεση απέτυχε",
+  "signInAgain": "Σύνδεση",
+  "uploadingTo": "Μεταφόρτωση στο {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Επεξεργασία…",
+  "uploadFailed": "Η μεταφόρτωση απέτυχε",
+  "uploadDone": "Μεταφορτώθηκε",
+  "uploadRetry": "Επανάληψη",
+  "uploadDismiss": "Απόρριψη",
+  "uploadCancel": "Ακύρωση μεταφόρτωσης",
+  "uploadErrorOffline": "Δεν υπάρχει σύνδεση στο διαδίκτυο",
+  "uploadErrorTimeout": "Το {host} δεν αποκρίνεται",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "Το {host} απέρριψε τη μεταφόρτωση (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "Το {host} έστειλε μια απροσδόκητη απάντηση",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Δεν ήταν δυνατή η σύνδεση με το {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Δεν ήταν δυνατή η ανάγνωση του αρχείου",
+  "uploadErrorUnknown": "Η μεταφόρτωση στο {host} απέτυχε",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Λεπτομέρειες",
+  "uploadRetryingWith": "Νέα προσπάθεια με {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
   "expiresIn": "Λήγει σε {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Κλείσιμο",
@@ -24,49 +111,59 @@
   "refreshAccount": "Ανανέωση λογαριασμού",
   "removeAccount": "Αφαίρεση λογαριασμού",
   "addAnotherAccount": "Προσθήκη άλλου λογαριασμού",
-  "verifiedUserData": "Επαληθεύτηκαν τα δεδομένα χρήστη!",
-  "loggedInAs": "Συνδεθήκατε ως {user}",
+  "verifiedUserData": "Τα στοιχεία χρήστη επαληθεύτηκαν!",
+  "loggedInAs": "Σύνδεση ως {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Παρουσιάστηκε ένα σφάλμα κατά την επαλήθευση δεδομένων χρήστη:",
-  "verifyingUserData": "Επαλήθευση δεδομένων χρήστη...",
-  "verifiedUserToken": "Επαληθεύτηκε το token χρήστη!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Παρουσιάστηκε ένα σφάλμα κατά την επαλήθευση του token χρήστη:",
+  "anErrorHasOccuredWhenVerifyingUserData": "Παρουσιάστηκε σφάλμα κατά την επαλήθευση των στοιχείων χρήστη:",
+  "verifyingUserData": "Επαλήθευση στοιχείων χρήστη...",
+  "verifiedUserToken": "Το token χρήστη επαληθεύτηκε!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Παρουσιάστηκε σφάλμα κατά την επαλήθευση του token χρήστη:",
   "verifyingUserToken": "Επαλήθευση token χρήστη...",
-  "searchForChannels": "Αναζήτηση για κανάλια",
+  "searchForChannels": "Αναζήτηση καναλιών",
   "recommendedChannels": "Προτεινόμενα κανάλια",
   "popularChannels": "Δημοφιλή κανάλια",
   "channel": "Κανάλι",
-  "leaveChannel": "Αποχώρηση από κανάλι",
-  "joinUser": "Συμμετοχή στο {user}",
+  "leaveChannel": "Αποχώρηση από το κανάλι",
+  "joinUser": "Είσοδος στο κανάλι {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Ο ορθογραφικός έλεγχος απέτυχε! Μήπως εννοούσατε να αναζητήσετε για {username};",
+  "spellCheckFailed": "Ωπ, μάλλον ορθογραφικό λάθος! Μήπως ψάχνεις τον χρήστη {username};",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Συμμετοχή στο {channel}",
+  "joinChannelName": "Είσοδος στο {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Στείλτε μήνυμα στο {channel}",
+  "sendMessageIn": "Μήνυμα στο {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "light": "Φωτεινή",
-  "dark": "Σκοτεινή",
+  "light": "Ανοιχτό",
+  "dark": "Σκούρο",
   "system": "Συστήματος",
   "appearance": "Εμφάνιση",
   "highContrast": "Υψηλή αντίθεση",
@@ -76,74 +173,165 @@
   "commandTrigger": "Συντόμευση",
   "command": "Εντολή",
   "save": "Αποθήκευση",
-  "openInBrowser": "Άνοιγμα στον περιηγητή",
-  "messageAppearance": "Εμφάνιση μηνύματος",
-  "showTimestamps": "Εμφάνιση χρονικών σημείων",
-  "compactMessages": "Συμπιεσμένα μηνύματα",
-  "messageTrigger": "Συντόμευση μηνύματος",
+  "openInBrowser": "Άνοιγμα στο πρόγραμμα περιήγησης",
+  "messageAppearance": "Εμφάνιση μηνυμάτων",
+  "showTimestamps": "Εμφάνιση ώρας",
+  "compactMessages": "Συμπαγή μηνύματα",
+  "showBadges": "Εμφάνιση εμβλημάτων",
+  "messageTrigger": "Κανόνας μηνυμάτων",
   "pattern": "Μοτίβο",
   "mention": "Επισήμανση",
-  "block": "Μπλοκ",
-  "enableRegex": "Ενεργοποίηση regex",
+  "block": "Φραγή",
+  "enableRegex": "Χρήση regex",
   "caseSensitive": "Διάκριση πεζών-κεφαλαίων",
-  "messageTriggers": "Συντομεύσεις μηνύματος",
-  "newMessageTrigger": "Νέα συντόμευση μηνύματος",
+  "messageTriggers": "Κανόνες μηνυμάτων",
+  "newMessageTrigger": "Νέος κανόνας μηνυμάτων",
   "reply": "Απάντηση",
   "copyText": "Αντιγραφή κειμένου",
-  "copyTextSubtitle": "Κρατήστε για αντιγραφή κειμένου μηνύματος με όνομα χρήστη",
+  "copyTextSubtitle": "Κράτα πατημένο για αντιγραφή μαζί με το όνομα χρήστη",
   "deleteMessage": "Διαγραφή μηνύματος",
-  "mentionUser": "Επισήμανση χρήστη",
+  "mentionUser": "Αναφορά χρήστη",
   "copyMessageId": "Αντιγραφή ID μηνύματος",
   "theme": "Θέμα",
-  "userTrigger": "Συντόμευση χρήστη",
-  "userTriggers": "Συντομεύσεις χρήστη",
+  "userTrigger": "Κανόνας χρήστη",
+  "userTriggers": "Κανόνες χρηστών",
   "chatHistory": "Ιστορικό συνομιλίας",
-  "login": "Σύνδεση",
-  "newUserTrigger": "Νέα συντόμευση χρήστη",
+  "login": "Όνομα σύνδεσης",
+  "newUserTrigger": "Νέος κανόνας χρήστη",
   "ban": "Αποκλεισμός",
   "unban": "Άρση αποκλεισμού",
   "timeoutUserForDuration": "Timeout χρήστη για {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "Η συνομιλία εκκαθαρίστηκε",
-  "permabanned": "μόνιμα αποκλεισμένος",
+  "permabanned": "αποκλείστηκε μόνιμα",
   "bannedForDuration": "αποκλείστηκε για {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "replyingTo": "Απάντηση σε",
-  "blockedMessage": "Μπλοκαρισμένο μήνυμα",
+  "blockedMessage": "Κρυφό μήνυμα",
   "showMessage": "Εμφάνιση μηνύματος",
   "hideMessage": "Απόκρυψη μηνύματος",
-  "scrollToBottom": "Κύλιση προς τα κάτω",
-  "startUsingTheApp": "Για να ξεκινήσετε να χρησιμοποιείτε την εφαρμογή, προσθέστε έναν λογαριασμό παρακάτω.",
+  "scrollToBottom": "Μετάβαση στο τέλος",
+  "startUsingTheApp": "Για να ξεκινήσεις, πρόσθεσε έναν λογαριασμό παρακάτω.",
   "chatSettings": "Ρυθμίσεις συνομιλίας",
   "autocompleteUsersWithAt": "Αυτόματη συμπλήρωση χρηστών με @",
   "autocompleteEmotesWithColon": "Αυτόματη συμπλήρωση emote με :",
   "language": "Γλώσσα",
-  "locale": "Γλωσσικές Ρυθμίσεις",
+  "locale": "Γλώσσα και περιοχή",
   "systemDefault": "Προεπιλογή συστήματος",
-  "justDefault": "Προεπιλεγμένη",
+  "justDefault": "Προεπιλογή",
   "notifications": "Ειδοποιήσεις",
-  "noNotifications": "Κάποιος, κάπου, θα σας αναφέρει κάποια μέρα.",
-  "backgroundNotifications": "Ειδοποιήσεις παρασκηνίου",
-  "optionNotAvailableOnYourPlatform": "Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σας.",
-  "optionNotAvailablePaywalled": "Αυτή η επιλογή είναι μόνο για υποστηρικτές του ColdChat.",
+  "noNotifications": "Κάποιος, κάπου, κάποια μέρα θα σε αναφέρει.",
+  "backgroundNotifications": "Ειδοποιήσεις στο παρασκήνιο",
+  "optionNotAvailableOnYourPlatform": "Αυτή η επιλογή δεν είναι διαθέσιμη στην πλατφόρμα σου.",
+  "optionNotAvailablePaywalled": "Αυτή η επιλογή είναι μόνο για όσους υποστηρίζουν το ColdChat.",
   "clearAll": "Εκκαθάριση όλων",
   "cache": "Προσωρινή μνήμη",
   "clearCache": "Εκκαθάριση προσωρινής μνήμης",
-  "chatters": "Συνομιλητές",
-  "lastSeenAgo": "Τελευταία εμφάνιση {time} πριν",
+  "chatters": "Συμμετέχοντες",
+  "lastSeenAgo": "Τελευταία δραστηριότητα πριν από {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "credits": "Συντελεστές",
-  "search": "Αναζήτηση"
+  "search": "Αναζήτηση",
+  "emoteMenuButton": "Κουμπί μενού emote",
+  "emoteMenuButtonGrayscale": "Κουμπί μενού emote σε αποχρώσεις του γκρι",
+  "chooseEmoteMenuButton": "Πάτησε ένα emote για να το κάνεις κουμπί του μενού emote",
+  "resetToKappa": "Επαναφορά σε Kappa",
+  "emoteMenuButtonDownloadFailed": "Δεν ήταν δυνατή η λήψη του emote. Το κουμπί δεν άλλαξε.",
+  "takePhoto": "Λήψη φωτογραφίας",
+  "chooseFromLibrary": "Επιλογή από τη βιβλιοθήκη",
+  "cameraUnavailable": "Δεν ήταν δυνατό να ανοίξει η κάμερα. Έλεγξε αν το ColdChat έχει πρόσβαση στην κάμερα.",
+  "about": "Σχετικά",
+  "sourceCode": "Πηγαίος κώδικας",
+  "license": "Άδεια χρήσης",
+  "basedOnChatsen": "Βασισμένο στο Chatsen",
+  "openSourceLicenses": "Άδειες ανοιχτού κώδικα",
+  "aboutLegalese": "Το ColdChat είναι ελεύθερο λογισμικό: μπορείς να το αναδιανέμεις και να το τροποποιείς σύμφωνα με τους όρους της GNU Affero General Public License, έκδοση 3. Παρέχεται ΧΩΡΙΣ ΑΠΟΛΥΤΩΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ.",
+  "unblock": "Άρση φραγής",
+  "report": "Αναφορά",
+  "reportUserTitle": "Αναφορά χρήστη {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Τις αναφορές τις χειρίζεται το Twitch. Άνοιξε το κανάλι του χρήστη {name} στο Twitch και επίλεξε εκεί «Αναφορά». Μπορείς επίσης να κάνεις εδώ φραγή στον χρήστη {name}, για να κρύψεις τα μηνύματά του.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Άνοιγμα στο Twitch",
+  "blockFailed": "Δεν ήταν δυνατή η αλλαγή της λίστας φραγής. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.",
+  "contact": "Επικοινωνία & σχόλια",
+  "whisper": "Ψίθυρος",
+  "whisperTo": "Ψίθυρος προς {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Ψίθυρος από {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Άνοιγμα",
+  "userCard": "Κάρτα χρήστη",
+  "closeConversation": "Κλείσιμο συνομιλίας",
+  "closeConversationSubtitle": "Τα μηνύματα μένουν σε αυτήν τη συσκευή και επιστρέφουν με τον επόμενο ψίθυρο.",
+  "deleteConversation": "Διαγραφή συνομιλίας",
+  "deleteConversationSubtitle": "Διαγράφει τα μηνύματα από αυτήν τη συσκευή. Το Twitch δεν κρατά ιστορικό ψιθύρων.",
+  "whisperNeedsLogin": "Συνδέσου με το Twitch για να στέλνεις ψιθύρους.",
+  "whisperNeedsScope": "Συνδέσου ξανά για να στέλνεις και να λαμβάνεις ψιθύρους. Η σύνδεσή σου είναι από πριν το ColdChat τους υποστηρίξει.",
+  "whisperUserNotFound": "Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.",
+  "whisperFailed": "Ο ψίθυρος δεν στάλθηκε: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Οι ψίθυροι που λαμβάνεις όσο το ColdChat είναι κλειστό δεν εμφανίζονται εδώ, γιατί το Twitch δεν δίνει το ιστορικό ψιθύρων σε εφαρμογές. Μπορείς να τους διαβάσεις στο Twitch, από το εικονίδιο ψιθύρων πάνω δεξιά.",
+  "gotIt": "Εντάξει",
+  "openTwitch": "Άνοιγμα Twitch",
+  "showImage": "Εμφάνιση εικόνας · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Εμφάνιση εικόνων από συνδέσμους",
+  "showImagesFromLinksSubtitle": "Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.",
+  "showImagesAutomatically": "Αυτόματη εμφάνιση εικόνων από συνδέσμους;",
+  "turnOn": "Ενεργοποίηση"
 }

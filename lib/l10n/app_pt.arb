@@ -1,68 +1,165 @@
 {
   "appName": "ColdChat",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
   "loggedInVia": "Conectado via {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Termos de Serviço",
   "privacyPolicy": "Política de Privacidade",
   "settings": "Configurações",
   "expiresNever": "Nunca expira",
+  "loginExpired": "Login expirado",
+  "loginExpiredDescription": "A Twitch recusou o login de {login}. O chat fica desconectado até você entrar de novo.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Falha no login",
+  "signInAgain": "Entrar",
+  "uploadingTo": "Enviando para {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Processando…",
+  "uploadFailed": "Falha no envio",
+  "uploadDone": "Enviado",
+  "uploadRetry": "Tentar de novo",
+  "uploadDismiss": "Dispensar",
+  "uploadCancel": "Cancelar envio",
+  "uploadErrorOffline": "Sem conexão com a internet",
+  "uploadErrorTimeout": "{host} não está respondendo",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} recusou o envio (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} enviou uma resposta inesperada",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Não foi possível conectar a {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Não foi possível ler o arquivo",
+  "uploadErrorUnknown": "Falha no envio para {host}",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Detalhes",
+  "uploadRetryingWith": "Tentando de novo com {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
   "expiresIn": "Expira em {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Fechar",
   "add": "Adicionar",
   "cancel": "Cancelar",
-  "tokenInput": "Entrada de token",
+  "tokenInput": "Inserir token",
   "account": "Conta",
   "refreshAccount": "Atualizar conta",
   "removeAccount": "Remover conta",
   "addAnotherAccount": "Adicionar outra conta",
   "verifiedUserData": "Dados do usuário verificados!",
-  "loggedInAs": "Logado como {user}",
+  "loggedInAs": "Conectado como {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
   "anErrorHasOccuredWhenVerifyingUserData": "Ocorreu um erro ao verificar os dados do usuário:",
   "verifyingUserData": "Verificando dados do usuário...",
   "verifiedUserToken": "Token do usuário verificado!",
   "anErrorHasOccuredWhenVerifyingUserToken": "Ocorreu um erro ao verificar o token do usuário:",
-  "verifyingUserToken": "Verificando token de usuário...",
-  "searchForChannels": "Procurar por canais",
+  "verifyingUserToken": "Verificando token do usuário...",
+  "searchForChannels": "Pesquisar canais",
   "recommendedChannels": "Canais recomendados",
   "popularChannels": "Canais populares",
   "channel": "Canal",
   "leaveChannel": "Sair do canal",
-  "joinUser": "Entrar {user}",
+  "joinUser": "Entrar no canal de {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "A verificação ortográfica falhou! Você queria pesquisar por {username}?",
+  "spellCheckFailed": "A verificação ortográfica falhou! Você quis pesquisar {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Conectar {channel}",
+  "joinChannelName": "Entrar em {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "sendMessageIn": "Enviar mensagem em {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Claro",
@@ -78,34 +175,37 @@
   "save": "Salvar",
   "openInBrowser": "Abrir no navegador",
   "messageAppearance": "Aparência das mensagens",
-  "showTimestamps": "Mostrar timestamps",
+  "showTimestamps": "Mostrar horários",
   "compactMessages": "Mensagens compactas",
+  "showBadges": "Mostrar emblemas",
   "messageTrigger": "Gatilho de mensagem",
   "pattern": "Padrão",
   "mention": "Menção",
   "block": "Bloquear",
-  "enableRegex": "Habilitar regex",
-  "caseSensitive": "Sensível a maiúsculas e minúsculas",
+  "enableRegex": "Ativar regex",
+  "caseSensitive": "Diferenciar maiúsculas e minúsculas",
   "messageTriggers": "Gatilhos de mensagem",
   "newMessageTrigger": "Novo gatilho de mensagem",
   "reply": "Responder",
   "copyText": "Copiar texto",
-  "copyTextSubtitle": "Segure para copiar o texto da mensagem com o usuário",
+  "copyTextSubtitle": "Segure para copiar o texto com o nome de usuário",
   "deleteMessage": "Excluir mensagem",
   "mentionUser": "Mencionar usuário",
   "copyMessageId": "Copiar ID da mensagem",
   "theme": "Tema",
   "userTrigger": "Gatilho de usuário",
   "userTriggers": "Gatilhos de usuário",
-  "chatHistory": "Histórico de chat",
-  "login": "Iniciar sessão",
+  "chatHistory": "Histórico do chat",
+  "login": "Login",
   "newUserTrigger": "Novo gatilho de usuário",
   "ban": "Banir",
   "unban": "Desbanir",
   "timeoutUserForDuration": "Suspender usuário por {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "O chat foi limpo",
@@ -113,37 +213,125 @@
   "bannedForDuration": "banido por {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "replyingTo": "Respondendo a",
   "blockedMessage": "Mensagem bloqueada",
   "showMessage": "Mostrar mensagem",
   "hideMessage": "Ocultar mensagem",
-  "scrollToBottom": "Rolar para o final",
+  "scrollToBottom": "Rolar até o fim",
   "startUsingTheApp": "Para começar a usar o aplicativo, adicione uma conta abaixo.",
   "chatSettings": "Configurações do chat",
   "autocompleteUsersWithAt": "Autocompletar usuários com @",
   "autocompleteEmotesWithColon": "Autocompletar emotes com :",
   "language": "Idioma",
-  "locale": "Localidade",
+  "locale": "Região",
   "systemDefault": "Padrão do sistema",
   "justDefault": "Padrão",
   "notifications": "Notificações",
   "noNotifications": "Alguém, em algum lugar, vai te mencionar um dia.",
   "backgroundNotifications": "Notificações em segundo plano",
   "optionNotAvailableOnYourPlatform": "Essa opção não está disponível na sua plataforma.",
-  "optionNotAvailablePaywalled": "Esta opção é apenas para apoiadores do ColdChat.",
+  "optionNotAvailablePaywalled": "Essa opção é só para apoiadores do ColdChat.",
   "clearAll": "Limpar tudo",
   "cache": "Cache",
   "clearCache": "Limpar cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Visto pela última vez {time} atrás",
+  "chatters": "Participantes",
+  "lastSeenAgo": "Visto pela última vez há {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "credits": "Créditos",
-  "search": "Pesquisar"
+  "search": "Pesquisar",
+  "emoteMenuButton": "Botão do menu de emotes",
+  "emoteMenuButtonGrayscale": "Mostrar o botão do menu de emotes em escala de cinza",
+  "chooseEmoteMenuButton": "Toque em um emote para usá-lo como botão do menu de emotes",
+  "resetToKappa": "Redefinir para Kappa",
+  "emoteMenuButtonDownloadFailed": "Não foi possível baixar esse emote. O botão não foi alterado.",
+  "takePhoto": "Tirar foto",
+  "chooseFromLibrary": "Escolher da galeria",
+  "cameraUnavailable": "Não foi possível abrir a câmera. Verifique se o ColdChat tem acesso à câmera.",
+  "about": "Sobre",
+  "sourceCode": "Código-fonte",
+  "license": "Licença",
+  "basedOnChatsen": "Baseado no Chatsen",
+  "openSourceLicenses": "Licenças de código aberto",
+  "aboutLegalese": "O ColdChat é software livre: você pode redistribuí-lo e modificá-lo nos termos da GNU Affero General Public License, versão 3. Ele vem SEM NENHUMA GARANTIA.",
+  "unblock": "Desbloquear",
+  "report": "Denunciar",
+  "reportUserTitle": "Denunciar {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "As denúncias são tratadas pela Twitch. Abra o canal de {name} na Twitch e escolha Denunciar lá. Você também pode bloquear {name} aqui para ocultar as mensagens.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Abrir na Twitch",
+  "blockFailed": "Não foi possível alterar a lista de bloqueios. Verifique sua conexão e tente de novo.",
+  "contact": "Contato e feedback",
+  "whisper": "Sussurrar",
+  "whisperTo": "Sussurrar para {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Sussurro de {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Abrir",
+  "userCard": "Cartão do usuário",
+  "closeConversation": "Fechar conversa",
+  "closeConversationSubtitle": "As mensagens ficam neste dispositivo e voltam com o próximo sussurro.",
+  "deleteConversation": "Excluir conversa",
+  "deleteConversationSubtitle": "Exclui as mensagens deste dispositivo. A Twitch não guarda histórico de sussurros.",
+  "whisperNeedsLogin": "Entre com a Twitch para enviar sussurros.",
+  "whisperNeedsScope": "Entre de novo para enviar e receber sussurros. Seu login é de antes de o ColdChat ter suporte a eles.",
+  "whisperUserNotFound": "Não existe usuário da Twitch com esse nome.",
+  "whisperFailed": "Sussurro não enviado: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Sussurros recebidos enquanto o ColdChat estava fechado não aparecem aqui, porque a Twitch não compartilha o histórico de sussurros com aplicativos. Você pode lê-los na Twitch, no ícone de sussurros no canto superior direito.",
+  "gotIt": "Entendi",
+  "openTwitch": "Abrir a Twitch",
+  "showImage": "Mostrar imagem · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Mostrar imagens de links",
+  "showImagesFromLinksSubtitle": "A Twitch não verifica essas imagens. Elas podem ser impróprias.",
+  "showImagesAutomatically": "Mostrar imagens de links automaticamente?",
+  "turnOn": "Ativar"
 }

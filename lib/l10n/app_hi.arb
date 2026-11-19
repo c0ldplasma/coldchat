@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Logged in via {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "{provider} से लॉग इन किया गया",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "सेवा की शर्तें",
   "privacyPolicy": "गोपनीयता नीति",
   "settings": "सेटिंग्स",
-  "expiresNever": "कभी समाप्त नहीं",
-  "expiresIn": "Expires in {time}",
+  "expiresNever": "कभी समाप्त नहीं होगा",
+  "loginExpired": "लॉगिन की अवधि समाप्त हो गई",
+  "loginExpiredDescription": "Twitch ने {login} का लॉगिन अस्वीकार कर दिया। जब तक आप फिर से साइन इन नहीं करते, चैट डिस्कनेक्ट रहेगी।",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "लॉगिन विफल रहा",
+  "signInAgain": "साइन इन करें",
+  "uploadingTo": "{host} पर अपलोड हो रहा है",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "प्रोसेस हो रहा है…",
+  "uploadFailed": "अपलोड विफल रहा",
+  "uploadDone": "अपलोड हो गया",
+  "uploadRetry": "फिर से कोशिश करें",
+  "uploadDismiss": "खारिज करें",
+  "uploadCancel": "अपलोड रद्द करें",
+  "uploadErrorOffline": "इंटरनेट कनेक्शन नहीं है",
+  "uploadErrorTimeout": "{host} जवाब नहीं दे रहा है",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} ने अपलोड अस्वीकार कर दिया (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} ने अनपेक्षित जवाब भेजा",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "{host} से कनेक्ट नहीं हो सका",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "फ़ाइल पढ़ी नहीं जा सकी",
+  "uploadErrorUnknown": "{host} पर अपलोड विफल रहा",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "विवरण",
+  "uploadRetryingWith": "{host} के साथ फिर से कोशिश की जा रही है…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "{time} में समाप्त होगा",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "बंद करें",
-  "add": "जोडें",
-  "cancel": "कैंसिल",
-  "tokenInput": "Token input",
+  "add": "जोड़ें",
+  "cancel": "रद्द करें",
+  "tokenInput": "टोकन डालें",
   "account": "खाता",
-  "refreshAccount": "खाते रिफ्रेश हो रहें हैं",
+  "refreshAccount": "खाता रीफ़्रेश करें",
   "removeAccount": "खाता हटाएं",
   "addAnotherAccount": "एक और खाता जोड़ें",
-  "verifiedUserData": "लोग इन डेटा को परखना",
-  "loggedInAs": "Logged in as {user}",
+  "verifiedUserData": "उपयोगकर्ता डेटा सत्यापित हो गया!",
+  "loggedInAs": "{user} के रूप में लॉग इन",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "An error has occurred when verifying user data:",
-  "verifyingUserData": "लोग इन डेटा को परखना",
-  "verifiedUserToken": "लोग इन डेटा को परखना",
-  "anErrorHasOccuredWhenVerifyingUserToken": "An error has occurred when verifying user token:",
-  "verifyingUserToken": "लोग इन डेटा को परखना",
-  "searchForChannels": "किसी चैनल को खोजें",
-  "recommendedChannels": "अनुशंसित चैनल",
-  "popularChannels": "लोकप्रिय लाइव चैनल",
-  "channel": "चैनल्स",
-  "leaveChannel": "चैनल छोड़ दें?",
-  "joinUser": "{user} चैनल से जुड़े",
+  "anErrorHasOccuredWhenVerifyingUserData": "उपयोगकर्ता डेटा सत्यापित करते समय एक त्रुटि हुई:",
+  "verifyingUserData": "उपयोगकर्ता डेटा सत्यापित किया जा रहा है...",
+  "verifiedUserToken": "उपयोगकर्ता टोकन सत्यापित हो गया!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "उपयोगकर्ता टोकन सत्यापित करते समय एक त्रुटि हुई:",
+  "verifyingUserToken": "उपयोगकर्ता टोकन सत्यापित किया जा रहा है...",
+  "searchForChannels": "चैनल खोजें",
+  "recommendedChannels": "सुझाए गए चैनल",
+  "popularChannels": "लोकप्रिय चैनल",
+  "channel": "चैनल",
+  "leaveChannel": "चैनल छोड़ें",
+  "joinUser": "{user} से जुड़ें",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Spell check failed! Did you mean to search for {username}?",
+  "spellCheckFailed": "वर्तनी जांच विफल रही! क्या आप {username} खोजना चाहते थे?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "{channel} चैनल से जुड़े",
+  "joinChannelName": "{channel} से जुड़ें",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Send message in {channel}",
+  "sendMessageIn": "{channel} में संदेश भेजें",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "लाइट",
   "dark": "डार्क",
   "system": "सिस्टम",
-  "appearance": "स्वरूप",
-  "highContrast": "जादा कॉन्ट्रास्ट",
-  "customCommand": "कस्टम कमांड्स",
-  "customCommands": "कस्टम कमांड्स",
-  "newCustomCommand": "New custom command",
-  "commandTrigger": "Trigger",
-  "command": "आदेश:",
+  "appearance": "रूप-रंग",
+  "highContrast": "हाई कॉन्ट्रास्ट",
+  "customCommand": "कस्टम कमांड",
+  "customCommands": "कस्टम कमांड",
+  "newCustomCommand": "नई कस्टम कमांड",
+  "commandTrigger": "ट्रिगर",
+  "command": "कमांड",
   "save": "सेव करें",
-  "openInBrowser": "Open in browser",
-  "messageAppearance": "Message appearance",
-  "showTimestamps": "Show timestamps",
-  "compactMessages": "Compact messages",
-  "messageTrigger": "Message trigger",
-  "pattern": "Pattern",
-  "mention": "Mention",
-  "block": "Block",
-  "enableRegex": "Enable regex",
-  "caseSensitive": "Case sensitive",
-  "messageTriggers": "Message triggers",
-  "newMessageTrigger": "New message trigger",
-  "reply": "Reply",
-  "copyText": "Copy text",
-  "copyTextSubtitle": "Hold to copy message text with username",
-  "deleteMessage": "Delete message",
-  "mentionUser": "Mention user",
-  "copyMessageId": "Copy message ID",
-  "theme": "Theme",
-  "userTrigger": "User trigger",
-  "userTriggers": "User triggers",
-  "chatHistory": "Chat history",
-  "login": "Login",
-  "newUserTrigger": "New user trigger",
-  "ban": "Ban",
-  "unban": "Unban",
-  "timeoutUserForDuration": "Timeout user for {duration}",
+  "openInBrowser": "ब्राउज़र में खोलें",
+  "messageAppearance": "संदेशों का रूप",
+  "showTimestamps": "टाइमस्टैम्प दिखाएं",
+  "compactMessages": "कॉम्पैक्ट संदेश",
+  "showBadges": "बैज दिखाएं",
+  "messageTrigger": "संदेश ट्रिगर",
+  "pattern": "पैटर्न",
+  "mention": "मेंशन",
+  "block": "ब्लॉक",
+  "enableRegex": "regex चालू करें",
+  "caseSensitive": "केस-सेंसिटिव",
+  "messageTriggers": "संदेश ट्रिगर",
+  "newMessageTrigger": "नया संदेश ट्रिगर",
+  "reply": "जवाब दें",
+  "copyText": "टेक्स्ट कॉपी करें",
+  "copyTextSubtitle": "उपयोगकर्ता नाम के साथ कॉपी करने के लिए दबाकर रखें",
+  "deleteMessage": "संदेश मिटाएं",
+  "mentionUser": "उपयोगकर्ता को मेंशन करें",
+  "copyMessageId": "संदेश ID कॉपी करें",
+  "theme": "थीम",
+  "userTrigger": "उपयोगकर्ता ट्रिगर",
+  "userTriggers": "उपयोगकर्ता ट्रिगर",
+  "chatHistory": "चैट इतिहास",
+  "login": "लॉगिन नाम",
+  "newUserTrigger": "नया उपयोगकर्ता ट्रिगर",
+  "ban": "बैन करें",
+  "unban": "बैन हटाएं",
+  "timeoutUserForDuration": "उपयोगकर्ता को {duration} के लिए टाइमआउट करें",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Chat was cleared",
-  "permabanned": "permabanned",
-  "bannedForDuration": "banned for {duration}",
+  "chatCleared": "चैट साफ़ कर दी गई",
+  "permabanned": "स्थायी रूप से बैन",
+  "bannedForDuration": "{duration} के लिए बैन",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Replying to",
-  "blockedMessage": "Blocked message",
-  "showMessage": "Show message",
-  "hideMessage": "Hide message",
-  "scrollToBottom": "Scroll to bottom",
-  "startUsingTheApp": "To start using the app, add an account below.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "replyingTo": "जवाब:",
+  "blockedMessage": "ब्लॉक किया गया संदेश",
+  "showMessage": "संदेश दिखाएं",
+  "hideMessage": "संदेश छिपाएं",
+  "scrollToBottom": "सबसे नीचे जाएं",
+  "startUsingTheApp": "ऐप का उपयोग शुरू करने के लिए, नीचे एक खाता जोड़ें।",
+  "chatSettings": "चैट सेटिंग्स",
+  "autocompleteUsersWithAt": "@ से उपयोगकर्ता नाम ऑटोकम्प्लीट करें",
+  "autocompleteEmotesWithColon": ": से इमोट ऑटोकम्प्लीट करें",
+  "language": "भाषा",
+  "locale": "भाषा और क्षेत्र",
+  "systemDefault": "सिस्टम डिफ़ॉल्ट",
+  "justDefault": "डिफ़ॉल्ट",
+  "notifications": "सूचनाएं",
+  "noNotifications": "कोई न कोई, कहीं न कहीं, किसी दिन आपको मेंशन करेगा।",
+  "backgroundNotifications": "बैकग्राउंड सूचनाएं",
+  "optionNotAvailableOnYourPlatform": "यह विकल्प आपके प्लेटफ़ॉर्म पर उपलब्ध नहीं है।",
+  "optionNotAvailablePaywalled": "यह विकल्प केवल ColdChat समर्थकों के लिए है।",
+  "clearAll": "सब साफ़ करें",
+  "cache": "कैश",
+  "clearCache": "कैश साफ़ करें",
+  "chatters": "चैटर्स",
+  "lastSeenAgo": "{time} पहले देखा गया",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "क्रेडिट",
+  "search": "खोजें",
+  "emoteMenuButton": "इमोट मेनू बटन",
+  "emoteMenuButtonGrayscale": "इमोट मेनू बटन ग्रेस्केल में दिखाएं",
+  "chooseEmoteMenuButton": "किसी इमोट को इमोट मेनू बटन बनाने के लिए उस पर टैप करें",
+  "resetToKappa": "Kappa पर रीसेट करें",
+  "emoteMenuButtonDownloadFailed": "वह इमोट डाउनलोड नहीं हो सका। बटन नहीं बदला गया।",
+  "takePhoto": "फ़ोटो लें",
+  "chooseFromLibrary": "लाइब्रेरी से चुनें",
+  "cameraUnavailable": "कैमरा नहीं खुल सका। जांचें कि ColdChat को कैमरा एक्सेस की अनुमति है।",
+  "about": "परिचय",
+  "sourceCode": "सोर्स कोड",
+  "license": "लाइसेंस",
+  "basedOnChatsen": "Chatsen पर आधारित",
+  "openSourceLicenses": "ओपन सोर्स लाइसेंस",
+  "aboutLegalese": "ColdChat एक मुक्त सॉफ़्टवेयर है: आप इसे GNU Affero General Public License, संस्करण 3 की शर्तों के तहत पुनर्वितरित और संशोधित कर सकते हैं। इसके साथ कोई भी वारंटी नहीं दी जाती।",
+  "unblock": "अनब्लॉक करें",
+  "report": "रिपोर्ट करें",
+  "reportUserTitle": "{name} की रिपोर्ट करें",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "रिपोर्ट Twitch द्वारा संभाली जाती हैं। Twitch पर {name} का चैनल खोलें और वहां रिपोर्ट करें चुनें। आप यहां {name} को ब्लॉक करके उनके संदेश छिपा भी सकते हैं।",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Twitch पर खोलें",
+  "blockFailed": "ब्लॉक सूची नहीं बदली जा सकी। अपना कनेक्शन जांचें और फिर से कोशिश करें।",
+  "contact": "संपर्क और फ़ीडबैक",
+  "whisper": "व्हिस्पर",
+  "whisperTo": "{name} को व्हिस्पर करें",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "{name} का व्हिस्पर",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "खोलें",
+  "userCard": "यूज़र कार्ड",
+  "closeConversation": "बातचीत बंद करें",
+  "closeConversationSubtitle": "संदेश इस डिवाइस पर रहेंगे और अगले व्हिस्पर के साथ वापस आ जाएंगे।",
+  "deleteConversation": "बातचीत मिटाएं",
+  "deleteConversationSubtitle": "इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।",
+  "whisperNeedsLogin": "व्हिस्पर भेजने के लिए Twitch से साइन इन करें।",
+  "whisperNeedsScope": "व्हिस्पर भेजने और पाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat इन्हें सपोर्ट नहीं करता था।",
+  "whisperUserNotFound": "इस नाम का कोई Twitch उपयोगकर्ता नहीं है।",
+  "whisperFailed": "व्हिस्पर नहीं भेजा गया: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "ColdChat बंद रहने के दौरान आपको भेजे गए व्हिस्पर यहां नहीं दिखते, क्योंकि Twitch ऐप्स के साथ व्हिस्पर का इतिहास साझा नहीं करता। आप उन्हें Twitch पर, ऊपर दाईं ओर व्हिस्पर आइकन में पढ़ सकते हैं।",
+  "gotIt": "ठीक है",
+  "openTwitch": "Twitch खोलें",
+  "showImage": "इमेज दिखाएं · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "लिंक से इमेज दिखाएं",
+  "showImagesFromLinksSubtitle": "Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।",
+  "showImagesAutomatically": "लिंक से इमेज अपने-आप दिखाएं?",
+  "turnOn": "चालू करें"
 }

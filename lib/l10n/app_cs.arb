@@ -1,41 +1,130 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Přihlášen jako {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Přihlášeno přes {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
   "termsOfService": "Podmínky služby",
   "privacyPolicy": "Zásady ochrany osobních údajů",
   "settings": "Nastavení",
   "expiresNever": "Nikdy nevyprší",
-  "expiresIn": "Vyprší v {time}",
+  "loginExpired": "Přihlášení vypršelo",
+  "loginExpiredDescription": "Twitch odmítl přihlášení pro {login}. Chat zůstane odpojený, dokud se znovu nepřihlásíš.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Přihlášení se nezdařilo",
+  "signInAgain": "Přihlásit se",
+  "uploadingTo": "Nahrávání na {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Zpracování…",
+  "uploadFailed": "Nahrávání se nezdařilo",
+  "uploadDone": "Nahráno",
+  "uploadRetry": "Zkusit znovu",
+  "uploadDismiss": "Skrýt",
+  "uploadCancel": "Zrušit nahrávání",
+  "uploadErrorOffline": "Žádné připojení k internetu",
+  "uploadErrorTimeout": "{host} neodpovídá",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "Server {host} nahrání odmítl (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "Server {host} vrátil neočekávanou odpověď",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Nelze se připojit k {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Soubor nelze přečíst",
+  "uploadErrorUnknown": "Nahrávání na {host} se nezdařilo",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Podrobnosti",
+  "uploadRetryingWith": "Nový pokus přes {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Vyprší za {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Zavřít",
   "add": "Přidat",
   "cancel": "Zrušit",
-  "tokenInput": "Vložení tokenu",
+  "tokenInput": "Zadání tokenu",
   "account": "Účet",
-  "refreshAccount": "Načíst účet",
-  "removeAccount": "Odstranit účet",
-  "addAnotherAccount": "Přidat jiný účet",
-  "verifiedUserData": "Data úspěšně ověřena!",
-  "loggedInAs": "Přihlášen jako {user}",
+  "refreshAccount": "Obnovit účet",
+  "removeAccount": "Odebrat účet",
+  "addAnotherAccount": "Přidat další účet",
+  "verifiedUserData": "Uživatelská data ověřena!",
+  "loggedInAs": "Přihlášeno jako {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Při ověřování osobních dat se objevil problém:",
-  "verifyingUserData": "Ověřuji user data...",
-  "verifiedUserToken": "Token ověřen!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Při ověřování tokenu uživatele se objevil problém:",
-  "verifyingUserToken": "Ověřování tokenu uživatele...",
+  "anErrorHasOccuredWhenVerifyingUserData": "Při ověřování uživatelských dat došlo k chybě:",
+  "verifyingUserData": "Ověřování uživatelských dat...",
+  "verifiedUserToken": "Uživatelský token ověřen!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Při ověřování uživatelského tokenu došlo k chybě:",
+  "verifyingUserToken": "Ověřování uživatelského tokenu...",
   "searchForChannels": "Hledat kanály",
   "recommendedChannels": "Doporučené kanály",
   "popularChannels": "Populární kanály",
@@ -44,30 +133,38 @@
   "joinUser": "Připojit se k {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Kontrola pravopisu se nezdařila! Měli jste na mysli {username}?",
+  "spellCheckFailed": "Kontrola pravopisu selhala! Nehledáš {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "joinChannelName": "Připojit se k {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Poslat zprávu v {channel}",
+  "sendMessageIn": "Poslat zprávu do {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Světlý",
   "dark": "Tmavý",
-  "system": "Systém",
+  "system": "Podle systému",
   "appearance": "Vzhled",
   "highContrast": "Vysoký kontrast",
   "customCommand": "Vlastní příkaz",
@@ -77,73 +174,164 @@
   "command": "Příkaz",
   "save": "Uložit",
   "openInBrowser": "Otevřít v prohlížeči",
-  "messageAppearance": "Vzhled zprávy",
-  "showTimestamps": "Zobrazit časové údaje",
+  "messageAppearance": "Vzhled zpráv",
+  "showTimestamps": "Zobrazit čas",
   "compactMessages": "Kompaktní zprávy",
-  "messageTrigger": "Spouštěč zprávy",
+  "showBadges": "Zobrazit odznaky",
+  "messageTrigger": "Spouštěč zpráv",
   "pattern": "Vzor",
   "mention": "Zmínka",
   "block": "Zablokovat",
   "enableRegex": "Povolit regex",
-  "caseSensitive": "Rozlišit malá a velká písmena",
+  "caseSensitive": "Rozlišovat velká a malá písmena",
   "messageTriggers": "Spouštěče zpráv",
-  "newMessageTrigger": "Nový spouštěč zprávy",
+  "newMessageTrigger": "Nový spouštěč zpráv",
   "reply": "Odpovědět",
-  "copyText": "Zkopírovat text",
-  "copyTextSubtitle": "Přidržením zkopírujete zprávu s uživatelským jménem",
+  "copyText": "Kopírovat text",
+  "copyTextSubtitle": "Podržením zkopíruješ text i s uživatelským jménem",
   "deleteMessage": "Smazat zprávu",
   "mentionUser": "Zmínit uživatele",
-  "copyMessageId": "Zkopírovat ID zprávy",
-  "theme": "Vzhled",
+  "copyMessageId": "Kopírovat ID zprávy",
+  "theme": "Motiv",
   "userTrigger": "Spouštěč uživatele",
-  "userTriggers": "Spouštěče uživatele",
-  "chatHistory": "Historie zpráv",
-  "login": "Přihlášení",
+  "userTriggers": "Spouštěče uživatelů",
+  "chatHistory": "Historie chatu",
+  "login": "Uživatelské jméno",
   "newUserTrigger": "Nový spouštěč uživatele",
   "ban": "Zabanovat",
   "unban": "Odbanovat",
-  "timeoutUserForDuration": "Dočasně zablokovat uživatele na {duration}",
+  "timeoutUserForDuration": "Dát uživateli timeout na {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
   "chatCleared": "Chat byl vymazán",
-  "permabanned": "trvale zabanován",
-  "bannedForDuration": "zabanován po dobu {duration}",
+  "permabanned": "dostává trvalý ban",
+  "bannedForDuration": "dostává ban na {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Odpovědět na",
+  "replyingTo": "Odpověď na",
   "blockedMessage": "Zablokovaná zpráva",
   "showMessage": "Zobrazit zprávu",
   "hideMessage": "Skrýt zprávu",
   "scrollToBottom": "Přejít na konec",
-  "startUsingTheApp": "Chcete-li začít používat aplikaci, přidejte níže svůj účet.",
-  "chatSettings": "Chat settings",
-  "autocompleteUsersWithAt": "Autocomplete users with @",
-  "autocompleteEmotesWithColon": "Autocomplete emotes with :",
-  "language": "Language",
-  "locale": "Locale",
-  "systemDefault": "System default",
-  "justDefault": "Default",
-  "notifications": "Notifications",
-  "noNotifications": "Someone, somewhere, will mention you someday.",
-  "backgroundNotifications": "Background notifications",
-  "optionNotAvailableOnYourPlatform": "This option is not available on your platform.",
-  "optionNotAvailablePaywalled": "This option is for ColdChat supporters only.",
-  "clearAll": "Clear all",
-  "cache": "Cache",
-  "clearCache": "Clear cache",
-  "chatters": "Chatters",
-  "lastSeenAgo": "Last seen {time} ago",
+  "startUsingTheApp": "Pokud chceš začít aplikaci používat, přidej níže účet.",
+  "chatSettings": "Nastavení chatu",
+  "autocompleteUsersWithAt": "Doplňovat uživatele pomocí @",
+  "autocompleteEmotesWithColon": "Doplňovat emotikony pomocí :",
+  "language": "Jazyk",
+  "locale": "Místní nastavení",
+  "systemDefault": "Podle systému",
+  "justDefault": "Výchozí",
+  "notifications": "Oznámení",
+  "noNotifications": "Někdo, někde se o tobě jednou zmíní.",
+  "backgroundNotifications": "Oznámení na pozadí",
+  "optionNotAvailableOnYourPlatform": "Tato možnost není na tvé platformě dostupná.",
+  "optionNotAvailablePaywalled": "Tato možnost je jen pro ty, kdo podporují ColdChat.",
+  "clearAll": "Vymazat vše",
+  "cache": "Mezipaměť",
+  "clearCache": "Vymazat mezipaměť",
+  "chatters": "Chatující",
+  "lastSeenAgo": "Naposledy aktivní před {time}",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
-  "credits": "Credits",
-  "search": "Search"
+  "credits": "Poděkování",
+  "search": "Hledat",
+  "emoteMenuButton": "Tlačítko nabídky emotikonů",
+  "emoteMenuButtonGrayscale": "Tlačítko nabídky emotikonů ve stupních šedi",
+  "chooseEmoteMenuButton": "Klepni na emotikon, který chceš použít jako tlačítko nabídky emotikonů",
+  "resetToKappa": "Obnovit na Kappa",
+  "emoteMenuButtonDownloadFailed": "Emotikon se nepodařilo stáhnout. Tlačítko zůstalo beze změny.",
+  "takePhoto": "Vyfotit",
+  "chooseFromLibrary": "Vybrat z knihovny",
+  "cameraUnavailable": "Fotoaparát se nepodařilo otevřít. Zkontroluj, jestli má ColdChat přístup k fotoaparátu.",
+  "about": "O aplikaci",
+  "sourceCode": "Zdrojový kód",
+  "license": "Licence",
+  "basedOnChatsen": "Založeno na Chatsen",
+  "openSourceLicenses": "Licence open source",
+  "aboutLegalese": "ColdChat je svobodný software: můžeš ho šířit a upravovat za podmínek GNU Affero General Public License, verze 3. Je poskytován ABSOLUTNĚ BEZ ZÁRUKY.",
+  "unblock": "Odblokovat",
+  "report": "Nahlásit",
+  "reportUserTitle": "Nahlásit {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Nahlášení vyřizuje Twitch. Otevři kanál {name} na Twitchi a zvol tam Nahlásit. Nebo {name} zablokuj tady a zprávy se ti přestanou zobrazovat.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Otevřít na Twitchi",
+  "blockFailed": "Seznam blokovaných se nepodařilo změnit. Zkontroluj připojení a zkus to znovu.",
+  "contact": "Kontakt a zpětná vazba",
+  "whisper": "Šeptat",
+  "whisperTo": "Šepot pro {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Šepot od {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Otevřít",
+  "userCard": "Karta uživatele",
+  "closeConversation": "Zavřít konverzaci",
+  "closeConversationSubtitle": "Zprávy zůstanou v tomto zařízení a vrátí se s dalším šepotem.",
+  "deleteConversation": "Smazat konverzaci",
+  "deleteConversationSubtitle": "Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.",
+  "whisperNeedsLogin": "Pro posílání šepotů se přihlas přes Twitch.",
+  "whisperNeedsScope": "Pro posílání a příjem šepotů se přihlas znovu. Tvoje přihlášení je z doby, kdy je ColdChat ještě nepodporoval.",
+  "whisperUserNotFound": "Na Twitchi není žádný uživatel s tímto jménem.",
+  "whisperFailed": "Šepot nebyl odeslán: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Šepoty, které ti přijdou, když je ColdChat zavřený, se tu nezobrazí, protože Twitch aplikacím historii šepotů neposkytuje. Přečteš si je na Twitchi pod ikonou šepotů vpravo nahoře.",
+  "gotIt": "Rozumím",
+  "openTwitch": "Otevřít Twitch",
+  "showImage": "Zobrazit obrázek · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Zobrazovat obrázky z odkazů",
+  "showImagesFromLinksSubtitle": "Twitch tyto obrázky nekontroluje. Mohou být nevhodné.",
+  "showImagesAutomatically": "Zobrazovat obrázky z odkazů automaticky?",
+  "turnOn": "Zapnout"
 }

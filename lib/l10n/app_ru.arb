@@ -1,149 +1,337 @@
 {
   "appName": "ColdChat",
-  "loggedInVia": "Вы вошли через {provider}",
+  "translationAuthorNames": "",
+  "@translationAuthorNames": {
+    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
+  },
+  "loggedInVia": "Вход через {provider}",
   "@loggedInVia": {
     "placeholders": {
-      "provider": {"type": "String"}
+      "provider": {
+        "type": "String"
+      }
     }
   },
-  "termsOfService": "Условия предоставления услуг",
+  "termsOfService": "Условия использования",
   "privacyPolicy": "Политика конфиденциальности",
   "settings": "Настройки",
-  "expiresNever": "Никогда не истекает",
-  "expiresIn": "Срок истекает через {time}",
+  "expiresNever": "Бессрочно",
+  "loginExpired": "Срок входа истёк",
+  "loginExpiredDescription": "Twitch отклонил вход для {login}. Чат останется отключённым, пока ты не войдёшь снова.",
+  "@loginExpiredDescription": {
+    "placeholders": {
+      "login": {
+        "type": "String"
+      }
+    }
+  },
+  "loginFailed": "Не удалось войти",
+  "signInAgain": "Войти",
+  "uploadingTo": "Загрузка на {host}",
+  "@uploadingTo": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadProcessing": "Обработка…",
+  "uploadFailed": "Ошибка загрузки",
+  "uploadDone": "Загружено",
+  "uploadRetry": "Повторить",
+  "uploadDismiss": "Скрыть",
+  "uploadCancel": "Отменить загрузку",
+  "uploadErrorOffline": "Нет подключения к интернету",
+  "uploadErrorTimeout": "{host} не отвечает",
+  "@uploadErrorTimeout": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorRejected": "{host} отклонил загрузку (HTTP {status})",
+  "@uploadErrorRejected": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorBadResponse": "{host} прислал неожиданный ответ",
+  "@uploadErrorBadResponse": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorNetwork": "Не удалось подключиться к {host}",
+  "@uploadErrorNetwork": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorUnreadableFile": "Не удалось прочитать файл",
+  "uploadErrorUnknown": "Не удалось загрузить на {host}",
+  "@uploadErrorUnknown": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadErrorDetails": "Подробнее",
+  "uploadRetryingWith": "Повторная попытка через {host}…",
+  "@uploadRetryingWith": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "expiresIn": "Истекает через {time}",
   "@expiresIn": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "close": "Закрыть",
   "add": "Добавить",
   "cancel": "Отмена",
   "tokenInput": "Ввод токена",
-  "account": "Учётная запись",
-  "refreshAccount": "Обновить учётную запись",
-  "removeAccount": "Удалить учётную запись",
-  "addAnotherAccount": "Добавить другую учётную запись",
+  "account": "Аккаунт",
+  "refreshAccount": "Обновить аккаунт",
+  "removeAccount": "Удалить аккаунт",
+  "addAnotherAccount": "Добавить ещё аккаунт",
   "verifiedUserData": "Данные пользователя подтверждены!",
-  "loggedInAs": "Вы вошли как {user}",
+  "loggedInAs": "Вход выполнен как {user}",
   "@loggedInAs": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "anErrorHasOccuredWhenVerifyingUserData": "Произошла ошибка при проверке данных пользователя:",
+  "anErrorHasOccuredWhenVerifyingUserData": "Ошибка при проверке данных пользователя:",
   "verifyingUserData": "Проверка данных пользователя...",
-  "verifiedUserToken": "Токен пользователя подтвержден!",
-  "anErrorHasOccuredWhenVerifyingUserToken": "Произошла ошибка при проверке токена пользователя:",
+  "verifiedUserToken": "Токен пользователя подтверждён!",
+  "anErrorHasOccuredWhenVerifyingUserToken": "Ошибка при проверке токена пользователя:",
   "verifyingUserToken": "Проверка токена пользователя...",
   "searchForChannels": "Поиск каналов",
-  "recommendedChannels": "Рекомендованные каналы",
+  "recommendedChannels": "Рекомендуемые каналы",
   "popularChannels": "Популярные каналы",
   "channel": "Канал",
   "leaveChannel": "Покинуть канал",
-  "joinUser": "Присоединиться к {user}",
+  "joinUser": "Зайти в чат {user}",
   "@joinUser": {
     "placeholders": {
-      "user": {"type": "String"}
+      "user": {
+        "type": "String"
+      }
     }
   },
-  "spellCheckFailed": "Ой, кажется очепятка! Вы хотели найти {username}?",
+  "spellCheckFailed": "Ой, кажется, опечатка! Может, ищешь {username}?",
   "@spellCheckFailed": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
-  "joinChannelName": "Присоединиться к {channel}",
+  "joinChannelName": "Зайти в чат {channel}",
   "@joinChannelName": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
-  "sendMessageIn": "Отправить сообщение в {channel}",
+  "sendMessageIn": "Сообщение в {channel}",
   "@sendMessageIn": {
     "placeholders": {
-      "channel": {"type": "String"}
+      "channel": {
+        "type": "String"
+      }
     }
   },
   "light": "Светлая",
   "dark": "Тёмная",
-  "system": "Системная",
+  "system": "Как в системе",
   "appearance": "Внешний вид",
-  "highContrast": "Высокая контрастность",
-  "customCommand": "Собственная команда",
-  "customCommands": "Собственные команды",
-  "newCustomCommand": "Новая собственная команда",
-  "commandTrigger": "Замена текста",
+  "highContrast": "Высокий контраст",
+  "customCommand": "Своя команда",
+  "customCommands": "Свои команды",
+  "newCustomCommand": "Новая команда",
+  "commandTrigger": "Ключевое слово",
   "command": "Команда",
   "save": "Сохранить",
   "openInBrowser": "Открыть в браузере",
-  "messageAppearance": "Внешний вид сообщения",
-  "showTimestamps": "Показывать временные отметки",
-  "compactMessages": "Компактный вид сообщений",
-  "messageTrigger": "Ключевое слово",
+  "messageAppearance": "Вид сообщений",
+  "showTimestamps": "Показывать время",
+  "compactMessages": "Компактные сообщения",
+  "showBadges": "Показывать значки",
+  "messageTrigger": "Правило для сообщений",
   "pattern": "Шаблон",
-  "mention": "Выделить в чате",
+  "mention": "Выделить",
   "block": "Заблокировать",
-  "enableRegex": "Включить regex",
+  "enableRegex": "Использовать regex",
   "caseSensitive": "Учитывать регистр",
-  "messageTriggers": "Ключевые слова в сообщениях",
-  "newMessageTrigger": "Добавить новое ключевое слово",
+  "messageTriggers": "Правила для сообщений",
+  "newMessageTrigger": "Новое правило",
   "reply": "Ответить",
-  "copyText": "Скопировать текст",
-  "copyTextSubtitle": "Удерживайте, чтобы скопировать текст сообщения с именем пользователя",
+  "copyText": "Копировать текст",
+  "copyTextSubtitle": "Удерживай, чтобы скопировать с именем пользователя",
   "deleteMessage": "Удалить сообщение",
   "mentionUser": "Упомянуть пользователя",
-  "copyMessageId": "Скопировать ID сообщения",
+  "copyMessageId": "Копировать ID сообщения",
   "theme": "Тема",
-  "userTrigger": "Действия при определённом пользователе",
-  "userTriggers": "Действия при пользователях",
-  "chatHistory": "История сообщений",
-  "login": "Имя пользователя",
-  "newUserTrigger": "Добавить новое действие при пользователе",
+  "userTrigger": "Правило для пользователя",
+  "userTriggers": "Правила для пользователей",
+  "chatHistory": "История чата",
+  "login": "Логин",
+  "newUserTrigger": "Новое правило",
   "ban": "Забанить",
   "unban": "Разбанить",
-  "timeoutUserForDuration": "Временно отстранить пользователя на {duration}",
+  "timeoutUserForDuration": "Тайм-аут на {duration}",
   "@timeoutUserForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "chatCleared": "Чат был очищен",
-  "permabanned": "забанен",
-  "bannedForDuration": "отстранён на {duration}",
+  "chatCleared": "Чат очищен",
+  "permabanned": "бан навсегда",
+  "bannedForDuration": "бан на {duration}",
   "@bannedForDuration": {
     "placeholders": {
-      "duration": {"type": "String"}
+      "duration": {
+        "type": "String"
+      }
     }
   },
-  "replyingTo": "Ответить на",
+  "replyingTo": "Ответ для",
   "blockedMessage": "Скрытое сообщение",
   "showMessage": "Показать сообщение",
   "hideMessage": "Скрыть сообщение",
   "scrollToBottom": "Прокрутить вниз",
-  "startUsingTheApp": "Чтобы начать использовать приложение, добавьте учётную запись ниже.",
+  "startUsingTheApp": "Чтобы начать, добавь аккаунт ниже.",
   "chatSettings": "Настройки чата",
-  "autocompleteUsersWithAt": "Предлагать имена пользователей после ввода @",
-  "autocompleteEmotesWithColon": "Предлагать смайлики после ввода :",
+  "autocompleteUsersWithAt": "Дополнять имена пользователей после @",
+  "autocompleteEmotesWithColon": "Дополнять смайлики после :",
   "language": "Язык",
-  "locale": "Настройки языка",
-  "systemDefault": "Системные настройки",
+  "locale": "Язык и регион",
+  "systemDefault": "Как в системе",
   "justDefault": "По умолчанию",
   "notifications": "Уведомления",
-  "noNotifications": "Кто-то, где-то, обязательно упомянет вас когда-нибудь.",
+  "noNotifications": "Кто-нибудь, где-нибудь, когда-нибудь тебя упомянет.",
   "backgroundNotifications": "Фоновые уведомления",
-  "optionNotAvailableOnYourPlatform": "Эта опция недоступна на вашей операционной системе.",
-  "optionNotAvailablePaywalled": "Эта опция предназначена только для спонсоров ColdChat.",
+  "optionNotAvailableOnYourPlatform": "Эта функция недоступна на твоей платформе.",
+  "optionNotAvailablePaywalled": "Эта функция только для тех, кто поддерживает ColdChat.",
   "clearAll": "Очистить всё",
   "cache": "Кэш",
   "clearCache": "Очистить кэш",
   "chatters": "Участники чата",
-  "lastSeenAgo": "Последний раз видели {time} назад",
+  "lastSeenAgo": "Последняя активность {time} назад",
   "@lastSeenAgo": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "credits": "Благодарности",
-  "search": "Поиск"
+  "search": "Поиск",
+  "emoteMenuButton": "Кнопка меню смайликов",
+  "emoteMenuButtonGrayscale": "Кнопка меню смайликов в оттенках серого",
+  "chooseEmoteMenuButton": "Нажми на смайлик, чтобы сделать его кнопкой меню смайликов",
+  "resetToKappa": "Вернуть Kappa",
+  "emoteMenuButtonDownloadFailed": "Не удалось скачать смайлик. Кнопка не изменилась.",
+  "takePhoto": "Сделать фото",
+  "chooseFromLibrary": "Выбрать из галереи",
+  "cameraUnavailable": "Не удалось открыть камеру. Проверь, есть ли у ColdChat доступ к камере.",
+  "about": "О приложении",
+  "sourceCode": "Исходный код",
+  "license": "Лицензия",
+  "basedOnChatsen": "На основе Chatsen",
+  "openSourceLicenses": "Лицензии открытого ПО",
+  "aboutLegalese": "ColdChat — свободное программное обеспечение: ты можешь распространять и изменять его на условиях GNU Affero General Public License версии 3. Оно предоставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.",
+  "unblock": "Разблокировать",
+  "report": "Пожаловаться",
+  "reportUserTitle": "Пожаловаться на {name}",
+  "@reportUserTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportUserDescription": "Жалобы рассматривает Twitch. Открой канал {name} на Twitch и выбери там «Пожаловаться». Ещё ты можешь заблокировать {name} здесь, чтобы скрыть сообщения.",
+  "@reportUserDescription": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openOnTwitch": "Открыть на Twitch",
+  "blockFailed": "Не удалось изменить список блокировки. Проверь подключение и попробуй ещё раз.",
+  "contact": "Связь и отзывы",
+  "whisper": "Шепот",
+  "whisperTo": "Шепнуть {name}",
+  "@whisperTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperFrom": "Шепот от {name}",
+  "@whisperFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openWhisper": "Открыть",
+  "userCard": "Карточка пользователя",
+  "closeConversation": "Закрыть диалог",
+  "closeConversationSubtitle": "Сообщения останутся на этом устройстве и вернутся со следующим шепотом.",
+  "deleteConversation": "Удалить диалог",
+  "deleteConversationSubtitle": "Удаляет сообщения с этого устройства. Twitch не хранит историю шепота.",
+  "whisperNeedsLogin": "Войди через Twitch, чтобы отправлять шепот.",
+  "whisperNeedsScope": "Войди снова, чтобы отправлять и получать шепот. Твой вход сделан ещё до того, как ColdChat начал его поддерживать.",
+  "whisperUserNotFound": "Пользователя Twitch с таким именем нет.",
+  "whisperFailed": "Шепот не отправлен: {reason}",
+  "@whisperFailed": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "whisperHistoryHint": "Шепот, который приходит, пока ColdChat закрыт, здесь не появится: Twitch не передаёт историю шепота приложениям. Его можно прочитать на Twitch, нажав значок шепота справа вверху.",
+  "gotIt": "Понятно",
+  "openTwitch": "Открыть Twitch",
+  "showImage": "Показать изображение · {host}",
+  "@showImage": {
+    "placeholders": {
+      "host": {
+        "type": "String"
+      }
+    }
+  },
+  "showImagesFromLinks": "Показывать изображения из ссылок",
+  "showImagesFromLinksSubtitle": "Twitch не проверяет эти изображения. Они могут быть неприемлемыми.",
+  "showImagesAutomatically": "Показывать изображения из ссылок автоматически?",
+  "turnOn": "Включить"
 }

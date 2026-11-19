@@ -17,7 +17,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String loggedInVia(String provider) {
-    return '$provider経由でログイン';
+    return '$providerでログイン中';
   }
 
   @override
@@ -30,87 +30,87 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settings => '設定';
 
   @override
-  String get expiresNever => '期限なし';
+  String get expiresNever => '無期限';
 
   @override
-  String get loginExpired => 'Login expired';
+  String get loginExpired => 'ログインの有効期限切れ';
 
   @override
   String loginExpiredDescription(String login) {
-    return 'Twitch rejected the login for $login. Chat stays disconnected until you sign in again.';
+    return 'Twitchが$loginのログインを拒否しました。再度ログインするまで、チャットは切断されたままになります。';
   }
 
   @override
-  String get loginFailed => 'Login failed';
+  String get loginFailed => 'ログインに失敗しました';
 
   @override
-  String get signInAgain => 'Sign in';
+  String get signInAgain => 'ログイン';
 
   @override
   String uploadingTo(String host) {
-    return 'Uploading to $host';
+    return '$hostにアップロード中';
   }
 
   @override
-  String get uploadProcessing => 'Processing…';
+  String get uploadProcessing => '処理中…';
 
   @override
-  String get uploadFailed => 'Upload failed';
+  String get uploadFailed => 'アップロードに失敗しました';
 
   @override
-  String get uploadDone => 'Uploaded';
+  String get uploadDone => 'アップロード完了';
 
   @override
-  String get uploadRetry => 'Retry';
+  String get uploadRetry => '再試行';
 
   @override
-  String get uploadDismiss => 'Dismiss';
+  String get uploadDismiss => '閉じる';
 
   @override
-  String get uploadCancel => 'Cancel upload';
+  String get uploadCancel => 'アップロードをキャンセル';
 
   @override
-  String get uploadErrorOffline => 'No internet connection';
+  String get uploadErrorOffline => 'インターネットに接続されていません';
 
   @override
   String uploadErrorTimeout(String host) {
-    return '$host is not responding';
+    return '$hostが応答しません';
   }
 
   @override
   String uploadErrorRejected(String host, String status) {
-    return '$host rejected the upload (HTTP $status)';
+    return '$hostがアップロードを拒否しました（HTTP $status）';
   }
 
   @override
   String uploadErrorBadResponse(String host) {
-    return '$host sent an unexpected response';
+    return '$hostから予期しない応答がありました';
   }
 
   @override
   String uploadErrorNetwork(String host) {
-    return 'Couldn\'t connect to $host';
+    return '$hostに接続できませんでした';
   }
 
   @override
-  String get uploadErrorUnreadableFile => 'Couldn\'t read the file';
+  String get uploadErrorUnreadableFile => 'ファイルを読み込めませんでした';
 
   @override
   String uploadErrorUnknown(String host) {
-    return 'Upload to $host failed';
+    return '$hostへのアップロードに失敗しました';
   }
 
   @override
-  String get uploadErrorDetails => 'Details';
+  String get uploadErrorDetails => '詳細';
 
   @override
   String uploadRetryingWith(String host) {
-    return 'Retrying with $host…';
+    return '$hostで再試行中…';
   }
 
   @override
   String expiresIn(String time) {
-    return '$timeで期限切れ';
+    return 'あと$timeで期限切れ';
   }
 
   @override
@@ -138,11 +138,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addAnotherAccount => '別のアカウントを追加';
 
   @override
-  String get verifiedUserData => '認証済みユーザーデータ！';
+  String get verifiedUserData => 'ユーザーデータを確認しました！';
 
   @override
   String loggedInAs(String user) {
-    return '$userとしてログイン';
+    return '$userとしてログイン中';
   }
 
   @override
@@ -153,7 +153,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get verifyingUserData => 'ユーザーデータを確認中...';
 
   @override
-  String get verifiedUserToken => '認証済みユーザートークン！';
+  String get verifiedUserToken => 'ユーザートークンを確認しました！';
 
   @override
   String get anErrorHasOccuredWhenVerifyingUserToken =>
@@ -169,13 +169,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get recommendedChannels => 'おすすめチャンネル';
 
   @override
-  String get popularChannels => '人気チャンネル';
+  String get popularChannels => '人気のチャンネル';
 
   @override
   String get channel => 'チャンネル';
 
   @override
-  String get leaveChannel => 'チャンネルを退出';
+  String get leaveChannel => 'チャンネルから退出';
 
   @override
   String joinUser(String user) {
@@ -184,7 +184,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String spellCheckFailed(String username) {
-    return 'スペルチェックに失敗しました！$usernameを検索しようとしましたか？';
+    return 'スペルチェックに失敗しました！もしかして$usernameですか？';
   }
 
   @override
@@ -194,7 +194,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String sendMessageIn(String channel) {
-    return '$channelでメッセージを送信';
+    return '$channelにメッセージを送信';
   }
 
   @override
@@ -234,16 +234,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get openInBrowser => 'ブラウザで開く';
 
   @override
-  String get messageAppearance => 'メッセージの外観';
+  String get messageAppearance => 'メッセージの表示';
 
   @override
   String get showTimestamps => 'タイムスタンプを表示';
 
   @override
-  String get compactMessages => 'コンパクトメッセージ';
+  String get compactMessages => 'メッセージをコンパクトに表示';
 
   @override
-  String get showBadges => 'Show badges';
+  String get showBadges => 'バッジを表示';
 
   @override
   String get messageTrigger => 'メッセージトリガー';
@@ -258,10 +258,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get block => 'ブロック';
 
   @override
-  String get enableRegex => '正規表現を有効にする';
+  String get enableRegex => '正規表現（regex）を使用';
 
   @override
-  String get caseSensitive => '大文字小文字を区別する';
+  String get caseSensitive => '大文字と小文字を区別';
 
   @override
   String get messageTriggers => 'メッセージトリガー';
@@ -276,13 +276,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get copyText => 'テキストをコピー';
 
   @override
-  String get copyTextSubtitle => 'ユーザー名とメッセージテキストをコピーするには長押し';
+  String get copyTextSubtitle => '長押しでユーザー名ごとコピー';
 
   @override
   String get deleteMessage => 'メッセージを削除';
 
   @override
-  String get mentionUser => 'ユーザーにメンション';
+  String get mentionUser => 'ユーザーをメンション';
 
   @override
   String get copyMessageId => 'メッセージIDをコピー';
@@ -300,7 +300,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatHistory => 'チャット履歴';
 
   @override
-  String get login => 'ログイン';
+  String get login => 'ログイン名';
 
   @override
   String get newUserTrigger => '新しいユーザートリガー';
@@ -313,7 +313,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String timeoutUserForDuration(String duration) {
-    return '$durationの間ユーザーをタイムアウト';
+    return 'ユーザーを$durationタイムアウト';
   }
 
   @override
@@ -324,7 +324,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String bannedForDuration(String duration) {
-    return '$durationの間BAN';
+    return '$durationのBAN';
   }
 
   @override
@@ -340,28 +340,28 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hideMessage => 'メッセージを非表示';
 
   @override
-  String get scrollToBottom => '下にスクロール';
+  String get scrollToBottom => '最下部へスクロール';
 
   @override
-  String get startUsingTheApp => 'アプリを使用するには、以下からアカウントを追加してください。';
+  String get startUsingTheApp => 'アプリを使い始めるには、下からアカウントを追加してください。';
 
   @override
   String get chatSettings => 'チャット設定';
 
   @override
-  String get autocompleteUsersWithAt => '@でユーザー名を自動補完';
+  String get autocompleteUsersWithAt => '@でユーザー名を補完';
 
   @override
-  String get autocompleteEmotesWithColon => ':でエモートを自動補完';
+  String get autocompleteEmotesWithColon => ':でエモートを補完';
 
   @override
   String get language => '言語';
 
   @override
-  String get locale => 'ロケール';
+  String get locale => '言語と地域';
 
   @override
-  String get systemDefault => 'システムデフォルト';
+  String get systemDefault => 'システムのデフォルト';
 
   @override
   String get justDefault => 'デフォルト';
@@ -370,7 +370,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notifications => '通知';
 
   @override
-  String get noNotifications => 'いつか、どこかで誰かがあなたにメンションしてくれるでしょう。';
+  String get noNotifications => 'いつか、どこかで、誰かがあなたにメンションしてくれるはず。';
 
   @override
   String get backgroundNotifications => 'バックグラウンド通知';
@@ -396,160 +396,157 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String lastSeenAgo(String time) {
-    return '$time前に最後に見た';
+    return '最終確認：$time前';
   }
 
   @override
-  String get credits => 'Credits';
+  String get credits => 'クレジット';
 
   @override
-  String get search => 'Search';
+  String get search => '検索';
 
   @override
-  String get emoteMenuButton => 'Emote menu button';
+  String get emoteMenuButton => 'エモートメニューボタン';
 
   @override
-  String get emoteMenuButtonGrayscale => 'Show emote menu button in grayscale';
+  String get emoteMenuButtonGrayscale => 'エモートメニューボタンをグレースケールで表示';
 
   @override
-  String get chooseEmoteMenuButton =>
-      'Tap an emote to use it as the emote menu button';
+  String get chooseEmoteMenuButton => 'エモートをタップしてエモートメニューボタンに設定';
 
   @override
-  String get resetToKappa => 'Reset to Kappa';
+  String get resetToKappa => 'Kappaに戻す';
 
   @override
   String get emoteMenuButtonDownloadFailed =>
-      'Couldn\'t download that emote. The button wasn\'t changed.';
+      'エモートをダウンロードできませんでした。ボタンは変更されていません。';
 
   @override
-  String get takePhoto => 'Take photo';
+  String get takePhoto => '写真を撮る';
 
   @override
-  String get chooseFromLibrary => 'Choose from library';
+  String get chooseFromLibrary => 'ライブラリから選択';
 
   @override
   String get cameraUnavailable =>
-      'The camera couldn\'t be opened. Check that ColdChat has camera access.';
+      'カメラを開けませんでした。ColdChatにカメラへのアクセスが許可されているか確認してください。';
 
   @override
-  String get about => 'About';
+  String get about => 'このアプリについて';
 
   @override
-  String get sourceCode => 'Source code';
+  String get sourceCode => 'ソースコード';
 
   @override
-  String get license => 'License';
+  String get license => 'ライセンス';
 
   @override
-  String get basedOnChatsen => 'Based on Chatsen';
+  String get basedOnChatsen => 'Chatsenをベースに開発';
 
   @override
-  String get openSourceLicenses => 'Open source licenses';
+  String get openSourceLicenses => 'オープンソースライセンス';
 
   @override
   String get aboutLegalese =>
-      'ColdChat is free software: you can redistribute and modify it under the terms of the GNU Affero General Public License, version 3. It comes with ABSOLUTELY NO WARRANTY.';
+      'ColdChatはフリーソフトウェアです。GNU Affero General Public License バージョン3の条件に従って、再配布や改変を行うことができます。本ソフトウェアには一切の保証がありません。';
 
   @override
-  String get unblock => 'Unblock';
+  String get unblock => 'ブロック解除';
 
   @override
-  String get report => 'Report';
+  String get report => '報告';
 
   @override
   String reportUserTitle(String name) {
-    return 'Report $name';
+    return '$nameを報告';
   }
 
   @override
   String reportUserDescription(String name) {
-    return 'Reports are handled by Twitch. Open $name\'s channel on Twitch and choose Report there. You can also block $name here to hide their messages.';
+    return '報告はTwitchが対応します。Twitchで$nameのチャンネルを開き、そこで「報告」を選んでください。ここで$nameをブロックして、メッセージを非表示にすることもできます。';
   }
 
   @override
-  String get openOnTwitch => 'Open on Twitch';
+  String get openOnTwitch => 'Twitchで開く';
 
   @override
-  String get blockFailed =>
-      'The block list couldn\'t be changed. Check your connection and try again.';
+  String get blockFailed => 'ブロックリストを変更できませんでした。接続を確認して、もう一度お試しください。';
 
   @override
-  String get contact => 'Contact & feedback';
+  String get contact => 'お問い合わせ・フィードバック';
 
   @override
-  String get whisper => 'Whisper';
+  String get whisper => 'ウィスパー';
 
   @override
   String whisperTo(String name) {
-    return 'Whisper to $name';
+    return '$nameにウィスパー';
   }
 
   @override
   String whisperFrom(String name) {
-    return 'Whisper from $name';
+    return '$nameからのウィスパー';
   }
 
   @override
-  String get openWhisper => 'Open';
+  String get openWhisper => '開く';
 
   @override
-  String get userCard => 'User card';
+  String get userCard => 'ユーザーカード';
 
   @override
-  String get closeConversation => 'Close conversation';
+  String get closeConversation => '会話を閉じる';
 
   @override
-  String get closeConversationSubtitle =>
-      'The messages stay on this device and come back with the next whisper.';
+  String get closeConversationSubtitle => 'メッセージはこの端末に残り、次のウィスパーで再び表示されます。';
 
   @override
-  String get deleteConversation => 'Delete conversation';
+  String get deleteConversation => '会話を削除';
 
   @override
   String get deleteConversationSubtitle =>
-      'Deletes the messages from this device. Twitch keeps no whisper history.';
+      'この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。';
 
   @override
-  String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
+  String get whisperNeedsLogin => 'ウィスパーを送るには、Twitchでログインしてください。';
 
   @override
   String get whisperNeedsScope =>
-      'Sign in again to send and receive whispers. Your login is from before ColdChat supported them.';
+      'ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。';
 
   @override
-  String get whisperUserNotFound => 'There is no Twitch user with that name.';
+  String get whisperUserNotFound => 'その名前のTwitchユーザーは存在しません。';
 
   @override
   String whisperFailed(String reason) {
-    return 'Whisper not sent: $reason';
+    return 'ウィスパーを送信できませんでした：$reason';
   }
 
   @override
   String get whisperHistoryHint =>
-      'Whispers sent to you while ColdChat was closed don\'t show up here, because Twitch doesn\'t share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.';
+      'ColdChatを閉じている間に届いたウィスパーは、ここには表示されません。Twitchがウィスパーの履歴をアプリと共有しないためです。Twitchの右上にあるウィスパーアイコンから確認できます。';
 
   @override
-  String get gotIt => 'Got it';
+  String get gotIt => 'OK';
 
   @override
-  String get openTwitch => 'Open Twitch';
+  String get openTwitch => 'Twitchを開く';
 
   @override
   String showImage(String host) {
-    return 'Show image · $host';
+    return '画像を表示 · $host';
   }
 
   @override
-  String get showImagesFromLinks => 'Show images from links';
+  String get showImagesFromLinks => 'リンクの画像を表示';
 
   @override
   String get showImagesFromLinksSubtitle =>
-      'Twitch doesn\'t check these images. They may be inappropriate.';
+      'これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。';
 
   @override
-  String get showImagesAutomatically => 'Show images from links automatically?';
+  String get showImagesAutomatically => 'リンクの画像を自動で表示しますか？';
 
   @override
-  String get turnOn => 'Turn on';
+  String get turnOn => 'オンにする';
 }
