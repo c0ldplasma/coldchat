@@ -42,6 +42,7 @@
 
 # Repository related files
 !/.gitignore
+!/.git-blame-ignore-revs
 !/README.md
 !/CLAUDE.md
 !/LICENSE
