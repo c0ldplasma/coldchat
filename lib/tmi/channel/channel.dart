@@ -20,6 +20,7 @@ import '/tmi/badges.dart';
 import '/tmi/channel/channel_info.dart';
 import 'messages/channel_message_chat.dart';
 import '/tmi/user.dart';
+import '/providers/provider.dart';
 
 class Channel extends Bloc<ChannelEvent, ChannelState> {
   Client client;
@@ -260,10 +261,11 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     final results = await Future.wait(
       emoteProviders.map((emoteProvider) async {
         try {
-          return await emoteProvider.channelEmotes(id!);
+          return await emoteProvider.channelEmotes(id!).timeout(Provider.timeout);
         } catch (e) {
-          log('Couldn\'t get ${emoteProvider.name} channel emotes for $name ($id)');
-          return <Emote>[];
+          log('Couldn\'t get ${emoteProvider.name} channel emotes for $name ($id): $e');
+          // A provider that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
+          return [...channelEmotes.state.where((emote) => emote.provider.name == emoteProvider.name)];
         }
       }),
     );
@@ -280,10 +282,10 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     final results = await Future.wait(
       badgeProviders.map((badgeProvider) async {
         try {
-          return await badgeProvider.channelBadges(id!);
+          return await badgeProvider.channelBadges(id!).timeout(Provider.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} channel badges for $name ($id)');
-          return <CustomBadge>[];
+          log('Couldn\'t get ${badgeProvider.name} channel badges for $name ($id): $e');
+          return [...channelBadges.state.where((badge) => badge.provider.name == badgeProvider.name)];
         }
       }),
     );
