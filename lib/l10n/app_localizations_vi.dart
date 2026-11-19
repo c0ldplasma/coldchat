@@ -616,4 +616,29 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get themeIce => 'Băng';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Đang kết nối tới $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Đã kết nối tới $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Đã ngắt kết nối khỏi $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel đã bị Twitch đình chỉ';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Bạn đã bị cấm khỏi $channel';
+  }
 }

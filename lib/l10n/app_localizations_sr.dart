@@ -614,4 +614,29 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get themeIce => 'Лед';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Повезивање са $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Повезано са $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Веза са $channel је прекинута';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Twitch је суспендовао $channel';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Имаш бан на $channel';
+  }
 }

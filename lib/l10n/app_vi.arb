@@ -352,5 +352,10 @@
   "customColor": "Tùy chỉnh",
   "hue": "Sắc độ",
   "saturation": "Độ bão hòa",
-  "themeIce": "Băng"
+  "themeIce": "Băng",
+  "channelConnecting": "Đang kết nối tới {channel}…",
+  "channelConnected": "Đã kết nối tới {channel}",
+  "channelDisconnected": "Đã ngắt kết nối khỏi {channel}",
+  "channelSuspended": "{channel} đã bị Twitch đình chỉ",
+  "channelBanned": "Bạn đã bị cấm khỏi {channel}"
 }

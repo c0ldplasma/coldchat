@@ -611,4 +611,29 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get themeIce => 'קרח';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'מתחבר אל $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'מחובר אל $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'החיבור אל $channel נותק';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel הושעה על ידי Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'נחסמת ב-$channel';
+  }
 }

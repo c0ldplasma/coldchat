@@ -352,5 +352,10 @@
   "customColor": "Vlastní",
   "hue": "Odstín",
   "saturation": "Sytost",
-  "themeIce": "Ledová"
+  "themeIce": "Ledová",
+  "channelConnecting": "Připojování k {channel}…",
+  "channelConnected": "Připojeno k {channel}",
+  "channelDisconnected": "Odpojeno od {channel}",
+  "channelSuspended": "Kanál {channel} byl pozastaven Twitchem",
+  "channelBanned": "Na kanálu {channel} máš ban"
 }

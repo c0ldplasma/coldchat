@@ -248,5 +248,10 @@
   "customColor": "Eigene",
   "hue": "Farbton",
   "saturation": "Sättigung",
-  "themeIce": "Eis"
+  "themeIce": "Eis",
+  "channelConnecting": "Verbindung zu {channel} wird hergestellt …",
+  "channelConnected": "Mit {channel} verbunden",
+  "channelDisconnected": "Verbindung zu {channel} getrennt",
+  "channelSuspended": "{channel} wurde von Twitch gesperrt",
+  "channelBanned": "Du bist in {channel} gebannt"
 }

@@ -352,5 +352,10 @@
   "customColor": "Прилагођено",
   "hue": "Нијанса",
   "saturation": "Засићеност",
-  "themeIce": "Лед"
+  "themeIce": "Лед",
+  "channelConnecting": "Повезивање са {channel}…",
+  "channelConnected": "Повезано са {channel}",
+  "channelDisconnected": "Веза са {channel} је прекинута",
+  "channelSuspended": "Twitch је суспендовао {channel}",
+  "channelBanned": "Имаш бан на {channel}"
 }

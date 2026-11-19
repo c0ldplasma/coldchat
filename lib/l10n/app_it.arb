@@ -352,5 +352,10 @@
   "customColor": "Personalizzato",
   "hue": "Tonalità",
   "saturation": "Saturazione",
-  "themeIce": "Ghiaccio"
+  "themeIce": "Ghiaccio",
+  "channelConnecting": "Connessione a {channel}…",
+  "channelConnected": "Connesso a {channel}",
+  "channelDisconnected": "Disconnesso da {channel}",
+  "channelSuspended": "{channel} è stato sospeso da Twitch",
+  "channelBanned": "Sei bannato da {channel}"
 }

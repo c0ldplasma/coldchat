@@ -352,5 +352,10 @@
   "customColor": "Свой",
   "hue": "Оттенок",
   "saturation": "Насыщенность",
-  "themeIce": "Лёд"
+  "themeIce": "Лёд",
+  "channelConnecting": "Подключение к {channel}…",
+  "channelConnected": "Подключено к {channel}",
+  "channelDisconnected": "Отключено от {channel}",
+  "channelSuspended": "Канал {channel} заблокирован Twitch",
+  "channelBanned": "Ты забанен на {channel}"
 }

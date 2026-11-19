@@ -352,5 +352,10 @@
   "customColor": "Özel",
   "hue": "Ton",
   "saturation": "Doygunluk",
-  "themeIce": "Buz"
+  "themeIce": "Buz",
+  "channelConnecting": "{channel} kanalına bağlanılıyor…",
+  "channelConnected": "{channel} kanalına bağlanıldı",
+  "channelDisconnected": "{channel} kanalıyla bağlantı kesildi",
+  "channelSuspended": "{channel} Twitch tarafından askıya alındı",
+  "channelBanned": "{channel} kanalından banlandın"
 }

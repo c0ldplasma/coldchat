@@ -614,4 +614,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get themeIce => 'IJs';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Verbinden met $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Verbonden met $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Verbinding met $channel verbroken';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel is door Twitch geschorst';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Je bent verbannen uit $channel';
+  }
 }

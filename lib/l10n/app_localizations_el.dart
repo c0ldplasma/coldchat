@@ -617,4 +617,29 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get themeIce => 'Πάγος';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Σύνδεση στο $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Συνδέθηκες στο $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Αποσυνδέθηκες από το $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Το $channel έχει ανασταλεί από το Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Έχεις αποκλειστεί από το $channel';
+  }
 }

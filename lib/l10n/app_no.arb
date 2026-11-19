@@ -352,5 +352,10 @@
   "customColor": "Egendefinert",
   "hue": "Fargetone",
   "saturation": "Metning",
-  "themeIce": "Is"
+  "themeIce": "Is",
+  "channelConnecting": "Kobler til {channel} …",
+  "channelConnected": "Koblet til {channel}",
+  "channelDisconnected": "Frakoblet fra {channel}",
+  "channelSuspended": "{channel} er suspendert av Twitch",
+  "channelBanned": "Du er utestengt fra {channel}"
 }

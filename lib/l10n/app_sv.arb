@@ -352,5 +352,10 @@
   "customColor": "Egen",
   "hue": "Nyans",
   "saturation": "Mättnad",
-  "themeIce": "Is"
+  "themeIce": "Is",
+  "channelConnecting": "Ansluter till {channel} …",
+  "channelConnected": "Ansluten till {channel}",
+  "channelDisconnected": "Frånkopplad från {channel}",
+  "channelSuspended": "{channel} har stängts av av Twitch",
+  "channelBanned": "Du är bannad från {channel}"
 }

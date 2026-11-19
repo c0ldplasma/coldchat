@@ -352,5 +352,10 @@
   "customColor": "Προσαρμοσμένο",
   "hue": "Απόχρωση",
   "saturation": "Κορεσμός",
-  "themeIce": "Πάγος"
+  "themeIce": "Πάγος",
+  "channelConnecting": "Σύνδεση στο {channel}…",
+  "channelConnected": "Συνδέθηκες στο {channel}",
+  "channelDisconnected": "Αποσυνδέθηκες από το {channel}",
+  "channelSuspended": "Το {channel} έχει ανασταλεί από το Twitch",
+  "channelBanned": "Έχεις αποκλειστεί από το {channel}"
 }

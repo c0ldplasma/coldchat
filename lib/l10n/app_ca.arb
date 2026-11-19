@@ -352,5 +352,10 @@
   "customColor": "Personalitzat",
   "hue": "To",
   "saturation": "Saturació",
-  "themeIce": "Gel"
+  "themeIce": "Gel",
+  "channelConnecting": "Connectant amb {channel}…",
+  "channelConnected": "Connectat a {channel}",
+  "channelDisconnected": "Desconnectat de {channel}",
+  "channelSuspended": "Twitch ha suspès {channel}",
+  "channelBanned": "Estàs bandejat de {channel}"
 }

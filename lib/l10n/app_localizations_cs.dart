@@ -615,4 +615,29 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get themeIce => 'Ledová';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Připojování k $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Připojeno k $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Odpojeno od $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Kanál $channel byl pozastaven Twitchem';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Na kanálu $channel máš ban';
+  }
 }

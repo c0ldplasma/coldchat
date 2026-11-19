@@ -352,5 +352,10 @@
   "customColor": "מותאם אישית",
   "hue": "גוון",
   "saturation": "רוויה",
-  "themeIce": "קרח"
+  "themeIce": "קרח",
+  "channelConnecting": "מתחבר אל {channel}…",
+  "channelConnected": "מחובר אל {channel}",
+  "channelDisconnected": "החיבור אל {channel} נותק",
+  "channelSuspended": "{channel} הושעה על ידי Twitch",
+  "channelBanned": "נחסמת ב-{channel}"
 }

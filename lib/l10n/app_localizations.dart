@@ -1221,6 +1221,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ice'**
   String get themeIce;
+
+  /// Connection status shown at the end of a channel's chat; channel is like #name
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to {channel}…'**
+  String channelConnecting(String channel);
+
+  /// Connection status shown at the end of a channel's chat; channel is like #name
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to {channel}'**
+  String channelConnected(String channel);
+
+  /// Connection status shown at the end of a channel's chat; channel is like #name
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnected from {channel}'**
+  String channelDisconnected(String channel);
+
+  /// Connection status shown at the end of a channel's chat; channel is like #name
+  ///
+  /// In en, this message translates to:
+  /// **'{channel} has been suspended by Twitch'**
+  String channelSuspended(String channel);
+
+  /// Connection status shown at the end of a channel's chat; channel is like #name
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re banned from {channel}'**
+  String channelBanned(String channel);
 }
 
 class _AppLocalizationsDelegate

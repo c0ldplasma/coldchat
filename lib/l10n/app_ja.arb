@@ -352,5 +352,10 @@
   "customColor": "カスタム",
   "hue": "色相",
   "saturation": "彩度",
-  "themeIce": "アイス"
+  "themeIce": "アイス",
+  "channelConnecting": "{channel}に接続中…",
+  "channelConnected": "{channel}に接続しました",
+  "channelDisconnected": "{channel}から切断されました",
+  "channelSuspended": "{channel}はTwitchにより停止されています",
+  "channelBanned": "{channel}からBANされています"
 }

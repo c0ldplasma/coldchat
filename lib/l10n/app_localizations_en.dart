@@ -611,6 +611,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeIce => 'Ice';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Connecting to $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Connected to $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Disconnected from $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel has been suspended by Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'You\'re banned from $channel';
+  }
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

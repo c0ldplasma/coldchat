@@ -352,5 +352,10 @@
   "customColor": "Eigen",
   "hue": "Tint",
   "saturation": "Verzadiging",
-  "themeIce": "IJs"
+  "themeIce": "IJs",
+  "channelConnecting": "Verbinden met {channel}…",
+  "channelConnected": "Verbonden met {channel}",
+  "channelDisconnected": "Verbinding met {channel} verbroken",
+  "channelSuspended": "{channel} is door Twitch geschorst",
+  "channelBanned": "Je bent verbannen uit {channel}"
 }

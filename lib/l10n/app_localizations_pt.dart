@@ -616,4 +616,29 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get themeIce => 'Gelo';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'A ligar a $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Ligado a $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Desligado de $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel foi suspenso pela Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Estás banido de $channel';
+  }
 }

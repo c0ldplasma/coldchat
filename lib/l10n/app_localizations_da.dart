@@ -616,4 +616,29 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get themeIce => 'Is';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Opretter forbindelse til $channel …';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Forbundet til $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Afbrudt fra $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel er blevet suspenderet af Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Du er bannet fra $channel';
+  }
 }
