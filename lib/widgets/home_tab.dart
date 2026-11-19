@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coldchat/api/twitch/twitch.dart';
 import 'package:coldchat/components/boxlistener.dart';
 import 'package:coldchat/components/tile.dart';
-import 'package:coldchat/data/twitch/search_data.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +13,13 @@ import 'package:coldchat/l10n/app_localizations.dart';
 
 import '/components/separator.dart';
 import '/components/surface.dart';
+import '/data/twitch/channel_search.dart';
 import '/data/twitch/stream_data.dart';
 import '/data/twitch_account.dart';
 import '/pages/home.dart';
 import '/tmi/channel/channel_event.dart';
 import '/tmi/client/client.dart';
+import '/tools/channel_ranking.dart';
 import '/widgets/avatar_button.dart';
 import '/widgets/logged_out_start.dart';
 
@@ -75,7 +78,8 @@ class _HomeTabState extends State<HomeTab> {
   late final ChannelSearchRequest searchRequest = context.read<HomeTabSwitcher>().searchRequest;
   Future<List<StreamData>>? recommendedStreams;
   Future<List<StreamData>>? topStreams;
-  Future<List<SearchData>>? searchResults;
+  Future<List<ChannelCandidate>>? searchResults;
+  Timer? searchDebounce;
 
   Future<void> refresh() async {
     recommendedStreams = Twitch.streams(
@@ -98,6 +102,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void dispose() {
+    searchDebounce?.cancel();
     searchRequest.removeListener(_focusSearchIfRequested);
     searchFocus.dispose();
     searchTextController.dispose();
@@ -115,8 +120,22 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
+  // Waits until typing pauses, so a fast typist doesn't send a search per letter.
+  void _onSearchChanged(String text) {
+    searchDebounce?.cancel();
+    if (normalizeChannelQuery(text).isEmpty) {
+      setState(() => searchResults = null);
+      return;
+    }
+    searchDebounce = Timer(const Duration(milliseconds: 250), () {
+      if (!mounted || account == null) return;
+      setState(() => searchResults = searchChannels(account!.tokenData, text));
+    });
+  }
+
   // Join + switch to the channel, then reset and dismiss the search.
   void _openSearchResult(String channelName) {
+    searchDebounce?.cancel();
     joinAndOpenChannel(context, channelName);
     searchTextController.clear();
     FocusScope.of(context).unfocus();
@@ -204,19 +223,7 @@ class _HomeTabState extends State<HomeTab> {
                                 ),
                                 controller: searchTextController,
                                 focusNode: searchFocus,
-                                onChanged: (text) {
-                                  if (text.isEmpty) {
-                                    setState(() {
-                                      searchResults = null;
-                                    });
-                                    return;
-                                  }
-
-                                  setState(() {
-                                    searchResults = Twitch.channelSearch(
-                                        account!.tokenData, text);
-                                  });
-                                },
+                                onChanged: _onSearchChanged,
                               ),
                             ),
                             const SizedBox(width: 16.0),
@@ -228,7 +235,7 @@ class _HomeTabState extends State<HomeTab> {
                   ],
                 ),
                 if (searchResults != null)
-                  FutureBuilder<List<SearchData>>(
+                  FutureBuilder<List<ChannelCandidate>>(
                     future: searchResults,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
@@ -244,44 +251,58 @@ class _HomeTabState extends State<HomeTab> {
                           ],
                         );
                       }
+                      final query = normalizeChannelQuery(searchTextController.text);
+                      final results = snapshot.data!;
+                      // The typed name as a channel to join, unless the results already show it as the exact match.
+                      final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
+                      final colors = Theme.of(context).colorScheme;
                       return SliverList.list(
                         children: [
-                          Tile(
-                            onTap: () => _openSearchResult(
-                                '#${searchTextController.text}'),
-                            prefix: ClipRRect(
-                              borderRadius: BorderRadius.circular(48.0),
-                              clipBehavior: Clip.antiAlias,
-                              child: Material(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withValues(alpha: 0.1),
-                                child: const Icon(Icons.add_circle_outline),
-                              ),
-                            ),
-                            title: searchTextController.text,
-                          ),
-                          const Separator(),
-                          for (final searchResult in snapshot.data!)
+                          if (!hasExact && query.isNotEmpty) ...[
                             Tile(
-                              onTap: () => _openSearchResult(
-                                  '#${searchResult.broadcasterLogin}'),
+                              onTap: () => _openSearchResult('#${query.toLowerCase()}'),
                               prefix: ClipRRect(
                                 borderRadius: BorderRadius.circular(48.0),
                                 clipBehavior: Clip.antiAlias,
                                 child: Material(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withValues(alpha: 0.1),
-                                  // child: const Icon(Icons.add_circle_outline),
-                                  child: Ink.image(
-                                      image: NetworkImage(
-                                          searchResult.thumbnailUrl)),
+                                  color: colors.onSurface.withValues(alpha: 0.1),
+                                  child: const Icon(Icons.add_circle_outline),
                                 ),
                               ),
-                              title: searchResult.displayName,
+                              title: query,
+                            ),
+                            const Separator(),
+                          ],
+                          for (final result in results)
+                            Tile(
+                              onTap: () => _openSearchResult('#${result.login}'),
+                              prefix: ClipRRect(
+                                borderRadius: BorderRadius.circular(48.0),
+                                clipBehavior: Clip.antiAlias,
+                                child: Material(
+                                  color: colors.onSurface.withValues(alpha: 0.1),
+                                  child: Ink.image(image: NetworkImage(result.profileImageUrl)),
+                                ),
+                              ),
+                              title: result.displayName,
+                              subtitle: result.isLive ? result.gameName : null,
+                              suffix: result.isLive && result.viewerCount != null
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          width: 8.0,
+                                          height: 8.0,
+                                          decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                                        ),
+                                        const SizedBox(width: 4.0),
+                                        Text(
+                                          '${result.viewerCount}',
+                                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.onSurface.withValues(alpha: 0.9)),
+                                        ),
+                                      ],
+                                    )
+                                  : null,
                             ),
                         ],
                       );
