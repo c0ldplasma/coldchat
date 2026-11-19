@@ -14,7 +14,6 @@ import 'package:collection/collection.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../data/custom_badge.dart';
-import '../../data/badge_users.dart';
 import '../../data/emote.dart';
 import '../../providers/badge_provider.dart';
 import '../../providers/emote_provider.dart';
@@ -188,10 +187,11 @@ class Client {
     final results = await Future.wait(
       emoteProviders.map((emoteProvider) async {
         try {
-          return await emoteProvider.globalEmotes();
+          return await emoteProvider.globalEmotes().timeout(Provider.timeout);
         } catch (e) {
-          log('Couldn\'t get ${emoteProvider.name} global emotes');
-          return <Emote>[];
+          log('Couldn\'t get ${emoteProvider.name} global emotes: $e');
+          // A provider that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
+          return [...globalEmotes.state.where((emote) => emote.provider.name == emoteProvider.name)];
         }
       }),
     );
@@ -205,10 +205,10 @@ class Client {
     final results = await Future.wait(
       badgeProviders.map((badgeProvider) async {
         try {
-          return await badgeProvider.globalBadges();
+          return await badgeProvider.globalBadges().timeout(Provider.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global badges');
-          return <CustomBadge>[];
+          log('Couldn\'t get ${badgeProvider.name} global badges: $e');
+          return [...globalBadges.state.where((badge) => badge.provider.name == badgeProvider.name)];
         }
       }),
     );
@@ -224,10 +224,10 @@ class Client {
     final results = await Future.wait(
       badgeProviders.map((badgeProvider) async {
         try {
-          return await badgeProvider.globalUserBadges();
+          return await badgeProvider.globalUserBadges().timeout(Provider.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global user badges');
-          return <BadgeUsers>[];
+          log('Couldn\'t get ${badgeProvider.name} global user badges: $e');
+          return [...globalUserBadges.state.where((users) => users.badge.provider.name == badgeProvider.name)];
         }
       }),
     );
