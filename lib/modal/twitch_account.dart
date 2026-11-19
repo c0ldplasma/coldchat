@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
 import '/components/separator.dart';
@@ -133,12 +134,26 @@ class ExpirationText extends StatefulWidget {
 }
 
 class _ExpirationTextState extends State<ExpirationText> {
+  /// The largest unit that's useful, like account pages usually show it: "55 days · Jan 14, 2027", "18 hours",
+  /// "6 minutes". Dart's Duration.toString() printed hours past a thousand and microseconds.
+  static String _remaining(BuildContext context, DateTime expiresAt) {
+    final l10n = AppLocalizations.of(context)!;
+    final remaining = expiresAt.difference(DateTime.now());
+    if (remaining.inDays >= 1) {
+      final date = DateFormat.yMMMd(Localizations.localeOf(context).toLanguageTag()).format(expiresAt.toLocal());
+      return '${l10n.durationDays(remaining.inDays)} · $date';
+    }
+    if (remaining.inHours >= 1) return l10n.durationHours(remaining.inHours);
+    return l10n.durationMinutes(remaining.inMinutes < 1 ? 1 : remaining.inMinutes);
+  }
+
   late Timer timer;
 
   @override
   void initState() {
+    // The text changes at most once a minute.
     timer = Timer.periodic(
-      const Duration(milliseconds: 100),
+      const Duration(seconds: 30),
       (Timer t) => setState(() {}),
     );
     super.initState();
@@ -161,7 +176,7 @@ class _ExpirationTextState extends State<ExpirationText> {
       expired
           ? AppLocalizations.of(context)!.loginExpired
           : tokenData.expiresAt != null
-              ? AppLocalizations.of(context)!.expiresIn('${tokenData.expiresAt?.difference(DateTime.now())}')
+              ? AppLocalizations.of(context)!.expiresIn(_remaining(context, tokenData.expiresAt!))
               : AppLocalizations.of(context)!.expiresNever,
       style: TextStyle(
         color: expired ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),

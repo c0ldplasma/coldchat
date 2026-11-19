@@ -357,5 +357,8 @@
   "channelConnected": "Povezano s {channel}",
   "channelDisconnected": "Veza s {channel} prekinuta",
   "channelSuspended": "Twitch je suspendirao {channel}",
-  "channelBanned": "Imaš ban na {channel}"
+  "channelBanned": "Imaš ban na {channel}",
+  "durationDays": "{count, plural, one{{count} dan} other{{count} dana}}",
+  "durationHours": "{count, plural, one{{count} sat} few{{count} sata} other{{count} sati}}",
+  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minute} other{{count} minuta}}"
 }

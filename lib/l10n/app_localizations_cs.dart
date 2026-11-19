@@ -640,4 +640,40 @@ class AppLocalizationsCs extends AppLocalizations {
   String channelBanned(String channel) {
     return 'Na kanálu $channel máš ban';
   }
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dní',
+      few: '$count dny',
+      one: '$count den',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hodin',
+      few: '$count hodiny',
+      one: '$count hodinu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minut',
+      few: '$count minuty',
+      one: '$count minutu',
+    );
+    return '$_temp0';
+  }
 }

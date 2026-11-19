@@ -357,5 +357,8 @@
   "channelConnected": "Koblet til {channel}",
   "channelDisconnected": "Frakoblet fra {channel}",
   "channelSuspended": "{channel} er suspendert av Twitch",
-  "channelBanned": "Du er utestengt fra {channel}"
+  "channelBanned": "Du er utestengt fra {channel}",
+  "durationDays": "{count, plural, =1{1 dag} other{{count} dager}}",
+  "durationHours": "{count, plural, =1{1 time} other{{count} timer}}",
+  "durationMinutes": "{count, plural, =1{1 minutt} other{{count} minutter}}"
 }

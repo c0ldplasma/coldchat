@@ -641,4 +641,39 @@ class AppLocalizationsPl extends AppLocalizations {
   String channelBanned(String channel) {
     return 'Masz bana na $channel';
   }
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dni',
+      one: '1 dzień',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count godzin',
+      few: '$count godziny',
+      one: '$count godzinę',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minut',
+      few: '$count minuty',
+      one: '$count minutę',
+    );
+    return '$_temp0';
+  }
 }

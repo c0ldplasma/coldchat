@@ -639,4 +639,39 @@ class AppLocalizationsSr extends AppLocalizations {
   String channelBanned(String channel) {
     return 'Имаш бан на $channel';
   }
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дана',
+      one: '$count дан',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count сати',
+      few: '$count сата',
+      one: '$count сат',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count минута',
+      few: '$count минута',
+      one: '$count минут',
+    );
+    return '$_temp0';
+  }
 }

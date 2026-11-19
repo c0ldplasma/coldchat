@@ -357,5 +357,8 @@
   "channelConnected": "{channel} kanalına bağlanıldı",
   "channelDisconnected": "{channel} kanalıyla bağlantı kesildi",
   "channelSuspended": "{channel} Twitch tarafından askıya alındı",
-  "channelBanned": "{channel} kanalından banlandın"
+  "channelBanned": "{channel} kanalından banlandın",
+  "durationDays": "{count, plural, other{{count} gün}}",
+  "durationHours": "{count, plural, other{{count} saat}}",
+  "durationMinutes": "{count, plural, other{{count} dakika}}"
 }

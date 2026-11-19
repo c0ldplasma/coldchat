@@ -357,5 +357,8 @@
   "channelConnected": "Connecté à {channel}",
   "channelDisconnected": "Déconnecté de {channel}",
   "channelSuspended": "{channel} a été suspendue par Twitch",
-  "channelBanned": "Tu es banni de {channel}"
+  "channelBanned": "Tu es banni de {channel}",
+  "durationDays": "{count, plural, =1{1 jour} other{{count} jours}}",
+  "durationHours": "{count, plural, =1{1 heure} other{{count} heures}}",
+  "durationMinutes": "{count, plural, =1{1 minute} other{{count} minutes}}"
 }

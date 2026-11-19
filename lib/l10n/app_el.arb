@@ -357,5 +357,8 @@
   "channelConnected": "Συνδέθηκες στο {channel}",
   "channelDisconnected": "Αποσυνδέθηκες από το {channel}",
   "channelSuspended": "Το {channel} έχει ανασταλεί από το Twitch",
-  "channelBanned": "Έχεις αποκλειστεί από το {channel}"
+  "channelBanned": "Έχεις αποκλειστεί από το {channel}",
+  "durationDays": "{count, plural, =1{1 ημέρα} other{{count} ημέρες}}",
+  "durationHours": "{count, plural, =1{1 ώρα} other{{count} ώρες}}",
+  "durationMinutes": "{count, plural, =1{1 λεπτό} other{{count} λεπτά}}"
 }

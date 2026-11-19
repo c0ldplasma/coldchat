@@ -357,5 +357,8 @@
   "channelConnected": "מחובר אל {channel}",
   "channelDisconnected": "החיבור אל {channel} נותק",
   "channelSuspended": "{channel} הושעה על ידי Twitch",
-  "channelBanned": "נחסמת ב-{channel}"
+  "channelBanned": "נחסמת ב-{channel}",
+  "durationDays": "{count, plural, =1{יום אחד} =2{יומיים} other{{count} ימים}}",
+  "durationHours": "{count, plural, =1{שעה אחת} =2{שעתיים} other{{count} שעות}}",
+  "durationMinutes": "{count, plural, =1{דקה אחת} =2{שתי דקות} other{{count} דקות}}"
 }

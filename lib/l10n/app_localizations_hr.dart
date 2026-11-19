@@ -639,4 +639,39 @@ class AppLocalizationsHr extends AppLocalizations {
   String channelBanned(String channel) {
     return 'Imaš ban na $channel';
   }
+
+  @override
+  String durationDays(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dana',
+      one: '$count dan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHours(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sati',
+      few: '$count sata',
+      one: '$count sat',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minuta',
+      few: '$count minute',
+      one: '$count minutu',
+    );
+    return '$_temp0';
+  }
 }
