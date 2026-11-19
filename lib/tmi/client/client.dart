@@ -152,6 +152,14 @@ class Client {
     // waiting for the first tick.
     Timer.periodic(const Duration(seconds: 2), (timer) => _joinPass());
 
+    // Twitch requires apps to validate a user token at startup and then hourly while running
+    // (https://dev.twitch.tv/docs/authentication/validate-tokens/), so a login revoked on Twitch's side is noticed
+    // even when the app stays open. Startup, every connect and every return to the foreground validate already.
+    Timer.periodic(const Duration(hours: 1), (timer) {
+      final account = _apiAccount;
+      if (account != null) unawaited(validateCredentials(account));
+    });
+
     receiver.onReceive = receive;
     transmitter.onReceive = receive;
     receiver.onStateChange = stateChange;
