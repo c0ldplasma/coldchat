@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Zobrazovat obrázky z odkazů",
   "showImagesFromLinksSubtitle": "Twitch tyto obrázky nekontroluje. Mohou být nevhodné.",
   "showImagesAutomatically": "Zobrazovat obrázky z odkazů automaticky?",
-  "turnOn": "Zapnout"
+  "turnOn": "Zapnout",
+  "channelConnecting": "Připojování k {channel}…",
+  "channelConnected": "Připojeno k {channel}",
+  "channelDisconnected": "Odpojeno od {channel}",
+  "channelSuspended": "Kanál {channel} byl pozastaven Twitchem",
+  "channelBanned": "Na kanálu {channel} máš ban"
 }

@@ -565,4 +565,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get turnOn => 'Activer';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Connexion à $channel…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Connecté à $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Déconnecté de $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel a été suspendue par Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Tu es banni de $channel';
+  }
 }

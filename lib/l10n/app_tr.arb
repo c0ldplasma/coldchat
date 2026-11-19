@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Bağlantılardaki görselleri göster",
   "showImagesFromLinksSubtitle": "Twitch bu görselleri denetlemez. Uygunsuz olabilirler.",
   "showImagesAutomatically": "Bağlantılardaki görseller otomatik gösterilsin mi?",
-  "turnOn": "Aç"
+  "turnOn": "Aç",
+  "channelConnecting": "{channel} kanalına bağlanılıyor…",
+  "channelConnected": "{channel} kanalına bağlanıldı",
+  "channelDisconnected": "{channel} kanalıyla bağlantı kesildi",
+  "channelSuspended": "{channel} Twitch tarafından askıya alındı",
+  "channelBanned": "{channel} kanalından banlandın"
 }

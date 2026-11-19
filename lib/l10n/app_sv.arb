@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Visa bilder från länkar",
   "showImagesFromLinksSubtitle": "Twitch granskar inte de här bilderna. De kan vara olämpliga.",
   "showImagesAutomatically": "Visa bilder från länkar automatiskt?",
-  "turnOn": "Slå på"
+  "turnOn": "Slå på",
+  "channelConnecting": "Ansluter till {channel} …",
+  "channelConnected": "Ansluten till {channel}",
+  "channelDisconnected": "Frånkopplad från {channel}",
+  "channelSuspended": "{channel} har stängts av av Twitch",
+  "channelBanned": "Du är bannad från {channel}"
 }

@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Mostrar imágenes de enlaces",
   "showImagesFromLinksSubtitle": "Twitch no revisa estas imágenes. Pueden ser inapropiadas.",
   "showImagesAutomatically": "¿Mostrar automáticamente las imágenes de los enlaces?",
-  "turnOn": "Activar"
+  "turnOn": "Activar",
+  "channelConnecting": "Conectando a {channel}…",
+  "channelConnected": "Conectado a {channel}",
+  "channelDisconnected": "Desconectado de {channel}",
+  "channelSuspended": "Twitch ha suspendido {channel}",
+  "channelBanned": "Estás baneado de {channel}"
 }

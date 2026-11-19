@@ -3,6 +3,7 @@ import 'package:coldchat/data/inline_url.dart';
 import 'package:coldchat/modal/emote.dart';
 import 'package:coldchat/modal/user.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_embeds.dart';
+import 'package:coldchat/tmi/channel/channel_state.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_state_change.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -188,7 +189,7 @@ class ChatMessage extends StatelessWidget {
           } else if (message is ChannelMessageEvent) {
             return Container();
           } else if (message is ChannelMessageStateChange) {
-            return Text((message as ChannelMessageStateChange).change.nextState.toString());
+            return _ChannelStatusLine(message: message as ChannelMessageStateChange, messageAppearance: messageAppearance);
           }
           return Text('Unhandled message type: ${message.runtimeType}');
         },
@@ -430,3 +431,40 @@ WidgetSpan(
                           //         )).height,
                           //   )),
 */
+
+/// The connection status at the end of a channel's chat ("Connected to #name"), laid out like a chat message: same
+/// padding, the time in front when timestamps are on, in a quieter color.
+class _ChannelStatusLine extends StatelessWidget {
+  final ChannelMessageStateChange message;
+  final MessageAppearance messageAppearance;
+
+  const _ChannelStatusLine({required this.message, required this.messageAppearance});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final channel = message.channel?.name ?? '';
+    final text = switch (message.change.nextState) {
+      ChannelConnecting() => l10n.channelConnecting(channel),
+      ChannelConnected() => l10n.channelConnected(channel),
+      ChannelSuspended() => l10n.channelSuspended(channel),
+      ChannelBanned() => l10n.channelBanned(channel),
+      _ => l10n.channelDisconnected(channel),
+    };
+    final fontSize = (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale;
+    final color = Theme.of(context).colorScheme.onSurfaceVariant;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
+      child: Text.rich(
+        TextSpan(
+          children: [
+            if (messageAppearance.timestamps)
+              TextSpan(text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')}  '),
+            TextSpan(text: text, style: const TextStyle(fontStyle: FontStyle.italic)),
+          ],
+        ),
+        style: TextStyle(color: color, fontSize: fontSize),
+      ),
+    );
+  }
+}

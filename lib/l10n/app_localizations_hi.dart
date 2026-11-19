@@ -562,4 +562,29 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get turnOn => 'चालू करें';
+
+  @override
+  String channelConnecting(String channel) {
+    return '$channel से कनेक्ट हो रहा है…';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return '$channel से कनेक्ट हो गया';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return '$channel से डिस्कनेक्ट हो गया';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return 'Twitch ने $channel को निलंबित कर दिया है';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'तुम $channel में बैन हो';
+  }
 }

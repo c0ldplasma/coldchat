@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Hiện ảnh từ liên kết",
   "showImagesFromLinksSubtitle": "Twitch không kiểm duyệt những ảnh này. Chúng có thể có nội dung không phù hợp.",
   "showImagesAutomatically": "Tự động hiện ảnh từ liên kết?",
-  "turnOn": "Bật"
+  "turnOn": "Bật",
+  "channelConnecting": "Đang kết nối tới {channel}…",
+  "channelConnected": "Đã kết nối tới {channel}",
+  "channelDisconnected": "Đã ngắt kết nối khỏi {channel}",
+  "channelSuspended": "{channel} đã bị Twitch đình chỉ",
+  "channelBanned": "Bạn đã bị cấm khỏi {channel}"
 }

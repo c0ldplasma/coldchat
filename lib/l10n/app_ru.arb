@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Показывать изображения из ссылок",
   "showImagesFromLinksSubtitle": "Twitch не проверяет эти изображения. Они могут быть неприемлемыми.",
   "showImagesAutomatically": "Показывать изображения из ссылок автоматически?",
-  "turnOn": "Включить"
+  "turnOn": "Включить",
+  "channelConnecting": "Подключение к {channel}…",
+  "channelConnected": "Подключено к {channel}",
+  "channelDisconnected": "Отключено от {channel}",
+  "channelSuspended": "Канал {channel} заблокирован Twitch",
+  "channelBanned": "Ты забанен на {channel}"
 }

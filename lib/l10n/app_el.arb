@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Εμφάνιση εικόνων από συνδέσμους",
   "showImagesFromLinksSubtitle": "Το Twitch δεν ελέγχει αυτές τις εικόνες. Μπορεί να είναι ακατάλληλες.",
   "showImagesAutomatically": "Αυτόματη εμφάνιση εικόνων από συνδέσμους;",
-  "turnOn": "Ενεργοποίηση"
+  "turnOn": "Ενεργοποίηση",
+  "channelConnecting": "Σύνδεση στο {channel}…",
+  "channelConnected": "Συνδέθηκες στο {channel}",
+  "channelDisconnected": "Αποσυνδέθηκες από το {channel}",
+  "channelSuspended": "Το {channel} έχει ανασταλεί από το Twitch",
+  "channelBanned": "Έχεις αποκλειστεί από το {channel}"
 }

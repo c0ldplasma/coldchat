@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Afbeeldingen uit links tonen",
   "showImagesFromLinksSubtitle": "Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.",
   "showImagesAutomatically": "Afbeeldingen uit links automatisch tonen?",
-  "turnOn": "Inschakelen"
+  "turnOn": "Inschakelen",
+  "channelConnecting": "Verbinden met {channel}…",
+  "channelConnected": "Verbonden met {channel}",
+  "channelDisconnected": "Verbinding met {channel} verbroken",
+  "channelSuspended": "{channel} is door Twitch geschorst",
+  "channelBanned": "Je bent verbannen uit {channel}"
 }

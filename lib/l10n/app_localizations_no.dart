@@ -563,4 +563,29 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get turnOn => 'Slå på';
+
+  @override
+  String channelConnecting(String channel) {
+    return 'Kobler til $channel …';
+  }
+
+  @override
+  String channelConnected(String channel) {
+    return 'Koblet til $channel';
+  }
+
+  @override
+  String channelDisconnected(String channel) {
+    return 'Frakoblet fra $channel';
+  }
+
+  @override
+  String channelSuspended(String channel) {
+    return '$channel er suspendert av Twitch';
+  }
+
+  @override
+  String channelBanned(String channel) {
+    return 'Du er utestengt fra $channel';
+  }
 }

@@ -335,5 +335,10 @@
   "showImagesFromLinks": "הצגת תמונות מקישורים",
   "showImagesFromLinksSubtitle": "Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.",
   "showImagesAutomatically": "להציג תמונות מקישורים באופן אוטומטי?",
-  "turnOn": "הפעלה"
+  "turnOn": "הפעלה",
+  "channelConnecting": "מתחבר אל {channel}…",
+  "channelConnected": "מחובר אל {channel}",
+  "channelDisconnected": "החיבור אל {channel} נותק",
+  "channelSuspended": "{channel} הושעה על ידי Twitch",
+  "channelBanned": "נחסמת ב-{channel}"
 }

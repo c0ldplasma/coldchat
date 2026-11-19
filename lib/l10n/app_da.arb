@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Vis billeder fra links",
   "showImagesFromLinksSubtitle": "Twitch tjekker ikke disse billeder. De kan være upassende.",
   "showImagesAutomatically": "Vis billeder fra links automatisk?",
-  "turnOn": "Slå til"
+  "turnOn": "Slå til",
+  "channelConnecting": "Opretter forbindelse til {channel} …",
+  "channelConnected": "Forbundet til {channel}",
+  "channelDisconnected": "Afbrudt fra {channel}",
+  "channelSuspended": "{channel} er blevet suspenderet af Twitch",
+  "channelBanned": "Du er bannet fra {channel}"
 }

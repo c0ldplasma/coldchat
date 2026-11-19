@@ -231,5 +231,10 @@
   "showImagesFromLinks": "Bilder aus Links anzeigen",
   "showImagesFromLinksSubtitle": "Twitch prüft diese Bilder nicht. Sie können unangemessen sein.",
   "showImagesAutomatically": "Bilder aus Links automatisch anzeigen?",
-  "turnOn": "Einschalten"
+  "turnOn": "Einschalten",
+  "channelConnecting": "Verbindung zu {channel} wird hergestellt …",
+  "channelConnected": "Mit {channel} verbunden",
+  "channelDisconnected": "Verbindung zu {channel} getrennt",
+  "channelSuspended": "{channel} wurde von Twitch gesperrt",
+  "channelBanned": "Du bist in {channel} gebannt"
 }

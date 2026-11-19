@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Mostra les imatges dels enllaços",
   "showImagesFromLinksSubtitle": "Twitch no revisa aquestes imatges. Poden ser inadequades.",
   "showImagesAutomatically": "Vols mostrar automàticament les imatges dels enllaços?",
-  "turnOn": "Activa"
+  "turnOn": "Activa",
+  "channelConnecting": "Connectant amb {channel}…",
+  "channelConnected": "Connectat a {channel}",
+  "channelDisconnected": "Desconnectat de {channel}",
+  "channelSuspended": "Twitch ha suspès {channel}",
+  "channelBanned": "Estàs bandejat de {channel}"
 }

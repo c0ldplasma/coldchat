@@ -335,5 +335,10 @@
   "showImagesFromLinks": "लिंक से इमेज दिखाएं",
   "showImagesFromLinksSubtitle": "Twitch इन इमेज की जांच नहीं करता। ये अनुचित हो सकती हैं।",
   "showImagesAutomatically": "लिंक से इमेज अपने-आप दिखाएं?",
-  "turnOn": "चालू करें"
+  "turnOn": "चालू करें",
+  "channelConnecting": "{channel} से कनेक्ट हो रहा है…",
+  "channelConnected": "{channel} से कनेक्ट हो गया",
+  "channelDisconnected": "{channel} से डिस्कनेक्ट हो गया",
+  "channelSuspended": "Twitch ने {channel} को निलंबित कर दिया है",
+  "channelBanned": "तुम {channel} में बैन हो"
 }

@@ -335,5 +335,10 @@
   "showImagesFromLinks": "Прикажи слике из линкова",
   "showImagesFromLinksSubtitle": "Twitch не проверава ове слике. Могу бити неприкладне.",
   "showImagesAutomatically": "Аутоматски приказивати слике из линкова?",
-  "turnOn": "Укључи"
+  "turnOn": "Укључи",
+  "channelConnecting": "Повезивање са {channel}…",
+  "channelConnected": "Повезано са {channel}",
+  "channelDisconnected": "Веза са {channel} је прекинута",
+  "channelSuspended": "Twitch је суспендовао {channel}",
+  "channelBanned": "Имаш бан на {channel}"
 }
