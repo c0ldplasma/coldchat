@@ -225,6 +225,7 @@
   "scrollToBottom": "En alta kaydır",
   "appTagline": "7TV, BTTV ve FFZ ifadeleriyle Twitch sohbeti",
   "loginWithTwitch": "Twitch ile giriş yap",
+  "addChannel": "Kanal ekle",
   "chatSettings": "Sohbet ayarları",
   "autocompleteUsersWithAt": "@ ile kullanıcı adlarını tamamla",
   "autocompleteEmotesWithColon": ": ile ifadeleri tamamla",

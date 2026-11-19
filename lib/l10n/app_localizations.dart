@@ -748,6 +748,12 @@ abstract class AppLocalizations {
   /// **'Log in with Twitch'**
   String get loginWithTwitch;
 
+  /// No description provided for @addChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add channel'**
+  String get addChannel;
+
   /// No description provided for @chatSettings.
   ///
   /// In en, this message translates to:

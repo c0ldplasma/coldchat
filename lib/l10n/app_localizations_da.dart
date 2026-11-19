@@ -350,6 +350,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get loginWithTwitch => 'Log ind med Twitch';
 
   @override
+  String get addChannel => 'Tilføj kanal';
+
+  @override
   String get chatSettings => 'Chatindstillinger';
 
   @override

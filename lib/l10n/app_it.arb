@@ -225,6 +225,7 @@
   "scrollToBottom": "Vai in fondo",
   "appTagline": "La chat di Twitch con le emote di 7TV, BTTV e FFZ",
   "loginWithTwitch": "Accedi con Twitch",
+  "addChannel": "Aggiungi canale",
   "chatSettings": "Impostazioni chat",
   "autocompleteUsersWithAt": "Completa i nomi utente con @",
   "autocompleteEmotesWithColon": "Completa le emote con :",

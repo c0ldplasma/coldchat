@@ -349,6 +349,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get loginWithTwitch => 'Twitch로 로그인';
 
   @override
+  String get addChannel => '채널 추가';
+
+  @override
   String get chatSettings => '채팅 설정';
 
   @override

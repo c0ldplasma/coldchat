@@ -350,6 +350,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get loginWithTwitch => 'Inicia la sessió amb Twitch';
 
   @override
+  String get addChannel => 'Afegeix un canal';
+
+  @override
   String get chatSettings => 'Configuració del xat';
 
   @override

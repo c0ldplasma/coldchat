@@ -225,6 +225,7 @@
   "scrollToBottom": "Rul til bunden",
   "appTagline": "Twitch-chat med emotes fra 7TV, BTTV og FFZ",
   "loginWithTwitch": "Log ind med Twitch",
+  "addChannel": "Tilføj kanal",
   "chatSettings": "Chatindstillinger",
   "autocompleteUsersWithAt": "Autofuldfør brugere med @",
   "autocompleteEmotesWithColon": "Autofuldfør emotes med :",

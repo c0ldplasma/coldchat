@@ -350,6 +350,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get loginWithTwitch => 'Přihlásit se přes Twitch';
 
   @override
+  String get addChannel => 'Přidat kanál';
+
+  @override
   String get chatSettings => 'Nastavení chatu';
 
   @override

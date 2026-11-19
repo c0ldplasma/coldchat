@@ -165,6 +165,7 @@
   "scrollToBottom": "Zum Ende springen",
   "appTagline": "Twitch-Chat mit Emotes von 7TV, BTTV und FFZ",
   "loginWithTwitch": "Mit Twitch anmelden",
+  "addChannel": "Kanal hinzufügen",
   "chatSettings": "Chateinstellungen",
   "autocompleteUsersWithAt": "Benutzernamen mit @ vervollständigen",
   "autocompleteEmotesWithColon": "Emotes mit : vervollständigen",

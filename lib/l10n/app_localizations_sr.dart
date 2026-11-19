@@ -350,6 +350,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get loginWithTwitch => 'Пријави се преко Twitch-а';
 
   @override
+  String get addChannel => 'Додај канал';
+
+  @override
   String get chatSettings => 'Подешавања чета';
 
   @override

@@ -350,6 +350,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loginWithTwitch => 'Se connecter avec Twitch';
 
   @override
+  String get addChannel => 'Ajouter une chaîne';
+
+  @override
   String get chatSettings => 'Paramètres du chat';
 
   @override

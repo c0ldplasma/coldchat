@@ -350,6 +350,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get loginWithTwitch => 'Inloggen met Twitch';
 
   @override
+  String get addChannel => 'Kanaal toevoegen';
+
+  @override
   String get chatSettings => 'Chatinstellingen';
 
   @override
