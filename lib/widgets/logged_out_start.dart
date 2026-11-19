@@ -46,9 +46,8 @@ class LoggedOutStart extends StatelessWidget {
                   style: theme.textTheme.headlineLarge?.copyWith(color: colors.onSurface, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8.0),
-                Text(
+                _BalancedText(
                   l10n.appTagline,
-                  textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(color: colors.onSurfaceVariant),
                 ),
                 const SizedBox(height: 40.0),
@@ -91,4 +90,52 @@ class LoggedOutStart extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Centered text that, when it needs more than one line, is narrowed until its lines are about equally long, so a
+/// wrap doesn't leave a single word on the last line. The tagline wraps differently in every language and width.
+class _BalancedText extends StatelessWidget {
+  final String text;
+  final TextStyle? style;
+
+  const _BalancedText(this.text, {this.style});
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final painter = TextPainter(
+            text: TextSpan(text: text, style: DefaultTextStyle.of(context).style.merge(style)),
+            textAlign: TextAlign.center,
+            textDirection: Directionality.of(context),
+            textScaler: MediaQuery.textScalerOf(context),
+          );
+          int lines(double width) {
+            painter.layout(maxWidth: width);
+            return painter.computeLineMetrics().length;
+          }
+
+          final maxWidth = constraints.maxWidth;
+          var width = maxWidth;
+          final count = lines(maxWidth);
+          if (count > 1) {
+            // The narrowest width that still needs no more lines than the full width does.
+            var low = 0.0, high = maxWidth;
+            while (high - low > 1.0) {
+              final mid = (low + high) / 2;
+              if (lines(mid) <= count) {
+                high = mid;
+              } else {
+                low = mid;
+              }
+            }
+            // Rounded up a little so sub-pixel differences between measuring and painting don't add a line.
+            width = (high.ceilToDouble() + 1.0).clamp(0.0, maxWidth);
+          }
+          painter.dispose();
+          return SizedBox(
+            width: width,
+            child: Text(text, textAlign: TextAlign.center, style: style),
+          );
+        },
+      );
 }
