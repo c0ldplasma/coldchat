@@ -206,7 +206,7 @@ class _HomeTabState extends State<HomeTab> {
                         child: Row(
                           children: [
                             const SizedBox(width: 16.0),
-                            const Icon(Icons.search),
+                            Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
                             const SizedBox(width: 8.0),
                             Expanded(
                               child: TextField(

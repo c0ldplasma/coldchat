@@ -562,6 +562,57 @@ class AppLocalizationsHe extends AppLocalizations {
   String get turnOn => 'הפעלה';
 
   @override
+  String get themeIndigo => 'אינדיגו';
+
+  @override
+  String get themeBlue => 'כחול';
+
+  @override
+  String get themeTeal => 'כחול-ירקרק';
+
+  @override
+  String get themeGreen => 'ירוק';
+
+  @override
+  String get themeLime => 'ליים';
+
+  @override
+  String get themeAmber => 'ענבר';
+
+  @override
+  String get themeOrange => 'כתום';
+
+  @override
+  String get themeRed => 'אדום';
+
+  @override
+  String get themePink => 'ורוד';
+
+  @override
+  String get themePurple => 'סגול';
+
+  @override
+  String get accentColor => 'צבע הדגשה';
+
+  @override
+  String get oledBlack => 'שחור OLED';
+
+  @override
+  String get oledBlackSubtitle => 'רקע צ\'אט שחור במצב כהה, למסכי OLED';
+
+  @override
+  String get customColor => 'מותאם אישית';
+
+  @override
+  String get hue => 'גוון';
+
+  @override
+  String get saturation => 'רוויה';
+
+  @override
+  String get themeIce => 'קרח';
+
+  @override
   String channelConnecting(String channel) {
     return 'מתחבר אל $channel…';
   }

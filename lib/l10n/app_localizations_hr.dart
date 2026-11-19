@@ -564,6 +564,58 @@ class AppLocalizationsHr extends AppLocalizations {
   String get turnOn => 'Uključi';
 
   @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Plava';
+
+  @override
+  String get themeTeal => 'Petrolej';
+
+  @override
+  String get themeGreen => 'Zelena';
+
+  @override
+  String get themeLime => 'Limeta';
+
+  @override
+  String get themeAmber => 'Jantar';
+
+  @override
+  String get themeOrange => 'Narančasta';
+
+  @override
+  String get themeRed => 'Crvena';
+
+  @override
+  String get themePink => 'Ružičasta';
+
+  @override
+  String get themePurple => 'Ljubičasta';
+
+  @override
+  String get accentColor => 'Boja naglaska';
+
+  @override
+  String get oledBlack => 'OLED crna';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Crna pozadina chata u tamnom načinu, za OLED zaslone';
+
+  @override
+  String get customColor => 'Prilagođeno';
+
+  @override
+  String get hue => 'Nijansa';
+
+  @override
+  String get saturation => 'Zasićenost';
+
+  @override
+  String get themeIce => 'Led';
+
+  @override
   String channelConnecting(String channel) {
     return 'Povezivanje s $channel…';
   }

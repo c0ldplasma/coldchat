@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '/theme/coldchat_theme.dart';
+
 class Modal extends StatelessWidget {
   final Widget child;
   final Clip clipBehavior;
@@ -23,7 +25,7 @@ class Modal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Material(
-              color: Color.alphaBlend(Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.075), Theme.of(context).colorScheme.surface),
+              color: ChatColors.of(context).sheet,
               clipBehavior: clipBehavior,
               borderRadius: const BorderRadius.only(topRight: Radius.circular(8.0), topLeft: Radius.circular(8.0)),
               child: ConstrainedBox(
@@ -50,7 +52,7 @@ class Modal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Material(
-              color: Color.alphaBlend(Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.075), Theme.of(context).colorScheme.surface),
+              color: ChatColors.of(context).sheet,
               clipBehavior: clipBehavior,
               borderRadius: BorderRadius.circular(8.0),
               child: ConstrainedBox(
@@ -74,7 +76,10 @@ class Modal extends StatelessWidget {
     bool enableDrag = true,
   }) async =>
       await showModalBottomSheet(
-        context: context,
+        // Opened from the navigator itself rather than [context]: a sheet keeps a frozen copy of every inherited style
+        // between the context it's opened from and the navigator (InheritedTheme.capture), like the icon colors of the
+        // tab bar or a Surface, and then wouldn't follow a switch between light and dark while it's open.
+        context: Navigator.of(context).context,
         enableDrag: enableDrag,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,

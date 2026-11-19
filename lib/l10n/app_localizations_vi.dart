@@ -566,6 +566,58 @@ class AppLocalizationsVi extends AppLocalizations {
   String get turnOn => 'Bật';
 
   @override
+  String get themeIndigo => 'Chàm';
+
+  @override
+  String get themeBlue => 'Xanh dương';
+
+  @override
+  String get themeTeal => 'Xanh mòng két';
+
+  @override
+  String get themeGreen => 'Xanh lá';
+
+  @override
+  String get themeLime => 'Xanh chanh';
+
+  @override
+  String get themeAmber => 'Hổ phách';
+
+  @override
+  String get themeOrange => 'Cam';
+
+  @override
+  String get themeRed => 'Đỏ';
+
+  @override
+  String get themePink => 'Hồng';
+
+  @override
+  String get themePurple => 'Tím';
+
+  @override
+  String get accentColor => 'Màu nhấn';
+
+  @override
+  String get oledBlack => 'Đen OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED';
+
+  @override
+  String get customColor => 'Tùy chỉnh';
+
+  @override
+  String get hue => 'Sắc độ';
+
+  @override
+  String get saturation => 'Độ bão hòa';
+
+  @override
+  String get themeIce => 'Băng';
+
+  @override
   String channelConnecting(String channel) {
     return 'Đang kết nối tới $channel…';
   }

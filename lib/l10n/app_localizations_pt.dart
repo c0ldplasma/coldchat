@@ -566,6 +566,58 @@ class AppLocalizationsPt extends AppLocalizations {
   String get turnOn => 'Ativar';
 
   @override
+  String get themeIndigo => 'Índigo';
+
+  @override
+  String get themeBlue => 'Azul';
+
+  @override
+  String get themeTeal => 'Azul-petróleo';
+
+  @override
+  String get themeGreen => 'Verde';
+
+  @override
+  String get themeLime => 'Lima';
+
+  @override
+  String get themeAmber => 'Âmbar';
+
+  @override
+  String get themeOrange => 'Laranja';
+
+  @override
+  String get themeRed => 'Vermelho';
+
+  @override
+  String get themePink => 'Rosa';
+
+  @override
+  String get themePurple => 'Roxo';
+
+  @override
+  String get accentColor => 'Cor de destaque';
+
+  @override
+  String get oledBlack => 'Preto OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Fundo do chat preto no modo escuro, para ecrãs OLED';
+
+  @override
+  String get customColor => 'Personalizada';
+
+  @override
+  String get hue => 'Matiz';
+
+  @override
+  String get saturation => 'Saturação';
+
+  @override
+  String get themeIce => 'Gelo';
+
+  @override
   String channelConnecting(String channel) {
     return 'A ligar a $channel…';
   }

@@ -7,6 +7,8 @@ import 'package:coldchat/modal/credits.dart';
 import 'package:coldchat/modal/language_selection.dart';
 import 'package:coldchat/modal/message_appearance.dart';
 import 'package:coldchat/modal/message_triggers.dart';
+import 'package:coldchat/data/settings/application_appearance.dart';
+import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
@@ -27,20 +29,37 @@ class SettingsModal extends StatelessWidget {
   Widget build(BuildContext context) => BoxListener(
         box: Hive.box('Settings'),
         builder: (context, box) {
-          // final MessageAppearance messageAppearance = box.get('messageAppearance') as MessageAppearance;
+          final l10n = AppLocalizations.of(context)!;
+          final themeMode = (box.get('applicationAppearance') as ApplicationAppearance).themeMode;
+          final accent = ColdChatTheme.current(box);
           return ListView(
             shrinkWrap: true,
             children: [
               ModalHeader(title: AppLocalizations.of(context)!.settings),
               // const Separator(),
               Tile(
-                title: AppLocalizations.of(context)!.appearance,
-                prefix: const Icon(Icons.palette_outlined),
+                title: l10n.appearance,
+                subtitle: switch (themeMode) {
+                  'light' => l10n.light,
+                  'dark' => l10n.dark,
+                  _ => l10n.system,
+                },
+                prefix: Icon(switch (themeMode) {
+                  'light' => Icons.light_mode_outlined,
+                  'dark' => Icons.dark_mode_outlined,
+                  _ => Icons.phone_android_outlined,
+                }),
                 onTap: () => Modal.show(context: context, child: const ApplicationAppearanceModal()),
               ),
               Tile(
-                title: AppLocalizations.of(context)!.theme,
-                prefix: const Icon(Icons.palette_outlined),
+                title: l10n.accentColor,
+                subtitle: accent.name(l10n),
+                prefix: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
+                  ),
+                ),
                 onTap: () => Modal.show(context: context, child: const ApplicationThemeModal()),
               ),
               Tile(
@@ -100,7 +119,7 @@ class SettingsModal extends StatelessWidget {
                     child: Text(
                       info == null ? '' : '${AppLocalizations.of(context)!.appName} ${info.version} (${info.buildNumber})',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
                     ),
                   );
                 },

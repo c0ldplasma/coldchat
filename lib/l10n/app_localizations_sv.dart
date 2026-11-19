@@ -566,6 +566,58 @@ class AppLocalizationsSv extends AppLocalizations {
   String get turnOn => 'Slå på';
 
   @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blå';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Grön';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Bärnsten';
+
+  @override
+  String get themeOrange => 'Orange';
+
+  @override
+  String get themeRed => 'Röd';
+
+  @override
+  String get themePink => 'Rosa';
+
+  @override
+  String get themePurple => 'Lila';
+
+  @override
+  String get accentColor => 'Accentfärg';
+
+  @override
+  String get oledBlack => 'OLED-svart';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Svart chattbakgrund i mörkt läge, för OLED-skärmar';
+
+  @override
+  String get customColor => 'Egen';
+
+  @override
+  String get hue => 'Nyans';
+
+  @override
+  String get saturation => 'Mättnad';
+
+  @override
+  String get themeIce => 'Is';
+
+  @override
   String channelConnecting(String channel) {
     return 'Ansluter till $channel …';
   }

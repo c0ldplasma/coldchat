@@ -27,6 +27,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
                   applicationAppearance.themeMode = 'light';
                   applicationAppearance.save();
                 },
+                suffix: applicationAppearance.themeMode == 'light' ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary) : null,
               ),
               Tile(
                 prefix: const Icon(Icons.dark_mode_outlined),
@@ -35,6 +36,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
                   applicationAppearance.themeMode = 'dark';
                   applicationAppearance.save();
                 },
+                suffix: applicationAppearance.themeMode == 'dark' ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary) : null,
               ),
               Tile(
                 prefix: const Icon(Icons.phone_android_outlined),
@@ -43,6 +45,23 @@ class ApplicationAppearanceModal extends StatelessWidget {
                   applicationAppearance.themeMode = 'system';
                   applicationAppearance.save();
                 },
+                suffix: applicationAppearance.themeMode == 'system' ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary) : null,
+              ),
+              Tile(
+                prefix: const Icon(Icons.contrast_rounded),
+                title: AppLocalizations.of(context)!.oledBlack,
+                subtitle: AppLocalizations.of(context)!.oledBlackSubtitle,
+                onTap: () {
+                  applicationAppearance.oledBlack = !applicationAppearance.oledBlack;
+                  applicationAppearance.save();
+                },
+                suffix: Toggle(
+                  value: applicationAppearance.oledBlack,
+                  onChanged: (value) {
+                    applicationAppearance.oledBlack = value;
+                    applicationAppearance.save();
+                  },
+                ),
               ),
               Tile(
                 prefix: const Icon(Icons.blinds_closed_outlined),

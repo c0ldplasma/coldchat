@@ -557,6 +557,57 @@ class AppLocalizationsJa extends AppLocalizations {
   String get turnOn => 'オンにする';
 
   @override
+  String get themeIndigo => 'インディゴ';
+
+  @override
+  String get themeBlue => 'ブルー';
+
+  @override
+  String get themeTeal => 'ティール';
+
+  @override
+  String get themeGreen => 'グリーン';
+
+  @override
+  String get themeLime => 'ライム';
+
+  @override
+  String get themeAmber => 'アンバー';
+
+  @override
+  String get themeOrange => 'オレンジ';
+
+  @override
+  String get themeRed => 'レッド';
+
+  @override
+  String get themePink => 'ピンク';
+
+  @override
+  String get themePurple => 'パープル';
+
+  @override
+  String get accentColor => 'アクセントカラー';
+
+  @override
+  String get oledBlack => 'OLEDブラック';
+
+  @override
+  String get oledBlackSubtitle => 'ダークモードでチャットの背景を黒にします（OLED画面向け）';
+
+  @override
+  String get customColor => 'カスタム';
+
+  @override
+  String get hue => '色相';
+
+  @override
+  String get saturation => '彩度';
+
+  @override
+  String get themeIce => 'アイス';
+
+  @override
   String channelConnecting(String channel) {
     return '$channelに接続中…';
   }

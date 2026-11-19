@@ -565,6 +565,58 @@ class AppLocalizationsIt extends AppLocalizations {
   String get turnOn => 'Attiva';
 
   @override
+  String get themeIndigo => 'Indaco';
+
+  @override
+  String get themeBlue => 'Blu';
+
+  @override
+  String get themeTeal => 'Verde acqua';
+
+  @override
+  String get themeGreen => 'Verde';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Ambra';
+
+  @override
+  String get themeOrange => 'Arancione';
+
+  @override
+  String get themeRed => 'Rosso';
+
+  @override
+  String get themePink => 'Rosa';
+
+  @override
+  String get themePurple => 'Viola';
+
+  @override
+  String get accentColor => 'Colore d\'accento';
+
+  @override
+  String get oledBlack => 'Nero OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Sfondo della chat nero in modalità scura, per schermi OLED';
+
+  @override
+  String get customColor => 'Personalizzato';
+
+  @override
+  String get hue => 'Tonalità';
+
+  @override
+  String get saturation => 'Saturazione';
+
+  @override
+  String get themeIce => 'Ghiaccio';
+
+  @override
   String channelConnecting(String channel) {
     return 'Connessione a $channel…';
   }

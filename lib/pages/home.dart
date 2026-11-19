@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../components/dark_bar.dart';
+import '../components/bottom_bar.dart';
+import '../theme/coldchat_theme.dart';
 import '../components/modal.dart';
 import '../modal/coldchat.dart';
 import '../modal/whisper.dart';
@@ -196,9 +197,10 @@ class _HomePageState extends State<HomePage>
               child: Scaffold(
                 extendBody: true,
                 extendBodyBehindAppBar: true,
-                bottomNavigationBar: DarkBar(
+                bottomNavigationBar: BottomBar(
                   child: Builder(builder: (context) {
-                    final fg = DarkBar.foregroundColor(context);
+                    final muted = ChatColors.of(context).muted;
+                    final accent = Theme.of(context).colorScheme.primary;
                     // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
                     return Row(
                       children: [
@@ -207,9 +209,18 @@ class _HomePageState extends State<HomePage>
                             controller: tabController,
                             isScrollable: true,
                             tabAlignment: TabAlignment.start,
-                            labelColor: fg,
-                            unselectedLabelColor: fg.withValues(alpha: 0.6),
-                            indicatorColor: fg,
+                            // The selected tab is one of the places the accent color shows.
+                            labelColor: accent,
+                            unselectedLabelColor: muted,
+                            // 12 instead of 16, so the home icon lines up with the composer's image button below it.
+                            labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicator: UnderlineTabIndicator(
+                              borderSide: BorderSide(color: accent, width: 3.0),
+                              // A rounded pill a little below the label, not a bar cut off by the tab's bottom edge.
+                              borderRadius: BorderRadius.circular(3.0),
+                              insets: const EdgeInsets.only(bottom: 8.0),
+                            ),
                             dividerColor: Colors.transparent,
                             tabs: [
                               GestureDetector(
@@ -254,8 +265,8 @@ class _HomePageState extends State<HomePage>
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.add_rounded),
-                          color: fg,
+                          icon: const Icon(Icons.add_circle_outline_rounded),
+                          color: accent,
                           tooltip: AppLocalizations.of(context)!.addChannel,
                           onPressed: _openChannelSearch,
                         ),
