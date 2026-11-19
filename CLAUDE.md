@@ -208,9 +208,13 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   list to the channel's moderators.
 - `*.g.dart` files (json_serializable, Hive adapters) are **generated and not tracked**. After a fresh checkout or
   after changing an annotated model, run `dart run build_runner build --delete-conflicting-outputs`.
-- Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/modal/oauth_webview.dart`),
-  with the redirect `https://localhost/` exactly as registered in the dev.twitch.tv console, trailing slash
-  included. The web view intercepts that redirect, so no page is loaded.
+- Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/modal/login_flow.dart`) in the
+  system's login sheet (ASWebAuthenticationSession / Android Custom Tab, via `flutter_web_auth_2`), not a web
+  view. Twitch only redirects to web addresses, so the redirect is `docs/auth.html` on GitHub Pages
+  (`https://c0ldplasma.github.io/coldchat/auth.html`, registered exactly like that in the dev.twitch.tv console),
+  which forwards the answer to `coldchat://auth`. Android receives that in flutter_web_auth_2's
+  `CallbackActivity` (`AndroidManifest.xml`). The relay must be live on GitHub Pages before a login can work.
+  Long-pressing "Log in with Twitch" opens the access-token input instead (used by app review).
 - The iOS project uses **Swift Package Manager only**; CocoaPods was removed (no `Podfile`). Don't run
   `pod install`. `android/` and `ios/` are tracked, because the AGPL requires publishing everything needed to build
   the shipped app. Their own `.gitignore` files keep generated files and signing keys out; never commit a keystore,
@@ -231,6 +235,6 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   whisper history API, so conversations are stored on the device in the `Whispers` Hive box as IRC-shaped lines,
   and each conversation is a `WhisperChannel` (a `Channel` that is never joined) so the chat view and composer
   work unchanged. `/w <user> [message]` is handled in `ChannelView.sendMessage`.
-- Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/oauth_webview.dart`),
+- Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/login_flow.dart`),
   so there is no refresh token and an expired login can only be fixed by signing in again. See
   `lib/widgets/login_expired_banner.dart` and `Client.validateCredentials`.

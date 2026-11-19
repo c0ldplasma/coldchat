@@ -16,8 +16,6 @@ dependencies:
   intl: ^0.20.2
   flutter_localizations:
     sdk: flutter
-  webview_flutter: ^4.9.0
-  # webview_cookie_manager: ^2.0.6
   http: ^1.2.2
   web_socket_channel: ^3.0.1
   hive: ^2.2.3
@@ -36,13 +34,12 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter_localized_locales: ^2.0.5
   cached_network_image: ^3.3.1
-  webview_flutter_android: ^4.14.1
-  webview_flutter_wkwebview: ^3.16.0
   path_provider: ^2.1.4
   image_picker: ^1.2.4
   package_info_plus: ^10.2.2
   # Pinned by the Flutter SDK; used for the legacy surfaceVariant color.
   material_color_utilities: any
+  flutter_web_auth_2: ^6.0.0
 
 dev_dependencies:
   # flutter_test:
