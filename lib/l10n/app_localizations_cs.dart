@@ -563,4 +563,47 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get turnOn => 'Zapnout';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Modrá';
+
+  @override
+  String get themeCyan => 'Azurová';
+
+  @override
+  String get themeTeal => 'Petrolejová';
+
+  @override
+  String get themeGreen => 'Zelená';
+
+  @override
+  String get themeLime => 'Limetková';
+
+  @override
+  String get themeAmber => 'Jantarová';
+
+  @override
+  String get themeOrange => 'Oranžová';
+
+  @override
+  String get themeRed => 'Červená';
+
+  @override
+  String get themePink => 'Růžová';
+
+  @override
+  String get themePurple => 'Fialová';
+
+  @override
+  String get accentColor => 'Barva zvýraznění';
+
+  @override
+  String get oledBlack => 'OLED černá';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Černé pozadí chatu v tmavém režimu, pro OLED displeje';
 }

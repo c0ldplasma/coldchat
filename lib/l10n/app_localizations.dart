@@ -1119,6 +1119,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn on'**
   String get turnOn;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get themeIndigo;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get themeBlue;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get themeCyan;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get themeTeal;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get themeGreen;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Lime'**
+  String get themeLime;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Amber'**
+  String get themeAmber;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get themeOrange;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get themeRed;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get themePink;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get themePurple;
+
+  /// No description provided for @accentColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent color'**
+  String get accentColor;
+
+  /// No description provided for @oledBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'OLED black'**
+  String get oledBlack;
+
+  /// No description provided for @oledBlackSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Black chat background in dark mode, for OLED screens'**
+  String get oledBlackSubtitle;
 }
 
 class _AppLocalizationsDelegate

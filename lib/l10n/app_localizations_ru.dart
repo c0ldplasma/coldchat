@@ -563,4 +563,47 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get turnOn => 'Включить';
+
+  @override
+  String get themeIndigo => 'Индиго';
+
+  @override
+  String get themeBlue => 'Синий';
+
+  @override
+  String get themeCyan => 'Голубой';
+
+  @override
+  String get themeTeal => 'Бирюзовый';
+
+  @override
+  String get themeGreen => 'Зелёный';
+
+  @override
+  String get themeLime => 'Лаймовый';
+
+  @override
+  String get themeAmber => 'Янтарный';
+
+  @override
+  String get themeOrange => 'Оранжевый';
+
+  @override
+  String get themeRed => 'Красный';
+
+  @override
+  String get themePink => 'Розовый';
+
+  @override
+  String get themePurple => 'Фиолетовый';
+
+  @override
+  String get accentColor => 'Цвет акцента';
+
+  @override
+  String get oledBlack => 'Чёрный OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Чёрный фон чата в тёмном режиме, для OLED-экранов';
 }

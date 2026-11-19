@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Bağlantılardaki görselleri göster",
   "showImagesFromLinksSubtitle": "Twitch bu görselleri denetlemez. Uygunsuz olabilirler.",
   "showImagesAutomatically": "Bağlantılardaki görseller otomatik gösterilsin mi?",
-  "turnOn": "Aç"
+  "turnOn": "Aç",
+  "themeIndigo": "Çivit",
+  "themeBlue": "Mavi",
+  "themeCyan": "Camgöbeği",
+  "themeTeal": "Petrol mavisi",
+  "themeGreen": "Yeşil",
+  "themeLime": "Limon yeşili",
+  "themeAmber": "Kehribar",
+  "themeOrange": "Turuncu",
+  "themeRed": "Kırmızı",
+  "themePink": "Pembe",
+  "themePurple": "Mor",
+  "accentColor": "Vurgu rengi",
+  "oledBlack": "OLED siyahı",
+  "oledBlackSubtitle": "Karanlık modda siyah sohbet arka planı, OLED ekranlar için"
 }

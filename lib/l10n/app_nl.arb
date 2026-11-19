@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Afbeeldingen uit links tonen",
   "showImagesFromLinksSubtitle": "Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.",
   "showImagesAutomatically": "Afbeeldingen uit links automatisch tonen?",
-  "turnOn": "Inschakelen"
+  "turnOn": "Inschakelen",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Blauw",
+  "themeCyan": "Cyaan",
+  "themeTeal": "Petrol",
+  "themeGreen": "Groen",
+  "themeLime": "Limoen",
+  "themeAmber": "Amber",
+  "themeOrange": "Oranje",
+  "themeRed": "Rood",
+  "themePink": "Roze",
+  "themePurple": "Paars",
+  "accentColor": "Accentkleur",
+  "oledBlack": "OLED-zwart",
+  "oledBlackSubtitle": "Zwarte chatachtergrond in donkere modus, voor OLED-schermen"
 }

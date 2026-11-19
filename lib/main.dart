@@ -24,6 +24,7 @@ import '/data/twitch/user_data.dart';
 import '/data/twitch_account.dart';
 import '/data/webview/cookie_data.dart';
 import '/app.dart';
+import '/theme/coldchat_theme.dart';
 import 'data/filesharing/uploaded_media.dart';
 import 'tmi/client/client.dart';
 import 'tools/coldchat_binding.dart';
@@ -95,6 +96,7 @@ Future<void> main() async {
   if (!settingsBox.containsKey('applicationAppearance')) {
     await settingsBox.put('applicationAppearance', ApplicationAppearance());
   }
+  await ColdChatTheme.migrate(settingsBox);
   if (!settingsBox.containsKey('chatSettings')) {
     await settingsBox.put('chatSettings', ChatSettings());
   }

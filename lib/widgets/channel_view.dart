@@ -13,7 +13,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../components/dark_bar.dart';
+import '../components/bottom_bar.dart';
+import '../theme/coldchat_theme.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
@@ -345,7 +346,7 @@ class ChannelViewState extends State<ChannelView> {
           prefix: const Icon(Icons.person_outline_rounded),
           shortened: Text(
             '@${user.displayName ?? user.login}',
-            style: TextStyle(color: user.color, fontWeight: FontWeight.bold),
+            style: TextStyle(color: ChatColors.of(context).nameColor(user.color, Theme.of(context).colorScheme), fontWeight: FontWeight.bold),
           ),
           title: user.displayName ?? user.login!,
           subtitle: user.login,
@@ -425,7 +426,7 @@ class ChannelViewState extends State<ChannelView> {
           ),
           // child: Container(),
         ),
-        DarkBar(
+        BottomBar(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -623,6 +624,7 @@ class ChannelViewState extends State<ChannelView> {
                           height: 48.0,
                           child: Icon(
                             spamming ? Icons.send_and_archive_outlined : Icons.send_outlined,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                       ),

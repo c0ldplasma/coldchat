@@ -564,4 +564,47 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get turnOn => 'Włącz';
+
+  @override
+  String get themeIndigo => 'Indygo';
+
+  @override
+  String get themeBlue => 'Niebieski';
+
+  @override
+  String get themeCyan => 'Cyjan';
+
+  @override
+  String get themeTeal => 'Morski';
+
+  @override
+  String get themeGreen => 'Zielony';
+
+  @override
+  String get themeLime => 'Limonkowy';
+
+  @override
+  String get themeAmber => 'Bursztynowy';
+
+  @override
+  String get themeOrange => 'Pomarańczowy';
+
+  @override
+  String get themeRed => 'Czerwony';
+
+  @override
+  String get themePink => 'Różowy';
+
+  @override
+  String get themePurple => 'Fioletowy';
+
+  @override
+  String get accentColor => 'Kolor akcentu';
+
+  @override
+  String get oledBlack => 'Czerń OLED';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Czarne tło czatu w trybie ciemnym, dla ekranów OLED';
 }

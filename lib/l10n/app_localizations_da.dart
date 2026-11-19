@@ -564,4 +564,47 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get turnOn => 'Slå til';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blå';
+
+  @override
+  String get themeCyan => 'Cyan';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Grøn';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Rav';
+
+  @override
+  String get themeOrange => 'Orange';
+
+  @override
+  String get themeRed => 'Rød';
+
+  @override
+  String get themePink => 'Pink';
+
+  @override
+  String get themePurple => 'Lilla';
+
+  @override
+  String get accentColor => 'Accentfarve';
+
+  @override
+  String get oledBlack => 'OLED-sort';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Sort chatbaggrund i mørk tilstand, til OLED-skærme';
 }

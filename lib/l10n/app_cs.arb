@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Zobrazovat obrázky z odkazů",
   "showImagesFromLinksSubtitle": "Twitch tyto obrázky nekontroluje. Mohou být nevhodné.",
   "showImagesAutomatically": "Zobrazovat obrázky z odkazů automaticky?",
-  "turnOn": "Zapnout"
+  "turnOn": "Zapnout",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Modrá",
+  "themeCyan": "Azurová",
+  "themeTeal": "Petrolejová",
+  "themeGreen": "Zelená",
+  "themeLime": "Limetková",
+  "themeAmber": "Jantarová",
+  "themeOrange": "Oranžová",
+  "themeRed": "Červená",
+  "themePink": "Růžová",
+  "themePurple": "Fialová",
+  "accentColor": "Barva zvýraznění",
+  "oledBlack": "OLED černá",
+  "oledBlackSubtitle": "Černé pozadí chatu v tmavém režimu, pro OLED displeje"
 }

@@ -67,8 +67,13 @@ to see which build a bug report is about.
 `flutter analyze` is **clean** — keep it at "No issues found!". `flutter build apk` and `flutter build ios`
 also run without warnings; treat any new one as something to fix, not as noise.
 
-`ColorScheme.surfaceVariant` is deprecated, and its replacement `surfaceContainerHighest` is a different
-tone. Use `AppColors.of(context).surfaceVariant` (`lib/tools/m3parser.dart`), which reproduces the old color.
+All colors come from `lib/theme/coldchat_theme.dart`. Backgrounds are always Indigo's palette; the user's accent
+color (Settings → Accent color) only changes `colorScheme.primary` and its containers, and OLED black (Settings →
+Appearance) makes the dark chat background pure black. Colors ColorScheme has no role for (tab bar and composer,
+sheets, raised pills, links, chatter name readability) are in the `ChatColors` theme extension: use
+`ChatColors.of(context)` instead of picking scheme colors or checking the brightness in a widget. Don't wrap widgets
+in a `Theme(...)` to recolor them: a bottom sheet opened below one keeps a frozen copy of it and stops following
+light/dark switches. Pass colors with `DefaultTextStyle`/`IconTheme` instead, like `Surface` does.
 
 Gotcha: `ConnectionState` collides with Flutter's own `ConnectionState` from `package:flutter/material.dart`.
 In any widget file, import the TMI one with a prefix:
@@ -219,7 +224,7 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   `pod install`. `android/` and `ios/` are tracked, because the AGPL requires publishing everything needed to build
   the shipped app. Their own `.gitignore` files keep generated files and signing keys out; never commit a keystore,
   `key.properties` or anything with an Apple ID in it.
-- The app font is **Google Sans Flex** (OFL, `fonts/OFL.txt`), a variable font. `M3Parser.fontVariations` narrows it
+- The app font is **Google Sans Flex** (OFL, `fonts/OFL.txt`), a variable font. `ColdChatTheme.fontVariations` narrows it
   to look like the Product Sans used before. Don't add a `wght` variation there: it overrides `FontWeight`, and bold
   text stops being bold. Product Sans itself is proprietary and must not be bundled.
 - `docs/` is the website on GitHub Pages (`https://c0ldplasma.github.io/coldchat/`): the support page, the

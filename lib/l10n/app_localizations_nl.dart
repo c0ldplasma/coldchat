@@ -562,4 +562,47 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get turnOn => 'Inschakelen';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blauw';
+
+  @override
+  String get themeCyan => 'Cyaan';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Groen';
+
+  @override
+  String get themeLime => 'Limoen';
+
+  @override
+  String get themeAmber => 'Amber';
+
+  @override
+  String get themeOrange => 'Oranje';
+
+  @override
+  String get themeRed => 'Rood';
+
+  @override
+  String get themePink => 'Roze';
+
+  @override
+  String get themePurple => 'Paars';
+
+  @override
+  String get accentColor => 'Accentkleur';
+
+  @override
+  String get oledBlack => 'OLED-zwart';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Zwarte chatachtergrond in donkere modus, voor OLED-schermen';
 }

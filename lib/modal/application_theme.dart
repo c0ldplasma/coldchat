@@ -1,71 +1,101 @@
-import 'package:coldchat/components/tile.dart';
+import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '/components/boxlistener.dart';
+import '/data/settings/application_appearance.dart';
+import '/theme/coldchat_theme.dart';
+import 'components/modal_header.dart';
+
+/// Settings → Accent color: the accents as swatches. Picking one applies it right away and leaves the sheet open, so
+/// they can be compared; each swatch shows the accent as it looks in the current light or dark mode.
 class ApplicationThemeModal extends StatelessWidget {
   const ApplicationThemeModal({super.key});
 
-  static const Map<String, Color> colors = {
-    'redAccent': Colors.redAccent,
-    'red': Colors.red,
-    'pinkAccent': Colors.pinkAccent,
-    'pink': Colors.pink,
-    'purpleAccent': Colors.purpleAccent,
-    'purple': Colors.purple,
-    'deepPurpleAccent': Colors.deepPurpleAccent,
-    'deepPurple': Colors.deepPurple,
-    'indigoAccent': Colors.indigoAccent,
-    'indigo': Colors.indigo,
-    'blueAccent': Colors.blueAccent,
-    'blue': Colors.blue,
-    'lightBlueAccent': Colors.lightBlueAccent,
-    'lightBlue': Colors.lightBlue,
-    'cyanAccent': Colors.cyanAccent,
-    'cyan': Colors.cyan,
-    'tealAccent': Colors.tealAccent,
-    'teal': Colors.teal,
-    'greenAccent': Colors.greenAccent,
-    'green': Colors.green,
-    'lightGreenAccent': Colors.lightGreenAccent,
-    'lightGreen': Colors.lightGreen,
-    'limeAccent': Colors.limeAccent,
-    'lime': Colors.lime,
-    'yellowAccent': Colors.yellowAccent,
-    'yellow': Colors.yellow,
-    'amberAccent': Colors.amberAccent,
-    'amber': Colors.amber,
-    'orangeAccent': Colors.orangeAccent,
-    'orange': Colors.orange,
-    'deepOrangeAccent': Colors.deepOrangeAccent,
-    'deepOrange': Colors.deepOrange,
-    'brown': Colors.brown,
-    'blueGrey': Colors.blueGrey,
-  };
+  @override
+  Widget build(BuildContext context) => BoxListener(
+        box: Hive.box('Settings'),
+        builder: (context, box) {
+          final current = ColdChatTheme.current(box);
+          final appearance = box.get('applicationAppearance') as ApplicationAppearance;
+          final brightness = Theme.of(context).brightness;
+          return ListView(
+            shrinkWrap: true,
+            children: [
+              ModalHeader(title: AppLocalizations.of(context)!.accentColor),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 16.0),
+                child: GridView.count(
+                  crossAxisCount: 4,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  childAspectRatio: 0.9,
+                  children: [
+                    for (final accent in ColdChatTheme.accents)
+                      _Swatch(
+                        accent: accent,
+                        scheme: accent.colorScheme(brightness, highContrast: appearance.highContrast),
+                        selected: accent.id == current.id,
+                        onTap: () => box.put(ColdChatTheme.accentKey, accent.id),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+}
+
+class _Swatch extends StatelessWidget {
+  final AccentColor accent;
+  final ColorScheme scheme;
+  final bool selected;
+  final VoidCallback onTap;
+
+  const _Swatch({required this.accent, required this.scheme, required this.selected, required this.onTap});
 
   @override
-  Widget build(BuildContext context) => ListView(
-        shrinkWrap: true,
-        children: [
-          for (final color in colors.entries)
-            Builder(builder: (context) {
-              // final theme = M3Parser.patchTheme(
-              //   ThemeData(
-              //     colorSchemeSeed: color.value,
-              //     brightness: Theme.of(context).brightness,
-              //   ),
-              // );
-              return Tile(
-                prefix: Material(
-                  color: color.value,
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-                title: color.key,
-                onTap: () async {
-                  Navigator.pop(context);
-                  await Hive.box('Settings').put('themeColor', color.value.toARGB32());
-                },
-              );
-            }),
-        ],
-      );
+  Widget build(BuildContext context) {
+    final name = accent.name(AppLocalizations.of(context)!);
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: name,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // A ring around the selected one, with a gap, like the color pickers in Android's own settings.
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 150),
+              width: 56.0,
+              height: 56.0,
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: selected ? Theme.of(context).colorScheme.onSurface : Colors.transparent, width: 2.0),
+              ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(shape: BoxShape.circle, color: scheme.primary),
+                child: selected ? Icon(Icons.check_rounded, color: scheme.onPrimary) : null,
+              ),
+            ),
+            const SizedBox(height: 6.0),
+            Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

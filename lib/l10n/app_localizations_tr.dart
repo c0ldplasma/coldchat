@@ -562,4 +562,47 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get turnOn => 'Aç';
+
+  @override
+  String get themeIndigo => 'Çivit';
+
+  @override
+  String get themeBlue => 'Mavi';
+
+  @override
+  String get themeCyan => 'Camgöbeği';
+
+  @override
+  String get themeTeal => 'Petrol mavisi';
+
+  @override
+  String get themeGreen => 'Yeşil';
+
+  @override
+  String get themeLime => 'Limon yeşili';
+
+  @override
+  String get themeAmber => 'Kehribar';
+
+  @override
+  String get themeOrange => 'Turuncu';
+
+  @override
+  String get themeRed => 'Kırmızı';
+
+  @override
+  String get themePink => 'Pembe';
+
+  @override
+  String get themePurple => 'Mor';
+
+  @override
+  String get accentColor => 'Vurgu rengi';
+
+  @override
+  String get oledBlack => 'OLED siyahı';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Karanlık modda siyah sohbet arka planı, OLED ekranlar için';
 }

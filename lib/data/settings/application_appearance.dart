@@ -12,4 +12,8 @@ class ApplicationAppearance extends HiveObject {
 
   @HiveField(2)
   bool highContrast = false;
+
+  /// Dark mode with a pure black chat, for OLED screens.
+  @HiveField(3, defaultValue: false)
+  bool oledBlack = false;
 }

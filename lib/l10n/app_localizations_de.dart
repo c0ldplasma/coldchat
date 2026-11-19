@@ -563,4 +563,47 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get turnOn => 'Einschalten';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blau';
+
+  @override
+  String get themeCyan => 'Cyan';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Grün';
+
+  @override
+  String get themeLime => 'Limette';
+
+  @override
+  String get themeAmber => 'Bernstein';
+
+  @override
+  String get themeOrange => 'Orange';
+
+  @override
+  String get themeRed => 'Rot';
+
+  @override
+  String get themePink => 'Pink';
+
+  @override
+  String get themePurple => 'Lila';
+
+  @override
+  String get accentColor => 'Akzentfarbe';
+
+  @override
+  String get oledBlack => 'OLED-Schwarz';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays';
 }

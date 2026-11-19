@@ -555,4 +555,46 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get turnOn => 'オンにする';
+
+  @override
+  String get themeIndigo => 'インディゴ';
+
+  @override
+  String get themeBlue => 'ブルー';
+
+  @override
+  String get themeCyan => 'シアン';
+
+  @override
+  String get themeTeal => 'ティール';
+
+  @override
+  String get themeGreen => 'グリーン';
+
+  @override
+  String get themeLime => 'ライム';
+
+  @override
+  String get themeAmber => 'アンバー';
+
+  @override
+  String get themeOrange => 'オレンジ';
+
+  @override
+  String get themeRed => 'レッド';
+
+  @override
+  String get themePink => 'ピンク';
+
+  @override
+  String get themePurple => 'パープル';
+
+  @override
+  String get accentColor => 'アクセントカラー';
+
+  @override
+  String get oledBlack => 'OLEDブラック';
+
+  @override
+  String get oledBlackSubtitle => 'ダークモードでチャットの背景を黒にします（OLED画面向け）';
 }

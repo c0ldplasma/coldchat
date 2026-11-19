@@ -7,7 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../components/dark_bar.dart';
+import '../components/bottom_bar.dart';
+import '../theme/coldchat_theme.dart';
 import '../components/modal.dart';
 import '../modal/coldchat.dart';
 import '../modal/whisper.dart';
@@ -196,9 +197,10 @@ class _HomePageState extends State<HomePage>
               child: Scaffold(
                 extendBody: true,
                 extendBodyBehindAppBar: true,
-                bottomNavigationBar: DarkBar(
+                bottomNavigationBar: BottomBar(
                   child: Builder(builder: (context) {
-                    final fg = DarkBar.foregroundColor(context);
+                    final fg = ChatColors.of(context).onBar;
+                    final accent = Theme.of(context).colorScheme.primary;
                     // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
                     return Row(
                       children: [
@@ -207,9 +209,14 @@ class _HomePageState extends State<HomePage>
                             controller: tabController,
                             isScrollable: true,
                             tabAlignment: TabAlignment.start,
-                            labelColor: fg,
+                            // The selected tab is one of the places the accent color shows.
+                            labelColor: accent,
                             unselectedLabelColor: fg.withValues(alpha: 0.6),
-                            indicatorColor: fg,
+                            indicatorSize: TabBarIndicatorSize.label,
+                            indicator: UnderlineTabIndicator(
+                              borderSide: BorderSide(color: accent, width: 3.0),
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(3.0)),
+                            ),
                             dividerColor: Colors.transparent,
                             tabs: [
                               GestureDetector(
@@ -255,7 +262,7 @@ class _HomePageState extends State<HomePage>
                         ),
                         IconButton(
                           icon: const Icon(Icons.add_rounded),
-                          color: fg,
+                          color: accent,
                           tooltip: AppLocalizations.of(context)!.addChannel,
                           onPressed: _openChannelSearch,
                         ),

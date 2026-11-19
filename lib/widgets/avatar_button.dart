@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coldchat/components/surface.dart';
 import 'package:coldchat/modal/notifications.dart';
-import 'package:coldchat/tools/m3parser.dart';
+import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -35,7 +35,7 @@ class _AvatarButtonState extends State<AvatarButton> {
         children: [
           Material(
             borderRadius: BorderRadius.circular(128.0),
-            color: AppColors.of(context).surfaceVariant,
+            color: ChatColors.of(context).raised,
             child: InkWell(
               onTap: () => Modal.show(
                 context: context,

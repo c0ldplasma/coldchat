@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Mostra les imatges dels enllaços",
   "showImagesFromLinksSubtitle": "Twitch no revisa aquestes imatges. Poden ser inadequades.",
   "showImagesAutomatically": "Vols mostrar automàticament les imatges dels enllaços?",
-  "turnOn": "Activa"
+  "turnOn": "Activa",
+  "themeIndigo": "Índigo",
+  "themeBlue": "Blau",
+  "themeCyan": "Cian",
+  "themeTeal": "Verd blavós",
+  "themeGreen": "Verd",
+  "themeLime": "Llima",
+  "themeAmber": "Ambre",
+  "themeOrange": "Taronja",
+  "themeRed": "Vermell",
+  "themePink": "Rosa",
+  "themePurple": "Porpra",
+  "accentColor": "Color d'accent",
+  "oledBlack": "Negre OLED",
+  "oledBlackSubtitle": "Fons del xat negre en mode fosc, per a pantalles OLED"
 }

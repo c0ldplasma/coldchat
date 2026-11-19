@@ -562,4 +562,47 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get turnOn => 'Укључи';
+
+  @override
+  String get themeIndigo => 'Индиго';
+
+  @override
+  String get themeBlue => 'Плава';
+
+  @override
+  String get themeCyan => 'Цијан';
+
+  @override
+  String get themeTeal => 'Петролеј';
+
+  @override
+  String get themeGreen => 'Зелена';
+
+  @override
+  String get themeLime => 'Лајм';
+
+  @override
+  String get themeAmber => 'Ћилибар';
+
+  @override
+  String get themeOrange => 'Наранџаста';
+
+  @override
+  String get themeRed => 'Црвена';
+
+  @override
+  String get themePink => 'Розе';
+
+  @override
+  String get themePurple => 'Љубичаста';
+
+  @override
+  String get accentColor => 'Боја акцента';
+
+  @override
+  String get oledBlack => 'OLED црна';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Црна позадина чета у тамном режиму, за OLED екране';
 }

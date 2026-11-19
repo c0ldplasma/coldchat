@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Prikaži slike iz poveznica",
   "showImagesFromLinksSubtitle": "Twitch ne provjerava te slike. Mogu biti neprikladne.",
   "showImagesAutomatically": "Automatski prikazivati slike iz poveznica?",
-  "turnOn": "Uključi"
+  "turnOn": "Uključi",
+  "themeIndigo": "Indigo",
+  "themeBlue": "Plava",
+  "themeCyan": "Cijan",
+  "themeTeal": "Petrolej",
+  "themeGreen": "Zelena",
+  "themeLime": "Limeta",
+  "themeAmber": "Jantar",
+  "themeOrange": "Narančasta",
+  "themeRed": "Crvena",
+  "themePink": "Ružičasta",
+  "themePurple": "Ljubičasta",
+  "accentColor": "Boja naglaska",
+  "oledBlack": "OLED crna",
+  "oledBlackSubtitle": "Crna pozadina chata u tamnom načinu, za OLED zaslone"
 }

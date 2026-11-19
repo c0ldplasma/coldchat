@@ -563,4 +563,47 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get turnOn => 'Slå på';
+
+  @override
+  String get themeIndigo => 'Indigo';
+
+  @override
+  String get themeBlue => 'Blå';
+
+  @override
+  String get themeCyan => 'Cyan';
+
+  @override
+  String get themeTeal => 'Petrol';
+
+  @override
+  String get themeGreen => 'Grønn';
+
+  @override
+  String get themeLime => 'Lime';
+
+  @override
+  String get themeAmber => 'Rav';
+
+  @override
+  String get themeOrange => 'Oransje';
+
+  @override
+  String get themeRed => 'Rød';
+
+  @override
+  String get themePink => 'Rosa';
+
+  @override
+  String get themePurple => 'Lilla';
+
+  @override
+  String get accentColor => 'Aksentfarge';
+
+  @override
+  String get oledBlack => 'OLED-svart';
+
+  @override
+  String get oledBlackSubtitle =>
+      'Svart chatbakgrunn i mørk modus, for OLED-skjermer';
 }

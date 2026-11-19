@@ -335,5 +335,19 @@
   "showImagesFromLinks": "Показывать изображения из ссылок",
   "showImagesFromLinksSubtitle": "Twitch не проверяет эти изображения. Они могут быть неприемлемыми.",
   "showImagesAutomatically": "Показывать изображения из ссылок автоматически?",
-  "turnOn": "Включить"
+  "turnOn": "Включить",
+  "themeIndigo": "Индиго",
+  "themeBlue": "Синий",
+  "themeCyan": "Голубой",
+  "themeTeal": "Бирюзовый",
+  "themeGreen": "Зелёный",
+  "themeLime": "Лаймовый",
+  "themeAmber": "Янтарный",
+  "themeOrange": "Оранжевый",
+  "themeRed": "Красный",
+  "themePink": "Розовый",
+  "themePurple": "Фиолетовый",
+  "accentColor": "Цвет акцента",
+  "oledBlack": "Чёрный OLED",
+  "oledBlackSubtitle": "Чёрный фон чата в тёмном режиме, для OLED-экранов"
 }
