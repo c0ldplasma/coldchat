@@ -573,9 +573,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get themeBlue => 'Μπλε';
 
   @override
-  String get themeCyan => 'Κυανό';
-
-  @override
   String get themeTeal => 'Πετρόλ';
 
   @override
@@ -617,4 +614,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get saturation => 'Κορεσμός';
+
+  @override
+  String get themeIce => 'Πάγος';
 }

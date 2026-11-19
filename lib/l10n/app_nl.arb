@@ -338,7 +338,6 @@
   "turnOn": "Inschakelen",
   "themeIndigo": "Indigo",
   "themeBlue": "Blauw",
-  "themeCyan": "Cyaan",
   "themeTeal": "Petrol",
   "themeGreen": "Groen",
   "themeLime": "Limoen",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Zwarte chatachtergrond in donkere modus, voor OLED-schermen",
   "customColor": "Eigen",
   "hue": "Tint",
-  "saturation": "Verzadiging"
+  "saturation": "Verzadiging",
+  "themeIce": "IJs"
 }

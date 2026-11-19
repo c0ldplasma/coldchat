@@ -338,7 +338,6 @@
   "turnOn": "Aç",
   "themeIndigo": "Çivit",
   "themeBlue": "Mavi",
-  "themeCyan": "Camgöbeği",
   "themeTeal": "Petrol mavisi",
   "themeGreen": "Yeşil",
   "themeLime": "Limon yeşili",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Karanlık modda siyah sohbet arka planı, OLED ekranlar için",
   "customColor": "Özel",
   "hue": "Ton",
-  "saturation": "Doygunluk"
+  "saturation": "Doygunluk",
+  "themeIce": "Buz"
 }

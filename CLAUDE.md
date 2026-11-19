@@ -68,7 +68,8 @@ to see which build a bug report is about.
 also run without warnings; treat any new one as something to fix, not as noise.
 
 All colors come from `lib/theme/coldchat_theme.dart`. Backgrounds are always Indigo's palette; the user's accent
-color (Settings → Accent color) only changes `colorScheme.primary` and its containers, and OLED black (Settings →
+color (Settings → Accent color; default Ice, the blue of the app icon) only changes `colorScheme.primary` and its
+containers, and OLED black (Settings →
 Appearance) makes the dark chat background pure black. Colors ColorScheme has no role for (tab bar and composer,
 sheets, raised pills, links, chatter name readability) are in the `ChatColors` theme extension: use
 `ChatColors.of(context)` instead of picking scheme colors or checking the brightness in a widget. Don't wrap widgets

@@ -563,9 +563,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get themeBlue => 'ブルー';
 
   @override
-  String get themeCyan => 'シアン';
-
-  @override
   String get themeTeal => 'ティール';
 
   @override
@@ -606,4 +603,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get saturation => '彩度';
+
+  @override
+  String get themeIce => 'アイス';
 }

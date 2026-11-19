@@ -1135,12 +1135,6 @@ abstract class AppLocalizations {
   /// Name of a color theme in Settings → Theme
   ///
   /// In en, this message translates to:
-  /// **'Cyan'**
-  String get themeCyan;
-
-  /// Name of a color theme in Settings → Theme
-  ///
-  /// In en, this message translates to:
   /// **'Teal'**
   String get themeTeal;
 
@@ -1221,6 +1215,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saturation'**
   String get saturation;
+
+  /// Name of a color theme in Settings → Theme
+  ///
+  /// In en, this message translates to:
+  /// **'Ice'**
+  String get themeIce;
 }
 
 class _AppLocalizationsDelegate

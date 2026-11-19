@@ -338,7 +338,6 @@
   "turnOn": "Ενεργοποίηση",
   "themeIndigo": "Λουλακί",
   "themeBlue": "Μπλε",
-  "themeCyan": "Κυανό",
   "themeTeal": "Πετρόλ",
   "themeGreen": "Πράσινο",
   "themeLime": "Λάιμ",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Μαύρο φόντο συνομιλίας στη σκοτεινή λειτουργία, για οθόνες OLED",
   "customColor": "Προσαρμοσμένο",
   "hue": "Απόχρωση",
-  "saturation": "Κορεσμός"
+  "saturation": "Κορεσμός",
+  "themeIce": "Πάγος"
 }

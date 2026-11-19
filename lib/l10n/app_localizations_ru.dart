@@ -571,9 +571,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get themeBlue => 'Синий';
 
   @override
-  String get themeCyan => 'Голубой';
-
-  @override
   String get themeTeal => 'Бирюзовый';
 
   @override
@@ -615,4 +612,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get saturation => 'Насыщенность';
+
+  @override
+  String get themeIce => 'Лёд';
 }

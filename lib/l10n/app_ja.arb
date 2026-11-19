@@ -338,7 +338,6 @@
   "turnOn": "オンにする",
   "themeIndigo": "インディゴ",
   "themeBlue": "ブルー",
-  "themeCyan": "シアン",
   "themeTeal": "ティール",
   "themeGreen": "グリーン",
   "themeLime": "ライム",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "ダークモードでチャットの背景を黒にします（OLED画面向け）",
   "customColor": "カスタム",
   "hue": "色相",
-  "saturation": "彩度"
+  "saturation": "彩度",
+  "themeIce": "アイス"
 }

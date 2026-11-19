@@ -563,9 +563,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get themeBlue => '블루';
 
   @override
-  String get themeCyan => '시안';
-
-  @override
   String get themeTeal => '틸';
 
   @override
@@ -606,4 +603,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get saturation => '채도';
+
+  @override
+  String get themeIce => '아이스';
 }

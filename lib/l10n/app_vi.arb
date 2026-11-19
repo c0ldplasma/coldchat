@@ -338,7 +338,6 @@
   "turnOn": "Bật",
   "themeIndigo": "Chàm",
   "themeBlue": "Xanh dương",
-  "themeCyan": "Lục lam",
   "themeTeal": "Xanh mòng két",
   "themeGreen": "Xanh lá",
   "themeLime": "Xanh chanh",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Nền trò chuyện màu đen ở chế độ tối, cho màn hình OLED",
   "customColor": "Tùy chỉnh",
   "hue": "Sắc độ",
-  "saturation": "Độ bão hòa"
+  "saturation": "Độ bão hòa",
+  "themeIce": "Băng"
 }

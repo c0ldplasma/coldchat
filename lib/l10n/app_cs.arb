@@ -338,7 +338,6 @@
   "turnOn": "Zapnout",
   "themeIndigo": "Indigo",
   "themeBlue": "Modrá",
-  "themeCyan": "Azurová",
   "themeTeal": "Petrolejová",
   "themeGreen": "Zelená",
   "themeLime": "Limetková",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Černé pozadí chatu v tmavém režimu, pro OLED displeje",
   "customColor": "Vlastní",
   "hue": "Odstín",
-  "saturation": "Sytost"
+  "saturation": "Sytost",
+  "themeIce": "Ledová"
 }

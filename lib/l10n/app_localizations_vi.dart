@@ -572,9 +572,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get themeBlue => 'Xanh dương';
 
   @override
-  String get themeCyan => 'Lục lam';
-
-  @override
   String get themeTeal => 'Xanh mòng két';
 
   @override
@@ -616,4 +613,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get saturation => 'Độ bão hòa';
+
+  @override
+  String get themeIce => 'Băng';
 }

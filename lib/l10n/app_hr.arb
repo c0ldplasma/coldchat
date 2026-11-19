@@ -338,7 +338,6 @@
   "turnOn": "Uključi",
   "themeIndigo": "Indigo",
   "themeBlue": "Plava",
-  "themeCyan": "Cijan",
   "themeTeal": "Petrolej",
   "themeGreen": "Zelena",
   "themeLime": "Limeta",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Crna pozadina chata u tamnom načinu, za OLED zaslone",
   "customColor": "Prilagođeno",
   "hue": "Nijansa",
-  "saturation": "Zasićenost"
+  "saturation": "Zasićenost",
+  "themeIce": "Led"
 }

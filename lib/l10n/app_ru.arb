@@ -338,7 +338,6 @@
   "turnOn": "Включить",
   "themeIndigo": "Индиго",
   "themeBlue": "Синий",
-  "themeCyan": "Голубой",
   "themeTeal": "Бирюзовый",
   "themeGreen": "Зелёный",
   "themeLime": "Лаймовый",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Чёрный фон чата в тёмном режиме, для OLED-экранов",
   "customColor": "Свой",
   "hue": "Оттенок",
-  "saturation": "Насыщенность"
+  "saturation": "Насыщенность",
+  "themeIce": "Лёд"
 }

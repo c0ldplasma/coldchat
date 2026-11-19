@@ -338,7 +338,6 @@
   "turnOn": "Activa",
   "themeIndigo": "Índigo",
   "themeBlue": "Blau",
-  "themeCyan": "Cian",
   "themeTeal": "Verd blavós",
   "themeGreen": "Verd",
   "themeLime": "Llima",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Fons del xat negre en mode fosc, per a pantalles OLED",
   "customColor": "Personalitzat",
   "hue": "To",
-  "saturation": "Saturació"
+  "saturation": "Saturació",
+  "themeIce": "Gel"
 }

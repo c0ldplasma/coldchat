@@ -338,7 +338,6 @@
   "turnOn": "Slå på",
   "themeIndigo": "Indigo",
   "themeBlue": "Blå",
-  "themeCyan": "Cyan",
   "themeTeal": "Petrol",
   "themeGreen": "Grön",
   "themeLime": "Lime",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Svart chattbakgrund i mörkt läge, för OLED-skärmar",
   "customColor": "Egen",
   "hue": "Nyans",
-  "saturation": "Mättnad"
+  "saturation": "Mättnad",
+  "themeIce": "Is"
 }

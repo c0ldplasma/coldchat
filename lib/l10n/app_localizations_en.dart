@@ -567,9 +567,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeBlue => 'Blue';
 
   @override
-  String get themeCyan => 'Cyan';
-
-  @override
   String get themeTeal => 'Teal';
 
   @override
@@ -611,6 +608,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saturation => 'Saturation';
+
+  @override
+  String get themeIce => 'Ice';
 }
 
 /// The translations for English, as used in Canada (`en_CA`).

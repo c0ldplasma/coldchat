@@ -338,7 +338,6 @@
   "turnOn": "הפעלה",
   "themeIndigo": "אינדיגו",
   "themeBlue": "כחול",
-  "themeCyan": "ציאן",
   "themeTeal": "כחול-ירקרק",
   "themeGreen": "ירוק",
   "themeLime": "ליים",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "רקע צ'אט שחור במצב כהה, למסכי OLED",
   "customColor": "מותאם אישית",
   "hue": "גוון",
-  "saturation": "רוויה"
+  "saturation": "רוויה",
+  "themeIce": "קרח"
 }

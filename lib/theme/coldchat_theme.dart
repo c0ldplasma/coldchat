@@ -23,9 +23,9 @@ class AccentColor {
   const AccentColor(this.id, this.hue, this.chroma);
 
   String name(AppLocalizations l10n) => switch (id) {
+        'ice' => l10n.themeIce,
         'indigo' => l10n.themeIndigo,
         'blue' => l10n.themeBlue,
-        'cyan' => l10n.themeCyan,
         'teal' => l10n.themeTeal,
         'green' => l10n.themeGreen,
         'lime' => l10n.themeLime,
@@ -99,11 +99,16 @@ abstract final class ColdChatTheme {
   /// The palette all backgrounds come from, whatever the accent.
   static const AccentColor base = AccentColor('indigo', 279.0, 36.0);
 
+  /// The default accent: the icy blue of ColdChat's snowflake icon (its colors sit at hue 215–262, chroma 30–44).
+  /// It's 45° away from the Indigo backgrounds, so it reads as a color of its own; Indigo as the accent was the
+  /// backgrounds' own hue and looked like slightly tinted white text.
+  static const AccentColor defaultAccent = AccentColor('ice', 235.0, 44.0);
+
   static const List<AccentColor> accents = [
+    defaultAccent,
     // Exactly the scheme ColorScheme.fromSeed(Colors.indigo) produced, so people who had picked it see no change.
     base,
     AccentColor('blue', 255.0, 48.0),
-    AccentColor('cyan', 215.0, 40.0),
     AccentColor('teal', 185.0, 40.0),
     AccentColor('green', 145.0, 48.0),
     AccentColor('lime', 120.0, 56.0),
@@ -114,7 +119,7 @@ abstract final class ColdChatTheme {
     AccentColor('purple', 305.0, 56.0),
   ];
 
-  static AccentColor accentById(String? id) => accents.firstWhere((a) => a.id == id, orElse: () => base);
+  static AccentColor accentById(String? id) => accents.firstWhere((a) => a.id == id, orElse: () => defaultAccent);
 
   /// A color the user mixed from a hue and a saturation (chroma), stored next to [accentKey]. Only those two are
   /// stored: the lightness of every accent comes from the mode, which is what keeps any choice readable.
@@ -127,7 +132,7 @@ abstract final class ColdChatTheme {
 
   static AccentColor custom(double hue, double chroma) => AccentColor(customId, hue, chroma);
 
-  /// The accent in [settings], or Indigo.
+  /// The accent in [settings], or the default.
   static AccentColor current(Box settings) {
     final id = settings.get(accentKey) as String?;
     if (id == customId) {
@@ -146,7 +151,7 @@ abstract final class ColdChatTheme {
       });
 
   /// Moves a color picked in the old list over to the closest accent, so an update changes as little as possible.
-  /// New installs get no entry and so Indigo.
+  /// New installs get no entry and so the default.
   static Future<void> migrate(Box settings) async {
     if (settings.containsKey(accentKey)) return;
     final legacy = settings.get(legacyColorKey);
@@ -154,10 +159,10 @@ abstract final class ColdChatTheme {
     await settings.put(accentKey, closestAccent(Color(legacy)).id);
   }
 
-  /// The accent whose hue is closest to [color]'s. Greys and brown-greys (Blue Grey, Brown) become Indigo.
+  /// The accent whose hue is closest to [color]'s. Greys and brown-greys (Blue Grey, Brown) get the default.
   static AccentColor closestAccent(Color color) {
     final hct = Hct.fromInt(color.toARGB32());
-    if (hct.chroma < 16.0) return base;
+    if (hct.chroma < 16.0) return defaultAccent;
     double distance(AccentColor a) {
       final d = (a.hue - hct.hue).abs() % 360.0;
       return d > 180.0 ? 360.0 - d : d;

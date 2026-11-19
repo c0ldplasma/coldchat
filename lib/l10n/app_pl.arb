@@ -338,7 +338,6 @@
   "turnOn": "Włącz",
   "themeIndigo": "Indygo",
   "themeBlue": "Niebieski",
-  "themeCyan": "Cyjan",
   "themeTeal": "Morski",
   "themeGreen": "Zielony",
   "themeLime": "Limonkowy",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Czarne tło czatu w trybie ciemnym, dla ekranów OLED",
   "customColor": "Własny",
   "hue": "Odcień",
-  "saturation": "Nasycenie"
+  "saturation": "Nasycenie",
+  "themeIce": "Lodowy"
 }

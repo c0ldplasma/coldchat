@@ -568,9 +568,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get themeBlue => 'כחול';
 
   @override
-  String get themeCyan => 'ציאן';
-
-  @override
   String get themeTeal => 'כחול-ירקרק';
 
   @override
@@ -611,4 +608,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get saturation => 'רוויה';
+
+  @override
+  String get themeIce => 'קרח';
 }

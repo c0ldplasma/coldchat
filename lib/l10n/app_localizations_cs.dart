@@ -571,9 +571,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get themeBlue => 'Modrá';
 
   @override
-  String get themeCyan => 'Azurová';
-
-  @override
   String get themeTeal => 'Petrolejová';
 
   @override
@@ -615,4 +612,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get saturation => 'Sytost';
+
+  @override
+  String get themeIce => 'Ledová';
 }

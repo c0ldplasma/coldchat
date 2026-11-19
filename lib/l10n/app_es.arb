@@ -338,7 +338,6 @@
   "turnOn": "Activar",
   "themeIndigo": "Índigo",
   "themeBlue": "Azul",
-  "themeCyan": "Cian",
   "themeTeal": "Verde azulado",
   "themeGreen": "Verde",
   "themeLime": "Lima",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "Fondo del chat negro en modo oscuro, para pantallas OLED",
   "customColor": "Personalizado",
   "hue": "Tono",
-  "saturation": "Saturación"
+  "saturation": "Saturación",
+  "themeIce": "Hielo"
 }

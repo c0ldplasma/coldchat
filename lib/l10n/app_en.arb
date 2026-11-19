@@ -275,10 +275,6 @@
   "@themeBlue": {
     "description": "Name of a color theme in Settings → Theme"
   },
-  "themeCyan": "Cyan",
-  "@themeCyan": {
-    "description": "Name of a color theme in Settings → Theme"
-  },
   "themeTeal": "Teal",
   "@themeTeal": {
     "description": "Name of a color theme in Settings → Theme"
@@ -316,5 +312,9 @@
   "oledBlackSubtitle": "Black chat background in dark mode, for OLED screens",
   "customColor": "Custom",
   "hue": "Hue",
-  "saturation": "Saturation"
+  "saturation": "Saturation",
+  "themeIce": "Ice",
+  "@themeIce": {
+    "description": "Name of a color theme in Settings → Theme"
+  }
 }

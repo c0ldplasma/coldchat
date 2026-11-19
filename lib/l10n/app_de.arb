@@ -234,7 +234,6 @@
   "turnOn": "Einschalten",
   "themeIndigo": "Indigo",
   "themeBlue": "Blau",
-  "themeCyan": "Cyan",
   "themeTeal": "Petrol",
   "themeGreen": "Grün",
   "themeLime": "Limette",
@@ -248,5 +247,6 @@
   "oledBlackSubtitle": "Schwarzer Chat-Hintergrund im dunklen Modus, für OLED-Displays",
   "customColor": "Eigene",
   "hue": "Farbton",
-  "saturation": "Sättigung"
+  "saturation": "Sättigung",
+  "themeIce": "Eis"
 }

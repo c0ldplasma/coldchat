@@ -570,9 +570,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get themeBlue => 'Mavi';
 
   @override
-  String get themeCyan => 'Camgöbeği';
-
-  @override
   String get themeTeal => 'Petrol mavisi';
 
   @override
@@ -614,4 +611,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get saturation => 'Doygunluk';
+
+  @override
+  String get themeIce => 'Buz';
 }

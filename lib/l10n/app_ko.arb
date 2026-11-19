@@ -338,7 +338,6 @@
   "turnOn": "켜기",
   "themeIndigo": "인디고",
   "themeBlue": "블루",
-  "themeCyan": "시안",
   "themeTeal": "틸",
   "themeGreen": "그린",
   "themeLime": "라임",
@@ -352,5 +351,6 @@
   "oledBlackSubtitle": "다크 모드에서 채팅 배경을 검은색으로 표시합니다(OLED 화면용)",
   "customColor": "사용자 지정",
   "hue": "색조",
-  "saturation": "채도"
+  "saturation": "채도",
+  "themeIce": "아이스"
 }
