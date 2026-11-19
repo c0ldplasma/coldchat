@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch не проверава ове слике. Могу бити неприкладне.",
   "showImagesAutomatically": "Аутоматски приказивати слике из линкова?",
   "turnOn": "Укључи",
-  "durationDays": "{count, plural, one{{count} дан} other{{count} дана}}"
+  "durationDays": "{count, plural, one{{count} дан} other{{count} дана}}",
+  "durationHours": "{count, plural, one{{count} сат} few{{count} сата} other{{count} сати}}",
+  "durationMinutes": "{count, plural, one{{count} минут} few{{count} минута} other{{count} минута}}"
 }

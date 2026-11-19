@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch tjekker ikke disse billeder. De kan være upassende.",
   "showImagesAutomatically": "Vis billeder fra links automatisk?",
   "turnOn": "Slå til",
-  "durationDays": "{count, plural, =1{1 dag} other{{count} dage}}"
+  "durationDays": "{count, plural, =1{1 dag} other{{count} dage}}",
+  "durationHours": "{count, plural, =1{1 time} other{{count} timer}}",
+  "durationMinutes": "{count, plural, =1{1 minut} other{{count} minutter}}"
 }

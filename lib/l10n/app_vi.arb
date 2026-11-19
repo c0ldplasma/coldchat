@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch không kiểm duyệt những ảnh này. Chúng có thể có nội dung không phù hợp.",
   "showImagesAutomatically": "Tự động hiện ảnh từ liên kết?",
   "turnOn": "Bật",
-  "durationDays": "{count, plural, other{{count} ngày}}"
+  "durationDays": "{count, plural, other{{count} ngày}}",
+  "durationHours": "{count, plural, other{{count} giờ}}",
+  "durationMinutes": "{count, plural, other{{count} phút}}"
 }

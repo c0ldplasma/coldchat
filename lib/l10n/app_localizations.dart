@@ -1125,6 +1125,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 day} other{{count} days}}'**
   String durationDays(int count);
+
+  /// A number of hours, as it reads inside "Expires in {time}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour} other{{count} hours}}'**
+  String durationHours(int count);
+
+  /// A number of minutes, as it reads inside "Expires in {time}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 minute} other{{count} minutes}}'**
+  String durationMinutes(int count);
 }
 
 class _AppLocalizationsDelegate

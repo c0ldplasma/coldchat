@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch לא בודקת את התמונות האלה. הן עשויות להיות לא הולמות.",
   "showImagesAutomatically": "להציג תמונות מקישורים באופן אוטומטי?",
   "turnOn": "הפעלה",
-  "durationDays": "{count, plural, =1{יום אחד} =2{יומיים} other{{count} ימים}}"
+  "durationDays": "{count, plural, =1{יום אחד} =2{יומיים} other{{count} ימים}}",
+  "durationHours": "{count, plural, =1{שעה אחת} =2{שעתיים} other{{count} שעות}}",
+  "durationMinutes": "{count, plural, =1{דקה אחת} =2{שתי דקות} other{{count} דקות}}"
 }

@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch controleert deze afbeeldingen niet. Ze kunnen ongepast zijn.",
   "showImagesAutomatically": "Afbeeldingen uit links automatisch tonen?",
   "turnOn": "Inschakelen",
-  "durationDays": "{count, plural, =1{1 dag} other{{count} dagen}}"
+  "durationDays": "{count, plural, =1{1 dag} other{{count} dagen}}",
+  "durationHours": "{count, plural, =1{1 uur} other{{count} uur}}",
+  "durationMinutes": "{count, plural, =1{1 minuut} other{{count} minuten}}"
 }

@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch bu görselleri denetlemez. Uygunsuz olabilirler.",
   "showImagesAutomatically": "Bağlantılardaki görseller otomatik gösterilsin mi?",
   "turnOn": "Aç",
-  "durationDays": "{count, plural, other{{count} gün}}"
+  "durationDays": "{count, plural, other{{count} gün}}",
+  "durationHours": "{count, plural, other{{count} saat}}",
+  "durationMinutes": "{count, plural, other{{count} dakika}}"
 }

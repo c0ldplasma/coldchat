@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "これらの画像はTwitchによる確認を受けていません。不適切な内容が含まれる可能性があります。",
   "showImagesAutomatically": "リンクの画像を自動で表示しますか？",
   "turnOn": "オンにする",
-  "durationDays": "{count, plural, other{{count}日}}"
+  "durationDays": "{count, plural, other{{count}日}}",
+  "durationHours": "{count, plural, other{{count}時間}}",
+  "durationMinutes": "{count, plural, other{{count}分}}"
 }

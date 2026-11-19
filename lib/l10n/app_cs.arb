@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch tyto obrázky nekontroluje. Mohou být nevhodné.",
   "showImagesAutomatically": "Zobrazovat obrázky z odkazů automaticky?",
   "turnOn": "Zapnout",
-  "durationDays": "{count, plural, one{{count} den} few{{count} dny} other{{count} dní}}"
+  "durationDays": "{count, plural, one{{count} den} few{{count} dny} other{{count} dní}}",
+  "durationHours": "{count, plural, one{{count} hodinu} few{{count} hodiny} other{{count} hodin}}",
+  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minuty} other{{count} minut}}"
 }

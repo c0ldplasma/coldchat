@@ -336,5 +336,7 @@
   "showImagesFromLinksSubtitle": "Twitch ne vérifie pas ces images. Elles peuvent être inappropriées.",
   "showImagesAutomatically": "Afficher automatiquement les images des liens ?",
   "turnOn": "Activer",
-  "durationDays": "{count, plural, =1{1 jour} other{{count} jours}}"
+  "durationDays": "{count, plural, =1{1 jour} other{{count} jours}}",
+  "durationHours": "{count, plural, =1{1 heure} other{{count} heures}}",
+  "durationMinutes": "{count, plural, =1{1 minute} other{{count} minutes}}"
 }
