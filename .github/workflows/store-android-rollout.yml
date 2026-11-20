@@ -1,0 +1,36 @@
+name: Store 3 · Android · Roll out
+
+# Step 3 on Android: raises the share of users who get the production release, up to 1 for everyone.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, e.g. v2.6.0+157
+        required: true
+      rollout:
+        description: Share of users who get it, from 0.01 to 1 (everyone)
+        required: true
+        default: '1'
+
+concurrency: store-android
+
+jobs:
+  rollout:
+    name: Roll out
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Roll out
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          TAG: ${{ inputs.tag }}
+          ROLLOUT: ${{ inputs.rollout }}
+        run: bundle exec fastlane android rollout build:"${TAG##*+}" rollout:"$ROLLOUT"

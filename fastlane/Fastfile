@@ -1,0 +1,114 @@
+# Store lanes used by the release workflows (.github/workflows/store-*.yml). They expect the secrets described in
+# those workflows as environment variables.
+
+APP_ID = 'com.plasmari.coldchat'
+
+def app_store_connect_key
+  app_store_connect_api_key(
+    key_id: ENV.fetch('APP_STORE_CONNECT_API_KEY_ID'),
+    issuer_id: ENV.fetch('APP_STORE_CONNECT_ISSUER_ID'),
+    key_content: ENV.fetch('APP_STORE_CONNECT_API_KEY'),
+  )
+end
+
+platform :ios do
+  desc 'Upload an IPA to TestFlight'
+  lane :testflight_upload do |options|
+    upload_to_testflight(
+      api_key: app_store_connect_key,
+      ipa: options.fetch(:ipa),
+      # Processing takes a while; the build shows up in TestFlight on its own.
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+  desc 'Submit an uploaded build for App Store review. After approval it waits for the release lane.'
+  lane :submit_for_review do |options|
+    notes = options[:release_notes].to_s.strip
+    deliver(
+      api_key: app_store_connect_key,
+      app_identifier: APP_ID,
+      app_version: options.fetch(:version),
+      build_number: options.fetch(:build),
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      # Only "What's New"; the rest of the listing is kept in App Store Connect.
+      skip_metadata: notes.empty?,
+      release_notes: notes.empty? ? nil : { 'default' => notes },
+      submit_for_review: true,
+      automatic_release: false,
+      phased_release: options[:phased_release] == 'true',
+      submission_information: { add_id_info_uses_idfa: false },
+      # Precheck can't look at in-app purchases with an API key, and there are none.
+      run_precheck_before_submit: false,
+      force: true,
+    )
+  end
+
+  desc 'Release the approved version that is waiting for the developer (Pending Developer Release)'
+  lane :release do |options|
+    app_store_connect_key
+    app = Spaceship::ConnectAPI::App.find(APP_ID)
+    version = app.get_pending_release_app_store_version
+    UI.user_error!('No version is waiting to be released (Pending Developer Release).') if version.nil?
+    if version.version_string != options.fetch(:version)
+      UI.user_error!("#{version.version_string} is waiting to be released, not #{options[:version]}.")
+    end
+    version.create_app_store_version_release_request
+    UI.success("Released #{version.version_string} on the App Store.")
+  end
+end
+
+platform :android do
+  def play_options
+    {
+      json_key_data: ENV.fetch('PLAY_SERVICE_ACCOUNT_JSON'),
+      package_name: APP_ID,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    }
+  end
+
+  # A fraction like '0.2' rolls out to 20% of users; '1' to everyone.
+  def rollout_options(rollout)
+    rollout.to_f >= 1 ? { release_status: 'completed' } : { release_status: 'inProgress', rollout: rollout }
+  end
+
+  desc 'Upload an app bundle to the internal testing track'
+  lane :internal_upload do |options|
+    supply(
+      **play_options,
+      aab: options.fetch(:aab),
+      track: 'internal',
+      # Play only accepts drafts until the app has been published once.
+      release_status: options.fetch(:status),
+    )
+  end
+
+  desc "Promote the internal testing release to production. Sending it is what submits it for Google's review."
+  lane :submit_to_production do |options|
+    supply(
+      **play_options,
+      **rollout_options(options.fetch(:rollout)),
+      version_code: options.fetch(:build).to_i,
+      track: 'internal',
+      track_promote_to: 'production',
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+    )
+  end
+
+  desc 'Change how many users get the production release'
+  lane :rollout do |options|
+    supply(
+      **play_options,
+      **rollout_options(options.fetch(:rollout)),
+      version_code: options.fetch(:build).to_i,
+      track: 'production',
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+    )
+  end
+end

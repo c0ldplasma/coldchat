@@ -1,0 +1,38 @@
+name: Store 2 · Android · Submit to production
+
+# Step 2 on Android: promotes the internal testing release of a tag to production. Google reviews it on its own; once
+# approved it goes out to the given share of users, unless managed publishing is on in the Play Console (then it
+# waits for "Publish changes" there).
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, e.g. v2.6.0+157
+        required: true
+      rollout:
+        description: Share of users who get it, from 0.01 to 1 (everyone)
+        required: true
+        default: '0.2'
+
+concurrency: store-android
+
+jobs:
+  submit:
+    name: Submit to production
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Promote
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          TAG: ${{ inputs.tag }}
+          ROLLOUT: ${{ inputs.rollout }}
+        run: bundle exec fastlane android submit_to_production build:"${TAG##*+}" rollout:"$ROLLOUT"
