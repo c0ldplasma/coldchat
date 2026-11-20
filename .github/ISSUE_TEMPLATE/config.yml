@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/c0ldplasma/coldchat/security/advisories/new
+    about: Report security problems privately instead of in a public issue.
+  - name: Support and FAQ
+    url: https://c0ldplasma.github.io/coldchat/
+    about: Help with using ColdChat.

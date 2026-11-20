@@ -42,6 +42,7 @@
 # GitHub CI/CD workflow files
 !/.github/workflows/**/*.yml
 !/.github/dependabot.yml
+!/.github/ISSUE_TEMPLATE/*.yml
 
 # Repository related files
 !/.gitignore

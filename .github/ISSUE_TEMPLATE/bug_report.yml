@@ -1,0 +1,107 @@
+name: Bug report
+description: Something in ColdChat doesn't work as it should.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Please check the [existing issues](https://github.com/c0ldplasma/coldchat/issues) first; if yours is already there, add what you know to it instead.
+        Security problems, such as a way to leak your Twitch login, don't belong here: report them [privately](https://github.com/c0ldplasma/coldchat/security/advisories/new).
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: Emotes from 7TV don't show up in one channel, the text appears instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact steps that make the bug happen, starting from opening the app. Mention the channel if it only happens in one.
+      placeholder: |
+        1. Open the channel #example
+        2. Tap the emote button
+        3. Scroll down to the 7TV section
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does it happen?
+      options:
+        - Every time
+        - Sometimes
+        - It happened once
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android
+        - iOS
+        - Both
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: ColdChat version
+      description: Shown at the bottom of Settings, e.g. "2.5.0 (156)".
+      placeholder: 2.5.0 (156)
+    validations:
+      required: true
+
+  - type: input
+    id: os-version
+    attributes:
+      label: Android or iOS version
+      placeholder: Android 15, iOS 18.4
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: Samsung Galaxy S24, iPhone 15 Pro
+    validations:
+      required: true
+
+  - type: dropdown
+    id: login
+    attributes:
+      label: Were you logged in?
+      options:
+        - Yes, with a Twitch account
+        - No, anonymous
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshots or screen recording
+      description: Drag files in here. A recording helps most with anything that moves, like scrolling or reconnecting. Hide anything private, such as whispers.
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Error messages the app showed, when it started (e.g. after an update), or what you already tried.
