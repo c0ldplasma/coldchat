@@ -11,7 +11,7 @@ import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/channel/channel_message.dart';
 import 'package:coldchat/tmi/client/client_listener.dart';
 import 'package:collection/collection.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';

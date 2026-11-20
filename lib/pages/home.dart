@@ -4,7 +4,7 @@ import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/modal/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../components/bottom_bar.dart';

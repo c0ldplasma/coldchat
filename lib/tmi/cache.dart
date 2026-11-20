@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';

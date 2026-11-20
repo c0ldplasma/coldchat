@@ -4,7 +4,7 @@ import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/widgets/avatar_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
 import '../data/custom_command.dart';

@@ -39,7 +39,7 @@ the minimum in `pubspec.yaml`. Lints are `flutter_lints` (keep `flutter analyze`
 `analysis_options.yaml`): run `dart format lib` before committing. The commit that formatted everything is listed in
 `.git-blame-ignore-revs`, which GitHub's blame skips; locally run `git config blame.ignoreRevsFile .git-blame-ignore-revs`
 once. Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
-packages; it skips the code generators and hive, which are held back until hive is replaced.
+packages: minor and patch updates grouped, each major update on its own.
 
 ## Versioning
 
@@ -225,6 +225,10 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   list to the channel's moderators.
 - `*.g.dart` files (json_serializable, Hive adapters) are **generated and not tracked**. After a fresh checkout or
   after changing an annotated model, run `dart run build_runner build --delete-conflicting-outputs`.
+- Storage is **`hive_ce`**, the maintained continuation of hive 2 (which stopped at 2.2.3); it reads boxes written by
+  hive 2 unchanged. Never change a `@HiveType` typeId or a `@HiveField` number of a stored model, or existing data
+  stops loading: add new fields with new numbers and a `defaultValue`. Adapters are registered by hand in `main.dart`;
+  the generated `lib/hive_registrar.g.dart` lists them all for comparison.
 - Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/modal/login_flow.dart`) in the
   system's login sheet (ASWebAuthenticationSession / Android Custom Tab, via `flutter_web_auth_2`), not a web
   view. Twitch only redirects to web addresses, so the redirect is `docs/auth.html` on GitHub Pages

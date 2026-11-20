@@ -4,7 +4,7 @@ import 'package:coldchat/modal/notifications.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../data/notifications_cubit.dart';
 import '/components/modal.dart';

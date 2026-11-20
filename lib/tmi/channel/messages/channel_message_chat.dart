@@ -8,7 +8,7 @@ import 'package:coldchat/tmi/channel/messages/embeds/image_embed.dart';
 import 'package:coldchat/tmi/user.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../../data/emote.dart';
 import '../../../data/message_trigger.dart';
