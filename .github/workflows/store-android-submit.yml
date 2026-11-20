@@ -2,7 +2,8 @@ name: Store 2 · Android · Submit to production
 
 # Step 2 on Android: promotes the internal testing release of a tag to production. Google reviews it on its own; once
 # approved it goes out to the given share of users, unless managed publishing is on in the Play Console (then it
-# waits for "Publish changes" there).
+# waits for "Publish changes" there). The release notes come from the tag
+# (fastlane/metadata/android/<language>/changelogs/<build>.txt).
 
 on:
   workflow_dispatch:
@@ -24,6 +25,8 @@ jobs:
     environment: release
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag }}
 
       - uses: ruby/setup-ruby@v1
         with:

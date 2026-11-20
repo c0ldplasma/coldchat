@@ -67,8 +67,9 @@ builds the changelog from them.
 - 2.0.0 builds up to +119 went to TestFlight and local test installs went up to +123, so ColdChat's own
   versioning starts at **2.1.0+124**.
 
-A release is one commit on `main` that sets the new version, followed by a tag, a GitHub release and the store
-uploads. The **`release` skill** (`.claude/skills/release/`) has the exact steps.
+A release is one commit on `main` that sets the new version and adds the store release notes
+(`fastlane/metadata/android/<language>/changelogs/<build>.txt`, English and German, checked by CI), followed by a tag, a
+GitHub release and the store uploads. The **`release` skill** (`.claude/skills/release/`) has the exact steps.
 
 **Test builds never edit `pubspec.yaml`.** To tell a local install apart, pass the number at build time
 instead, e.g. `flutter build ios --release --build-number=126`. Use a number above the last release, and

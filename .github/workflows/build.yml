@@ -54,6 +54,9 @@ jobs:
             exit 1
           fi
 
+      - name: Check the store release notes
+        run: dart run tool/check_release_notes.dart
+
       - name: Analyze
         run: flutter analyze
 

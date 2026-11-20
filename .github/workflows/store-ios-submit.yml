@@ -1,7 +1,8 @@
 name: Store 2 · iOS · Submit for review
 
 # Step 2 on iOS: submits a build that step 1 uploaded for App Store review. After approval, the version waits as
-# "Pending Developer Release" until step 3 releases it.
+# "Pending Developer Release" until step 3 releases it. What's New comes from the tag's release notes
+# (fastlane/metadata/android/<language>/changelogs/<build>.txt), for the languages the App Store listing has.
 
 on:
   workflow_dispatch:
@@ -9,10 +10,6 @@ on:
       tag:
         description: Release tag, e.g. v2.6.0+157
         required: true
-      release_notes:
-        description: What's New (all languages)
-        required: true
-        default: Bug fixes and improvements.
       phased_release:
         description: Roll out over 7 days instead of to everyone at once
         type: boolean
@@ -27,6 +24,8 @@ jobs:
     environment: release
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag }}
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -39,10 +38,9 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           TAG: ${{ inputs.tag }}
-          RELEASE_NOTES: ${{ inputs.release_notes }}
           PHASED: ${{ inputs.phased_release }}
         # v2.6.0+157 → version 2.6.0, build 157
         run: |
           version=${TAG#v}; version=${version%%+*}; build=${TAG##*+}
           bundle exec fastlane ios submit_for_review \
-            version:"$version" build:"$build" release_notes:"$RELEASE_NOTES" phased_release:"$PHASED"
+            version:"$version" build:"$build" phased_release:"$PHASED"
