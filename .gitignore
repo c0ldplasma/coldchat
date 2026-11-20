@@ -16,6 +16,9 @@
 /lib/generated_plugin_registrant.dart
 /lib/**/*.g.dart
 
+# Tests, with their fixture files
+!/test/**
+
 # Localization files
 !/lib/l10n/**/*.arb
 
