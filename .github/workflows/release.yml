@@ -1,0 +1,153 @@
+name: Release
+
+# Builds the store versions of a release and uploads them: the iOS build to TestFlight, the Android bundle to Play's
+# internal testing track as a draft. Runs for a release tag (see "Versioning" in CLAUDE.md), or by hand for a tag.
+# Releasing to the public stays a manual step in App Store Connect and the Play Console.
+#
+# The secrets live in the "release" environment (Settings → Environments), which can require an approval before a run
+# gets them.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to build, e.g. v2.6.0+157
+        required: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  FLUTTER_VERSION: '3.47.8'
+  TAG: ${{ inputs.tag || github.ref_name }}
+
+jobs:
+  ios:
+    name: iOS → TestFlight
+    runs-on: macos-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Generate sources
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Install the App Store Connect API key
+        env:
+          API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+        # altool looks for the key in this folder, under this name.
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          printf '%s' "$API_KEY" > ~/.appstoreconnect/private_keys/AuthKey_$API_KEY_ID.p8
+          echo "API_KEY_PATH=$HOME/.appstoreconnect/private_keys/AuthKey_$API_KEY_ID.p8" >> "$GITHUB_ENV"
+
+      # `flutter build ipa` can't pass the API key to Xcode, so Flutter only prepares the project and xcodebuild
+      # archives and exports it. With the key, Xcode signs in the cloud: no certificate or profile on the runner.
+      - name: Prepare the Xcode project
+        run: flutter build ios --release --config-only
+
+      - name: Archive
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace -scheme Runner -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath build/ios/archive/Runner.xcarchive \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$API_KEY_PATH" -authenticationKeyID "$API_KEY_ID" \
+            -authenticationKeyIssuerID "$API_ISSUER_ID"
+
+      - name: Export the IPA
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/ios/archive/Runner.xcarchive -exportPath build/ios/ipa \
+            -exportOptionsPlist ios/ExportOptions.plist \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$API_KEY_PATH" -authenticationKeyID "$API_KEY_ID" \
+            -authenticationKeyIssuerID "$API_ISSUER_ID"
+
+      - name: Validate and upload to TestFlight
+        env:
+          API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        run: |
+          ipa=$(ls build/ios/ipa/*.ipa)
+          xcrun altool --validate-app --type ios -f "$ipa" --apiKey "$API_KEY_ID" --apiIssuer "$API_ISSUER_ID"
+          xcrun altool --upload-app --type ios -f "$ipa" --apiKey "$API_KEY_ID" --apiIssuer "$API_ISSUER_ID"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coldchat-ios-${{ env.TAG }}
+          path: build/ios/ipa/*.ipa
+
+  android:
+    name: Android → Play internal testing
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Generate sources
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      # The same android/key.properties as for a local release build (see CLAUDE.md), pointing at the upload key.
+      - name: Set up the upload key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_PASSWORD }}
+        run: |
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload.jks"
+          cat > android/key.properties <<PROPERTIES
+          storeFile=$RUNNER_TEMP/upload.jks
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEYSTORE_PASSWORD
+          keyAlias=upload
+          PROPERTIES
+
+      - name: Build the app bundle
+        run: flutter build appbundle --release
+
+      # Draft, because Play only accepts drafts until the app has been published once. Roll it out in the Play Console.
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: com.plasmari.coldchat
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          status: draft
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coldchat-android-${{ env.TAG }}
+          path: build/app/outputs/bundle/release/app-release.aab
