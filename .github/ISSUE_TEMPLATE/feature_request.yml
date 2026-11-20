@@ -1,0 +1,51 @@
+name: Feature request or improvement
+description: Suggest something new, or a way to make an existing feature better.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: Please check the [existing issues](https://github.com/c0ldplasma/coldchat/issues) first; if someone already suggested it, add a 👍 or your use case there instead.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of request is it?
+      options:
+        - A new feature
+        - An improvement to an existing feature
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would it solve?
+      description: What you're trying to do, and what makes it hard or impossible today.
+      placeholder: When chat moves fast, I lose the messages that mention me.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+      description: How you imagine it working. Sketches and screenshots are welcome.
+      placeholder: A list of the recent mentions I can open from the channel header.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other ways it could work, or how other chat apps handle it.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Where you'd use it.
+      options:
+        - Both
+        - Android
+        - iOS
