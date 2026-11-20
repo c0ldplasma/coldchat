@@ -59,7 +59,8 @@ class Message {
       parts.removeAt(0);
     }
 
-    if (parts.isEmpty) {
+    // An empty line splits into [''], hence the check for an empty command too.
+    if (parts.isEmpty || parts.first.isEmpty) {
       throw InvalidIrcMessageException('invalid irc message: $event');
     }
 

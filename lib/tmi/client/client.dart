@@ -338,7 +338,12 @@ class Client {
     // in slow mode" spam. USERNOTICE (subs/raids) is intentionally kept.
     final parsed = <irc.Message>[];
     for (final message in messages) {
-      final ircMessage = irc.Message.fromEvent(message);
+      final irc.Message ircMessage;
+      try {
+        ircMessage = irc.Message.fromEvent(message);
+      } on irc.InvalidIrcMessageException {
+        continue;
+      }
       if (ircMessage.command == 'ROOMSTATE' || ircMessage.command == 'NOTICE') continue;
       parsed.add(ircMessage);
     }
