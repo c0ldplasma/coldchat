@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "사용자 토큰을 확인하는 중 오류가 발생했어요:",
   "verifyingUserToken": "사용자 토큰 확인 중...",
   "searchForChannels": "채널 검색",
+  "channelSearchFailed": "채널을 검색할 수 없습니다",
   "recommendedChannels": "추천 채널",
   "popularChannels": "인기 채널",
   "channel": "채널",

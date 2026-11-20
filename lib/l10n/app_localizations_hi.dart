@@ -164,6 +164,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get searchForChannels => 'चैनल खोजें';
 
   @override
+  String get channelSearchFailed => 'चैनल नहीं खोजे जा सके';
+
+  @override
   String get recommendedChannels => 'सुझाए गए चैनल';
 
   @override

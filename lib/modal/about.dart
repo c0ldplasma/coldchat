@@ -25,20 +25,20 @@ class AboutModal extends StatelessWidget {
     builder: (context, snapshot) {
       final info = snapshot.data;
       final version = info == null ? '' : '${info.version} (${info.buildNumber})';
-      final legalese = '$copyrightNotice\n\n${AppLocalizations.of(context)!.aboutLegalese}';
+      final legalese = '$copyrightNotice\n\n${AppLocalizations.of(context).aboutLegalese}';
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.about),
+          ModalHeader(title: AppLocalizations.of(context).about),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
-              '${AppLocalizations.of(context)!.appName} $version\n\n$legalese',
+              '${AppLocalizations.of(context).appName} $version\n\n$legalese',
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.sourceCode,
+            title: AppLocalizations.of(context).sourceCode,
             subtitle: info == null ? null : 'v${info.version}+${info.buildNumber}',
             prefix: const Icon(Icons.code_rounded),
             // Release builds are tagged with their version, so this opens the exact source of the
@@ -46,39 +46,39 @@ class AboutModal extends StatelessWidget {
             onTap: info == null ? null : () => _open('$repositoryUrl/tree/v${info.version}+${info.buildNumber}'),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.license,
+            title: AppLocalizations.of(context).license,
             subtitle: 'GNU Affero General Public License v3.0',
             prefix: const Icon(Icons.gavel_rounded),
             onTap: () => _open('$repositoryUrl/blob/main/LICENSE'),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.basedOnChatsen,
+            title: AppLocalizations.of(context).basedOnChatsen,
             subtitle: 'github.com/chatsen/chatsen',
             prefix: const Icon(Icons.call_split_rounded),
             onTap: () => _open('https://github.com/chatsen/chatsen'),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.contact,
+            title: AppLocalizations.of(context).contact,
             subtitle: 'github.com/c0ldplasma/coldchat/issues',
             prefix: const Icon(Icons.mail_outline_rounded),
             onTap: () => _open('$repositoryUrl/issues'),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.privacyPolicy,
+            title: AppLocalizations.of(context).privacyPolicy,
             prefix: const Icon(Icons.privacy_tip_outlined),
             onTap: () => _open(privacyPolicyUrl),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.termsOfService,
+            title: AppLocalizations.of(context).termsOfService,
             prefix: const Icon(Icons.article_outlined),
             onTap: () => _open(termsOfServiceUrl),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.openSourceLicenses,
+            title: AppLocalizations.of(context).openSourceLicenses,
             prefix: const Icon(Icons.description_outlined),
             onTap: () => showLicensePage(
               context: context,
-              applicationName: AppLocalizations.of(context)!.appName,
+              applicationName: AppLocalizations.of(context).appName,
               applicationVersion: version,
               applicationLegalese: legalese,
             ),

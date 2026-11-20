@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Ett fel uppstod när användartoken verifierades:",
   "verifyingUserToken": "Verifierar användartoken...",
   "searchForChannels": "Sök efter kanaler",
+  "channelSearchFailed": "Det gick inte att söka efter kanaler",
   "recommendedChannels": "Rekommenderade kanaler",
   "popularChannels": "Populära kanaler",
   "channel": "Kanal",

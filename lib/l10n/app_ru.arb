@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Ошибка при проверке токена пользователя:",
   "verifyingUserToken": "Проверка токена пользователя...",
   "searchForChannels": "Поиск каналов",
+  "channelSearchFailed": "Не удалось выполнить поиск каналов",
   "recommendedChannels": "Рекомендуемые каналы",
   "popularChannels": "Популярные каналы",
   "channel": "Канал",

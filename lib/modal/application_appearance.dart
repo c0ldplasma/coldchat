@@ -19,10 +19,10 @@ class ApplicationAppearanceModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.appearance),
+          ModalHeader(title: AppLocalizations.of(context).appearance),
           Tile(
             prefix: const Icon(Icons.light_mode_outlined),
-            title: AppLocalizations.of(context)!.light,
+            title: AppLocalizations.of(context).light,
             onTap: () {
               applicationAppearance.themeMode = 'light';
               applicationAppearance.save();
@@ -33,7 +33,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.dark_mode_outlined),
-            title: AppLocalizations.of(context)!.dark,
+            title: AppLocalizations.of(context).dark,
             onTap: () {
               applicationAppearance.themeMode = 'dark';
               applicationAppearance.save();
@@ -44,7 +44,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.phone_android_outlined),
-            title: AppLocalizations.of(context)!.system,
+            title: AppLocalizations.of(context).system,
             onTap: () {
               applicationAppearance.themeMode = 'system';
               applicationAppearance.save();
@@ -55,8 +55,8 @@ class ApplicationAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.contrast_rounded),
-            title: AppLocalizations.of(context)!.oledBlack,
-            subtitle: AppLocalizations.of(context)!.oledBlackSubtitle,
+            title: AppLocalizations.of(context).oledBlack,
+            subtitle: AppLocalizations.of(context).oledBlackSubtitle,
             onTap: () {
               applicationAppearance.oledBlack = !applicationAppearance.oledBlack;
               applicationAppearance.save();
@@ -71,7 +71,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.blinds_closed_outlined),
-            title: AppLocalizations.of(context)!.highContrast,
+            title: AppLocalizations.of(context).highContrast,
             onTap: () {
               applicationAppearance.highContrast = !applicationAppearance.highContrast;
               applicationAppearance.save();

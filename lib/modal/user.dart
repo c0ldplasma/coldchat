@@ -63,7 +63,7 @@ class _UserModalState extends State<UserModal> {
               child: Row(
                 children: [
                   Tooltip(
-                    message: AppLocalizations.of(context)!.ban,
+                    message: AppLocalizations.of(context).ban,
                     child: IconButton(
                       icon: const Icon(
                         Icons.block_rounded,
@@ -104,7 +104,7 @@ class _UserModalState extends State<UserModal> {
                               '1w': const Duration(days: 7),
                             }.entries)
                               Tooltip(
-                                message: AppLocalizations.of(context)!
+                                message: AppLocalizations.of(context)
                                     .timeoutUserForDuration(time.value.toString().split('.').first),
                                 child: TextButton(
                                   child: Text(time.key),
@@ -131,7 +131,7 @@ class _UserModalState extends State<UserModal> {
                     ),
                   ),
                   Tooltip(
-                    message: AppLocalizations.of(context)!.unban,
+                    message: AppLocalizations.of(context).unban,
                     child: IconButton(
                       icon: const Icon(
                         Icons.block_rounded,
@@ -201,11 +201,11 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
         await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            content: Text(AppLocalizations.of(context)!.blockFailed),
+            content: Text(AppLocalizations.of(context).blockFailed),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(AppLocalizations.of(context)!.close),
+                child: Text(AppLocalizations.of(context).close),
               ),
             ],
           ),
@@ -231,16 +231,16 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
   Future<void> report() => showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(AppLocalizations.of(context)!.reportUserTitle(widget.user.displayName)),
-      content: Text(AppLocalizations.of(context)!.reportUserDescription(widget.user.displayName)),
+      title: Text(AppLocalizations.of(context).reportUserTitle(widget.user.displayName)),
+      content: Text(AppLocalizations.of(context).reportUserDescription(widget.user.displayName)),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context)!.cancel)),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppLocalizations.of(context).cancel)),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
             launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication);
           },
-          child: Text(AppLocalizations.of(context)!.openOnTwitch),
+          child: Text(AppLocalizations.of(context).openOnTwitch),
         ),
       ],
     ),
@@ -257,18 +257,18 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
         if (canBlock)
           TextButton.icon(
             icon: const Icon(Icons.mail_outline_rounded),
-            label: Text(AppLocalizations.of(context)!.whisper),
+            label: Text(AppLocalizations.of(context).whisper),
             onPressed: whisper,
           ),
         if (canBlock)
           TextButton.icon(
             icon: Icon(blocked ? Icons.person_outline_rounded : Icons.person_off_outlined),
-            label: Text(blocked ? AppLocalizations.of(context)!.unblock : AppLocalizations.of(context)!.block),
+            label: Text(blocked ? AppLocalizations.of(context).unblock : AppLocalizations.of(context).block),
             onPressed: busy ? null : toggleBlock,
           ),
         TextButton.icon(
           icon: const Icon(Icons.flag_outlined),
-          label: Text(AppLocalizations.of(context)!.report),
+          label: Text(AppLocalizations.of(context).report),
           onPressed: report,
         ),
       ],

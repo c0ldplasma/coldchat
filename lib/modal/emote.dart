@@ -44,7 +44,7 @@ class EmoteModal extends StatelessWidget {
               Uri.parse(url!),
               mode: LaunchMode.externalApplication,
             ),
-            child: Text(AppLocalizations.of(context)!.openInBrowser),
+            child: Text(AppLocalizations.of(context).openInBrowser),
           ),
       ],
     ),

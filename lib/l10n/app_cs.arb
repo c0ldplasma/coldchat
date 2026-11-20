@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Při ověřování uživatelského tokenu došlo k chybě:",
   "verifyingUserToken": "Ověřování uživatelského tokenu...",
   "searchForChannels": "Hledat kanály",
+  "channelSearchFailed": "Kanály se nepodařilo vyhledat",
   "recommendedChannels": "Doporučené kanály",
   "popularChannels": "Populární kanály",
   "channel": "Kanál",

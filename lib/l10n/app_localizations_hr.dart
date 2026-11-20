@@ -164,6 +164,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get searchForChannels => 'Pretraži kanale';
 
   @override
+  String get channelSearchFailed => 'Pretraživanje kanala nije uspjelo';
+
+  @override
   String get recommendedChannels => 'Preporučeni kanali';
 
   @override

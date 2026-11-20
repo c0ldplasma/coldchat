@@ -22,7 +22,7 @@ class WhisperModal extends StatelessWidget {
       shrinkWrap: true,
       children: [
         Tile(
-          title: AppLocalizations.of(context)!.userCard,
+          title: AppLocalizations.of(context).userCard,
           subtitle: conversation.partnerDisplayName,
           prefix: const Icon(Icons.person_outline_rounded),
           onTap: () {
@@ -33,8 +33,8 @@ class WhisperModal extends StatelessWidget {
           },
         ),
         Tile(
-          title: AppLocalizations.of(context)!.closeConversation,
-          subtitle: AppLocalizations.of(context)!.closeConversationSubtitle,
+          title: AppLocalizations.of(context).closeConversation,
+          subtitle: AppLocalizations.of(context).closeConversationSubtitle,
           prefix: const Icon(Icons.close_rounded),
           onTap: () {
             Navigator.of(context).pop();
@@ -42,8 +42,8 @@ class WhisperModal extends StatelessWidget {
           },
         ),
         Tile(
-          title: AppLocalizations.of(context)!.deleteConversation,
-          subtitle: AppLocalizations.of(context)!.deleteConversationSubtitle,
+          title: AppLocalizations.of(context).deleteConversation,
+          subtitle: AppLocalizations.of(context).deleteConversationSubtitle,
           prefix: const Icon(Icons.delete_outline_rounded),
           onTap: () {
             Navigator.of(context).pop();

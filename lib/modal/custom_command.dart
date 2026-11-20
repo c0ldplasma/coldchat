@@ -40,13 +40,13 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.customCommand),
+      ModalHeader(title: AppLocalizations.of(context).customCommand),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
         child: TextField(
           controller: triggerController,
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.commandTrigger,
+            labelText: AppLocalizations.of(context).commandTrigger,
             border: InputBorder.none,
             filled: true,
           ),
@@ -58,7 +58,7 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
         child: TextField(
           controller: commandController,
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.command,
+            labelText: AppLocalizations.of(context).command,
             border: InputBorder.none,
             filled: true,
           ),
@@ -76,7 +76,7 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.cancel,
+                    AppLocalizations.of(context).cancel,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -118,7 +118,7 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.save,
+                    AppLocalizations.of(context).save,
                     style: TextStyle(
                       color: (triggerController.text.isEmpty || commandController.text.isEmpty)
                           ? Theme.of(context).colorScheme.error

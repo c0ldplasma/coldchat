@@ -24,7 +24,7 @@ class TwitchAccountModal extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.account),
+      ModalHeader(title: AppLocalizations.of(context).account),
       Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -82,7 +82,7 @@ class TwitchAccountModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.refreshAccount,
+                    AppLocalizations.of(context).refreshAccount,
                     // style: Theme.of(context).textTheme.subtitle1,
                   ),
                   ExpirationText(twitchAccount: twitchAccount),
@@ -112,7 +112,7 @@ class TwitchAccountModal extends StatelessWidget {
                 child: Icon(Icons.delete_forever_outlined),
               ),
               const SizedBox(width: 16.0),
-              Text(AppLocalizations.of(context)!.removeAccount),
+              Text(AppLocalizations.of(context).removeAccount),
             ],
           ),
         ),
@@ -137,7 +137,7 @@ class _ExpirationTextState extends State<ExpirationText> {
   /// The largest unit that's useful, like account pages usually show it: "55 days · Jan 14, 2027", "18 hours",
   /// "6 minutes". Dart's Duration.toString() printed hours past a thousand and microseconds.
   static String _remaining(BuildContext context, DateTime expiresAt) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final remaining = expiresAt.difference(DateTime.now());
     if (remaining.inDays >= 1) {
       final date = DateFormat.yMMMd(Localizations.localeOf(context).toLanguageTag()).format(expiresAt.toLocal());
@@ -174,10 +174,10 @@ class _ExpirationTextState extends State<ExpirationText> {
     final expired = tokenData.isExpired;
     return Text(
       expired
-          ? AppLocalizations.of(context)!.loginExpired
+          ? AppLocalizations.of(context).loginExpired
           : tokenData.expiresAt != null
-          ? AppLocalizations.of(context)!.expiresIn(_remaining(context, tokenData.expiresAt!))
-          : AppLocalizations.of(context)!.expiresNever,
+          ? AppLocalizations.of(context).expiresIn(_remaining(context, tokenData.expiresAt!))
+          : AppLocalizations.of(context).expiresNever,
       style: TextStyle(
         color: expired
             ? Theme.of(context).colorScheme.error

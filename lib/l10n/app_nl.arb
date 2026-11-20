@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Er is een fout opgetreden bij het verifiëren van de gebruikerstoken:",
   "verifyingUserToken": "Gebruikerstoken verifiëren...",
   "searchForChannels": "Kanalen zoeken",
+  "channelSearchFailed": "Kanalen zoeken is mislukt",
   "recommendedChannels": "Aanbevolen kanalen",
   "popularChannels": "Populaire kanalen",
   "channel": "Kanaal",

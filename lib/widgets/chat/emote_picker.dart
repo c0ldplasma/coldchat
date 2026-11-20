@@ -162,10 +162,10 @@ class _EmotePickerState extends State<EmotePicker> {
                                 padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 8.0),
                                 child: Row(
                                   children: [
-                                    Expanded(child: Text(AppLocalizations.of(context)!.chooseEmoteMenuButton)),
+                                    Expanded(child: Text(AppLocalizations.of(context).chooseEmoteMenuButton)),
                                     TextButton(
                                       onPressed: () => widget.onPickButtonIcon!(null),
-                                      child: Text(AppLocalizations.of(context)!.resetToKappa),
+                                      child: Text(AppLocalizations.of(context).resetToKappa),
                                     ),
                                   ],
                                 ),
@@ -182,7 +182,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                     controller: searchController,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: AppLocalizations.of(context)!.search,
+                                      hintText: AppLocalizations.of(context).search,
                                       isDense: true,
                                     ),
                                     onChanged: (text) => setState(() {}),

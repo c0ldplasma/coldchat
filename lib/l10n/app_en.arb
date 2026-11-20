@@ -93,6 +93,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "An error has occurred when verifying user token:",
   "verifyingUserToken": "Verifying user token...",
   "searchForChannels": "Search for channels",
+  "channelSearchFailed": "Couldn't search for channels",
   "recommendedChannels": "Recommended channels",
   "popularChannels": "Popular channels",
   "channel": "Channel",

@@ -27,8 +27,10 @@ flutter gen-l10n
 ```
 
 Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb` is the template, see `l10n.yaml`);
-there is no translation service, translations are written along with the change. Strings a locale is
-missing fall back to English and are listed in `build/untranslated_messages.json`. CI fails if the checked-in `app_localizations*.dart` don't match the arb files.
+there is no translation service, translations are written along with the change. CI fails if a language
+lacks a key (gen-l10n lists those in `build/untranslated_messages.json`) or if the checked-in
+`app_localizations*.dart` don't match the arb files. Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
+don't put user-facing text in Dart string literals.
 
 ## CI and tooling
 

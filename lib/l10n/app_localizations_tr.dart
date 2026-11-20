@@ -164,6 +164,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get searchForChannels => 'Kanal ara';
 
   @override
+  String get channelSearchFailed => 'Kanallar aranamadı';
+
+  @override
   String get recommendedChannels => 'Önerilen kanallar';
 
   @override

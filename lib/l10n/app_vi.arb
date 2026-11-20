@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Đã xảy ra lỗi khi xác minh token người dùng:",
   "verifyingUserToken": "Đang xác minh token người dùng...",
   "searchForChannels": "Tìm kiếm kênh",
+  "channelSearchFailed": "Không thể tìm kiếm kênh",
   "recommendedChannels": "Kênh đề xuất",
   "popularChannels": "Kênh phổ biến",
   "channel": "Kênh",

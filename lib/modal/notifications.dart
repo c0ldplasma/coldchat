@@ -17,9 +17,9 @@ class NotificationsModal extends StatelessWidget {
         shrinkWrap: true,
         children: [
           ModalHeader(
-            title: AppLocalizations.of(context)!.notifications,
+            title: AppLocalizations.of(context).notifications,
             trailing: Tooltip(
-              message: AppLocalizations.of(context)!.clearAll,
+              message: AppLocalizations.of(context).clearAll,
               child: InkWell(
                 onTap: () async {
                   Navigator.of(context).pop();
@@ -39,7 +39,7 @@ class NotificationsModal extends StatelessWidget {
             const Center(child: Icon(Icons.info_outline)),
             const SizedBox(height: 6.0),
             Center(
-              child: Text(AppLocalizations.of(context)!.noNotifications),
+              child: Text(AppLocalizations.of(context).noNotifications),
             ),
             const SizedBox(height: 16.0),
           ],

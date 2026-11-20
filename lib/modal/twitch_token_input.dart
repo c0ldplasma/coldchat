@@ -26,7 +26,7 @@ class _TwitchTokenInputModalState extends State<TwitchTokenInputModal> {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.tokenInput),
+      ModalHeader(title: AppLocalizations.of(context).tokenInput),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
         child: TextField(
@@ -48,7 +48,7 @@ class _TwitchTokenInputModalState extends State<TwitchTokenInputModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.cancel,
+                    AppLocalizations.of(context).cancel,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ class _TwitchTokenInputModalState extends State<TwitchTokenInputModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.add,
+                    AppLocalizations.of(context).add,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,

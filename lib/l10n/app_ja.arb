@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "ユーザートークンの確認中にエラーが発生しました：",
   "verifyingUserToken": "ユーザートークンを確認中...",
   "searchForChannels": "チャンネルを検索",
+  "channelSearchFailed": "チャンネルを検索できませんでした",
   "recommendedChannels": "おすすめチャンネル",
   "popularChannels": "人気のチャンネル",
   "channel": "チャンネル",

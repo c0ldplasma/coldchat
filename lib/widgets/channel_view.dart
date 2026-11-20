@@ -217,7 +217,7 @@ class ChannelViewState extends State<ChannelView> {
   }
 
   static String whisperErrorText(BuildContext context, Object error) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     if (error is WhisperUnavailableException) {
       return error.missingScope ? l10n.whisperNeedsScope : l10n.whisperNeedsLogin;
     }
@@ -241,7 +241,7 @@ class ChannelViewState extends State<ChannelView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Tile(
-              title: AppLocalizations.of(context)!.takePhoto,
+              title: AppLocalizations.of(context).takePhoto,
               prefix: const Icon(Icons.photo_camera_outlined),
               onTap: () {
                 Navigator.of(context).pop();
@@ -249,7 +249,7 @@ class ChannelViewState extends State<ChannelView> {
               },
             ),
             Tile(
-              title: AppLocalizations.of(context)!.chooseFromLibrary,
+              title: AppLocalizations.of(context).chooseFromLibrary,
               prefix: const Icon(Icons.photo_library_outlined),
               onTap: () {
                 Navigator.of(context).pop();
@@ -273,7 +273,7 @@ class ChannelViewState extends State<ChannelView> {
       // Camera access denied or no camera on this device.
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.cameraUnavailable)));
+            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).cameraUnavailable)));
       }
       return;
     }
@@ -475,7 +475,7 @@ class ChannelViewState extends State<ChannelView> {
                   type: SurfaceType.error,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                    child: Text(AppLocalizations.of(context)!.whisperNeedsScope),
+                    child: Text(AppLocalizations.of(context).whisperNeedsScope),
                   ),
                 ),
               if (replyChannelMessageChat != null)
@@ -489,7 +489,7 @@ class ChannelViewState extends State<ChannelView> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                              child: Text(AppLocalizations.of(context)!.replyingTo),
+                              child: Text(AppLocalizations.of(context).replyingTo),
                             ),
                             ChatMessage(message: replyChannelMessageChat!),
                           ],
@@ -613,9 +613,9 @@ class ChannelViewState extends State<ChannelView> {
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                           hintText: widget.channel is WhisperChannel
-                              ? AppLocalizations.of(context)!
+                              ? AppLocalizations.of(context)
                                     .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
-                              : AppLocalizations.of(context)!.sendMessageIn(widget.channel.name),
+                              : AppLocalizations.of(context).sendMessageIn(widget.channel.name),
                           border: InputBorder.none,
                         ),
                         onSubmitted: (text) {
@@ -770,7 +770,7 @@ class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
   @override
   Widget build(BuildContext context) {
     if (dismissed) return const SizedBox.shrink();
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     return Surface(
       type: SurfaceType.tertiary,
       child: Padding(

@@ -210,7 +210,7 @@ class _HomeTabState extends State<HomeTab> {
                             decoration: InputDecoration(
                               filled: false,
                               border: InputBorder.none,
-                              hintText: AppLocalizations.of(context)!.searchForChannels,
+                              hintText: AppLocalizations.of(context).searchForChannels,
                               hintStyle: TextStyle(
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
@@ -233,7 +233,7 @@ class _HomeTabState extends State<HomeTab> {
                 future: searchResults,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return SliverList.list(children: const [Text('Error')]);
+                    return SliverList.list(children: [Text(AppLocalizations.of(context).channelSearchFailed)]);
                   }
                   if (!snapshot.hasData) {
                     return SliverList.list(

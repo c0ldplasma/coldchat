@@ -58,7 +58,7 @@ class _ChattersModalState extends State<ChattersModal> {
     final search = searchController.text.toLowerCase();
     return ListView(
       children: [
-        ModalHeader(title: AppLocalizations.of(context)!.chatters),
+        ModalHeader(title: AppLocalizations.of(context).chatters),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Material(
@@ -69,7 +69,7 @@ class _ChattersModalState extends State<ChattersModal> {
                 controller: searchController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: AppLocalizations.of(context)!.search,
+                  hintText: AppLocalizations.of(context).search,
                   isDense: true,
                 ),
                 onChanged: (text) => setState(() {}),

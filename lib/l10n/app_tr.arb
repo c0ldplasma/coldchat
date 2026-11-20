@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Kullanıcı token'ı doğrulanırken bir hata oluştu:",
   "verifyingUserToken": "Kullanıcı token'ı doğrulanıyor...",
   "searchForChannels": "Kanal ara",
+  "channelSearchFailed": "Kanallar aranamadı",
   "recommendedChannels": "Önerilen kanallar",
   "popularChannels": "Popüler kanallar",
   "channel": "Kanal",

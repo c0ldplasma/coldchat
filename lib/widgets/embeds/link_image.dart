@@ -29,7 +29,7 @@ class _LinkImageState extends State<LinkImage> {
     setState(() => widget.embed.revealed = true);
     if (_offeredThisSession || _settings.showLinkImages) return;
     _offeredThisSession = true;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(l10n.showImagesAutomatically),
@@ -69,7 +69,7 @@ class _LinkImageState extends State<LinkImage> {
                 SizedBox(width: 6.0 * widget.scale),
                 Flexible(
                   child: Text(
-                    AppLocalizations.of(context)!.showImage(host),
+                    AppLocalizations.of(context).showImage(host),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: colors.onSurfaceVariant, fontSize: 14.0 * widget.scale),
                   ),

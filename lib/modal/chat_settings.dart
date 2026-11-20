@@ -54,9 +54,9 @@ class ChatSettingsModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.chatSettings),
+          ModalHeader(title: AppLocalizations.of(context).chatSettings),
           Tile(
-            title: AppLocalizations.of(context)!.autocompleteUsersWithAt,
+            title: AppLocalizations.of(context).autocompleteUsersWithAt,
             prefix: const Icon(Icons.alternate_email_outlined),
             suffix: Toggle(
               value: chatSettings.userAutocompletionWithAt,
@@ -71,7 +71,7 @@ class ChatSettingsModal extends StatelessWidget {
             },
           ),
           Tile(
-            title: AppLocalizations.of(context)!.autocompleteEmotesWithColon,
+            title: AppLocalizations.of(context).autocompleteEmotesWithColon,
             prefix: const Icon(Icons.emoji_emotions_outlined),
             suffix: Toggle(
               value: chatSettings.emoteAutocompletionWithColon,
@@ -86,14 +86,14 @@ class ChatSettingsModal extends StatelessWidget {
             },
           ),
           Tile(
-            title: AppLocalizations.of(context)!.emoteMenuButton,
+            title: AppLocalizations.of(context).emoteMenuButton,
             subtitle: EmoteButtonIcon.name ?? 'Kappa',
             prefix: const SizedBox.square(dimension: 24.0, child: Center(child: EmoteButtonIconView())),
             suffix: const Icon(Icons.chevron_right),
             onTap: () => _pickButtonIcon(context),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.emoteMenuButtonGrayscale,
+            title: AppLocalizations.of(context).emoteMenuButtonGrayscale,
             prefix: const Icon(Icons.filter_b_and_w_outlined),
             suffix: Toggle(
               value: EmoteButtonIcon.grayscale,
@@ -102,8 +102,8 @@ class ChatSettingsModal extends StatelessWidget {
             onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.showImagesFromLinks,
-            subtitle: AppLocalizations.of(context)!.showImagesFromLinksSubtitle,
+            title: AppLocalizations.of(context).showImagesFromLinks,
+            subtitle: AppLocalizations.of(context).showImagesFromLinksSubtitle,
             prefix: const Icon(Icons.image_outlined),
             suffix: Toggle(
               value: chatSettings.showLinkImages,

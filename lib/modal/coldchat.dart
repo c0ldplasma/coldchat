@@ -37,9 +37,9 @@ class ColdChatModal extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 ModalHeader(
-                  title: AppLocalizations.of(context)!.appName,
+                  title: AppLocalizations.of(context).appName,
                   trailing: Tooltip(
-                    message: AppLocalizations.of(context)!.settings,
+                    message: AppLocalizations.of(context).settings,
                     child: InkWell(
                       onTap: () async {
                         Navigator.of(context).pop();
@@ -81,7 +81,7 @@ class ColdChatModal extends StatelessWidget {
                     );
                   },
                   prefix: const Icon(Icons.person_add_alt),
-                  title: AppLocalizations.of(context)!.addAnotherAccount,
+                  title: AppLocalizations.of(context).addAnotherAccount,
                 ),
                 const Separator(),
                 Padding(
@@ -95,7 +95,7 @@ class ColdChatModal extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            AppLocalizations.of(context)!.privacyPolicy,
+                            AppLocalizations.of(context).privacyPolicy,
                             style: const TextStyle(
                               fontSize: 12.0,
                             ),
@@ -119,7 +119,7 @@ class ColdChatModal extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            AppLocalizations.of(context)!.termsOfService,
+                            AppLocalizations.of(context).termsOfService,
                             style: const TextStyle(
                               fontSize: 12.0,
                             ),
@@ -192,7 +192,7 @@ class TwitchAccountButton extends StatelessWidget {
               children: [
                 Text(twitchAccount.userData?.displayName ?? twitchAccount.tokenData.login),
                 Text(
-                  AppLocalizations.of(context)!.loggedInVia('Twitch'),
+                  AppLocalizations.of(context).loggedInVia('Twitch'),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.75),
                   ),

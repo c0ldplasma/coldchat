@@ -164,6 +164,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get searchForChannels => 'Søg efter kanaler';
 
   @override
+  String get channelSearchFailed => 'Kunne ikke søge efter kanaler';
+
+  @override
   String get recommendedChannels => 'Anbefalede kanaler';
 
   @override

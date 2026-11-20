@@ -12,10 +12,10 @@ class LanguageSelectionModal extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.language),
+      ModalHeader(title: AppLocalizations.of(context).language),
       Tile(
-        title: AppLocalizations.of(context)!.justDefault, // locale.toLanguageTag(),
-        subtitle: AppLocalizations.of(context)!.systemDefault,
+        title: AppLocalizations.of(context).justDefault, // locale.toLanguageTag(),
+        subtitle: AppLocalizations.of(context).systemDefault,
         prefix: const Icon(Icons.phone_android_outlined),
         onTap: () => Hive.box('Settings').put('locale', null),
       ),
@@ -23,9 +23,7 @@ class LanguageSelectionModal extends StatelessWidget {
         Tooltip(
           message: locale.toLanguageTag(),
           child: Tile(
-            title:
-                LocaleNames.of(context)!.nameOf(locale.toString()) ??
-                (locale.toString() == 'en_PT' ? 'English (Pirate)' : locale.toString()), // locale.toLanguageTag(),
+            title: LocaleNames.of(context)!.nameOf(locale.toString()) ?? locale.toString(),
             subtitle: LocaleNamesLocalizationsDelegate.nativeLocaleNames[locale.toString()],
             prefix: const Icon(Icons.language_outlined),
             onTap: () => Hive.box('Settings').put('locale', locale.toLanguageTag()),

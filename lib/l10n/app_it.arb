@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Si è verificato un errore durante la verifica del token utente:",
   "verifyingUserToken": "Verifica del token utente...",
   "searchForChannels": "Cerca canali",
+  "channelSearchFailed": "Impossibile cercare i canali",
   "recommendedChannels": "Canali consigliati",
   "popularChannels": "Canali popolari",
   "channel": "Canale",

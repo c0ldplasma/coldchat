@@ -42,11 +42,11 @@ class LoginExpiredBanner extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.loginExpired,
+                        AppLocalizations.of(context).loginExpired,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(color: colorScheme.onErrorContainer),
                       ),
                       Text(
-                        AppLocalizations.of(context)!.loginExpiredDescription(state.twitchAccount.tokenData.login),
+                        AppLocalizations.of(context).loginExpiredDescription(state.twitchAccount.tokenData.login),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onErrorContainer),
                       ),
                     ],
@@ -54,7 +54,7 @@ class LoginExpiredBanner extends StatelessWidget {
                 ),
                 const SizedBox(width: 8.0),
                 Text(
-                  AppLocalizations.of(context)!.signInAgain,
+                  AppLocalizations.of(context).signInAgain,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(color: colorScheme.onErrorContainer),
                 ),
               ],

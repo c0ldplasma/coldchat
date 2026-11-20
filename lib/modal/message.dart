@@ -32,7 +32,7 @@ class MessageModal extends StatelessWidget {
       ),
       if (!_whisper)
         Tile(
-          title: AppLocalizations.of(context)!.reply,
+          title: AppLocalizations.of(context).reply,
           prefix: const Icon(Icons.reply_outlined),
           onTap: () {
             Navigator.of(context).pop();
@@ -40,8 +40,8 @@ class MessageModal extends StatelessWidget {
           },
         ),
       Tile(
-        title: AppLocalizations.of(context)!.copyText,
-        subtitle: AppLocalizations.of(context)!.copyTextSubtitle,
+        title: AppLocalizations.of(context).copyText,
+        subtitle: AppLocalizations.of(context).copyTextSubtitle,
         prefix: const Icon(Icons.copy_rounded),
         onTap: () async {
           Navigator.of(context).pop();
@@ -59,7 +59,7 @@ class MessageModal extends StatelessWidget {
       ),
       if (!_whisper)
         Tile(
-          title: AppLocalizations.of(context)!.deleteMessage,
+          title: AppLocalizations.of(context).deleteMessage,
           prefix: const Icon(Icons.delete_outline_outlined),
           onTap: () async {
             Navigator.of(context).pop();
@@ -72,7 +72,7 @@ class MessageModal extends StatelessWidget {
           },
         ),
       Tile(
-        title: AppLocalizations.of(context)!.mentionUser,
+        title: AppLocalizations.of(context).mentionUser,
         prefix: const Icon(Icons.alternate_email_outlined),
         onTap: () {
           Navigator.of(context).pop();
@@ -80,7 +80,7 @@ class MessageModal extends StatelessWidget {
         },
       ),
       Tile(
-        title: AppLocalizations.of(context)!.copyMessageId,
+        title: AppLocalizations.of(context).copyMessageId,
         prefix: const Icon(Icons.medical_information_outlined),
         onTap: () async {
           Navigator.of(context).pop();

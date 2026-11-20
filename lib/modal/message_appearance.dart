@@ -19,10 +19,10 @@ class MessageAppearanceModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.messageAppearance),
+          ModalHeader(title: AppLocalizations.of(context).messageAppearance),
           Tile(
             prefix: const Icon(Icons.av_timer_rounded),
-            title: AppLocalizations.of(context)!.showTimestamps,
+            title: AppLocalizations.of(context).showTimestamps,
             suffix: Toggle(
               value: messageAppearance.timestamps,
               onChanged: (value) {
@@ -37,7 +37,7 @@ class MessageAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.verified_outlined),
-            title: AppLocalizations.of(context)!.showBadges,
+            title: AppLocalizations.of(context).showBadges,
             suffix: Toggle(
               value: messageAppearance.badges,
               onChanged: (value) {
@@ -52,7 +52,7 @@ class MessageAppearanceModal extends StatelessWidget {
           ),
           Tile(
             prefix: const Icon(Icons.view_compact_outlined),
-            title: AppLocalizations.of(context)!.compactMessages,
+            title: AppLocalizations.of(context).compactMessages,
             suffix: Toggle(
               value: messageAppearance.compact,
               onChanged: (value) {

@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "אירעה שגיאה באימות טוקן המשתמש:",
   "verifyingUserToken": "אימות טוקן המשתמש...",
   "searchForChannels": "חיפוש ערוצים",
+  "channelSearchFailed": "לא ניתן היה לחפש ערוצים",
   "recommendedChannels": "ערוצים מומלצים",
   "popularChannels": "ערוצים פופולריים",
   "channel": "ערוץ",

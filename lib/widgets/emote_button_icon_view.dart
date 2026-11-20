@@ -44,7 +44,7 @@ class EmoteButtonIconView extends StatelessWidget {
 /// Returns whether it worked; shows a snackbar when the download fails.
 Future<bool> chooseEmoteButtonIcon(BuildContext context, Emote? emote) async {
   final messenger = ScaffoldMessenger.maybeOf(context);
-  final failedMessage = AppLocalizations.of(context)!.emoteMenuButtonDownloadFailed;
+  final failedMessage = AppLocalizations.of(context).emoteMenuButtonDownloadFailed;
   try {
     if (emote == null) {
       await EmoteButtonIcon.reset();
