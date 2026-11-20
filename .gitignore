@@ -50,4 +50,5 @@
 !/README.md
 !/SECURITY.md
 !/CLAUDE.md
+!/.claude/skills/**
 !/LICENSE
