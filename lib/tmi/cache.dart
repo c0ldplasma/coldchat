@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
@@ -13,7 +14,7 @@ import '../providers/provider.dart';
 class EmoteBadgeCache {
   static const String boxName = 'EmoteBadgeCache';
 
-  final Box box;
+  final Box<dynamic> box;
   final List<Provider> providers;
 
   // Cap the number of channels whose emotes/badges/history we retain on disk
@@ -39,7 +40,7 @@ class EmoteBadgeCache {
           k.startsWith('channelEmotes:') || k.startsWith('channelBadges:') || k.startsWith('history:');
       return isChannelScoped && !k.contains(':v2:');
     }).toList();
-    if (stale.isNotEmpty) box.deleteAll(stale);
+    if (stale.isNotEmpty) unawaited(box.deleteAll(stale));
   }
 
   // Move [login] to the most-recent position and evict the oldest channels'
@@ -50,11 +51,11 @@ class EmoteBadgeCache {
     _lru.add(login);
     while (_lru.length > maxCachedChannels) {
       final evict = _lru.removeAt(0);
-      box.delete(channelEmotesKey(evict));
-      box.delete(channelBadgesKey(evict));
-      box.delete(_historyKey(evict));
+      unawaited(box.delete(channelEmotesKey(evict)));
+      unawaited(box.delete(channelBadgesKey(evict)));
+      unawaited(box.delete(_historyKey(evict)));
     }
-    box.put(_lruKey, json.encode(_lru));
+    unawaited(box.put(_lruKey, json.encode(_lru)));
   }
 
   List<String>? _decodeStringList(String key) {

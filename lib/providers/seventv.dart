@@ -1,11 +1,11 @@
-import '../data/custom_badge.dart';
+import '../api/seventv/seventv.dart';
+import '../api/seventv/seventv_emote.dart';
 import '../data/badge_users.dart';
+import '../data/custom_badge.dart';
+import '../data/emote.dart';
 import 'badge_provider.dart';
 import 'emote_provider.dart';
 import 'provider.dart';
-import '/data/emote.dart';
-import '/api/seventv/seventv.dart';
-import '/api/seventv/seventv_emote.dart';
 
 class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
   @override

@@ -1,9 +1,10 @@
-import 'package:coldchat/components/tile.dart';
-import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+
+import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
+import 'components/modal_header.dart';
 
 class LanguageSelectionModal extends StatelessWidget {
   const LanguageSelectionModal({super.key});
@@ -17,7 +18,7 @@ class LanguageSelectionModal extends StatelessWidget {
         title: AppLocalizations.of(context).justDefault, // locale.toLanguageTag(),
         subtitle: AppLocalizations.of(context).systemDefault,
         prefix: const Icon(Icons.phone_android_outlined),
-        onTap: () => Hive.box('Settings').put('locale', null),
+        onTap: () => Hive.box<dynamic>('Settings').put('locale', null),
       ),
       for (final locale in AppLocalizations.supportedLocales)
         Tooltip(
@@ -26,7 +27,7 @@ class LanguageSelectionModal extends StatelessWidget {
             title: LocaleNames.of(context)!.nameOf(locale.toString()) ?? locale.toString(),
             subtitle: LocaleNamesLocalizationsDelegate.nativeLocaleNames[locale.toString()],
             prefix: const Icon(Icons.language_outlined),
-            onTap: () => Hive.box('Settings').put('locale', locale.toLanguageTag()),
+            onTap: () => Hive.box<dynamic>('Settings').put('locale', locale.toLanguageTag()),
           ),
         ),
     ],

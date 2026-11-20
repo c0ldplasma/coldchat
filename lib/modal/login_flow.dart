@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
-import '/components/modal.dart';
+import '../components/modal.dart';
+import '../l10n/app_localizations.dart';
 import 'verify_token.dart';
 
 /// ColdChat's own Twitch app (dev.twitch.tv console). Public client, implicit grant: the client id isn't a secret,

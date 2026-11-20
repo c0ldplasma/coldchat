@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:material_color_utilities/material_color_utilities.dart' hide Box;
 
-import '/l10n/app_localizations.dart';
+import '../l10n/app_localizations.dart';
 
 /// One of the accent colors users can pick in Settings → Accent color.
 ///
@@ -133,7 +133,7 @@ abstract final class ColdChatTheme {
   static AccentColor custom(double hue, double chroma) => AccentColor(customId, hue, chroma);
 
   /// The accent in [settings], or the default.
-  static AccentColor current(Box settings) {
+  static AccentColor current(Box<dynamic> settings) {
     final id = settings.get(accentKey) as String?;
     if (id == customId) {
       final hue = settings.get(customHueKey);
@@ -144,7 +144,7 @@ abstract final class ColdChatTheme {
   }
 
   /// Picks a custom color, as hue (0–360) and chroma (0–[maxChroma]).
-  static Future<void> setCustom(Box settings, double hue, double chroma) => settings.putAll({
+  static Future<void> setCustom(Box<dynamic> settings, double hue, double chroma) => settings.putAll({
     accentKey: customId,
     customHueKey: hue,
     customChromaKey: chroma,
@@ -152,7 +152,7 @@ abstract final class ColdChatTheme {
 
   /// Moves a color picked in the old list over to the closest accent, so an update changes as little as possible.
   /// New installs get no entry and so the default.
-  static Future<void> migrate(Box settings) async {
+  static Future<void> migrate(Box<dynamic> settings) async {
     if (settings.containsKey(accentKey)) return;
     final legacy = settings.get(legacyColorKey);
     if (legacy is! int) return;

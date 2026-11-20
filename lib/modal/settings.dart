@@ -1,25 +1,25 @@
-import 'package:coldchat/components/boxlistener.dart';
-import 'package:coldchat/modal/about.dart';
-import 'package:coldchat/modal/application_appearance.dart';
-import 'package:coldchat/modal/application_theme.dart';
-import 'package:coldchat/modal/chat_settings.dart';
-import 'package:coldchat/modal/credits.dart';
-import 'package:coldchat/modal/language_selection.dart';
-import 'package:coldchat/modal/message_appearance.dart';
-import 'package:coldchat/modal/message_triggers.dart';
-import 'package:coldchat/data/settings/application_appearance.dart';
-import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
+import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
+import '../data/settings/application_appearance.dart';
+import '../l10n/app_localizations.dart';
+import '../theme/coldchat_theme.dart';
+import 'about.dart';
+import 'application_appearance.dart';
+import 'application_theme.dart';
+import 'chat_settings.dart';
 import 'components/modal_header.dart';
+import 'credits.dart';
 import 'custom_commands.dart';
+import 'language_selection.dart';
+import 'message_appearance.dart';
+import 'message_triggers.dart';
 import 'user_triggers.dart';
 
 class SettingsModal extends StatelessWidget {
@@ -27,7 +27,7 @@ class SettingsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final l10n = AppLocalizations.of(context);
       final themeMode = (box.get('applicationAppearance') as ApplicationAppearance).themeMode;

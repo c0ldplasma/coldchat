@@ -1,9 +1,9 @@
-import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
+import 'components/modal_header.dart';
 
 class CreditedPerson {
   final String url;

@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
-import '/data/settings/chat_settings.dart';
-import '/tmi/channel/messages/embeds/image_embed.dart';
+import '../../data/settings/chat_settings.dart';
+import '../../l10n/app_localizations.dart';
+import '../../tmi/channel/messages/embeds/image_embed.dart';
 import 'embedded_image.dart';
 
 /// An image link from chat. The image sits on whatever website the link points to, which neither Twitch nor
@@ -23,7 +25,7 @@ class LinkImage extends StatefulWidget {
 class _LinkImageState extends State<LinkImage> {
   static bool _offeredThisSession = false;
 
-  static ChatSettings get _settings => Hive.box('Settings').get('chatSettings') as ChatSettings;
+  static ChatSettings get _settings => Hive.box<dynamic>('Settings').get('chatSettings') as ChatSettings;
 
   void _reveal() {
     setState(() => widget.embed.revealed = true);
@@ -38,7 +40,7 @@ class _LinkImageState extends State<LinkImage> {
           onPressed: () {
             final settings = _settings;
             settings.showLinkImages = true;
-            settings.save();
+            unawaited(settings.save());
           },
         ),
       ),
@@ -46,8 +48,8 @@ class _LinkImageState extends State<LinkImage> {
   }
 
   @override
-  Widget build(BuildContext context) => ValueListenableBuilder<Box>(
-    valueListenable: Hive.box('Settings').listenable(keys: ['chatSettings']),
+  Widget build(BuildContext context) => ValueListenableBuilder<Box<dynamic>>(
+    valueListenable: Hive.box<dynamic>('Settings').listenable(keys: ['chatSettings']),
     builder: (context, box, _) {
       if (widget.embed.revealed || _settings.showLinkImages) {
         return EmbeddedImage(embed: widget.embed, scale: widget.scale);

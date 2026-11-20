@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../data/emote.dart';
+import '../l10n/app_localizations.dart';
 import '../providers/emote_provider.dart';
 
 class EmoteModal extends StatelessWidget {

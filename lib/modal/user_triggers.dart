@@ -1,11 +1,11 @@
-import 'package:coldchat/data/user_trigger.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
+import '../data/user_trigger.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 import 'user_trigger.dart';
 
@@ -14,7 +14,7 @@ class UserTriggersModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('UserTriggers'),
+    box: Hive.box<dynamic>('UserTriggers'),
     builder: (context, box) {
       return ListView(
         shrinkWrap: true,
@@ -31,7 +31,7 @@ class UserTriggersModal extends StatelessWidget {
               ),
               suffix: InkWell(
                 borderRadius: BorderRadius.circular(24.0),
-                onTap: () => userTrigger.delete(),
+                onTap: userTrigger.delete,
                 child: const Icon(Icons.delete_forever_rounded),
               ),
               title: userTrigger.login,

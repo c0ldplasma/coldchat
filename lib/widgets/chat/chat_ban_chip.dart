@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../../components/surface.dart';
 import '../../data/settings/message_appearance.dart';
+import '../../l10n/app_localizations.dart';
 import '../../tmi/channel/messages/channel_message_ban.dart';
 
 class ChatBanChip extends StatelessWidget {

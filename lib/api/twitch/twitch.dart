@@ -1,21 +1,22 @@
 import 'dart:convert';
 
-import 'package:coldchat/api/twitch/twitch_badge.dart';
-import 'package:coldchat/api/twitch/twitch_emote.dart';
 import 'package:http/http.dart' as http;
 
+import '../../data/twitch/search_data.dart';
+import '../../data/twitch/stream_data.dart';
+import '../../data/twitch/token_data.dart';
+import '../../data/twitch/user_data.dart';
 import '../json_isolate.dart';
-import '/data/twitch/search_data.dart';
-import '/data/twitch/stream_data.dart';
-import '/data/twitch/token_data.dart';
-import '/data/twitch/user_data.dart';
+import 'twitch_badge.dart';
 import 'twitch_ban_response_data.dart';
+import 'twitch_emote.dart';
 import 'twitch_profile.dart';
 
 Map<String, Map<String, TwitchBadge>> _badgeSetsFromJson(dynamic json) => {
-  for (final badgeSet in json['data'])
-    badgeSet['set_id']: {
-      for (final badgeVersion in badgeSet['versions']) badgeVersion['id']: TwitchBadge.fromJson(badgeVersion),
+  for (final badgeSet in (json as JsonMap)['data'] as List<dynamic>)
+    (badgeSet as JsonMap)['set_id'] as String: {
+      for (final badgeVersion in badgeSet['versions'] as List<dynamic>)
+        (badgeVersion as JsonMap)['id'] as String: TwitchBadge.fromJson(badgeVersion),
     },
 };
 
@@ -59,10 +60,10 @@ class Twitch {
             'Client-Id': '${tokenData.clientId}',
           },
         );
-        final responseJson = json.decode(utf8.decode(response.bodyBytes));
-        final data = List<dynamic>.from(responseJson['data']);
-        result.addAll(data.map((e) => e['user_id']));
-        cursor = responseJson['pagination']?['cursor'];
+        final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
+        final data = List<dynamic>.from(responseJson['data'] as List<dynamic>);
+        result.addAll(data.map((e) => (e as JsonMap)['user_id'] as String));
+        cursor = (responseJson['pagination'] as JsonMap?)?['cursor'] as String?;
         // if (data.length < pageSize) break;
       } while (cursor != null);
 
@@ -79,25 +80,25 @@ class Twitch {
         'Authorization': 'Bearer $token',
       },
     );
-    final responseJson = json.decode(utf8.decode(response.bodyBytes));
+    final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
     // A rejected token answers 401 with {status, message} and no login/client_id,
     // which used to blow up on the non-nullable `login` further down. Surface it
     // as a typed error instead so callers can react to an expired login.
     if (response.statusCode == 401) {
-      throw TwitchTokenInvalidException(responseJson['message'] ?? 'invalid access token');
+      throw TwitchTokenInvalidException(responseJson['message'] as String? ?? 'invalid access token');
     }
     if (response.statusCode != 200) {
       throw Exception('Token validation failed (${response.statusCode}): ${responseJson['message']}');
     }
     return TokenData(
-      clientId: responseJson['client_id'],
-      login: responseJson['login'],
-      scopes: List<String>.from(responseJson['scopes'] ?? []),
-      userId: responseJson['user_id'],
+      clientId: responseJson['client_id'] as String?,
+      login: responseJson['login'] as String,
+      scopes: List<String>.from(responseJson['scopes'] as List<dynamic>? ?? <dynamic>[]),
+      userId: responseJson['user_id'] as String?,
       expiresAt: responseJson['expires_in'] == 0
           ? null
           : DateTime.now().add(
-              Duration(seconds: responseJson['expires_in']),
+              Duration(seconds: responseJson['expires_in'] as int),
             ),
       accessToken: token,
     );
@@ -111,11 +112,12 @@ class Twitch {
         'Client-Id': '${tokenData.clientId}',
       },
     );
-    final responseJson = json.decode(utf8.decode(response.bodyBytes));
+    final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
+    final data = (responseJson['data'] as List<dynamic>)[0] as JsonMap;
     return UserData(
-      displayName: responseJson['data'][0]['display_name'],
-      avatarUrl: responseJson['data'][0]['profile_image_url'],
-      offlineUrl: responseJson['data'][0]['offline_image_url'],
+      displayName: data['display_name'] as String,
+      avatarUrl: data['profile_image_url'] as String,
+      offlineUrl: data['offline_image_url'] as String,
     );
   }
 
@@ -137,11 +139,11 @@ class Twitch {
         'Client-Id': '${tokenData.clientId}',
       },
     );
-    if (response.statusCode != 200) throw 'Twitch badges request failed with HTTP ${response.statusCode}';
+    if (response.statusCode != 200) throw Exception('Twitch badges request failed with HTTP ${response.statusCode}');
     return decodeJsonInIsolate(response.bodyBytes, _badgeSetsFromJson);
   }
 
-  static Future<dynamic> _helixGet(TokenData tokenData, String pathAndQuery) async {
+  static Future<JsonMap> _helixGet(TokenData tokenData, String pathAndQuery) async {
     final response = await http.get(
       Uri.parse('https://api.twitch.tv/helix/$pathAndQuery'),
       headers: {
@@ -149,8 +151,10 @@ class Twitch {
         'Client-Id': '${tokenData.clientId}',
       },
     );
-    if (response.statusCode != 200) throw 'Twitch request $pathAndQuery failed with HTTP ${response.statusCode}';
-    return json.decode(utf8.decode(response.bodyBytes));
+    if (response.statusCode != 200) {
+      throw Exception('Twitch request $pathAndQuery failed with HTTP ${response.statusCode}');
+    }
+    return json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
   }
 
   /// Up to 100 users per request; logins that don't exist are left out.
@@ -159,7 +163,7 @@ class Twitch {
     for (var i = 0; i < logins.length; i += 100) {
       final batch = logins.skip(i).take(100).map((login) => 'login=${Uri.encodeQueryComponent(login)}').join('&');
       final responseJson = await _helixGet(tokenData, 'users?$batch');
-      users.addAll([for (final data in responseJson['data']) TwitchUser.fromJson(data)]);
+      users.addAll([for (final data in responseJson['data'] as List<dynamic>) TwitchUser.fromJson(data as JsonMap)]);
     }
     return users;
   }
@@ -177,21 +181,21 @@ class Twitch {
       _helixGet(
         tokenData,
         'channels/followers?broadcaster_id=${user.id}&first=1',
-      ).then<dynamic>((json) => json, onError: (_) => null),
+      ).then<JsonMap?>((json) => json, onError: (_) => null),
     ]);
-    final streams = results[0]['data'] as List;
+    final streams = results[0]!['data'] as List<dynamic>;
     final followerCount = results[1]?['total'] as int?;
 
     TwitchLiveStream? stream;
     if (streams.isNotEmpty) {
-      final data = streams.first;
+      final data = streams.first as JsonMap;
       final gameId = data['game_id'] as String?;
       String? boxArtUrl;
       if (gameId != null && gameId.isNotEmpty) {
         try {
-          final games = (await _helixGet(tokenData, 'games?id=$gameId'))['data'] as List;
+          final games = (await _helixGet(tokenData, 'games?id=$gameId'))['data'] as List<dynamic>;
           if (games.isNotEmpty) {
-            boxArtUrl = (games.first['box_art_url'] as String)
+            boxArtUrl = ((games.first as JsonMap)['box_art_url'] as String)
                 .replaceAll('{width}', '144')
                 .replaceAll('{height}', '192');
           }
@@ -225,9 +229,9 @@ class Twitch {
         'Client-Id': '${tokenData.clientId}',
       },
     );
-    final responseJson = json.decode(utf8.decode(response.bodyBytes));
+    final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
     return [
-      for (final data in responseJson['data']) StreamData.fromJson(data),
+      for (final data in responseJson['data'] as List<dynamic>) StreamData.fromJson(data as JsonMap),
     ];
   }
 
@@ -241,9 +245,9 @@ class Twitch {
         'Client-Id': '${tokenData.clientId}',
       },
     );
-    final responseJson = json.decode(utf8.decode(response.bodyBytes));
+    final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
     return [
-      for (final data in responseJson['data']) SearchData.fromJson(data),
+      for (final data in responseJson['data'] as List<dynamic>) SearchData.fromJson(data as JsonMap),
     ];
   }
 
@@ -264,9 +268,9 @@ class Twitch {
       // Skip a batch that fails rather than throwing away the emotes from
       // every other batch.
       if (response.statusCode == 200) {
-        final responseJson = json.decode(utf8.decode(response.bodyBytes));
+        final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
         emotes.addAll([
-          for (final data in responseJson['data']) TwitchEmote.fromJson(data),
+          for (final data in responseJson['data'] as List<dynamic>) TwitchEmote.fromJson(data as JsonMap),
         ]);
       }
       emoteSetIds.removeRange(0, emoteSetsPack.length);
@@ -299,10 +303,10 @@ class Twitch {
     );
 
     if (response.statusCode == 200) {
-      final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      return TwitchBanResponseData.fromJson(responseJson['data'][0]);
+      final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
+      return TwitchBanResponseData.fromJson((responseJson['data'] as List<dynamic>)[0] as JsonMap);
     } else {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -324,7 +328,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -349,7 +353,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -371,7 +375,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -390,7 +394,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -409,7 +413,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -428,7 +432,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -456,7 +460,7 @@ class Twitch {
     );
 
     if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -498,10 +502,10 @@ class Twitch {
     );
 
     if (response.statusCode == 200) {
-      final responseJson = json.decode(utf8.decode(response.bodyBytes));
-      return responseJson['data'][0];
+      final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
+      return (responseJson['data'] as List<dynamic>)[0] as JsonMap;
     } else {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       throw Exception('${errorJson['error']}: ${errorJson['message']}');
     }
   }
@@ -548,7 +552,7 @@ class Twitch {
 
   static TwitchRequestException _requestException(http.Response response) {
     try {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes));
+      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       return TwitchRequestException(response.statusCode, '${errorJson['message'] ?? errorJson['error']}');
     } catch (_) {
       return TwitchRequestException(response.statusCode, 'HTTP ${response.statusCode}');

@@ -1,7 +1,7 @@
-import '/api/twitch/twitch.dart';
-import '/api/twitch/twitch_profile.dart';
-import '/data/twitch/token_data.dart';
-import '/tools/channel_ranking.dart';
+import '../../api/twitch/twitch.dart';
+import '../../api/twitch/twitch_profile.dart';
+import '../../tools/channel_ranking.dart';
+import 'token_data.dart';
 
 /// The channel search on the home tab: Twitch's search, completed and sorted by [rankChannels].
 ///

@@ -1,20 +1,20 @@
 import 'dart:async';
 
-import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
-import 'package:coldchat/widgets/avatar_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';
 import '../components/surface.dart';
 import '../data/notifications_cubit.dart';
+import '../l10n/app_localizations.dart';
+import '../theme/coldchat_theme.dart';
+import '../tmi/channel/channel.dart';
 import '../tmi/channel/channel_message.dart';
+import '../tmi/channel/channel_messages.dart';
+import '../tmi/channel/messages/channel_message_chat.dart';
+import 'avatar_button.dart';
 import 'chat_message.dart';
-import '/theme/coldchat_theme.dart';
-import '/tmi/channel/channel.dart';
-import '/tmi/channel/channel_messages.dart';
 
 class ChatView extends StatefulWidget {
   final Channel channel;
@@ -61,7 +61,7 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
-    widget.channel.client.ensureRecentMessages(widget.channel);
+    unawaited(widget.channel.client.ensureRecentMessages(widget.channel));
     // Show the chrome a bit longer right after the view appears.
     WidgetsBinding.instance.addPostFrameCallback((_) => _showChrome(linger: _chromeStartupLinger));
     searchFocusNode.addListener(() => setState(() {}));
@@ -78,7 +78,7 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     keys: const ['messageAppearance'],
     builder: (context, box) => BlocBuilder<ChannelMessages, List<ChannelMessage>>(
       bloc: widget.channel.channelMessages,
@@ -95,9 +95,9 @@ class _ChatViewState extends State<ChatView> {
           messages = messages
               .where(
                 (element) =>
-                    (element is ChannelMessageChat &&
+                    element is ChannelMessageChat &&
                     '${(element.user.displayName ?? element.user.login)?.toLowerCase()}: ${element.body.toLowerCase()}'
-                        .contains(searchController.text.toLowerCase())),
+                        .contains(searchController.text.toLowerCase()),
               )
               .toList();
         }

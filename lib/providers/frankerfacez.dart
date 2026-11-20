@@ -1,8 +1,8 @@
-import '../data/custom_badge.dart';
+import '../api/frankerfacez/frankerfacez.dart';
+import '../api/frankerfacez/frankerfacez_emote.dart';
 import '../data/badge_users.dart';
-import '/api/frankerfacez/frankerfacez.dart';
-import '/api/frankerfacez/frankerfacez_emote.dart';
-import '/data/emote.dart';
+import '../data/custom_badge.dart';
+import '../data/emote.dart';
 import 'badge_provider.dart';
 import 'emote_provider.dart';
 import 'provider.dart';

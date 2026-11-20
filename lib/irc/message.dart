@@ -60,7 +60,7 @@ class Message {
     }
 
     if (parts.isEmpty) {
-      throw 'invalid irc message: $event';
+      throw InvalidIrcMessageException('invalid irc message: $event');
     }
 
     final command = parts.first;
@@ -85,4 +85,16 @@ class Message {
       parameters: parameters,
     );
   }
+}
+
+/// Thrown by [Message.fromEvent] for a line that isn't an IRC message.
+///
+/// [toString] is just the message, so logs show the same text a plain string did.
+class InvalidIrcMessageException implements Exception {
+  final String message;
+
+  const InvalidIrcMessageException(this.message);
+
+  @override
+  String toString() => message;
 }

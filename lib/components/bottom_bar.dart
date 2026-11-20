@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/theme/coldchat_theme.dart';
+import '../theme/coldchat_theme.dart';
 
 /// The bar at the bottom of the screen: the tab bar on the home page and the message composer in a chat. Uses
 /// [ChatColors.bar], with [ChatColors.onBar] for text and the quieter [ChatColors.muted] for icons. The bar has two icon

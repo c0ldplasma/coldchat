@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:isolate';
 
+/// A decoded JSON object.
+typedef JsonMap = Map<String, dynamic>;
+
 /// Decodes [bodyBytes] as UTF-8 JSON and runs [map] over the result on a
 /// background isolate, keeping heavy decode + model mapping off the UI thread.
 ///

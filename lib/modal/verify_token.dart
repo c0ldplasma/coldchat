@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
+import 'dart:async';
 
-import '/api/twitch/twitch.dart';
+import 'package:flutter/material.dart';
+
+import '../api/twitch/twitch.dart';
+import '../components/modal.dart';
+import '../data/twitch/token_data.dart';
+import '../l10n/app_localizations.dart';
 import 'verify_user.dart';
-import '/components/modal.dart';
-import '/data/twitch/token_data.dart';
 
 class VerifyTokenModal extends StatefulWidget {
   final String token;
@@ -26,19 +28,23 @@ class _VerifyTokenModalState extends State<VerifyTokenModal> {
   @override
   void initState() {
     future = Twitch.validateToken(widget.token);
-    future.then(
-      (value) async {
-        if (!mounted) return;
-        Navigator.of(context).pop();
+    unawaited(
+      future.then(
+        (value) async {
+          if (!mounted) return;
+          Navigator.of(context).pop();
 
-        Modal.show(
-          context: context,
-          child: VerifyUserModal(
-            tokenData: value,
-            cookies: widget.cookies,
-          ),
-        );
-      },
+          unawaited(
+            Modal.show(
+              context: context,
+              child: VerifyUserModal(
+                tokenData: value,
+                cookies: widget.cookies,
+              ),
+            ),
+          );
+        },
+      ),
     );
     super.initState();
   }

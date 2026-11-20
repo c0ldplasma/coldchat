@@ -1,11 +1,13 @@
-import 'package:coldchat/components/tile.dart';
-import 'package:coldchat/components/toggle.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';
+import '../components/tile.dart';
+import '../components/toggle.dart';
 import '../data/settings/message_appearance.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
 class MessageAppearanceModal extends StatelessWidget {
@@ -13,7 +15,7 @@ class MessageAppearanceModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final MessageAppearance messageAppearance = box.get('messageAppearance') as MessageAppearance;
       return ListView(
@@ -27,12 +29,12 @@ class MessageAppearanceModal extends StatelessWidget {
               value: messageAppearance.timestamps,
               onChanged: (value) {
                 messageAppearance.timestamps = value;
-                messageAppearance.save();
+                unawaited(messageAppearance.save());
               },
             ),
             onTap: () {
               messageAppearance.timestamps = !messageAppearance.timestamps;
-              messageAppearance.save();
+              unawaited(messageAppearance.save());
             },
           ),
           Tile(
@@ -42,12 +44,12 @@ class MessageAppearanceModal extends StatelessWidget {
               value: messageAppearance.badges,
               onChanged: (value) {
                 messageAppearance.badges = value;
-                messageAppearance.save();
+                unawaited(messageAppearance.save());
               },
             ),
             onTap: () {
               messageAppearance.badges = !messageAppearance.badges;
-              messageAppearance.save();
+              unawaited(messageAppearance.save());
             },
           ),
           Tile(
@@ -57,12 +59,12 @@ class MessageAppearanceModal extends StatelessWidget {
               value: messageAppearance.compact,
               onChanged: (value) {
                 messageAppearance.compact = value;
-                messageAppearance.save();
+                unawaited(messageAppearance.save());
               },
             ),
             onTap: () {
               messageAppearance.compact = !messageAppearance.compact;
-              messageAppearance.save();
+              unawaited(messageAppearance.save());
             },
           ),
           Slider(
@@ -73,7 +75,7 @@ class MessageAppearanceModal extends StatelessWidget {
             label: '${messageAppearance.scale}',
             onChanged: (value) {
               messageAppearance.scale = value;
-              messageAppearance.save();
+              unawaited(messageAppearance.save());
             },
           ),
         ],

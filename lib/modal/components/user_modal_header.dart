@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/twitch/twitch_profile.dart';
+import 'modal_header.dart';
 
 class UserModalHeader extends StatelessWidget {
   /// Null while loading: the header then keeps its size with a placeholder,

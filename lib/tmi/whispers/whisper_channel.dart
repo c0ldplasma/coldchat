@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import '/data/emote.dart';
-import '/providers/emojis.dart';
+import '../../data/emote.dart';
+import '../../providers/emojis.dart';
 import '../channel/channel.dart';
 
 /// A whisper conversation with one user. It is a [Channel] so the chat view, composer and emote picker work
@@ -15,7 +15,7 @@ class WhisperChannel extends Channel {
   bool unread = false;
 
   Map<String, Emote>? _whisperEmoteLookup;
-  final List<StreamSubscription> _whisperSubs = [];
+  final List<StreamSubscription<dynamic>> _whisperSubs = [];
 
   WhisperChannel({
     required super.client,
@@ -52,7 +52,7 @@ class WhisperChannel extends Channel {
   @override
   Future<void> close() {
     for (final sub in _whisperSubs) {
-      sub.cancel();
+      unawaited(sub.cancel());
     }
     return super.close();
   }

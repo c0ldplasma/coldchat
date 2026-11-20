@@ -4,7 +4,7 @@ import 'dart:developer';
 
 import 'package:web_socket_channel/io.dart';
 
-import '/data/twitch/token_data.dart';
+import '../../data/twitch/token_data.dart';
 import 'twitch.dart';
 
 /// A whisper the logged-in account received (EventSub `user.whisper.message`).
@@ -90,16 +90,16 @@ class EventSubSocket {
     _reconnectTimer?.cancel();
     _reconnectTimer = null;
     _closePrevious();
-    _subscription?.cancel();
+    unawaited(_subscription?.cancel());
     _subscription = null;
-    _channel?.sink.close();
+    unawaited(_channel?.sink.close());
     _channel = null;
   }
 
   void _closePrevious() {
-    _previousSubscription?.cancel();
+    unawaited(_previousSubscription?.cancel());
     _previousSubscription = null;
-    _previousChannel?.sink.close();
+    unawaited(_previousChannel?.sink.close());
     _previousChannel = null;
   }
 
@@ -167,7 +167,7 @@ class EventSubSocket {
           }
           break;
         case 'revocation':
-          log('EventSub subscription revoked: ${payload['subscription']?['status']}');
+          log('EventSub subscription revoked: ${(payload['subscription'] as Map<String, dynamic>?)?['status']}');
           break;
       }
     } catch (e) {

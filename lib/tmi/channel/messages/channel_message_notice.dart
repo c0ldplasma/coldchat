@@ -1,6 +1,5 @@
+import '../../../irc/message.dart' as irc;
 import '../channel_message.dart';
-
-import '/irc/message.dart' as irc;
 
 class ChannelMessageNotice extends ChannelMessage {
   irc.Message message;

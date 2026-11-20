@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../components/boxlistener.dart';
@@ -9,10 +10,11 @@ import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
 import '../data/emote_button_icon.dart';
+import '../data/settings/chat_settings.dart';
+import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
 import '../widgets/chat/emote_picker.dart';
 import '../widgets/emote_button_icon_view.dart';
-import '/data/settings/chat_settings.dart';
 import 'components/modal_header.dart';
 
 class ChatSettingsModal extends StatelessWidget {
@@ -21,7 +23,7 @@ class ChatSettingsModal extends StatelessWidget {
   // Offer the last opened channel's emotes too, not just global ones.
   Future<void> _pickButtonIcon(BuildContext context) {
     final client = context.read<Client>();
-    final lastChannel = Hive.box('Settings').get('lastChannel');
+    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
     final channel =
         client.channels.state.firstWhereOrNull((c) => c.name == lastChannel) ?? client.channels.state.firstOrNull;
     return Modal.show(
@@ -48,7 +50,7 @@ class ChatSettingsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final ChatSettings chatSettings = box.get('chatSettings') as ChatSettings;
       return ListView(
@@ -62,12 +64,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.userAutocompletionWithAt,
               onChanged: (newValue) {
                 chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-                chatSettings.save();
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-              chatSettings.save();
+              unawaited(chatSettings.save());
             },
           ),
           Tile(
@@ -77,12 +79,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.emoteAutocompletionWithColon,
               onChanged: (newValue) {
                 chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-                chatSettings.save();
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-              chatSettings.save();
+              unawaited(chatSettings.save());
             },
           ),
           Tile(
@@ -109,12 +111,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.showLinkImages,
               onChanged: (newValue) {
                 chatSettings.showLinkImages = !chatSettings.showLinkImages;
-                chatSettings.save();
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.showLinkImages = !chatSettings.showLinkImages;
-              chatSettings.save();
+              unawaited(chatSettings.save());
             },
           ),
         ],

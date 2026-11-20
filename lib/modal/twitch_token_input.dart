@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
+import 'dart:async';
 
-import '/components/separator.dart';
+import 'package:flutter/material.dart';
+
+import '../components/modal.dart';
+import '../components/separator.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 import 'verify_token.dart';
-import '/components/modal.dart';
 
 class TwitchTokenInputModal extends StatefulWidget {
   const TwitchTokenInputModal({super.key});
@@ -67,11 +69,13 @@ class _TwitchTokenInputModalState extends State<TwitchTokenInputModal> {
               onTap: () {
                 Navigator.of(context).pop();
 
-                Modal.show(
-                  context: context,
-                  child: VerifyTokenModal(
-                    token: controller.text,
-                    cookies: null,
+                unawaited(
+                  Modal.show(
+                    context: context,
+                    child: VerifyTokenModal(
+                      token: controller.text,
+                      cookies: null,
+                    ),
                   ),
                 );
               },

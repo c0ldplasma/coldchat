@@ -4,10 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '/api/twitch/eventsub_socket.dart';
-import '/api/twitch/twitch.dart';
-import '/data/twitch_account.dart';
-import '/irc/message.dart' as irc;
+import '../../api/twitch/eventsub_socket.dart';
+import '../../api/twitch/twitch.dart';
+import '../../data/twitch_account.dart';
+import '../../irc/message.dart' as irc;
 import '../channel/messages/channel_message_chat.dart';
 import '../client/client.dart';
 import 'whisper_channel.dart';
@@ -32,7 +32,7 @@ class Whispers extends Cubit<List<WhisperChannel>> {
   static const int _maxStoredMessages = 200;
 
   final Client client;
-  final Box? box;
+  final Box<dynamic>? box;
 
   WhisperChannel? active;
 
@@ -76,13 +76,13 @@ class Whispers extends Cubit<List<WhisperChannel>> {
     }
     emit(conversations);
     for (final conversation in previous) {
-      conversation.close();
+      unawaited(conversation.close());
     }
   }
 
   String _key(WhisperChannel conversation) => '$_accountId/${conversation.partnerId}';
 
-  WhisperChannel _fromStorage(String partnerId, Map stored) {
+  WhisperChannel _fromStorage(String partnerId, Map<dynamic, dynamic> stored) {
     final conversation = WhisperChannel(
       client: client,
       partnerId: partnerId,
@@ -122,14 +122,16 @@ class Whispers extends Cubit<List<WhisperChannel>> {
     final lines = [...(stored is Map ? (stored['lines'] as List? ?? const []).cast<String>() : const <String>[])];
     if (addLine != null) lines.add(addLine);
     final wasOpen = stored is Map && stored['open'] == true;
-    store.put(key, {
-      'login': conversation.partnerLogin,
-      'name': conversation.partnerDisplayName,
-      'open': open,
-      'unread': conversation.unread,
-      'openedAt': wasOpen && open ? stored['openedAt'] : DateTime.now().millisecondsSinceEpoch,
-      'lines': lines.length > _maxStoredMessages ? lines.sublist(lines.length - _maxStoredMessages) : lines,
-    });
+    unawaited(
+      store.put(key, {
+        'login': conversation.partnerLogin,
+        'name': conversation.partnerDisplayName,
+        'open': open,
+        'unread': conversation.unread,
+        'openedAt': wasOpen && open ? stored['openedAt'] : DateTime.now().millisecondsSinceEpoch,
+        'lines': lines.length > _maxStoredMessages ? lines.sublist(lines.length - _maxStoredMessages) : lines,
+      }),
+    );
   }
 
   /// The conversation with the given user, opening its tab if needed.
@@ -242,14 +244,14 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   /// Closes the tab and deletes the stored messages.
   void deleteConversation(WhisperChannel conversation) {
-    if (_accountId != null) box?.delete(_key(conversation));
+    if (_accountId != null) unawaited(box?.delete(_key(conversation)));
     _remove(conversation);
   }
 
   void _remove(WhisperChannel conversation) {
     if (active == conversation) active = null;
     emit([...state.where((c) => c != conversation)]);
-    conversation.close();
+    unawaited(conversation.close());
   }
 
   // Whispers are kept in the same IRC form as chat, so they render and store like it. The channel parameter
@@ -272,8 +274,8 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   @override
   Future<void> close() {
-    _received.close();
-    _focusRequests.close();
+    unawaited(_received.close());
+    unawaited(_focusRequests.close());
     return super.close();
   }
 }

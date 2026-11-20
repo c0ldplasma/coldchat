@@ -4,6 +4,8 @@ import 'dart:developer';
 
 import 'package:web_socket_channel/io.dart';
 
+import '../json_isolate.dart';
+
 /// A BetterTTV Pro user's badge, or `null` url when they don't show one.
 class BetterTTVProBadge {
   final String userId;
@@ -65,9 +67,9 @@ class BetterTTVSocket {
   }
 
   void _close() {
-    _subscription?.cancel();
+    unawaited(_subscription?.cancel());
     _subscription = null;
-    _channel?.sink.close();
+    unawaited(_channel?.sink.close());
     _channel = null;
   }
 
@@ -86,7 +88,7 @@ class BetterTTVSocket {
   void _receive(dynamic raw) {
     _reconnectAttempts = 0;
     try {
-      final event = json.decode(raw as String);
+      final event = json.decode(raw as String) as JsonMap;
       if (event['name'] != 'lookup_user') return;
       final data = event['data'] as Map<String, dynamic>;
       final userId = data['providerId'] as String?;

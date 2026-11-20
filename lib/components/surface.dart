@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/theme/coldchat_theme.dart';
+import '../theme/coldchat_theme.dart';
 
 enum SurfaceType { primary, secondary, tertiary, error, background, surface, surfaceVariant, transparent }
 
@@ -8,8 +8,8 @@ class Surface extends StatelessWidget {
   final Widget child;
   final SurfaceType type;
   final bool shouldClip;
-  final Function()? onTap;
-  final Function()? onLongPress;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   final BorderRadius? borderRadius;
 
   const Surface({

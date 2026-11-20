@@ -1,5 +1,6 @@
-import 'package:coldchat/api/seventv/seventv_badge.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'seventv_badge.dart';
 
 part 'seventv_cosmetics.g.dart';
 

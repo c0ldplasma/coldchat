@@ -4,18 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_socket_channel/io.dart';
 
 import '../../data/twitch_account.dart';
-import '/irc/message.dart' as irc;
+import '../../irc/message.dart' as irc;
+import '../log.dart';
+import '../logs.dart';
+import '../tmi_exception.dart';
 import 'connection_event.dart';
-import '/tmi/log.dart';
-import '/tmi/logs.dart';
 import 'connection_state.dart';
 
 class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   IOWebSocketChannel? channel;
   StreamSubscription<dynamic>? subscription;
-  Function(Connection connection, ConnectionEvent event)? onEventTrigger;
-  Function(Connection connection, Change<ConnectionState> change)? onStateChange;
-  Function(Connection connection, irc.Message event)? onReceive;
+  void Function(Connection connection, ConnectionEvent event)? onEventTrigger;
+  void Function(Connection connection, Change<ConnectionState> change)? onStateChange;
+  void Function(Connection connection, irc.Message event)? onReceive;
   TwitchAccount? get twitchAccount =>
       (state is ConnectionStateWithCredentials) ? (state as ConnectionStateWithCredentials).twitchAccount : null;
   Logs logs = Logs();
@@ -104,28 +105,28 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     subscription = channel?.stream.listen(
       (event) async {
         for (final singleEvent
-            in event
+            in (event as String)
                 .trim()
                 .split('\r\n')
                 .where((String singleEvent) => singleEvent.isNotEmpty)
                 .map((String singleEvent) => singleEvent.trim())) {
           final message = irc.Message.fromEvent(singleEvent);
-          receive(message);
+          unawaited(receive(message));
         }
       },
-      onDone: () => _scheduleReconnect(),
+      onDone: _scheduleReconnect,
       onError: (error) => _scheduleReconnect(),
       // cancelOnError: true,
     );
 
-    send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership');
-    if (pass != null) send('PASS $pass');
-    send('NICK ${nick ?? 'justinfan6969'}');
+    unawaited(send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership'));
+    if (pass != null) unawaited(send('PASS $pass'));
+    unawaited(send('NICK ${nick ?? 'justinfan6969'}'));
   }
 
   Future<void> send(String message) async {
     try {
-      if (channel == null) throw 'not connected';
+      if (channel == null) throw const TmiException('not connected');
       logs.add(Log(data: irc.Message.fromEvent(message), outgoing: true));
       channel?.sink.add(message);
     } catch (e) {
@@ -184,10 +185,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   Future<bool> probeAlive({Duration timeout = const Duration(seconds: 3)}) async {
     if (state is! ConnectionConnected) return false;
     final before = _lastInbound;
-    send('PING :tmi.twitch.tv');
+    unawaited(send('PING :tmi.twitch.tv'));
     final deadline = DateTime.now().add(timeout);
     while (DateTime.now().isBefore(deadline)) {
-      await Future.delayed(const Duration(milliseconds: 150));
+      await Future<void>.delayed(const Duration(milliseconds: 150));
       if (_lastInbound != before) return true;
     }
     return false;
@@ -223,7 +224,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       final lastPing = _lastPingSentAt;
       if (now.difference(last) > _pingInterval && (lastPing == null || now.difference(lastPing) > _pingInterval)) {
         _lastPingSentAt = now;
-        send('PING :tmi.twitch.tv');
+        unawaited(send('PING :tmi.twitch.tv'));
       }
     }
   }
@@ -262,6 +263,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   Future<void> close() {
     _watchdog?.cancel();
     _reconnectTimer?.cancel();
+    // Stop delivering socket lines to a closed bloc (and its closed logs).
+    unawaited(subscription?.cancel());
     return super.close();
   }
 }
