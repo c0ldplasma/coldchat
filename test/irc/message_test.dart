@@ -95,9 +95,6 @@ void main() {
       () {
         expect(() => Message.fromEvent(''), throwsA(isA<InvalidIrcMessageException>()));
       },
-      skip:
-          'bug: "".split(" ") is [""], so the parts are never empty and an empty line parses as a message with '
-          'the command "" instead of throwing InvalidIrcMessageException',
     );
   });
 

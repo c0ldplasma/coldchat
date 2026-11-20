@@ -142,10 +142,10 @@ class _AvatarButtonState extends State<AvatarButton> {
                                         child: SizedBox(
                                           width: 32.0,
                                           height: 32.0,
-                                          child: twitchAccount == null
+                                          child: twitchAccount?.userData == null
                                               ? const Icon(Icons.person_outline_rounded)
                                               : Ink.image(
-                                                  image: CachedNetworkImageProvider(twitchAccount.userData!.avatarUrl),
+                                                  image: CachedNetworkImageProvider(twitchAccount!.userData!.avatarUrl),
                                                   fit: BoxFit.cover,
                                                 ),
                                         ),

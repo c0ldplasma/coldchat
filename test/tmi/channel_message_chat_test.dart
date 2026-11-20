@@ -89,9 +89,6 @@ void main() {
 
         expect(message.splits, ['hi', isTwitchEmote('42', 'Käppa')]);
       },
-      skip:
-          'bug: build() inserts utf8.encode(...) bytes into the code point list, so a non-ASCII character in the '
-          'replaced range turns into one character per UTF-8 byte (the name becomes "KÃ¤ppa")',
     );
 
     test('leaves the text alone when the emotes tag is malformed', () {
@@ -147,9 +144,6 @@ void main() {
         expect(message.splits.last, isA<InlineUrl>());
         expect(message.embeds.state, [isA<ImageEmbed>()]);
       },
-      skip:
-          'bug: build() requires Uri.isAbsolute, which is false for any URI with a fragment, so links with "#..." '
-          'stay plain text and get no ImageEmbed (the removeFragment() before the image check never matters)',
     );
 
     test('without a scheme stay text', () {

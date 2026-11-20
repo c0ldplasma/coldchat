@@ -42,6 +42,8 @@ class ClientChannels extends Cubit<List<Channel>> {
     emit([
       ...state.where((element) => element != channel),
     ]);
+    // Out of the list, nothing sends it events anymore; closing it stops its emote and badge listeners.
+    unawaited(channel.close());
   }
 
   void joinAll(List<String> channelNames, {bool save = true}) {

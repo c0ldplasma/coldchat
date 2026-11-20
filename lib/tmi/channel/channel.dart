@@ -151,6 +151,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
 
   @override
   Future<void> close() {
+    suspensionTimer?.cancel();
     for (final sub in _lookupSubs) {
       unawaited(sub.cancel());
     }

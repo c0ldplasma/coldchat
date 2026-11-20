@@ -164,9 +164,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
         messageRunes.replaceRange(
           twitchEmote.start,
           twitchEmote.end + 1,
-          utf8.encode(
-            ' ${twitchEmote.code}|${String.fromCharCodes(messageRunes.getRange(twitchEmote.start, twitchEmote.end + 1))} ',
-          ),
+          ' ${twitchEmote.code}|${String.fromCharCodes(messageRunes.getRange(twitchEmote.start, twitchEmote.end + 1))} '
+              .runes,
         );
       }
 
@@ -213,7 +212,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
 
       if (emote != null) {
         _addEmote(emote);
-      } else if (uri != null && uri.isAbsolute) {
+      } else if (uri != null && uri.hasScheme && uri.host.isNotEmpty) {
         splits.add(InlineUrl(url: '$uri'));
         if (_imageRegex.hasMatch('${uri.removeFragment()}')) {
           embeds.add(ImageEmbed(url: '$uri'));
