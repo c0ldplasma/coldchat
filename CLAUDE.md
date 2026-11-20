@@ -11,7 +11,7 @@ ColdChat supports **Android and iOS only**. Desktop and web support was removed;
 platform folder that exists before each command (`AnalysisOptionsMigration` in flutter_tools), so a stray
 platform folder shows up as a change to this file.
 
-This file documents the build, install and release procedures. Everything below has been run and verified
+This file holds the project rules; the install and release procedures are skills in `.claude/skills/`. Everything has been run and verified
 on macOS with Xcode 26.5 / Flutter 3.47.8 (stable).
 
 **Flutter 3.47.8 / Dart 3.13.7 is the minimum** (enforced in `pubspec.yaml`). Older SDKs are affected by
@@ -47,6 +47,13 @@ fails, a typeId or field number changed, so revert that rather than regenerating
 once. Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
 packages: minor and patch updates grouped, each major update on its own.
 
+## Pull requests
+
+Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged**, need the required checks
+**Analyze, Android and iOS** to pass and must be up to date with `main`; head branches are deleted after merging. The
+owner merges and turns on auto-merge, not the AI. Give PRs a descriptive title: `gh release create --generate-notes`
+builds the changelog from them.
+
 ## Versioning
 
 `pubspec.yaml`'s `version: <name>+<build>` on `main` is always the **last release**. Flutter maps it to
@@ -60,17 +67,8 @@ packages: minor and patch updates grouped, each major update on its own.
 - 2.0.0 builds up to +119 went to TestFlight and local test installs went up to +123, so ColdChat's own
   versioning starts at **2.1.0+124**.
 
-A release is one commit on `main` that sets the new version, followed by a tag and a GitHub release:
-
-```bash
-# pubspec.yaml:  version: 2.2.0+125
-git commit -m "Release 2.2.0 (125)" pubspec.yaml
-git tag v2.2.0+125 && git push origin main v2.2.0+125
-gh release create v2.2.0+125 --repo c0ldplasma/coldchat --generate-notes --title "2.2.0 (125)"
-```
-
-Then build and upload from that commit (TestFlight and APK below). `--generate-notes` builds the changelog
-from the PR titles merged since the previous release tag.
+A release is one commit on `main` that sets the new version, followed by a tag, a GitHub release and the store
+uploads. The **`release` skill** (`.claude/skills/release/`) has the exact steps.
 
 **Test builds never edit `pubspec.yaml`.** To tell a local install apart, pass the number at build time
 instead, e.g. `flutter build ios --release --build-number=126`. Use a number above the last release, and
@@ -100,120 +98,38 @@ In any widget file, import the TMI one with a prefix:
 import '../tmi/connection/connection_state.dart' as tmi;
 ```
 
-## iOS — install on a connected iPhone without wiping app data
+## Installing on a device
 
-**Never use `flutter install` for this.** It calls `installApp(uninstall: true)`, which uninstalls the
-existing app first and takes all Hive boxes with it (accounts, channels, settings, emote cache, seen
-mentions). Use `devicectl`, which does an in-place upgrade and preserves the data container.
+**Never use `flutter install`.** It uninstalls the app first and takes all Hive boxes with it (accounts, channels,
+settings, emote cache, seen mentions). Install in place instead: `devicectl` on iOS, `adb install -r` on Android. The
+**`install-on-devices` skill** (`.claude/skills/install-on-devices/`) has the steps. Data survives only while the
+bundle ID and signing key stay the same; otherwise the install is refused and only delete + install (losing the data)
+helps.
 
-```bash
-# 1. Find the device. Wireless discovery of unreachable paired devices can time out and
-#    hide the attached one, so restrict to attached and allow a longer timeout.
-flutter devices --device-connection attached --device-timeout 30
-
-# 2. Build, codesigned (automatic signing, team RA25PYVUTF from the Xcode project).
-flutter build ios --release
-
-# 3. Install in place. Data is preserved because the bundle ID and signing team are unchanged.
-xcrun devicectl device install app --device <UDID> build/ios/iphoneos/Runner.app
-
-# 4. Verify which build actually landed.
-xcrun devicectl device info apps --device <UDID> | grep -i coldchat
-```
-
-Pass `--build-number=<N>` to step 2 if you want to tell the new install apart from the old one (see
-Versioning; don't edit `pubspec.yaml` for this). Otherwise step 4 shows the same version and proves nothing.
-
-Data survives an in-place upgrade only while the bundle ID and signing identity stay the same. Changing
-either makes iOS refuse the install outright (it fails, it does not silently wipe), and the only way
-forward is delete + install, which loses the data.
-
-## iOS — TestFlight release
-
-Prerequisites, one time: an app-specific password from
-appleid.apple.com → Sign-In and Security → App-Specific Passwords (the regular Apple ID password does not
-work), stored in the keychain. Note the `--item` flag — `altool`'s own `--help` omits it and the documented
-form fails with `Expected item argument is missing, --item`:
-
-```bash
-xcrun altool --store-password-in-keychain-item --item COLDCHAT_ASC \
-  -u <apple-id> -p <app-specific-password>
-```
-
-Never paste that password into a chat, a script, or a commit. To recover which Apple ID the item belongs to:
-
-```bash
-security find-generic-password -l COLDCHAT_ASC | grep '"acct"'
-```
-
-Then, per release:
-
-```bash
-# 1. Make the release commit and tag (see Versioning). A build number can never be
-#    reused once App Store Connect has accepted it.
-
-# 2. Archive + export an App Store IPA. ios/ExportOptions.plist is ours
-#    (method: app-store-connect, teamID: RA25PYVUTF).
-flutter build ipa --export-options-plist=ios/ExportOptions.plist
-# -> build/ios/ipa/ColdChat.ipa, build/ios/archive/Runner.xcarchive
-
-# 3. Validate FIRST. Catches a missing app record, bad entitlements or a duplicate
-#    build number without consuming the build number.
-xcrun altool --validate-app --type ios -f build/ios/ipa/ColdChat.ipa \
-  -u <apple-id> -p "@env:ASC_PW"
-
-# 4. Upload.
-xcrun altool --upload-app --type ios -f build/ios/ipa/ColdChat.ipa \
-  -u <apple-id> -p "@env:ASC_PW"
-```
-
-For steps 3 and 4, supply the password from the keychain per-command so it never lands in your shell
-history, in `ps` output, or in a transcript:
-
-```bash
-ASC_PW="$(security find-generic-password -l COLDCHAT_ASC -w)" xcrun altool --upload-app ... -p "@env:ASC_PW"
-```
-
-`-p "@keychain:COLDCHAT_ASC"` looks like the obvious alternative but **does not work** with Xcode 26.5's
-`altool`: it stores the item under `--item <name>` and then fails to find it, with
-`AuthenticationFailure("Failed to find item COLDCHAT_ASC ...")`. The `@env:` route above is the workaround.
+## iOS
 
 The deployment target is iOS 15.0, which App Store Connect requires from Spring 2027. The app is iPhone-only
-(`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Processing on Apple's side takes a few
-minutes after `UPLOAD SUCCEEDED` before the build appears in TestFlight.
+(`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Signing is automatic with team `RA25PYVUTF`;
+`ios/ExportOptions.plist` exports for App Store Connect.
 
 `ios/Runner/PrivacyInfo.xcprivacy` is the app's privacy manifest: no tracking, no collected data, no
 required-reason APIs (plugins and the Flutter engine ship their own). Update it if the app ever starts using
 one, e.g. `UserDefaults` or file timestamps.
 
-Uploading is irreversible — a build can be expired in TestFlight but its number is spent.
-
-## Android — signing, APK and Play bundle
+## Android signing
 
 Release builds are signed with the **Play upload key** when `android/key.properties` exists; otherwise
 `android/app/build.gradle.kts` falls back to the debug key, so CI and fresh clones still build (but those
 builds can't go to Play).
 
 - Keystore: `~/.android/coldchat-upload.jks`, alias `upload`. Its password is in the keychain as
-  `COLDCHAT_UPLOAD_KEYSTORE`. Neither file is in the repo; `android/.gitignore` excludes `key.properties`, `*.jks`
-  and `*.keystore`. **Back up the keystore.** With Play App Signing a lost upload key can be reset through Play
-  support, but that takes days.
-- `android/key.properties` (local only):
-
-  ```properties
-  storePassword=<from keychain>
-  keyPassword=<from keychain>
-  keyAlias=upload
-  storeFile=/Users/<you>/.android/coldchat-upload.jks
-  ```
-
-```bash
-flutter build appbundle --release   # -> build/app/outputs/bundle/release/app-release.aab, for Play
-flutter build apk --release         # -> build/app/outputs/flutter-apk/app-release.apk, for sideloading
-```
-
-APKs sideloaded before 2.2.0 were signed with the debug key. Android refuses to update an app across signing
-keys, so those installs have to be uninstalled (losing their data) before installing a properly signed build.
+  `COLDCHAT_UPLOAD_KEYSTORE`; never print it. Neither file is in the repo; `android/.gitignore` excludes
+  `key.properties`, `*.jks` and `*.keystore`. **Back up the keystore.** With Play App Signing a lost upload key can be
+  reset through Play support, but that takes days.
+- `android/key.properties` (local only): `storePassword` and `keyPassword` (both the keystore password), `keyAlias=upload`,
+  `storeFile=/Users/<you>/.android/coldchat-upload.jks`.
+- The Play Store delivers builds signed with Google's app signing key, not the upload key. A locally built release
+  can't update a Play install (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`) and vice versa: uninstall first, losing the data.
 
 ## App icon
 
