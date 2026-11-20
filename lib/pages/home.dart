@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:coldchat/l10n/app_localizations.dart';
-import 'package:coldchat/modal/channel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../components/bottom_bar.dart';
-import '../theme/coldchat_theme.dart';
 import '../components/modal.dart';
+import '../l10n/app_localizations.dart';
+import '../modal/channel.dart';
 import '../modal/coldchat.dart';
 import '../modal/whisper.dart';
+import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_channels.dart';
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   // swapped/reordered at the same count). A whisper tab's name is `@login`.
   List<Channel> _channels = const [];
 
-  final List<StreamSubscription> _whisperSubs = [];
+  final List<StreamSubscription<dynamic>> _whisperSubs = [];
 
   @override
   void initState() {
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   int _initialIndexFor(List<Channel> channels) {
-    final lastName = Hive.box('Settings').get(_lastChannelKey);
+    final lastName = Hive.box<dynamic>('Settings').get(_lastChannelKey);
     if (lastName is! String || lastName.isEmpty) return 0;
     final idx = channels.indexWhere((c) => c.name == lastName);
     return idx >= 0 ? idx + 1 : 0;
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   // recreated with initialIndex), the recreated controller already lands here;
   // for an already-joined channel the post-frame animateTo moves to it.
   void _openChannel(String channelName) {
-    Hive.box('Settings').put(_lastChannelKey, channelName);
+    unawaited(Hive.box<dynamic>('Settings').put(_lastChannelKey, channelName));
     WidgetsBinding.instance.scheduleFrameCallback((_) {
       WidgetsBinding.instance.scheduleFrameCallback((_) {
         if (!mounted) return;
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     if (controller == null || controller.indexIsChanging) return;
     final index = controller.index;
     final name = index == 0 ? '' : (index - 1 < _channels.length ? _channels[index - 1].name : '');
-    Hive.box('Settings').put(_lastChannelKey, name);
+    unawaited(Hive.box<dynamic>('Settings').put(_lastChannelKey, name));
     _updateActiveWhisper();
   }
 
@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   void dispose() {
     for (final sub in _whisperSubs) {
-      sub.cancel();
+      unawaited(sub.cancel());
     }
     _tabController?.dispose();
     _searchRequest.dispose();
@@ -225,9 +225,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                           tabs: [
                             GestureDetector(
                               onLongPress: () {
-                                Modal.show(
-                                  context: context,
-                                  child: const ColdChatModal(),
+                                unawaited(
+                                  Modal.show(
+                                    context: context,
+                                    child: const ColdChatModal(),
+                                  ),
                                 );
                               },
                               child: const SizedBox(
@@ -238,9 +240,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             for (final channel in channels)
                               GestureDetector(
                                 onLongPress: () {
-                                  Modal.show(
-                                    context: context,
-                                    child: ChannelModal(channel: channel),
+                                  unawaited(
+                                    Modal.show(
+                                      context: context,
+                                      child: ChannelModal(channel: channel),
+                                    ),
                                   );
                                 },
                                 child: SizedBox(
@@ -251,9 +255,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             for (final conversation in whispers)
                               GestureDetector(
                                 onLongPress: () {
-                                  Modal.show(
-                                    context: context,
-                                    child: WhisperModal(conversation: conversation),
+                                  unawaited(
+                                    Modal.show(
+                                      context: context,
+                                      child: WhisperModal(conversation: conversation),
+                                    ),
                                   );
                                 },
                                 child: SizedBox(

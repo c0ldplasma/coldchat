@@ -1,14 +1,16 @@
-import 'package:coldchat/components/modal.dart';
-import 'package:coldchat/modal/chatters.dart';
-import 'package:coldchat/tmi/channel/channel.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../api/twitch/twitch_profile.dart';
+import '../components/modal.dart';
 import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
+import '../tmi/channel/channel.dart';
 import '../tmi/channel/channel_info.dart';
 import '../tmi/client/client.dart';
+import 'chatters.dart';
 import 'components/user_modal_header.dart';
 
 class ChannelModal extends StatefulWidget {
@@ -31,7 +33,7 @@ class _ChannelModalState extends State<ChannelModal> {
     super.initState();
     // Live status and viewer count change; the header shows the last known
     // profile meanwhile.
-    channel.refreshChannelUser();
+    unawaited(channel.refreshChannelUser());
   }
 
   @override
@@ -45,9 +47,11 @@ class _ChannelModalState extends State<ChannelModal> {
           title: AppLocalizations.of(context).chatters,
           prefix: const Icon(Icons.people_outline_outlined),
           onTap: () async {
-            Modal.show(
-              context: context,
-              child: ChattersModal(channel: channel),
+            unawaited(
+              Modal.show(
+                context: context,
+                child: ChattersModal(channel: channel),
+              ),
             );
           },
         ),

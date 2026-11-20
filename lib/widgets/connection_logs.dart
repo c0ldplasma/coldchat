@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../irc/message.dart' as irc;
 import '../tmi/channel/channel.dart';
+import '../tmi/channel/channel_event.dart';
 import '../tmi/channel/channel_state.dart';
-import '/tmi/log.dart';
-import '/tmi/logs.dart';
-import '/irc/message.dart' as irc;
-import '/tmi/client/client.dart';
-import '/tmi/channel/channel_event.dart';
-import '/tmi/client/client_channels.dart';
+import '../tmi/client/client.dart';
+import '../tmi/client/client_channels.dart';
+import '../tmi/log.dart';
+import '../tmi/logs.dart';
 
 class ConnectionLogEntry extends StatelessWidget {
   final Log log;
@@ -75,7 +77,7 @@ class ConnectionLogsDisplay extends StatelessWidget {
                           builder: (context, channelState) => InkWell(
                             onTap: () {
                               final client = context.read<Client>();
-                              client.receiver.send('JOIN ${channel.name}');
+                              unawaited(client.receiver.send('JOIN ${channel.name}'));
                               client.channels.state
                                   .firstWhereOrNull((channelSelect) => channelSelect.name == channel.name)
                                   ?.add(ChannelJoin(client.receiver, client.transmitter));
@@ -107,7 +109,7 @@ class ConnectionLogsDisplay extends StatelessWidget {
           TextField(
             controller: controller,
             onSubmitted: (text) {
-              context.read<Client>().receiver.send(text);
+              unawaited(context.read<Client>().receiver.send(text));
               controller.clear();
             },
           ),

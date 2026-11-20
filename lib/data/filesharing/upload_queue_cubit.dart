@@ -269,7 +269,7 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
     for (final task in state) {
       task.client?.close();
     }
-    _completed.close();
+    unawaited(_completed.close());
     return super.close();
   }
 }

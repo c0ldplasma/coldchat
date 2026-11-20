@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '/api/frankerfacez/frankerfacez_room.dart';
-import '/api/frankerfacez/frankerfacez_set.dart';
+import 'frankerfacez_room.dart';
+import 'frankerfacez_set.dart';
 
 part 'frankerfacez_user.g.dart';
 

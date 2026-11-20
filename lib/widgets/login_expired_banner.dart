@@ -1,7 +1,7 @@
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../l10n/app_localizations.dart';
 import '../modal/login_flow.dart';
 import '../tmi/client/client.dart';
 import '../tmi/connection/connection.dart';

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '/data/twitch_account.dart';
+import '../../data/twitch_account.dart';
 import 'connection_state.dart';
 
 class ConnectionEvent extends Equatable {

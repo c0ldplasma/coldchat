@@ -1,10 +1,12 @@
-import 'package:coldchat/l10n/app_localizations.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/surface.dart';
 import '../../data/filesharing/upload_queue_cubit.dart';
 import '../../data/filesharing/upload_task.dart';
+import '../../l10n/app_localizations.dart';
 
 /// The strip of upload chips above the message input.
 ///
@@ -185,19 +187,21 @@ class _UploadChip extends StatelessWidget {
       if (task.errorDetail != null) task.errorDetail!,
     ];
 
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_errorMessage(l10n)),
-        content: SingleChildScrollView(
-          child: SelectableText(lines.join('\n\n')),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(l10n.close),
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(_errorMessage(l10n)),
+          content: SingleChildScrollView(
+            child: SelectableText(lines.join('\n\n')),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(l10n.close),
+            ),
+          ],
+        ),
       ),
     );
   }

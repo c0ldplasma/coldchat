@@ -1,12 +1,14 @@
-import 'package:coldchat/l10n/app_localizations.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:material_color_utilities/material_color_utilities.dart' hide Box;
 
-import '/components/boxlistener.dart';
-import '/data/settings/application_appearance.dart';
-import '/theme/coldchat_theme.dart';
+import '../components/boxlistener.dart';
+import '../data/settings/application_appearance.dart';
+import '../l10n/app_localizations.dart';
+import '../theme/coldchat_theme.dart';
 import 'components/modal_header.dart';
 
 /// Settings → Accent color: the accents as swatches, and a custom one mixed from hue and saturation. Picking applies
@@ -17,7 +19,7 @@ class ApplicationThemeModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final current = ColdChatTheme.current(box);
       final appearance = box.get('applicationAppearance') as ApplicationAppearance;
@@ -144,7 +146,7 @@ class _Swatch extends StatelessWidget {
 /// Hue and saturation sliders for the custom accent, with a preview of it in both modes. There's deliberately no
 /// lightness: every accent's lightness comes from the mode, which keeps any choice readable on its background.
 class _CustomColorEditor extends StatelessWidget {
-  final Box box;
+  final Box<dynamic> box;
   final double hue;
   final double chroma;
 
@@ -284,7 +286,7 @@ class _GradientSlider extends StatelessWidget {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapDown: (details) {
-                  HapticFeedback.selectionClick();
+                  unawaited(HapticFeedback.selectionClick());
                   _update(details.localPosition, width);
                 },
                 onHorizontalDragUpdate: (details) => _update(details.localPosition, width),

@@ -11,12 +11,12 @@ class ReplyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint();
+    final paint = Paint();
     paint.color = color;
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = width;
 
-    var path = Path();
+    final path = Path();
     path.moveTo(size.width / 3.0, size.height);
     path.conicTo(size.width / 3.0, size.height / 2.0, size.width, size.height / 2.0, 12.0);
 

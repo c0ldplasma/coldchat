@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 
-import 'package:coldchat/data/filesharing/uploaded_media.dart';
+import '../../data/filesharing/uploaded_media.dart';
 
 class Catbox {
   static Future<UploadedMedia> uploadFile(String filename, Uint8List bytes) async {
@@ -21,7 +21,7 @@ class Catbox {
     final responseBody = (await response.stream.bytesToString()).trim();
 
     if (response.statusCode != 200 || !responseBody.startsWith('http')) {
-      throw 'Upload failed (${response.statusCode}): $responseBody';
+      throw Exception('Upload failed (${response.statusCode}): $responseBody');
     }
 
     return UploadedMedia(

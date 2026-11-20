@@ -1,10 +1,9 @@
-import 'package:coldchat/providers/badge_provider.dart';
-
 import '../api/twitch/twitch.dart';
-import '../data/twitch/token_data.dart';
-import '../data/custom_badge.dart';
 import '../data/badge_users.dart';
+import '../data/custom_badge.dart';
 import '../data/emote.dart';
+import '../data/twitch/token_data.dart';
+import 'badge_provider.dart';
 import 'emote_provider.dart';
 import 'provider.dart';
 
@@ -17,7 +16,7 @@ class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
 
   TokenData get _requireTokenData {
     final data = tokenData();
-    if (data?.accessToken == null) throw 'No Twitch login to load badges with';
+    if (data?.accessToken == null) throw Exception('No Twitch login to load badges with');
     return data!;
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '/theme/coldchat_theme.dart';
+import '../theme/coldchat_theme.dart';
 
 class Modal extends StatelessWidget {
   final Widget child;

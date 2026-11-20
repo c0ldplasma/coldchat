@@ -1,16 +1,17 @@
+import 'dart:async';
+
 import 'dart:developer';
 
-import 'package:coldchat/api/twitch/twitch.dart';
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
-
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../api/twitch/twitch.dart';
 import '../api/twitch/twitch_profile.dart';
-import '../tmi/client/client.dart';
+import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/client/client.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
@@ -198,7 +199,7 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
     } catch (e) {
       log('$e');
       if (mounted) {
-        await showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
             content: Text(AppLocalizations.of(context).blockFailed),
@@ -238,7 +239,9 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-            launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication);
+            unawaited(
+              launchUrl(Uri.parse('https://www.twitch.tv/${widget.user.login}'), mode: LaunchMode.externalApplication),
+            );
           },
           child: Text(AppLocalizations.of(context).openOnTwitch),
         ),

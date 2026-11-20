@@ -1,15 +1,18 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coldchat/components/surface.dart';
-import 'package:coldchat/modal/notifications.dart';
-import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import '../components/boxlistener.dart';
+import '../components/modal.dart';
+import '../components/surface.dart';
 import '../data/notifications_cubit.dart';
-import '/components/modal.dart';
+import '../data/twitch_account.dart';
 import '../modal/coldchat.dart';
-import '/components/boxlistener.dart';
+import '../modal/notifications.dart';
+import '../theme/coldchat_theme.dart';
 
 class AvatarButton extends StatefulWidget {
   /// Over the chat's messages it gets the same shadow as the chat's other floating controls; on the home tab it sits
@@ -64,15 +67,17 @@ class _AvatarButtonState extends State<AvatarButton> {
                       // The pill is one color; the avatar sits directly on it.
                       type: SurfaceType.transparent,
                       child: BoxListener(
-                        box: Hive.box('AccountSettings'),
+                        box: Hive.box<dynamic>('AccountSettings'),
                         builder: (context, accountSettingsBox) {
                           return BoxListener(
-                            box: Hive.box('TwitchAccounts'),
-                            builder: (BuildContext context, Box twitchAccountsBox) {
+                            box: Hive.box<dynamic>('TwitchAccounts'),
+                            builder: (BuildContext context, Box<dynamic> twitchAccountsBox) {
                               final twitchAccount = twitchAccountsBox.values.firstWhere(
-                                (element) => accountSettingsBox.get('activeTwitchAccount') == element.tokenData.hash,
+                                (element) =>
+                                    accountSettingsBox.get('activeTwitchAccount') ==
+                                    (element as TwitchAccount).tokenData.hash,
                                 orElse: () => null,
-                              );
+                              ) as TwitchAccount?;
                               return Material(
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(24.0),
@@ -92,7 +97,7 @@ class _AvatarButtonState extends State<AvatarButton> {
                                   },
                                   onPanEnd: (details) {
                                     if (twitchAccountsBox.isEmpty) return;
-                                    var activeAccountHash = accountSettingsBox.get('activeTwitchAccount');
+                                    final activeAccountHash = accountSettingsBox.get('activeTwitchAccount');
                                     var indexOfActiveAccountHash = twitchAccountsBox.keys.toList().indexOf(
                                       activeAccountHash,
                                     );
@@ -112,17 +117,21 @@ class _AvatarButtonState extends State<AvatarButton> {
                                       case AvatarButtonDirection.none:
                                         break;
                                     }
-                                    accountSettingsBox.put(
-                                      'activeTwitchAccount',
-                                      twitchAccountsBox.keys.elementAt(indexOfActiveAccountHash),
+                                    unawaited(
+                                      accountSettingsBox.put(
+                                        'activeTwitchAccount',
+                                        twitchAccountsBox.keys.elementAt(indexOfActiveAccountHash),
+                                      ),
                                     );
                                     direction = AvatarButtonDirection.none;
                                   },
                                   child: InkWell(
                                     onTap: () async {
-                                      Modal.show(
-                                        context: context,
-                                        child: const ColdChatModal(),
+                                      unawaited(
+                                        Modal.show(
+                                          context: context,
+                                          child: const ColdChatModal(),
+                                        ),
                                       );
                                     },
                                     child: Padding(
@@ -136,7 +145,7 @@ class _AvatarButtonState extends State<AvatarButton> {
                                           child: twitchAccount == null
                                               ? const Icon(Icons.person_outline_rounded)
                                               : Ink.image(
-                                                  image: CachedNetworkImageProvider(twitchAccount.userData.avatarUrl),
+                                                  image: CachedNetworkImageProvider(twitchAccount.userData!.avatarUrl),
                                                   fit: BoxFit.cover,
                                                 ),
                                         ),

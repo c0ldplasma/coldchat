@@ -1,8 +1,10 @@
-import 'package:coldchat/components/modal.dart';
-import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+
+import '../components/modal.dart';
 import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import 'user.dart';
 
@@ -26,9 +28,11 @@ class WhisperModal extends StatelessWidget {
           subtitle: conversation.partnerDisplayName,
           prefix: const Icon(Icons.person_outline_rounded),
           onTap: () {
-            Modal.show(
-              context: context,
-              child: UserModal(login: conversation.partnerLogin, channel: conversation),
+            unawaited(
+              Modal.show(
+                context: context,
+                child: UserModal(login: conversation.partnerLogin, channel: conversation),
+              ),
             );
           },
         ),

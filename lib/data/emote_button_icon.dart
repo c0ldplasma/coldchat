@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -17,7 +18,7 @@ class EmoteButtonIcon {
   static const String iconKey = 'emoteButtonIcon';
   static const String grayscaleKey = 'emoteButtonGrayscale';
 
-  static Box get _box => Hive.box('Settings');
+  static Box<dynamic> get _box => Hive.box<dynamic>('Settings');
 
   // Resolved once at startup so the button can build synchronously. Only file
   // names are stored: the absolute container path changes between iOS
@@ -90,6 +91,6 @@ class EmoteButtonIcon {
   }
 
   static void _deleteQuietly(File? file) {
-    file?.delete().catchError((_) => file);
+    unawaited(file?.delete().catchError((_) => file));
   }
 }

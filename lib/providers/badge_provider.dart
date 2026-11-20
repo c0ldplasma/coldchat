@@ -1,7 +1,6 @@
-import 'package:coldchat/data/badge_users.dart';
-
-import 'provider.dart';
+import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
+import 'provider.dart';
 
 // TODO: Migrate BadgeProvider to use a Map instead of a List
 mixin BadgeProvider on Provider {

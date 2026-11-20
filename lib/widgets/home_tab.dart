@@ -1,27 +1,27 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:coldchat/api/twitch/twitch.dart';
-import 'package:coldchat/components/boxlistener.dart';
-import 'package:coldchat/components/tile.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
-import '/components/separator.dart';
-import '/components/surface.dart';
-import '/data/twitch/channel_search.dart';
-import '/data/twitch/stream_data.dart';
-import '/data/twitch_account.dart';
-import '/pages/home.dart';
-import '/tmi/channel/channel_event.dart';
-import '/tmi/client/client.dart';
-import '/tools/channel_ranking.dart';
-import '/widgets/avatar_button.dart';
-import '/widgets/logged_out_start.dart';
+import '../api/twitch/twitch.dart';
+import '../components/boxlistener.dart';
+import '../components/separator.dart';
+import '../components/surface.dart';
+import '../components/tile.dart';
+import '../data/twitch/channel_search.dart';
+import '../data/twitch/stream_data.dart';
+import '../data/twitch_account.dart';
+import '../l10n/app_localizations.dart';
+import '../pages/home.dart';
+import '../tmi/channel/channel_event.dart';
+import '../tmi/client/client.dart';
+import '../tools/channel_ranking.dart';
+import 'avatar_button.dart';
+import 'logged_out_start.dart';
 
 /// Joins [channelName] (if not already joined) and switches to its tab via the
 /// [HomeTabSwitcher] provided by the home page.
@@ -29,7 +29,7 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
   final client = context.read<Client>();
   if (!client.channels.state.any((channel) => channel.name == channelName)) {
     client.channels.join(channelName);
-    client.receiver.send('JOIN $channelName');
+    unawaited(client.receiver.send('JOIN $channelName'));
     client.channels.state
         .firstWhereOrNull((channel) => channel.name == channelName)
         ?.add(ChannelJoin(client.receiver, client.transmitter));
@@ -113,7 +113,7 @@ class _HomeTabState extends State<HomeTab> {
     searchTextController.selection = TextSelection(baseOffset: 0, extentOffset: searchTextController.text.length);
     // Focus set from code, mid tab animation, doesn't bring up the keyboard on Android by itself.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && searchFocus.hasFocus) SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+      if (mounted && searchFocus.hasFocus) unawaited(SystemChannels.textInput.invokeMethod<void>('TextInput.show'));
     });
   }
 
@@ -141,8 +141,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void initState() {
-    final twitchAccountsBox = Hive.box('TwitchAccounts');
-    final accountSettingsBox = Hive.box('AccountSettings');
+    final twitchAccountsBox = Hive.box<dynamic>('TwitchAccounts');
+    final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
     account = twitchAccountsBox.values.firstWhereOrNull(
       (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
     ) as TwitchAccount?;
@@ -151,13 +151,11 @@ class _HomeTabState extends State<HomeTab> {
       account = twitchAccountsBox.values.firstWhereOrNull(
         (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
       ) as TwitchAccount?;
-      setState(() {
-        refresh();
-      });
+      setState(refresh);
     });
 
     if (account != null) {
-      refresh();
+      unawaited(refresh());
     }
     super.initState();
 
@@ -168,16 +166,14 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('AccountSettings'),
+    box: Hive.box<dynamic>('AccountSettings'),
     keys: const ['activeTwitchAccount'],
     builder: (BuildContext context, Box<dynamic> box) {
       if (account == null) return const LoggedOutStart();
 
       return RefreshIndicator(
         onRefresh: () {
-          setState(() {
-            refresh();
-          });
+          setState(refresh);
           return Future.wait([recommendedStreams!, topStreams!]);
         },
         child: CustomScrollView(
@@ -458,7 +454,7 @@ class StreamPreviewSmall extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: Image.network(
-                    (stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080')),
+                    stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080'),
                   ),
                 ),
               ),

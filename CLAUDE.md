@@ -36,8 +36,10 @@ don't put user-facing text in Dart string literals.
 
 `.github/workflows/build.yml` runs on pushes to `main` and on PRs: `flutter analyze`, a formatting check and the localization check,
 and an Android and an unsigned iOS build. It pins the Flutter version; raise `FLUTTER_VERSION` there together with
-the minimum in `pubspec.yaml`. Lints are `flutter_lints` (keep `flutter analyze` at "No issues found!"; `dart fix
---apply` fixes most new findings). Code is formatted with `dart format` at width 120 with trailing commas preserved (settings in
+the minimum in `pubspec.yaml`. Lints are `flutter_lints` plus stricter settings in
+`analysis_options.yaml` (keep `flutter analyze` at "No issues found!"; `dart fix --apply` fixes the mechanical ones):
+strict casts and inference, so JSON values need an explicit `as` and untyped calls like `showModalBottomSheet`
+need a type argument; every future is awaited or wrapped in `unawaited(...)`; imports inside `lib/` are relative. Code is formatted with `dart format` at width 120 with trailing commas preserved (settings in
 `analysis_options.yaml`): run `dart format lib` before committing. The commit that formatted everything is listed in
 `.git-blame-ignore-revs`, which GitHub's blame skips; locally run `git config blame.ignoreRevsFile .git-blame-ignore-revs`
 once. Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub

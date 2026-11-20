@@ -3,37 +3,36 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coldchat/widgets/chat/emote_picker.dart';
-import 'package:coldchat/widgets/chat_message.dart';
+import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../api/twitch/twitch.dart';
 import '../components/bottom_bar.dart';
-import '../theme/coldchat_theme.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
 import '../data/custom_command.dart';
+import '../data/emote.dart';
 import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
-import '../data/emote.dart';
 import '../data/settings/chat_settings.dart';
+import '../l10n/app_localizations.dart';
+import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
-import '../api/twitch/twitch.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../tmi/whispers/whispers.dart';
+import 'chat/emote_picker.dart';
 import 'chat/upload_queue_bar.dart';
+import 'chat_message.dart';
 import 'chat_view.dart';
 import 'emoji_glyph.dart';
 import 'emote_button_icon_view.dart';
-
-import 'package:collection/collection.dart';
 
 class ChannelView extends StatefulWidget {
   final Channel channel;
@@ -59,8 +58,8 @@ class AutocompletionItem {
   final Widget? prefix;
   final String title;
   final String? subtitle;
-  final Function()? onTap;
-  final Function()? onLongPress;
+  final void Function()? onTap;
+  final void Function()? onLongPress;
   final Widget? shortened;
   final AutocompletionType type;
 
@@ -97,7 +96,7 @@ class ChannelViewState extends State<ChannelView> {
     });
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;
-      recoverLostPhoto();
+      unawaited(recoverLostPhoto());
     }
   }
 
@@ -132,7 +131,7 @@ class ChannelViewState extends State<ChannelView> {
 
     final textSplits = text.trim().split(' ');
     if (textSplits.isNotEmpty) {
-      final customCommands = Hive.box('CustomCommands').values.cast<CustomCommand>();
+      final customCommands = Hive.box<dynamic>('CustomCommands').values.cast<CustomCommand>();
       final customCommand = customCommands.firstWhereOrNull(
         (element) => textSplits.first.toLowerCase() == element.trigger.toLowerCase(),
       );
@@ -186,11 +185,13 @@ class ChannelViewState extends State<ChannelView> {
       return;
     }
 
-    widget.channel.send(
-      text,
-      tags: {
-        if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
-      },
+    unawaited(
+      widget.channel.send(
+        text,
+        tags: {
+          if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
+        },
+      ),
     );
 
     setReplyChannelMessageChat(null);
@@ -245,7 +246,7 @@ class ChannelViewState extends State<ChannelView> {
               prefix: const Icon(Icons.photo_camera_outlined),
               onTap: () {
                 Navigator.of(context).pop();
-                takeAndUploadPhoto();
+                unawaited(takeAndUploadPhoto());
               },
             ),
             Tile(
@@ -253,7 +254,7 @@ class ChannelViewState extends State<ChannelView> {
               prefix: const Icon(Icons.photo_library_outlined),
               onTap: () {
                 Navigator.of(context).pop();
-                pickAndUploadFromLibrary();
+                unawaited(pickAndUploadFromLibrary());
               },
             ),
           ],
@@ -328,7 +329,7 @@ class ChannelViewState extends State<ChannelView> {
 
   @override
   void dispose() {
-    _uploadSubscription?.cancel();
+    unawaited(_uploadSubscription?.cancel());
     textEditingController.dispose();
     textFocusNode.dispose();
     super.dispose();
@@ -338,7 +339,7 @@ class ChannelViewState extends State<ChannelView> {
     if (textEditingController.text.split(' ').last.length < 2) return [];
     final currentSearch = textEditingController.text.split(' ').last.toLowerCase();
 
-    final chatSettings = Hive.box('Settings').get('chatSettings') as ChatSettings;
+    final chatSettings = Hive.box<dynamic>('Settings').get('chatSettings') as ChatSettings;
 
     final matchingEmotes =
         (widget.channel.channelEmotes.state +
@@ -391,7 +392,7 @@ class ChannelViewState extends State<ChannelView> {
             setState(() {});
           },
         ),
-      for (final customCommand in Hive.box('CustomCommands').values.cast<CustomCommand>().where(
+      for (final customCommand in Hive.box<dynamic>('CustomCommands').values.cast<CustomCommand>().where(
         (element) => element.trigger.toLowerCase().startsWith(textEditingController.text.toLowerCase()),
       ))
         AutocompletionItem(
@@ -619,7 +620,7 @@ class ChannelViewState extends State<ChannelView> {
                           border: InputBorder.none,
                         ),
                         onSubmitted: (text) {
-                          sendMessage();
+                          unawaited(sendMessage());
                           textFocusNode.requestFocus();
                         },
                         onChanged: (text) {
@@ -650,7 +651,7 @@ class ChannelViewState extends State<ChannelView> {
                     ),
                     // const Separator(axis: Axis.vertical),
                     InkWell(
-                      onTap: () => sendMessage(),
+                      onTap: sendMessage,
                       onLongPress: () {
                         setState(() {
                           spamming = !spamming;
@@ -740,7 +741,7 @@ class ChannelViewState extends State<ChannelView> {
   void addSplit(String? text) {
     if (text == null) return;
     setState(() {
-      var splits = textEditingController.text.split(' ');
+      final splits = textEditingController.text.split(' ');
       splits.add(text);
       splits.removeWhere((element) => element.isEmpty);
       textEditingController.text = splits.join(' ');
@@ -765,7 +766,7 @@ class _WhisperHistoryHint extends StatefulWidget {
 class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
   static const String _dismissedKey = 'whisperHistoryHintDismissed';
 
-  bool dismissed = Hive.box('Settings').get(_dismissedKey) == true;
+  bool dismissed = Hive.box<dynamic>('Settings').get(_dismissedKey) == true;
 
   @override
   Widget build(BuildContext context) {
@@ -787,7 +788,7 @@ class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Hive.box('Settings').put(_dismissedKey, true);
+                    unawaited(Hive.box<dynamic>('Settings').put(_dismissedKey, true));
                     setState(() => dismissed = true);
                   },
                   child: Text(l10n.gotIt),

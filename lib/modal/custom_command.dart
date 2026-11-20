@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
 import '../data/custom_command.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
 class CustomCommandModal extends StatefulWidget {
@@ -100,7 +100,7 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
                       triggerController.text = triggerController.text.trim();
                       commandController.text = commandController.text.trim();
 
-                      final customCommandsBox = Hive.box('CustomCommands');
+                      final customCommandsBox = Hive.box<dynamic>('CustomCommands');
                       if (widget.customCommand == null) {
                         await customCommandsBox.add(
                           CustomCommand(

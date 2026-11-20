@@ -73,7 +73,7 @@ class Tile extends StatelessWidget {
 }
 
 class BoxSwitchTile extends StatelessWidget {
-  final Box box;
+  final Box<dynamic> box;
   final String boxKey;
   final bool boxDefault;
 
@@ -97,7 +97,7 @@ class BoxSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool value = (box.get(boxKey) as bool?) ?? boxDefault;
+    final bool value = (box.get(boxKey) as bool?) ?? boxDefault;
     return Tile(
       title: title,
       subtitle: subtitle,

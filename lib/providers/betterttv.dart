@@ -1,9 +1,8 @@
-import 'package:coldchat/providers/badge_provider.dart';
-
-import '../data/custom_badge.dart';
+import '../api/betterttv/betterttv.dart';
 import '../data/badge_users.dart';
-import '/api/betterttv/betterttv.dart';
-import '/data/emote.dart';
+import '../data/custom_badge.dart';
+import '../data/emote.dart';
+import 'badge_provider.dart';
 import 'emote_provider.dart';
 import 'provider.dart';
 

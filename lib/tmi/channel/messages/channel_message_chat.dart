@@ -1,24 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:coldchat/data/custom_badge.dart';
-import 'package:coldchat/data/inline_url.dart';
-import 'package:coldchat/tmi/channel/messages/channel_message_user.dart';
-import 'package:coldchat/tmi/channel/messages/embeds/image_embed.dart';
-import 'package:coldchat/tmi/user.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import '../../../data/badge_users.dart';
+import '../../../data/custom_badge.dart';
 import '../../../data/emote.dart';
+import '../../../data/inline_url.dart';
 import '../../../data/message_trigger.dart';
 import '../../../data/user_trigger.dart';
+import '../../../irc/message.dart' as irc;
 import '../../../providers/twitch.dart';
 import '../../connection/connection_state.dart';
+import '../../user.dart';
 import '../channel_message.dart';
-import '/irc/message.dart' as irc;
 import 'channel_message_embeds.dart';
 import 'channel_message_id.dart';
+import 'channel_message_user.dart';
+import 'embeds/image_embed.dart';
 
 class TwitchEmoteInstance {
   final String code;
@@ -181,7 +182,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       if (badge != null) badges.add(badge);
     }
 
-    for (final badgeUsers in (channel?.client.globalUserBadges.state ?? [])) {
+    for (final badgeUsers in (channel?.client.globalUserBadges.state ?? const <BadgeUsers>[])) {
       if (badgeUsers.users.contains(user.id)) badges.add(badgeUsers.badge);
     }
 
@@ -229,7 +230,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     final receiver = channel?.client.receiver;
     if (receiver != null) {
       // Check user triggers
-      final userTriggers = Hive.box('UserTriggers').values.cast<UserTrigger>();
+      final userTriggers = Hive.box<dynamic>('UserTriggers').values.cast<UserTrigger>();
       final userTrigger = userTriggers.firstWhereOrNull(
         (element) => element.login.toLowerCase() == user.login?.toLowerCase(),
       );
@@ -245,7 +246,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       }
 
       // Check message triggers
-      final messageTriggers = Hive.box('MessageTriggers').values.cast<MessageTrigger>();
+      final messageTriggers = Hive.box<dynamic>('MessageTriggers').values.cast<MessageTrigger>();
       final messageTrigger = messageTriggers.firstWhereOrNull((messageTrigger) {
         if (messageTrigger.enableRegex) {
           return RegExp(messageTrigger.pattern).hasMatch(body);
@@ -261,7 +262,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
                   .map((e) => e.toLowerCase())
                   .any(
                     (split) =>
-                        (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'),
+                        split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,',
                   );
             }
           } else {
@@ -269,7 +270,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
               return body.contains(pattern);
             } else {
               return textSplits.whereType<String>().any(
-                (split) => (split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,'),
+                (split) => split == pattern || split == '@$pattern' || split == '$pattern,' || split == '@$pattern,',
               );
             }
           }
@@ -287,7 +288,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       }
 
       if (receiver.state is ConnectionConnected) {
-        final connectedState = (receiver.state as ConnectionConnected);
+        final connectedState = receiver.state as ConnectionConnected;
         blocked = blocked || connectedState.blockedUserIds.contains(user.id);
         mentionned =
             mentionned ||
@@ -296,10 +297,10 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
                 .map((e) => e.toLowerCase())
                 .any(
                   (split) =>
-                      (split == connectedState.twitchAccount.tokenData.login ||
+                      split == connectedState.twitchAccount.tokenData.login ||
                       split == '@${connectedState.twitchAccount.tokenData.login}' ||
                       split == '${connectedState.twitchAccount.tokenData.login},' ||
-                      split == '@${connectedState.twitchAccount.tokenData.login},'),
+                      split == '@${connectedState.twitchAccount.tokenData.login},',
                 );
       }
     }

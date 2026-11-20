@@ -3,24 +3,25 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
-import '/api/twitch/twitch.dart';
-import '/data/custom_badge.dart';
-import '/data/emote.dart';
+import '../../api/twitch/twitch.dart';
+import '../../data/custom_badge.dart';
+import '../../data/emote.dart';
+import '../../providers/badge_provider.dart';
+import '../../providers/emojis.dart';
+import '../../providers/emote_provider.dart';
+import '../../providers/provider.dart';
+import '../badges.dart';
 import '../client/client.dart';
 import '../emotes.dart';
-import '/tmi/channel/channel_event.dart';
-import '/tmi/channel/channel_message.dart';
-import '/tmi/channel/channel_messages.dart';
-import '/tmi/channel/channel_state.dart';
-import '/tmi/channel/messages/channel_message_state_change.dart';
-import '/providers/badge_provider.dart';
-import '/providers/emote_provider.dart';
-import '/providers/emojis.dart';
-import '/tmi/badges.dart';
-import '/tmi/channel/channel_info.dart';
+import '../tmi_exception.dart';
+import '../user.dart';
+import 'channel_event.dart';
+import 'channel_info.dart';
+import 'channel_message.dart';
+import 'channel_messages.dart';
+import 'channel_state.dart';
 import 'messages/channel_message_chat.dart';
-import '/tmi/user.dart';
-import '/providers/provider.dart';
+import 'messages/channel_message_state_change.dart';
 
 class Channel extends Bloc<ChannelEvent, ChannelState> {
   Client client;
@@ -42,7 +43,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   // global lists and linear-scanning them for every word of every message.
   Map<String, Emote>? _emoteLookup;
   Map<String, CustomBadge>? _badgeLookup;
-  final List<StreamSubscription> _lookupSubs = [];
+  final List<StreamSubscription<dynamic>> _lookupSubs = [];
 
   // Global emotes/badges take lower precedence than channel ones (a channel
   // emote with the same code wins), matching the previous channel-first
@@ -151,7 +152,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   @override
   Future<void> close() {
     for (final sub in _lookupSubs) {
-      sub.cancel();
+      unawaited(sub.cancel());
     }
     return super.close();
   }
@@ -196,7 +197,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     message = message.replaceAll(replacement, zeroWidthJoiner);
 
     final realState = state as ChannelStateWithConnection;
-    realState.transmitter.send(ircMessageToSend);
+    unawaited(realState.transmitter.send(ircMessageToSend));
   }
 
   Future<void> refresh() async {
@@ -237,7 +238,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     var processed = 0;
     for (final message in messages) {
       message.build();
-      if (++processed % 20 == 0) await Future.delayed(Duration.zero);
+      if (++processed % 20 == 0) await Future<void>.delayed(Duration.zero);
     }
     channelMessages.emit([...channelMessages.state]);
   }
@@ -255,7 +256,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   }
 
   Future<void> refreshEmotes() async {
-    if (id == null) throw 'invalid channel id';
+    if (id == null) throw const TmiException('invalid channel id');
 
     final emoteProviders = client.providers.whereType<EmoteProvider>();
     final results = await Future.wait(
@@ -272,11 +273,11 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
 
     final merged = [for (final list in results) ...list];
     channelEmotes.emit(merged);
-    client.cache?.saveChannelEmotes(_cacheKey, merged);
+    unawaited(client.cache?.saveChannelEmotes(_cacheKey, merged));
   }
 
   Future<void> refreshBadges() async {
-    if (id == null) throw 'invalid channel id';
+    if (id == null) throw const TmiException('invalid channel id');
 
     final badgeProviders = client.providers.whereType<BadgeProvider>();
     final results = await Future.wait(
@@ -292,7 +293,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
 
     final merged = [for (final list in results) ...list];
     channelBadges.emit(merged);
-    client.cache?.saveChannelBadges(_cacheKey, merged);
+    unawaited(client.cache?.saveChannelBadges(_cacheKey, merged));
   }
 
   String get _cacheKey => name.replaceFirst('#', '').toLowerCase();

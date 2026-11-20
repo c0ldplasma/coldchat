@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../../components/surface.dart';
 import '../../data/emote.dart';
+import '../../l10n/app_localizations.dart';
 import '../../providers/emojis.dart';
-import '../emoji_glyph.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
+import '../emoji_glyph.dart';
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String title;
@@ -78,7 +78,7 @@ class _EmotePickerState extends State<EmotePicker> {
   PickerMode mode = PickerMode.emote;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  late final List<StreamSubscription> emoteSubscriptions;
+  late final List<StreamSubscription<dynamic>> emoteSubscriptions;
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _EmotePickerState extends State<EmotePicker> {
   @override
   void dispose() {
     for (final subscription in emoteSubscriptions) {
-      subscription.cancel();
+      unawaited(subscription.cancel());
     }
     searchController.dispose();
     scrollController.dispose();
@@ -117,7 +117,7 @@ class _EmotePickerState extends State<EmotePicker> {
       for (final category in groupBy(providerGroup.value, (emote) => emote.category).entries) {
         target.putIfAbsent(category.key ?? providerGroup.key.name, () => []);
         target[category.key ?? providerGroup.key.name]!.addAll(category.value);
-        groupKeys.putIfAbsent(category.key ?? providerGroup.key.name, () => GlobalKey());
+        groupKeys.putIfAbsent(category.key ?? providerGroup.key.name, GlobalKey.new);
       }
     }
     // There are always Twitch emotes, so keep their section in place with a
@@ -130,16 +130,16 @@ class _EmotePickerState extends State<EmotePicker> {
     final search = searchController.text.toLowerCase();
 
     const icons = {
-      "Symbols": Icon(Icons.star_border_outlined),
-      "Activities": Icon(Icons.local_activity_outlined),
-      "Flags": Icon(Icons.flag_outlined),
-      "Travel & Places": Icon(Icons.card_travel_outlined),
-      "Food & Drink": Icon(Icons.fastfood_outlined),
-      "Animals & Nature": Icon(Icons.pest_control_outlined),
-      "People & Body": Icon(Icons.people_outline_outlined),
-      "Objects": Icon(Icons.emoji_objects_outlined),
-      "Component": Icon(Icons.settings_input_component_outlined),
-      "Smileys & Emotion": Icon(Icons.emoji_emotions_outlined),
+      'Symbols': Icon(Icons.star_border_outlined),
+      'Activities': Icon(Icons.local_activity_outlined),
+      'Flags': Icon(Icons.flag_outlined),
+      'Travel & Places': Icon(Icons.card_travel_outlined),
+      'Food & Drink': Icon(Icons.fastfood_outlined),
+      'Animals & Nature': Icon(Icons.pest_control_outlined),
+      'People & Body': Icon(Icons.people_outline_outlined),
+      'Objects': Icon(Icons.emoji_objects_outlined),
+      'Component': Icon(Icons.settings_input_component_outlined),
+      'Smileys & Emotion': Icon(Icons.emoji_emotions_outlined),
     };
 
     return Surface(

@@ -1,14 +1,16 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coldchat/components/tile.dart';
-import 'package:coldchat/modal/components/modal_header.dart';
-import 'package:coldchat/modal/user.dart';
-import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../api/twitch/twitch.dart';
 import '../components/modal.dart';
+import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
+import '../tmi/channel/channel.dart';
 import '../tmi/user.dart';
+import 'components/modal_header.dart';
+import 'user.dart';
 
 class ChattersModal extends StatefulWidget {
   final Channel channel;
@@ -30,7 +32,7 @@ class _ChattersModalState extends State<ChattersModal> {
   @override
   void initState() {
     super.initState();
-    loadAvatars();
+    unawaited(loadAvatars());
   }
 
   /// Profile pictures for the list in one batched Helix request per 100
@@ -92,11 +94,13 @@ class _ChattersModalState extends State<ChattersModal> {
             ),
             title: chatter.displayName ?? chatter.login!,
             onTap: () {
-              Modal.show(
-                context: context,
-                child: UserModal(
-                  login: chatter.login!,
-                  channel: widget.channel,
+              unawaited(
+                Modal.show(
+                  context: context,
+                  child: UserModal(
+                    login: chatter.login!,
+                    channel: widget.channel,
+                  ),
                 ),
               );
             },

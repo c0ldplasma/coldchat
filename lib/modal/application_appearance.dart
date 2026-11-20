@@ -1,11 +1,13 @@
-import 'package:coldchat/components/toggle.dart';
-import 'package:coldchat/data/settings/application_appearance.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';
 import '../components/tile.dart';
+import '../components/toggle.dart';
+import '../data/settings/application_appearance.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
 class ApplicationAppearanceModal extends StatelessWidget {
@@ -13,7 +15,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
       return ListView(
@@ -25,7 +27,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).light,
             onTap: () {
               applicationAppearance.themeMode = 'light';
-              applicationAppearance.save();
+              unawaited(applicationAppearance.save());
             },
             suffix: applicationAppearance.themeMode == 'light'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -36,7 +38,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).dark,
             onTap: () {
               applicationAppearance.themeMode = 'dark';
-              applicationAppearance.save();
+              unawaited(applicationAppearance.save());
             },
             suffix: applicationAppearance.themeMode == 'dark'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -47,7 +49,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).system,
             onTap: () {
               applicationAppearance.themeMode = 'system';
-              applicationAppearance.save();
+              unawaited(applicationAppearance.save());
             },
             suffix: applicationAppearance.themeMode == 'system'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -59,13 +61,13 @@ class ApplicationAppearanceModal extends StatelessWidget {
             subtitle: AppLocalizations.of(context).oledBlackSubtitle,
             onTap: () {
               applicationAppearance.oledBlack = !applicationAppearance.oledBlack;
-              applicationAppearance.save();
+              unawaited(applicationAppearance.save());
             },
             suffix: Toggle(
               value: applicationAppearance.oledBlack,
               onChanged: (value) {
                 applicationAppearance.oledBlack = value;
-                applicationAppearance.save();
+                unawaited(applicationAppearance.save());
               },
             ),
           ),
@@ -74,13 +76,13 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).highContrast,
             onTap: () {
               applicationAppearance.highContrast = !applicationAppearance.highContrast;
-              applicationAppearance.save();
+              unawaited(applicationAppearance.save());
             },
             suffix: Toggle(
               value: applicationAppearance.highContrast,
               onChanged: (value) {
                 applicationAppearance.highContrast = value;
-                applicationAppearance.save();
+                unawaited(applicationAppearance.save());
               },
             ),
           ),

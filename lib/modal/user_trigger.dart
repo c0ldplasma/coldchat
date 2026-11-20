@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
 import '../data/user_trigger.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
 class UserTriggerModal extends StatefulWidget {
@@ -103,7 +103,7 @@ class _UserTriggerModalState extends State<UserTriggerModal> {
 
                       patternController.text = patternController.text.trim();
 
-                      final userTriggersBox = Hive.box('UserTriggers');
+                      final userTriggersBox = Hive.box<dynamic>('UserTriggers');
                       if (widget.userTrigger == null) {
                         await userTriggersBox.add(
                           UserTrigger(

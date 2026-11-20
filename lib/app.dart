@@ -1,23 +1,23 @@
-import 'package:coldchat/data/notifications_cubit.dart';
-import 'package:coldchat/tmi/channel/channel_message.dart';
-import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/client/client_listener.dart';
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '/theme/coldchat_theme.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
-
 import 'components/boxlistener.dart';
+import 'data/notifications_cubit.dart';
 import 'data/settings/application_appearance.dart';
+import 'l10n/app_localizations.dart';
 import 'pages/home.dart';
+import 'theme/coldchat_theme.dart';
+import 'tmi/channel/channel_message.dart';
 import 'tmi/channel/messages/channel_message_chat.dart';
+import 'tmi/client/client.dart';
+import 'tmi/client/client_listener.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -48,7 +48,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
     // still alive, so a quick app-switch costs nothing. Don't gate on measured
     // background duration — iOS lifecycle events are unreliable for that.
     if (state == AppLifecycleState.resumed) {
-      context.read<Client>().onAppResumed();
+      unawaited(context.read<Client>().onAppResumed());
     }
   }
 
@@ -59,7 +59,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
         // The message stays visually highlighted regardless; we only avoid
         // re-adding a notification for a mention we already surfaced in a
         // previous session (e.g. when it comes back via history on launch).
-        final box = Hive.box('SeenMentions');
+        final box = Hive.box<dynamic>('SeenMentions');
         if (!box.containsKey(message.id)) {
           BlocProvider.of<NotificationsCubit>(context).add(message);
           _markMentionSeen(message.id);
@@ -73,21 +73,21 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
 
   void _markMentionSeen(String messageId) {
     if (messageId.isEmpty) return;
-    final box = Hive.box('SeenMentions');
+    final box = Hive.box<dynamic>('SeenMentions');
     if (box.containsKey(messageId)) return;
-    box.put(messageId, DateTime.now().millisecondsSinceEpoch);
+    unawaited(box.put(messageId, DateTime.now().millisecondsSinceEpoch));
     if (box.length > _seenMentionMaxEntries) {
       // Trim oldest entries (lowest stored timestamps) so the box doesn't
       // grow unbounded across sessions.
       final entries = box.toMap().entries.toList()..sort((a, b) => (a.value as int).compareTo(b.value as int));
       final toRemove = entries.take(box.length - _seenMentionMaxEntries).map((e) => e.key).toList();
-      box.deleteAll(toRemove);
+      unawaited(box.deleteAll(toRemove));
     }
   }
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('Settings'),
+    box: Hive.box<dynamic>('Settings'),
     builder: (context, box) {
       final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
       final accent = ColdChatTheme.current(box);

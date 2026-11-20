@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
 import '../components/tile.dart';
 import '../data/message_trigger.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
 class MessageTriggerModal extends StatefulWidget {
@@ -124,7 +124,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
 
                       patternController.text = patternController.text.trim();
 
-                      final messageTriggersBox = Hive.box('MessageTriggers');
+                      final messageTriggersBox = Hive.box<dynamic>('MessageTriggers');
                       if (widget.messageTrigger == null) {
                         await messageTriggersBox.add(
                           MessageTrigger(

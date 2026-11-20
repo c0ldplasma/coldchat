@@ -1,30 +1,32 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coldchat/data/inline_url.dart';
-import 'package:coldchat/modal/emote.dart';
-import 'package:coldchat/modal/user.dart';
-import 'package:coldchat/tmi/channel/messages/channel_message_embeds.dart';
-import 'package:coldchat/tmi/channel/channel_state.dart';
-import 'package:coldchat/tmi/channel/messages/channel_message_state_change.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
+import '../components/modal.dart';
+import '../components/surface.dart';
+import '../data/emote.dart';
+import '../data/inline_url.dart';
+import '../data/settings/message_appearance.dart';
+import '../l10n/app_localizations.dart';
+import '../modal/emote.dart';
+import '../modal/message.dart';
+import '../modal/user.dart';
+import '../theme/coldchat_theme.dart';
+import '../tmi/channel/channel_message.dart';
+import '../tmi/channel/channel_state.dart';
+import '../tmi/channel/messages/channel_message_ban.dart';
+import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/channel/messages/channel_message_embeds.dart';
 import '../tmi/channel/messages/channel_message_event.dart';
-import '/components/modal.dart';
-import '/components/surface.dart';
-import '/data/emote.dart';
-import '/data/settings/message_appearance.dart';
-import '/theme/coldchat_theme.dart';
-import '/modal/message.dart';
-import '/tmi/channel/messages/channel_message_ban.dart';
-import '/tmi/channel/messages/channel_message_notice.dart';
-import '/tmi/channel/messages/embeds/image_embed.dart';
-import '/tmi/channel/channel_message.dart';
-import '/tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/channel/messages/channel_message_notice.dart';
+import '../tmi/channel/messages/channel_message_state_change.dart';
+import '../tmi/channel/messages/embeds/image_embed.dart';
 import 'channel_view.dart';
 import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
@@ -143,7 +145,7 @@ class ChatMessage extends StatelessWidget {
     required this.message,
     this.renderMentions = true,
   }) {
-    messageAppearance = Hive.box('Settings').get('messageAppearance');
+    messageAppearance = Hive.box<dynamic>('Settings').get('messageAppearance') as MessageAppearance;
   }
 
   @override
@@ -348,11 +350,13 @@ class ChatMessage extends StatelessWidget {
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    Modal.show(
-                      context: context,
-                      child: UserModal(
-                        login: message.message.prefix!.split('!').first,
-                        channel: message.channel,
+                    unawaited(
+                      Modal.show(
+                        context: context,
+                        child: UserModal(
+                          login: message.message.prefix!.split('!').first,
+                          channel: message.channel,
+                        ),
                       ),
                     );
                   },

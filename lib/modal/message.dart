@@ -1,12 +1,12 @@
-import 'package:coldchat/api/twitch/twitch.dart';
-import 'package:coldchat/widgets/channel_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
+import '../api/twitch/twitch.dart';
 import '../components/tile.dart';
+import '../l10n/app_localizations.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
+import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
 
 class MessageModal extends StatelessWidget {

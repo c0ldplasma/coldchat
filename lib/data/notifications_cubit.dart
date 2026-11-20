@@ -1,7 +1,7 @@
-import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../tmi/channel/channel_message.dart';
+import '../tmi/channel/messages/channel_message_chat.dart';
 
 class NotificationsCubitState {
   final List<ChannelMessage> messages;

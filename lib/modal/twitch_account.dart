@@ -4,13 +4,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
-import '/components/separator.dart';
+import '../components/modal.dart';
+import '../components/separator.dart';
+import '../data/twitch_account.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 import 'verify_token.dart';
-import '/components/modal.dart';
-import '../data/twitch_account.dart';
 
 class TwitchAccountModal extends StatelessWidget {
   final TwitchAccount twitchAccount;
@@ -59,11 +59,13 @@ class TwitchAccountModal extends StatelessWidget {
         onTap: () async {
           Navigator.of(context).pop();
 
-          Modal.show(
-            context: context,
-            child: VerifyTokenModal(
-              token: '${twitchAccount.tokenData.accessToken}',
-              cookies: twitchAccount.cookies,
+          unawaited(
+            Modal.show(
+              context: context,
+              child: VerifyTokenModal(
+                token: '${twitchAccount.tokenData.accessToken}',
+                cookies: twitchAccount.cookies,
+              ),
             ),
           );
         },
@@ -94,7 +96,7 @@ class TwitchAccountModal extends StatelessWidget {
       ),
       InkWell(
         onTap: () async {
-          final accountSettingsBox = Hive.box('AccountSettings');
+          final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
           if (accountSettingsBox.get('activeTwitchAccount') == twitchAccount.tokenData.hash) {
             await accountSettingsBox.delete('activeTwitchAccount');
           }

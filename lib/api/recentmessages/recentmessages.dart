@@ -7,6 +7,9 @@ class RecentMessages {
     final response = await http.get(
       Uri.parse('https://recent-messages.robotty.de/api/v2/recent-messages/$channelName'),
     );
-    return decodeJsonInIsolate(response.bodyBytes, (json) => List<String>.from(json['messages']));
+    return decodeJsonInIsolate(
+      response.bodyBytes,
+      (json) => List<String>.from((json as JsonMap)['messages'] as List<dynamic>),
+    );
   }
 }

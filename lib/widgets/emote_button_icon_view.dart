@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../data/emote.dart';
 import '../data/emote_button_icon.dart';
+import '../l10n/app_localizations.dart';
 
 /// Draws the emote menu button's icon: the chosen emote or emoji, or Kappa.
 class EmoteButtonIconView extends StatelessWidget {
@@ -21,7 +21,8 @@ class EmoteButtonIconView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ValueListenableBuilder(
-    valueListenable: Hive.box('Settings').listenable(keys: [EmoteButtonIcon.iconKey, EmoteButtonIcon.grayscaleKey]),
+    valueListenable: Hive.box<dynamic>('Settings')
+        .listenable(keys: [EmoteButtonIcon.iconKey, EmoteButtonIcon.grayscaleKey]),
     builder: (context, box, _) {
       final file = EmoteButtonIcon.file;
       final emoji = EmoteButtonIcon.emoji;

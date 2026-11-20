@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
@@ -7,7 +9,7 @@ import 'client.dart';
 
 class ClientChannels extends Cubit<List<Channel>> {
   Client client;
-  Box channelsBox;
+  Box<dynamic> channelsBox;
 
   ClientChannels(
     this.client, {
@@ -17,7 +19,7 @@ class ClientChannels extends Cubit<List<Channel>> {
   }
 
   void join(String channelName) {
-    channelsBox.add(channelName);
+    unawaited(channelsBox.add(channelName));
 
     emit([
       ...state,
@@ -31,10 +33,10 @@ class ClientChannels extends Cubit<List<Channel>> {
   void part(Channel channel) {
     if (channel.id != null) client.bttvSocket.part(channel.id!);
     final x = List<String>.from(channelsBox.values).indexWhere((element) => element == channel.name);
-    channelsBox.deleteAt(x);
+    unawaited(channelsBox.deleteAt(x));
 
     if (channel.state is ChannelStateWithConnection) {
-      (channel.state as ChannelStateWithConnection).receiver.send('PART ${channel.name}');
+      unawaited((channel.state as ChannelStateWithConnection).receiver.send('PART ${channel.name}'));
     }
 
     emit([
@@ -43,7 +45,9 @@ class ClientChannels extends Cubit<List<Channel>> {
   }
 
   void joinAll(List<String> channelNames, {bool save = true}) {
-    if (save) channelsBox.addAll(channelNames.where((name) => !state.any((channel) => channel.name == name)));
+    if (save) {
+      unawaited(channelsBox.addAll(channelNames.where((name) => !state.any((channel) => channel.name == name))));
+    }
 
     emit([
       ...state,

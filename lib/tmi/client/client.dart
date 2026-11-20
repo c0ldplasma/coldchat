@@ -2,46 +2,46 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:coldchat/api/twitch/eventsub_socket.dart';
-import 'package:coldchat/api/twitch/twitch.dart';
-import 'package:coldchat/providers/dankchat.dart';
-import 'package:coldchat/providers/emojis.dart';
-import 'package:coldchat/providers/twitch.dart';
-import 'package:coldchat/tmi/badges.dart';
-import 'package:coldchat/tmi/channel/channel_message.dart';
-import 'package:coldchat/tmi/client/client_listener.dart';
 import 'package:collection/collection.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import '../../api/betterttv/betterttv_socket.dart';
+import '../../api/recentmessages/recentmessages.dart';
+import '../../api/twitch/eventsub_socket.dart';
+import '../../api/twitch/twitch.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
+import '../../data/twitch/token_data.dart';
+import '../../data/twitch_account.dart';
+import '../../irc/message.dart' as irc;
 import '../../providers/badge_provider.dart';
+import '../../providers/betterttv.dart';
+import '../../providers/dankchat.dart';
+import '../../providers/emojis.dart';
 import '../../providers/emote_provider.dart';
+import '../../providers/frankerfacez.dart';
+import '../../providers/provider.dart';
+import '../../providers/seventv.dart';
+import '../../providers/twitch.dart';
+import '../badges.dart';
 import '../cache.dart';
 import '../channel/channel.dart';
+import '../channel/channel_event.dart';
+import '../channel/channel_message.dart';
+import '../channel/channel_state.dart';
 import '../channel/messages/channel_message_ban.dart';
+import '../channel/messages/channel_message_chat.dart';
+import '../channel/messages/channel_message_id.dart';
 import '../channel/messages/channel_message_notice.dart';
+import '../connection/connection.dart';
+import '../connection/connection_event.dart';
+import '../connection/connection_state.dart';
 import '../emotes.dart';
 import '../user_badges.dart';
 import '../whispers/whisper_channel.dart';
 import '../whispers/whispers.dart';
-import '/api/betterttv/betterttv_socket.dart';
-import '/providers/betterttv.dart';
-import '/api/recentmessages/recentmessages.dart';
-import '/tmi/channel/channel_event.dart';
-import '/tmi/channel/channel_state.dart';
-import '/tmi/connection/connection_state.dart';
-import '/data/twitch_account.dart';
-import '/data/twitch/token_data.dart';
-import '/tmi/connection/connection.dart';
-import '/tmi/connection/connection_event.dart';
-import '/irc/message.dart' as irc;
-import '/providers/provider.dart';
-import '/providers/frankerfacez.dart';
-import '/providers/seventv.dart';
-import '/tmi/channel/messages/channel_message_chat.dart';
-import '/tmi/channel/messages/channel_message_id.dart';
 import 'client_channels.dart';
+import 'client_listener.dart';
 
 class Client {
   Connection receiver = Connection();
@@ -116,9 +116,9 @@ class Client {
 
   Client({
     TwitchAccount? twitchAccount,
-    required Box channelsBox,
-    Box? cacheBox,
-    Box? whispersBox,
+    required Box<dynamic> channelsBox,
+    Box<dynamic>? cacheBox,
+    Box<dynamic>? whispersBox,
   }) {
     whispers = Whispers(this, box: whispersBox);
 
@@ -140,7 +140,7 @@ class Client {
 
     // Prioritize the channel the user last had open so it lands in the first
     // (larger) JOIN burst and comes up before the rest of the list.
-    final lastChannel = Hive.box('Settings').get('lastChannel');
+    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
     if (lastChannel is String && lastChannel.isNotEmpty) {
       channels.state.firstWhereOrNull((c) => c.name == lastChannel)?.joinPriority = true;
     }
@@ -164,11 +164,11 @@ class Client {
     receiver.onStateChange = stateChange;
 
     _apiAccount = twitchAccount;
-    if (twitchAccount != null) connectAs(twitchAccount);
+    if (twitchAccount != null) unawaited(connectAs(twitchAccount));
 
-    refreshGlobalEmotes();
-    refreshGlobalBadges();
-    refreshGlobalUserBadges();
+    unawaited(refreshGlobalEmotes());
+    unawaited(refreshGlobalBadges());
+    unawaited(refreshGlobalUserBadges());
   }
 
   void _hydrateGlobalsFromCache() {
@@ -197,7 +197,7 @@ class Client {
     );
     final merged = [for (final list in results) ...list];
     globalEmotes.change(merged);
-    cache?.saveEmotes(EmoteBadgeCache.globalEmotesKey, merged);
+    unawaited(cache?.saveEmotes(EmoteBadgeCache.globalEmotesKey, merged));
   }
 
   Future<void> refreshGlobalBadges() async {
@@ -215,7 +215,7 @@ class Client {
     final merged = [for (final list in results) ...list];
     final changed = !_sameIds(globalBadges.state.map((b) => b.id), merged.map((b) => b.id));
     globalBadges.change(merged);
-    cache?.saveBadges(EmoteBadgeCache.globalBadgesKey, merged);
+    unawaited(cache?.saveBadges(EmoteBadgeCache.globalBadgesKey, merged));
     if (changed) _rebuildChannelMessages();
   }
 
@@ -237,7 +237,7 @@ class Client {
       merged.map((b) => '${b.badge.id}:${b.users.length}'),
     );
     globalUserBadges.change(merged);
-    cache?.saveUserBadges(EmoteBadgeCache.globalUserBadgesKey, merged);
+    unawaited(cache?.saveUserBadges(EmoteBadgeCache.globalUserBadgesKey, merged));
     if (changed) _rebuildChannelMessages();
   }
 
@@ -266,7 +266,9 @@ class Client {
     }
     _saveBttvProBadgesTimer?.cancel();
     _saveBttvProBadgesTimer = Timer(const Duration(seconds: 5), () {
-      cache?.saveBttvProBadges({for (final entry in bttvProBadges.entries) entry.key: entry.value.mipmap.first});
+      unawaited(
+        cache?.saveBttvProBadges({for (final entry in bttvProBadges.entries) entry.key: entry.value.mipmap.first}),
+      );
     });
   }
 
@@ -312,7 +314,7 @@ class Client {
     for (final channel in channelsToJoin) {
       channel.add(ChannelJoin(receiver, transmitter));
     }
-    receiver.send('JOIN ${channelsToJoin.map((e) => e.name).join(',')}');
+    unawaited(receiver.send('JOIN ${channelsToJoin.map((e) => e.name).join(',')}'));
   }
 
   // Building a ChannelMessageChat is expensive (emote parsing, regex, Hive
@@ -371,10 +373,10 @@ class Client {
         final id = ircMessage.tags['id'];
         if (id != null && existingIds.contains(id)) continue;
         if (id != null) existingIds.add(id);
-        receive(connection, ircMessage);
+        unawaited(receive(connection, ircMessage));
       }
       bulkChannel?.channelMessages.endBulk();
-      await Future.delayed(Duration.zero);
+      await Future<void>.delayed(Duration.zero);
     }
   }
 
@@ -411,7 +413,7 @@ class Client {
     final channelLogin = channel.name.substring(1);
     try {
       final list = await RecentMessages.channel(channelLogin);
-      cache?.saveHistory(channelLogin, list);
+      unawaited(cache?.saveHistory(channelLogin, list));
       await insertHistoryMessages(receiver, list);
       return true;
     } catch (_) {
@@ -561,11 +563,11 @@ class Client {
           // Joining starts from stateChange once the state has switched.
           connection.add(ConnectionEstablished(connectedState));
           if (stateTwitchAccount.tokenData.accessToken != null) {
-            Twitch.blockedUsers(stateTwitchAccount.tokenData)
-                .then((ids) {
-                  connectedState.blockedUserIds.addAll(ids);
-                })
-                .catchError((_) {});
+            unawaited(
+              Twitch.blockedUsers(stateTwitchAccount.tokenData)
+                  .then(connectedState.blockedUserIds.addAll)
+                  .catchError((_) {}),
+            );
           }
         }
         break;
@@ -592,7 +594,7 @@ class Client {
               ];
               twitchUserEmotes.change(userEmotes);
               final userId = stateTwitchAccount.tokenData.userId;
-              if (userId != null) cache?.saveEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId), userEmotes);
+              if (userId != null) unawaited(cache?.saveEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId), userEmotes));
             }
           }
         } catch (e) {
@@ -623,7 +625,7 @@ class Client {
           // closes the gap between our pre-JOIN snapshot and live PRIVMSGs.
           if (channel.recentMessagesEverFetched) {
             channel.recentMessagesFetched = true;
-            _backfillAfterJoin(channel);
+            unawaited(_backfillAfterJoin(channel));
           }
         }
         break;
@@ -637,7 +639,7 @@ class Client {
           break;
         }
 
-        ChannelMessage message = ChannelMessageChat(
+        final ChannelMessage message = ChannelMessageChat(
           message: event,
           dateTime: DateTime.fromMillisecondsSinceEpoch(
             int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,

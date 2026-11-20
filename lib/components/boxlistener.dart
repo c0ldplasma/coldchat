@@ -15,11 +15,11 @@ class BoxListener<T> extends StatefulWidget {
   });
 
   @override
-  State<BoxListener> createState() => _BoxListenerState();
+  State<BoxListener<T>> createState() => _BoxListenerState<T>();
 }
 
-class _BoxListenerState extends State<BoxListener> {
-  late ValueListenable listenable;
+class _BoxListenerState<T> extends State<BoxListener<T>> {
+  late ValueListenable<Box<T>> listenable;
 
   void listen() {
     setState(() {});

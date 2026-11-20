@@ -1,11 +1,11 @@
-import 'package:coldchat/data/message_trigger.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
+import '../data/message_trigger.dart';
+import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 import 'message_trigger.dart';
 
@@ -14,7 +14,7 @@ class MessageTriggersModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BoxListener(
-    box: Hive.box('MessageTriggers'),
+    box: Hive.box<dynamic>('MessageTriggers'),
     builder: (context, box) {
       return ListView(
         shrinkWrap: true,
@@ -33,7 +33,7 @@ class MessageTriggersModal extends StatelessWidget {
               ),
               suffix: InkWell(
                 borderRadius: BorderRadius.circular(24.0),
-                onTap: () => messageTrigger.delete(),
+                onTap: messageTrigger.delete,
                 child: const Icon(Icons.delete_forever_rounded),
               ),
               title: messageTrigger.pattern,

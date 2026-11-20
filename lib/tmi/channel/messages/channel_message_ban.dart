@@ -1,7 +1,6 @@
+import '../../../irc/message.dart' as irc;
 import '../../user.dart';
 import '../channel_message.dart';
-
-import '/irc/message.dart' as irc;
 
 class ChannelMessageBan extends ChannelMessage {
   irc.Message message;

@@ -1,11 +1,10 @@
 import 'dart:convert';
 
-import 'package:coldchat/providers/badge_provider.dart';
-import 'package:coldchat/providers/provider.dart';
-
 import '../api/dankchat/dankchat.dart';
-import '../data/custom_badge.dart';
 import '../data/badge_users.dart';
+import '../data/custom_badge.dart';
+import 'badge_provider.dart';
+import 'provider.dart';
 
 class DankChatProvider extends Provider with BadgeProvider {
   @override
