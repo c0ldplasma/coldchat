@@ -164,6 +164,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get searchForChannels => 'チャンネルを検索';
 
   @override
+  String get channelSearchFailed => 'チャンネルを検索できませんでした';
+
+  @override
   String get recommendedChannels => 'おすすめチャンネル';
 
   @override

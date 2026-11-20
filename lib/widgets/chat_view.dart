@@ -168,7 +168,7 @@ class _ChatViewState extends State<ChatView> {
             //                 ),
             //                 const SizedBox(width: 4.0),
             //                 Text(
-            //                   AppLocalizations.of(context)!.scrollToBottom,
+            //                   AppLocalizations.of(context).scrollToBottom,
             //                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
             //                         color: Theme.of(context).colorScheme.onTertiaryContainer,
             //                       ),
@@ -206,7 +206,7 @@ class _ChatViewState extends State<ChatView> {
                                   focusNode: searchFocusNode,
                                   decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: AppLocalizations.of(context)!.search,
+                                    hintText: AppLocalizations.of(context).search,
                                     isDense: true,
                                     // Like the home tab's search field: accent icon on the neutral pill.
                                     prefixIcon: Padding(

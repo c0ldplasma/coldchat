@@ -87,8 +87,8 @@ abstract class AppLocalizations {
 
   final String localeName;
 
-  static AppLocalizations? of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
@@ -117,8 +117,6 @@ abstract class AppLocalizations {
     Locale('da'),
     Locale('de'),
     Locale('el'),
-    Locale('en', 'CA'),
-    Locale('en', 'PT'),
     Locale('en'),
     Locale('es'),
     Locale('fr'),
@@ -402,6 +400,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search for channels'**
   String get searchForChannels;
+
+  /// No description provided for @channelSearchFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t search for channels'**
+  String get channelSearchFailed;
 
   /// No description provided for @recommendedChannels.
   ///
@@ -1308,20 +1312,6 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-  // Lookup logic when language+country codes are specified.
-  switch (locale.languageCode) {
-    case 'en':
-      {
-        switch (locale.countryCode) {
-          case 'CA':
-            return AppLocalizationsEnCa();
-          case 'PT':
-            return AppLocalizationsEnPt();
-        }
-        break;
-      }
-  }
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'ca':

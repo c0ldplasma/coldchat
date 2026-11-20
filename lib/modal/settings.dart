@@ -29,13 +29,13 @@ class SettingsModal extends StatelessWidget {
   Widget build(BuildContext context) => BoxListener(
     box: Hive.box('Settings'),
     builder: (context, box) {
-      final l10n = AppLocalizations.of(context)!;
+      final l10n = AppLocalizations.of(context);
       final themeMode = (box.get('applicationAppearance') as ApplicationAppearance).themeMode;
       final accent = ColdChatTheme.current(box);
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.settings),
+          ModalHeader(title: AppLocalizations.of(context).settings),
           // const Separator(),
           Tile(
             title: l10n.appearance,
@@ -63,52 +63,52 @@ class SettingsModal extends StatelessWidget {
             onTap: () => Modal.show(context: context, child: const ApplicationThemeModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.chatSettings,
+            title: AppLocalizations.of(context).chatSettings,
             prefix: const Icon(Icons.text_format_outlined),
             onTap: () => Modal.show(context: context, child: const ChatSettingsModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.language,
+            title: AppLocalizations.of(context).language,
             subtitle:
                 LocaleNamesLocalizationsDelegate.nativeLocaleNames[AppLocalizations.supportedLocales
                     .firstWhereOrNull((element) => element.toLanguageTag() == box.get('locale'))
                     .toString()] ??
-                AppLocalizations.of(context)!.systemDefault,
+                AppLocalizations.of(context).systemDefault,
             prefix: const Icon(Icons.language_outlined),
             onTap: () => Modal.show(context: context, child: const LanguageSelectionModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.messageAppearance,
+            title: AppLocalizations.of(context).messageAppearance,
             prefix: const Icon(Icons.font_download_rounded),
             onTap: () => Modal.show(context: context, child: const MessageAppearanceModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.customCommands,
+            title: AppLocalizations.of(context).customCommands,
             prefix: const Icon(Icons.terminal_rounded),
             onTap: () => Modal.show(context: context, child: const CustomCommandsModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.messageTriggers,
+            title: AppLocalizations.of(context).messageTriggers,
             prefix: const Icon(Icons.message_rounded),
             onTap: () => Modal.show(context: context, child: const MessageTriggersModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.userTriggers,
+            title: AppLocalizations.of(context).userTriggers,
             prefix: const Icon(Icons.person_outline_rounded),
             onTap: () => Modal.show(context: context, child: const UserTriggersModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.credits,
+            title: AppLocalizations.of(context).credits,
             prefix: const Icon(Icons.work_outline_outlined),
             onTap: () => Modal.show(context: context, child: const CreditsModal()),
           ),
           Tile(
-            title: AppLocalizations.of(context)!.about,
+            title: AppLocalizations.of(context).about,
             prefix: const Icon(Icons.info_outline_rounded),
             onTap: () => Modal.show(context: context, child: const AboutModal()),
           ),
           BoxSwitchTile(
-            title: AppLocalizations.of(context)!.chatHistory,
+            title: AppLocalizations.of(context).chatHistory,
             prefix: const Icon(Icons.history),
             box: box,
             boxDefault: true,
@@ -121,7 +121,7 @@ class SettingsModal extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
-                  info == null ? '' : '${AppLocalizations.of(context)!.appName} ${info.version} (${info.buildNumber})',
+                  info == null ? '' : '${AppLocalizations.of(context).appName} ${info.version} (${info.buildNumber})',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall
                       ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),

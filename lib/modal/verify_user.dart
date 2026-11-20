@@ -89,8 +89,8 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
               ),
               // TODO: Display both background and avatar
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.verifiedUserData),
-              Text(AppLocalizations.of(context)!.loggedInAs(snapshot.data!.displayName)),
+              Text(AppLocalizations.of(context).verifiedUserData),
+              Text(AppLocalizations.of(context).loggedInAs(snapshot.data!.displayName)),
             ],
             if (snapshot.hasError) ...[
               Icon(
@@ -99,13 +99,13 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
                 color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserData),
+              Text(AppLocalizations.of(context).anErrorHasOccuredWhenVerifyingUserData),
               Text('${snapshot.error}'),
             ],
             if (!snapshot.hasData && !snapshot.hasError) ...[
               const CircularProgressIndicator.adaptive(),
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.verifyingUserData),
+              Text(AppLocalizations.of(context).verifyingUserData),
             ],
           ],
         );

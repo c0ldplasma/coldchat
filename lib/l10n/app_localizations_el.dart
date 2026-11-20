@@ -164,6 +164,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchForChannels => 'Αναζήτηση καναλιών';
 
   @override
+  String get channelSearchFailed => 'Δεν ήταν δυνατή η αναζήτηση καναλιών';
+
+  @override
   String get recommendedChannels => 'Προτεινόμενα κανάλια';
 
   @override

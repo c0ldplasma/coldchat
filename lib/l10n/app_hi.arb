@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "उपयोगकर्ता टोकन सत्यापित करते समय एक त्रुटि हुई:",
   "verifyingUserToken": "उपयोगकर्ता टोकन सत्यापित किया जा रहा है...",
   "searchForChannels": "चैनल खोजें",
+  "channelSearchFailed": "चैनल नहीं खोजे जा सके",
   "recommendedChannels": "सुझाए गए चैनल",
   "popularChannels": "लोकप्रिय चैनल",
   "channel": "चैनल",

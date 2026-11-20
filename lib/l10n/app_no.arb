@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Det oppsto en feil under bekreftelse av brukertoken:",
   "verifyingUserToken": "Bekrefter brukertoken...",
   "searchForChannels": "Søk etter kanaler",
+  "channelSearchFailed": "Kunne ikke søke etter kanaler",
   "recommendedChannels": "Anbefalte kanaler",
   "popularChannels": "Populære kanaler",
   "channel": "Kanal",

@@ -19,7 +19,7 @@ class CustomCommandsModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.customCommands),
+          ModalHeader(title: AppLocalizations.of(context).customCommands),
           for (final customCommand in box.values.cast<CustomCommand>()) ...[
             Tile(
               onTap: () => Modal.show(
@@ -42,7 +42,7 @@ class CustomCommandsModal extends StatelessWidget {
               child: const CustomCommandModal(),
             ),
             prefix: const Icon(Icons.add_rounded),
-            title: AppLocalizations.of(context)!.newCustomCommand,
+            title: AppLocalizations.of(context).newCustomCommand,
           ),
         ],
       );

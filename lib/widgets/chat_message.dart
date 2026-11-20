@@ -65,12 +65,12 @@ class _BlockedChatMessageState extends State<BlockedChatMessage> {
               child: Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(text: AppLocalizations.of(context)!.blockedMessage),
+                    TextSpan(text: AppLocalizations.of(context).blockedMessage),
                     const TextSpan(text: ''),
                     TextSpan(
                       text: hidden
-                          ? AppLocalizations.of(context)!.showMessage
-                          : AppLocalizations.of(context)!.hideMessage,
+                          ? AppLocalizations.of(context).showMessage
+                          : AppLocalizations.of(context).hideMessage,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -512,7 +512,7 @@ class _ChannelStatusLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final channel = message.channel?.name ?? '';
     final text = switch (message.change.nextState) {
       ChannelConnecting() => l10n.channelConnecting(channel),

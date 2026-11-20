@@ -164,6 +164,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get searchForChannels => '채널 검색';
 
   @override
+  String get channelSearchFailed => '채널을 검색할 수 없습니다';
+
+  @override
   String get recommendedChannels => '추천 채널';
 
   @override

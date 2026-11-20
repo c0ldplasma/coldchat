@@ -78,6 +78,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Bei der Verifizierung des Benutzertokens ist ein Fehler aufgetreten:",
   "verifyingUserToken": "Benutzertoken wird verifiziert...",
   "searchForChannels": "Suche nach Kanälen",
+  "channelSearchFailed": "Kanalsuche fehlgeschlagen",
   "recommendedChannels": "Empfohlene Kanäle",
   "popularChannels": "Beliebte Kanäle",
   "channel": "Kanal",

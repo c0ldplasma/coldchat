@@ -108,12 +108,12 @@ String _randomState() {
 void _showLoginFailed(BuildContext context, String reason) => showDialog<void>(
   context: context,
   builder: (context) => AlertDialog(
-    title: Text(AppLocalizations.of(context)!.loginFailed),
+    title: Text(AppLocalizations.of(context).loginFailed),
     content: Text(reason),
     actions: [
       TextButton(
         onPressed: () => Navigator.of(context).pop(),
-        child: Text(AppLocalizations.of(context)!.close),
+        child: Text(AppLocalizations.of(context).close),
       ),
     ],
   ),

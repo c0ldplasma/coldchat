@@ -26,7 +26,7 @@ class ApplicationThemeModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.accentColor),
+          ModalHeader(title: AppLocalizations.of(context).accentColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 8.0),
             child: GridView.count(
@@ -37,13 +37,13 @@ class ApplicationThemeModal extends StatelessWidget {
               children: [
                 for (final accent in ColdChatTheme.accents)
                   _Swatch(
-                    name: accent.name(AppLocalizations.of(context)!),
+                    name: accent.name(AppLocalizations.of(context)),
                     color: accent.colorScheme(brightness, highContrast: appearance.highContrast).primary,
                     selected: accent.id == current.id,
                     onTap: () => box.put(ColdChatTheme.accentKey, accent.id),
                   ),
                 _Swatch(
-                  name: AppLocalizations.of(context)!.customColor,
+                  name: AppLocalizations.of(context).customColor,
                   color: isCustom ? Theme.of(context).colorScheme.primary : null,
                   selected: isCustom,
                   // Brings back the last custom color, or starts from the accent picked so far.
@@ -155,7 +155,7 @@ class _CustomColorEditor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final accent = ColdChatTheme.custom(hue, chroma);
     return Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),

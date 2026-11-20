@@ -164,6 +164,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchForChannels => 'Поиск каналов';
 
   @override
+  String get channelSearchFailed => 'Не удалось выполнить поиск каналов';
+
+  @override
   String get recommendedChannels => 'Рекомендуемые каналы';
 
   @override

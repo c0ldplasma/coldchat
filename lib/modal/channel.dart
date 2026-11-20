@@ -42,7 +42,7 @@ class _ChannelModalState extends State<ChannelModal> {
       children: [
         UserModalHeader(profile: state, name: channel.name.replaceFirst('#', '')),
         Tile(
-          title: AppLocalizations.of(context)!.chatters,
+          title: AppLocalizations.of(context).chatters,
           prefix: const Icon(Icons.people_outline_outlined),
           onTap: () async {
             Modal.show(
@@ -52,7 +52,7 @@ class _ChannelModalState extends State<ChannelModal> {
           },
         ),
         Tile(
-          title: AppLocalizations.of(context)!.leaveChannel,
+          title: AppLocalizations.of(context).leaveChannel,
           prefix: const Icon(Icons.delete_forever_outlined),
           onTap: () async {
             context.read<Client>().channels.part(channel);

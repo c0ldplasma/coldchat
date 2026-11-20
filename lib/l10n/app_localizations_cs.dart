@@ -164,6 +164,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get searchForChannels => 'Hledat kanály';
 
   @override
+  String get channelSearchFailed => 'Kanály se nepodařilo vyhledat';
+
+  @override
   String get recommendedChannels => 'Doporučené kanály';
 
   @override

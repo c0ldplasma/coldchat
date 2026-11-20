@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Дошло је до грешке при провери корисничког токена:",
   "verifyingUserToken": "Провера корисничког токена...",
   "searchForChannels": "Претражи канале",
+  "channelSearchFailed": "Претрага канала није успела",
   "recommendedChannels": "Препоручени канали",
   "popularChannels": "Популарни канали",
   "channel": "Канал",

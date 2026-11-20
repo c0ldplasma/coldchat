@@ -59,8 +59,8 @@ class _VerifyTokenModalState extends State<VerifyTokenModal> {
                 color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.verifiedUserToken),
-              Text(AppLocalizations.of(context)!.loggedInAs('${snapshot.data!.login} (${snapshot.data!.userId})')),
+              Text(AppLocalizations.of(context).verifiedUserToken),
+              Text(AppLocalizations.of(context).loggedInAs('${snapshot.data!.login} (${snapshot.data!.userId})')),
             ],
             if (snapshot.hasError) ...[
               Icon(
@@ -69,13 +69,13 @@ class _VerifyTokenModalState extends State<VerifyTokenModal> {
                 color: Theme.of(context).colorScheme.error,
               ),
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.anErrorHasOccuredWhenVerifyingUserToken),
+              Text(AppLocalizations.of(context).anErrorHasOccuredWhenVerifyingUserToken),
               Text('${snapshot.error}'),
             ],
             if (!snapshot.hasData && !snapshot.hasError) ...[
               const CircularProgressIndicator.adaptive(),
               const SizedBox(height: 16.0),
-              Text(AppLocalizations.of(context)!.verifyingUserToken),
+              Text(AppLocalizations.of(context).verifyingUserToken),
             ],
           ],
         );

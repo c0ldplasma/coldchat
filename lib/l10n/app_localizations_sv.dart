@@ -164,6 +164,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get searchForChannels => 'Sök efter kanaler';
 
   @override
+  String get channelSearchFailed => 'Det gick inte att söka efter kanaler';
+
+  @override
   String get recommendedChannels => 'Rekommenderade kanaler';
 
   @override

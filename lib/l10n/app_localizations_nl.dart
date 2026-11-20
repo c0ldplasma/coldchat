@@ -166,6 +166,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get searchForChannels => 'Kanalen zoeken';
 
   @override
+  String get channelSearchFailed => 'Kanalen zoeken is mislukt';
+
+  @override
   String get recommendedChannels => 'Aanbevolen kanalen';
 
   @override

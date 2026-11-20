@@ -96,7 +96,7 @@ class CreditsModal extends StatelessWidget {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.credits),
+      ModalHeader(title: AppLocalizations.of(context).credits),
       // Tile(
       //   title: 'Midori',
       //   subtitle: 'French translation',

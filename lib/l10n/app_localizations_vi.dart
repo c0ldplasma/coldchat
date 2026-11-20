@@ -164,6 +164,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get searchForChannels => 'Tìm kiếm kênh';
 
   @override
+  String get channelSearchFailed => 'Không thể tìm kiếm kênh';
+
+  @override
   String get recommendedChannels => 'Kênh đề xuất';
 
   @override

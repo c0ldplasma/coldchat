@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   // scrolled out of view.
   void _onWhisperReceived(WhisperChannel conversation) {
     if (!mounted || context.read<Client>().whispers.active == conversation) return;
-    final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     messenger.hideCurrentSnackBar();
     messenger.showSnackBar(
@@ -267,7 +267,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       IconButton(
                         icon: const Icon(Icons.add_circle_outline_rounded),
                         color: accent,
-                        tooltip: AppLocalizations.of(context)!.addChannel,
+                        tooltip: AppLocalizations.of(context).addChannel,
                         onPressed: _openChannelSearch,
                       ),
                     ],

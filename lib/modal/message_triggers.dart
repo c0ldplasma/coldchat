@@ -19,7 +19,7 @@ class MessageTriggersModal extends StatelessWidget {
       return ListView(
         shrinkWrap: true,
         children: [
-          ModalHeader(title: AppLocalizations.of(context)!.messageTriggers),
+          ModalHeader(title: AppLocalizations.of(context).messageTriggers),
           for (final messageTrigger in box.values.cast<MessageTrigger>()) ...[
             Tile(
               onTap: () => Modal.show(
@@ -45,7 +45,7 @@ class MessageTriggersModal extends StatelessWidget {
               child: const MessageTriggerModal(),
             ),
             prefix: const Icon(Icons.add_rounded),
-            title: AppLocalizations.of(context)!.newMessageTrigger,
+            title: AppLocalizations.of(context).newMessageTrigger,
           ),
         ],
       );

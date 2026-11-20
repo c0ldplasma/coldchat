@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Došlo je do pogreške pri provjeri korisničkog tokena:",
   "verifyingUserToken": "Provjera korisničkog tokena...",
   "searchForChannels": "Pretraži kanale",
+  "channelSearchFailed": "Pretraživanje kanala nije uspjelo",
   "recommendedChannels": "Preporučeni kanali",
   "popularChannels": "Popularni kanali",
   "channel": "Kanal",

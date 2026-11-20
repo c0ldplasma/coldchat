@@ -126,6 +126,7 @@
   "anErrorHasOccuredWhenVerifyingUserToken": "Παρουσιάστηκε σφάλμα κατά την επαλήθευση του token χρήστη:",
   "verifyingUserToken": "Επαλήθευση token χρήστη...",
   "searchForChannels": "Αναζήτηση καναλιών",
+  "channelSearchFailed": "Δεν ήταν δυνατή η αναζήτηση καναλιών",
   "recommendedChannels": "Προτεινόμενα κανάλια",
   "popularChannels": "Δημοφιλή κανάλια",
   "channel": "Κανάλι",

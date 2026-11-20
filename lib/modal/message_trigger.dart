@@ -44,13 +44,13 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
     children: [
-      ModalHeader(title: AppLocalizations.of(context)!.messageTrigger),
+      ModalHeader(title: AppLocalizations.of(context).messageTrigger),
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
         child: TextField(
           controller: patternController,
           decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.pattern,
+            labelText: AppLocalizations.of(context).pattern,
             border: InputBorder.none,
             filled: true,
           ),
@@ -61,14 +61,14 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ChoiceChip(
-            label: Text(AppLocalizations.of(context)!.mention),
+            label: Text(AppLocalizations.of(context).mention),
             selected: type == MessageTriggerType.mention,
             onSelected: (bool selected) => setState(() {
               type = MessageTriggerType.mention;
             }),
           ),
           ChoiceChip(
-            label: Text(AppLocalizations.of(context)!.block),
+            label: Text(AppLocalizations.of(context).block),
             selected: type == MessageTriggerType.block,
             onSelected: (bool selected) => setState(() {
               type = MessageTriggerType.block;
@@ -77,7 +77,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
         ],
       ),
       Tile(
-        title: AppLocalizations.of(context)!.enableRegex,
+        title: AppLocalizations.of(context).enableRegex,
         prefix: Checkbox(
           value: enableRegex,
           onChanged: (bool? value) => setState(() => enableRegex = value ?? !enableRegex),
@@ -85,7 +85,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
         onTap: () => setState(() => enableRegex = !enableRegex),
       ),
       Tile(
-        title: AppLocalizations.of(context)!.caseSensitive,
+        title: AppLocalizations.of(context).caseSensitive,
         prefix: Checkbox(
           value: caseSensitive,
           onChanged: (bool? value) => setState(() => caseSensitive = value ?? !caseSensitive),
@@ -101,7 +101,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.cancel,
+                    AppLocalizations.of(context).cancel,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -146,7 +146,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: Center(
                   child: Text(
-                    AppLocalizations.of(context)!.save,
+                    AppLocalizations.of(context).save,
                     style: TextStyle(
                       color: patternController.text.isEmpty
                           ? Theme.of(context).colorScheme.error
