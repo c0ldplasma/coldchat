@@ -50,7 +50,7 @@ class ModalHeader extends StatelessWidget {
             ),
             const Spacer(),
           ],
-          if (trailing != null) trailing!,
+          ?trailing,
           if (trailing == null)
             SizedBox(
               width: 40.0,

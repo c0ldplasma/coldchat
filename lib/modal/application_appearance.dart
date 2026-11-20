@@ -1,7 +1,7 @@
 import 'package:coldchat/components/toggle.dart';
 import 'package:coldchat/data/settings/application_appearance.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 
 import '../components/boxlistener.dart';

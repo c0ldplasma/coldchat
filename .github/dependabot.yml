@@ -16,12 +16,3 @@ updates:
       # Minor and patch updates in one PR; each major update gets its own, since those can need code changes.
       minor-and-patch:
         update-types: [minor, patch]
-    ignore:
-      # The code generators are stuck on old versions until hive is replaced (hive_generator is unmaintained).
-      - dependency-name: analyzer
-      - dependency-name: build_runner
-      - dependency-name: json_serializable
-      - dependency-name: json_annotation
-      - dependency-name: hive
-      - dependency-name: hive_flutter
-      - dependency-name: hive_generator

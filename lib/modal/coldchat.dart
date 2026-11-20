@@ -3,7 +3,7 @@ import 'package:coldchat/modal/about.dart';
 import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:coldchat/modal/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';

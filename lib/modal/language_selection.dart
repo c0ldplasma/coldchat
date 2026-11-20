@@ -3,7 +3,7 @@ import 'package:coldchat/modal/components/modal_header.dart';
 import 'package:flutter/material.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 class LanguageSelectionModal extends StatelessWidget {
   const LanguageSelectionModal({super.key});

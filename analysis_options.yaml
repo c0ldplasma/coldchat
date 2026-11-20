@@ -26,10 +26,6 @@ linter:
   # or a specific dart file by using the `// ignore: name_of_lint` and
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
-  rules:
-    # `'key': ?value` is newer syntax than the analyzer that build_runner and hive_generator are pinned to
-    # (5.13), and code generation fails on any file that uses it. Re-enable once code generation is upgraded.
-    use_null_aware_elements: false
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
