@@ -42,8 +42,8 @@ dependencies:
   flutter_web_auth_2: ^6.0.0
 
 dev_dependencies:
-  # flutter_test:
-  #   sdk: flutter
+  flutter_test:
+    sdk: flutter
   flutter_lints: ^6.0.0
   json_serializable: ^6.15.2
   hive_ce_generator: ^1.12.1
