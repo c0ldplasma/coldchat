@@ -47,5 +47,6 @@
 !/.gitignore
 !/.git-blame-ignore-revs
 !/README.md
+!/SECURITY.md
 !/CLAUDE.md
 !/LICENSE
