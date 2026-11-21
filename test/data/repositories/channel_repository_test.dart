@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:coldchat/data/repositories/channel_repository.dart';
+import 'package:coldchat/data/repositories/settings_repository.dart';
+import 'package:coldchat/hive_registrar.g.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
 
 void main() {
   late Directory tempDir;
+
+  setUpAll(Hive.registerAdapters);
 
   setUp(() {
     tempDir = Directory.systemTemp.createTempSync('coldchat_channel_repository_test');
@@ -66,6 +70,20 @@ void main() {
     await repository.remove('a');
 
     expect(repository.channels, ['b', 'a']);
+  });
+
+  test('shares the Settings box with SettingsRepository when both are opened at once', () async {
+    final (channels, settings) = await (ChannelRepository.open(), SettingsRepository.open()).wait;
+    var settingsChanges = 0;
+    var appChanges = 0;
+    settings.changes.addListener(() => settingsChanges++);
+    settings.appChanges.addListener(() => appChanges++);
+
+    await channels.setLastChannel('forsen');
+    await pumpEventQueue();
+
+    // Switching tabs writes the last channel, which must not rebuild the whole app.
+    expect((settingsChanges, appChanges), (1, 0));
   });
 
   test('stores the last channel in the Settings box', () async {

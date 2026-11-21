@@ -9,19 +9,11 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'app.dart';
 import 'data/custom_command.dart';
-import 'data/emote_button_icon.dart';
 import 'data/filesharing/upload_queue_cubit.dart';
 import 'data/filesharing/uploaded_media.dart';
 import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
-import 'data/repositories/account_repository.dart';
-import 'data/repositories/channel_repository.dart';
-import 'data/repositories/custom_command_repository.dart';
-import 'data/repositories/emote_badge_cache_repository.dart';
-import 'data/repositories/seen_mentions_repository.dart';
-import 'data/repositories/settings_repository.dart';
-import 'data/repositories/trigger_repository.dart';
-import 'data/repositories/whisper_repository.dart';
+import 'data/repositories/repositories.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
 import 'data/settings/blocked_user.dart';
@@ -67,38 +59,21 @@ Future<void> main() async {
   Hive.registerAdapter(UserTriggerAdapter());
   Hive.registerAdapter(ChatSettingsAdapter());
 
-  final accounts = await AccountRepository.open();
-  final settings = await SettingsRepository.open();
-  final emoteButtonIcon = await EmoteButtonIcon.open(settings);
-  final channels = await ChannelRepository.open();
-  final whispers = await WhisperRepository.open();
-  final triggers = await TriggerRepository.open();
-  final customCommands = await CustomCommandRepository.open();
-  final emoteBadgeCache = await EmoteBadgeCacheRepository.open();
-  final seenMentions = await SeenMentionsRepository.open();
-
-  // await settingsBox.clear();
-
-  final activeTwitchAccount = accounts.active;
+  final repositories = await Repositories.open();
+  final activeTwitchAccount = repositories.accounts.active;
 
   runApp(
     MultiProvider(
       providers: [
-        Provider<AccountRepository>.value(value: accounts),
-        Provider<SettingsRepository>.value(value: settings),
-        Provider<EmoteButtonIcon>.value(value: emoteButtonIcon),
-        Provider<ChannelRepository>.value(value: channels),
-        Provider<TriggerRepository>.value(value: triggers),
-        Provider<CustomCommandRepository>.value(value: customCommands),
-        Provider<SeenMentionsRepository>.value(value: seenMentions),
+        ...repositories.providers,
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
-            accounts: accounts,
-            triggers: triggers,
-            channelRepository: channels,
-            cacheRepository: emoteBadgeCache,
-            whisperRepository: whispers,
+            accounts: repositories.accounts,
+            triggers: repositories.triggers,
+            channelRepository: repositories.channels,
+            cacheRepository: repositories.emoteBadgeCache,
+            whisperRepository: repositories.whispers,
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),
