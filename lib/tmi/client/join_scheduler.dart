@@ -60,9 +60,6 @@ class JoinScheduler {
     _attempts.remove(channel);
   }
 
-  /// Whether a JOIN for [channel] was sent and is still waiting for its echo.
-  bool isPending(String channel) => _pending.containsKey(channel);
-
   /// Whether [channel] may be sent another JOIN after a timeout.
   bool canRetry(String channel) => (_attempts[channel] ?? 0) < maxAttempts;
 

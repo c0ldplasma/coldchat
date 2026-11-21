@@ -96,22 +96,13 @@ void main() {
     });
   });
 
-  test('the transmitter parting forgets the moderator status, as the next join may be as another account', () {
-    final channel = _channel()..applyUserState(_userState('moderator/1'));
-
-    channel.transmitterParted();
-
-    expect(channel.ownUserIsModerator, isFalse);
-    expect(channel.transmitterJoin.state, isFalse);
-  });
-
-  test('the anonymous receiver parting keeps the moderator status: it is about the account', () async {
+  test('parting a channel forgets the moderator status, as the next join may be as another account', () async {
     final channel = _channel()..applyUserState(_userState('moderator/1'));
 
     channel.add(ChannelPart());
     await Future<void>.delayed(Duration.zero);
 
-    expect(channel.ownUserIsModerator, isTrue);
+    expect(channel.ownUserIsModerator, isFalse);
   });
 
   test('USERSTATE, ROOMSTATE and NOTICE lines from the history are skipped, chat lines are kept', () {

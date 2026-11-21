@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
-import '../data/repositories/trigger_repository.dart';
 import '../data/user_trigger.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
@@ -104,9 +103,9 @@ class _UserTriggerModalState extends State<UserTriggerModal> {
 
                       patternController.text = patternController.text.trim();
 
-                      final triggers = context.read<TriggerRepository>();
+                      final userTriggersBox = Hive.box<dynamic>('UserTriggers');
                       if (widget.userTrigger == null) {
-                        await triggers.addUserTrigger(
+                        await userTriggersBox.add(
                           UserTrigger(
                             login: patternController.text,
                             type: type.index,
@@ -115,7 +114,7 @@ class _UserTriggerModalState extends State<UserTriggerModal> {
                       } else {
                         widget.userTrigger!.type = type.index;
                         widget.userTrigger!.login = patternController.text;
-                        await triggers.saveUserTrigger(widget.userTrigger!);
+                        await widget.userTrigger!.save();
                       }
                     },
               child: Padding(

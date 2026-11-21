@@ -7,14 +7,13 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import 'api/recentmessages/recentmessages.dart';
 import 'app.dart';
 import 'data/custom_command.dart';
+import 'data/emote_button_icon.dart';
 import 'data/filesharing/upload_queue_cubit.dart';
 import 'data/filesharing/uploaded_media.dart';
 import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
-import 'data/repositories/repositories.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
 import 'data/settings/blocked_user.dart';
@@ -27,6 +26,7 @@ import 'data/twitch/user_data.dart';
 import 'data/twitch_account.dart';
 import 'data/user_trigger.dart';
 import 'data/webview/cookie_data.dart';
+import 'theme/coldchat_theme.dart';
 import 'tmi/client/client.dart';
 import 'tools/coldchat_binding.dart';
 
@@ -43,6 +43,7 @@ Future<void> main() async {
   unawaited(SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge));
 
   await Hive.initFlutter();
+  await EmoteButtonIcon.init();
 
   Hive.registerAdapter(TwitchAccountAdapter());
   Hive.registerAdapter(TokenDataAdapter());
@@ -60,22 +61,55 @@ Future<void> main() async {
   Hive.registerAdapter(UserTriggerAdapter());
   Hive.registerAdapter(ChatSettingsAdapter());
 
-  final repositories = await Repositories.open();
-  final activeTwitchAccount = repositories.accounts.active;
+  // Open all Hive boxes concurrently instead of serially to shave startup
+  // time off the path before the first frame.
+  final boxes = await Future.wait([
+    Hive.openBox<dynamic>('TwitchAccounts'),
+    Hive.openBox<dynamic>('AccountSettings'),
+    Hive.openBox<dynamic>('Settings'),
+    Hive.openBox<dynamic>('Channels'),
+    Hive.openBox<dynamic>('EmoteBadgeCache'),
+    Hive.openBox<dynamic>('SeenMentions'),
+    Hive.openBox<dynamic>('MessageTriggers'),
+    Hive.openBox<dynamic>('UserTriggers'),
+    Hive.openBox<dynamic>('CustomCommands'),
+    Hive.openBox<dynamic>('ChatSettings'),
+    Hive.openBox<dynamic>('Whispers'),
+  ]);
+  final twitchAccountsBox = boxes[0];
+  final accountSettingsBox = boxes[1];
+  final settingsBox = boxes[2];
+  final channelsBox = boxes[3];
+  final emoteBadgeCacheBox = boxes[4];
+  final whispersBox = boxes[10];
+
+  // await settingsBox.clear();
+
+  final activeTwitchAccount = twitchAccountsBox.values.firstWhere(
+    (element) => accountSettingsBox.get('activeTwitchAccount') == (element as TwitchAccount).tokenData.hash,
+    orElse: () => null,
+  ) as TwitchAccount?;
+
+  if (!settingsBox.containsKey('messageAppearance')) {
+    await settingsBox.put('messageAppearance', MessageAppearance());
+  }
+  if (!settingsBox.containsKey('applicationAppearance')) {
+    await settingsBox.put('applicationAppearance', ApplicationAppearance());
+  }
+  await ColdChatTheme.migrate(settingsBox);
+  if (!settingsBox.containsKey('chatSettings')) {
+    await settingsBox.put('chatSettings', ChatSettings());
+  }
 
   runApp(
     MultiProvider(
       providers: [
-        ...repositories.providers,
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
-            accounts: repositories.accounts,
-            triggers: repositories.triggers,
-            channelRepository: repositories.channels,
-            cacheRepository: repositories.emoteBadgeCache,
-            whisperRepository: repositories.whispers,
-            recentMessages: RecentMessages(enabled: () => repositories.settings.chatHistory),
+            channelsBox: channelsBox,
+            cacheBox: emoteBadgeCacheBox,
+            whispersBox: whispersBox,
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),

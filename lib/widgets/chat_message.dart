@@ -5,13 +5,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../data/emote.dart';
 import '../data/inline_url.dart';
-import '../data/repositories/settings_repository.dart';
 import '../data/settings/message_appearance.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/emote.dart';
@@ -201,7 +201,7 @@ class _ChatMessageState extends State<ChatMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final messageAppearance = context.read<SettingsRepository>().messageAppearance;
+    final messageAppearance = Hive.box<dynamic>('Settings').get('messageAppearance') as MessageAppearance;
     if (widget.message is ChannelMessageChat) {
       final chatMessage = widget.message as ChannelMessageChat;
       if (chatMessage.subInfo != null) {

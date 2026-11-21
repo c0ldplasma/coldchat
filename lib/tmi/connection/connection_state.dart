@@ -29,16 +29,10 @@ class ConnectionConnected extends ConnectionStateWithCredentials {
   // Equatable props.
   final List<String> blockedUserIds;
 
-  /// The nick Twitch registered the connection with (from its 001), e.g. the random `justinfan` nick of an
-  /// anonymous connection. Twitch echoes JOINs with it.
-  final String nick;
-
   ConnectionConnected(
     super.credentials, {
     List<String>? blockedUserIds,
-    String? nick,
-  }) : blockedUserIds = blockedUserIds ?? [],
-       nick = (nick ?? credentials.tokenData.login).toLowerCase();
+  }) : blockedUserIds = blockedUserIds ?? [];
 }
 
 class ConnectionReconnecting extends ConnectionStateWithCredentials {

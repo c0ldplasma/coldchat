@@ -8,16 +8,15 @@ import '../tmi/connection/connection.dart';
 import '../tmi/connection/connection_state.dart' as tmi;
 
 /// Surfaces a dead Twitch login. Without it an expired token is invisible:
-/// Twitch refuses the transmitter's handshake, so nothing can be sent, while
-/// the anonymous receiver keeps the chat readable. Tapping starts a fresh
-/// sign-in — implicit-grant tokens have no refresh token, so re-authenticating
-/// is the only way back.
+/// Twitch refuses the handshake, every channel stays parted and the chat just
+/// looks empty. Tapping starts a fresh sign-in — implicit-grant tokens have no
+/// refresh token, so re-authenticating is the only way back.
 class LoginExpiredBanner extends StatelessWidget {
   const LoginExpiredBanner({super.key});
 
   @override
   Widget build(BuildContext context) => BlocBuilder<Connection, tmi.ConnectionState>(
-    bloc: context.read<Client>().transmitter,
+    bloc: context.read<Client>().receiver,
     builder: (context, state) {
       if (state is! tmi.ConnectionInvalidCredentials) return const SizedBox.shrink();
 

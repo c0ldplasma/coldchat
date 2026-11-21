@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../../data/repositories/settings_repository.dart';
 import '../../data/settings/chat_settings.dart';
 import '../../l10n/app_localizations.dart';
 import '../../tmi/channel/messages/embeds/image_embed.dart';
@@ -26,10 +25,11 @@ class LinkImage extends StatefulWidget {
 class _LinkImageState extends State<LinkImage> {
   static bool _offeredThisSession = false;
 
+  static ChatSettings get _settings => Hive.box<dynamic>('Settings').get('chatSettings') as ChatSettings;
+
   void _reveal() {
     setState(() => widget.embed.revealed = true);
-    final settings = context.read<SettingsRepository>();
-    if (_offeredThisSession || settings.chatSettings.showLinkImages) return;
+    if (_offeredThisSession || _settings.showLinkImages) return;
     _offeredThisSession = true;
     final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -38,9 +38,9 @@ class _LinkImageState extends State<LinkImage> {
         action: SnackBarAction(
           label: l10n.turnOn,
           onPressed: () {
-            final chatSettings = settings.chatSettings;
-            chatSettings.showLinkImages = true;
-            unawaited(settings.saveChatSettings(chatSettings));
+            final settings = _settings;
+            settings.showLinkImages = true;
+            unawaited(settings.save());
           },
         ),
       ),
@@ -48,10 +48,10 @@ class _LinkImageState extends State<LinkImage> {
   }
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: context.read<SettingsRepository>().chatSettingsChanges,
-    builder: (context, _) {
-      if (widget.embed.revealed || context.read<SettingsRepository>().chatSettings.showLinkImages) {
+  Widget build(BuildContext context) => ValueListenableBuilder<Box<dynamic>>(
+    valueListenable: Hive.box<dynamic>('Settings').listenable(keys: ['chatSettings']),
+    builder: (context, box, _) {
+      if (widget.embed.revealed || _settings.showLinkImages) {
         return EmbeddedImage(embed: widget.embed, scale: widget.scale);
       }
       final colors = Theme.of(context).colorScheme;

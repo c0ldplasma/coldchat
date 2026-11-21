@@ -47,14 +47,10 @@ class ConnectionCredentialsRejected extends ConnectionEvent {
 class ConnectionReconnect extends ConnectionEvent {
   final TwitchAccount? twitchAccount;
 
-  /// Why it reconnects, for the `[irc]` diagnostics.
-  final String reason;
-
   ConnectionReconnect({
     this.twitchAccount,
-    this.reason = 'requested',
   });
 
   @override
-  List<Object?> get props => [twitchAccount, reason, ...super.props];
+  List<Object?> get props => [twitchAccount, ...super.props];
 }
