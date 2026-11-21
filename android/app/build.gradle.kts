@@ -63,4 +63,6 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    // Custom Tabs warm-up for the Twitch login (MainActivity); the same version flutter_web_auth_2 uses.
+    implementation("androidx.browser:browser:1.10.0")
 }
