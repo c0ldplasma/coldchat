@@ -262,6 +262,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get enableRegex => 'Använd regex';
 
   @override
+  String get invalidRegex => 'Inte ett giltigt regex';
+
+  @override
   String get caseSensitive => 'Skiftlägeskänslig';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Radera meddelande';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Meddelandet togs inte bort: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Logga in igen för att ta bort meddelanden. Din inloggning är från innan ColdChat kunde ta bort dem.';
 
   @override
   String get mentionUser => 'Nämn användare';

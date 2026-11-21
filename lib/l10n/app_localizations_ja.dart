@@ -262,6 +262,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enableRegex => '正規表現（regex）を使用';
 
   @override
+  String get invalidRegex => '無効な正規表現です';
+
+  @override
   String get caseSensitive => '大文字と小文字を区別';
 
   @override
@@ -281,6 +284,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get deleteMessage => 'メッセージを削除';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'メッセージを削除できませんでした: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope => 'メッセージを削除するには、もう一度サインインしてください。ColdChat が削除に対応する前のログインです。';
 
   @override
   String get mentionUser => 'ユーザーをメンション';

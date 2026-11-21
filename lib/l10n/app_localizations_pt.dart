@@ -262,6 +262,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get enableRegex => 'Ativar regex';
 
   @override
+  String get invalidRegex => 'Regex inválido';
+
+  @override
   String get caseSensitive => 'Diferenciar maiúsculas e minúsculas';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Excluir mensagem';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Mensagem não excluída: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Entre de novo para excluir mensagens. Seu login é de antes de o ColdChat conseguir excluí-las.';
 
   @override
   String get mentionUser => 'Mencionar usuário';

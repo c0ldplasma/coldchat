@@ -354,26 +354,31 @@ class Twitch {
     }
   }
 
+  /// The scope [deleteChatMessage] needs. Logins from before it was requested lack it and must sign in again.
+  static const String deleteChatMessageScope = 'moderator:manage:chat_messages';
+
+  /// Deletes the single message [messageId] (needs [deleteChatMessageScope]). Helix deletes every message in the
+  /// channel when `message_id` is missing, so an empty id is rejected instead of being sent.
   static Future<void> deleteChatMessage(
     TokenData tokenData, {
     required String broadcasterId,
     required String moderatorId,
-    String? messageId,
+    required String messageId,
   }) async {
+    if (messageId.isEmpty) throw ArgumentError.value(messageId, 'messageId', 'must not be empty');
     final response = await http.delete(
-      Uri.parse(
-        'https://api.twitch.tv/helix/moderation/chat?broadcaster_id=$broadcasterId&moderator_id=$moderatorId${messageId != null ? '&message_id=$messageId' : ''}',
-      ),
+      Uri.https('api.twitch.tv', '/helix/moderation/chat', {
+        'broadcaster_id': broadcasterId,
+        'moderator_id': moderatorId,
+        'message_id': messageId,
+      }),
       headers: {
         'Authorization': 'Bearer ${tokenData.accessToken}',
         'Client-Id': '${tokenData.clientId}',
       },
     );
 
-    if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
-      throw Exception('${errorJson['error']}: ${errorJson['message']}');
-    }
+    if (response.statusCode != 204) throw _requestException(response);
   }
 
   static Future<void> addModerator(

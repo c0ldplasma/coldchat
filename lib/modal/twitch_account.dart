@@ -4,11 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../components/modal.dart';
 import '../components/separator.dart';
+import '../data/active_account.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
+import '../tmi/client/client.dart';
 import 'components/modal_header.dart';
 import 'verify_token.dart';
 
@@ -98,7 +101,9 @@ class TwitchAccountModal extends StatelessWidget {
         onTap: () async {
           final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
           if (accountSettingsBox.get('activeTwitchAccount') == twitchAccount.tokenData.hash) {
-            await accountSettingsBox.delete('activeTwitchAccount');
+            // Log out rather than silently chatting as another account; the
+            // others stay one tap away in the account sheet.
+            await setActiveAccount(context.read<Client>(), null);
           }
           await twitchAccount.delete();
           if (!context.mounted) return;

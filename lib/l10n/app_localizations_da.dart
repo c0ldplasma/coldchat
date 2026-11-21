@@ -262,6 +262,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get enableRegex => 'Brug regex';
 
   @override
+  String get invalidRegex => 'Ikke et gyldigt regex';
+
+  @override
   String get caseSensitive => 'Skeln mellem store og små bogstaver';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Slet besked';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Beskeden blev ikke slettet: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Log ind igen for at slette beskeder. Dit login er fra før ColdChat kunne slette dem.';
 
   @override
   String get mentionUser => 'Omtal bruger';

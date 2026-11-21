@@ -262,6 +262,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get enableRegex => 'Χρήση regex';
 
   @override
+  String get invalidRegex => 'Μη έγκυρο regex';
+
+  @override
   String get caseSensitive => 'Διάκριση πεζών-κεφαλαίων';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Διαγραφή μηνύματος';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Το μήνυμα δεν διαγράφηκε: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Συνδέσου ξανά για να διαγράφεις μηνύματα. Η σύνδεσή σου είναι από πριν το ColdChat μπορεί να τα διαγράφει.';
 
   @override
   String get mentionUser => 'Αναφορά χρήστη';

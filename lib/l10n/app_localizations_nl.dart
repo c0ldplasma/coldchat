@@ -264,6 +264,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get enableRegex => 'Regex gebruiken';
 
   @override
+  String get invalidRegex => 'Geen geldige regex';
+
+  @override
   String get caseSensitive => 'Hoofdlettergevoelig';
 
   @override
@@ -283,6 +286,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Bericht verwijderen';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Bericht niet verwijderd: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Log opnieuw in om berichten te verwijderen. Je login is van voordat ColdChat dat kon.';
 
   @override
   String get mentionUser => 'Gebruiker vermelden';
