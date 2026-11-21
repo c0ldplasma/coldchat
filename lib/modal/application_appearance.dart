@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+import 'package:provider/provider.dart';
 
-import '../components/boxlistener.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
-import '../data/settings/application_appearance.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
@@ -14,10 +13,11 @@ class ApplicationAppearanceModal extends StatelessWidget {
   const ApplicationAppearanceModal({super.key});
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('Settings'),
-    builder: (context, box) {
-      final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<SettingsRepository>().changes,
+    builder: (context, _) {
+      final settings = context.read<SettingsRepository>();
+      final applicationAppearance = settings.applicationAppearance;
       return ListView(
         shrinkWrap: true,
         children: [
@@ -27,7 +27,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).light,
             onTap: () {
               applicationAppearance.themeMode = 'light';
-              unawaited(applicationAppearance.save());
+              unawaited(settings.saveApplicationAppearance(applicationAppearance));
             },
             suffix: applicationAppearance.themeMode == 'light'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -38,7 +38,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).dark,
             onTap: () {
               applicationAppearance.themeMode = 'dark';
-              unawaited(applicationAppearance.save());
+              unawaited(settings.saveApplicationAppearance(applicationAppearance));
             },
             suffix: applicationAppearance.themeMode == 'dark'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -49,7 +49,7 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).system,
             onTap: () {
               applicationAppearance.themeMode = 'system';
-              unawaited(applicationAppearance.save());
+              unawaited(settings.saveApplicationAppearance(applicationAppearance));
             },
             suffix: applicationAppearance.themeMode == 'system'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
@@ -61,13 +61,13 @@ class ApplicationAppearanceModal extends StatelessWidget {
             subtitle: AppLocalizations.of(context).oledBlackSubtitle,
             onTap: () {
               applicationAppearance.oledBlack = !applicationAppearance.oledBlack;
-              unawaited(applicationAppearance.save());
+              unawaited(settings.saveApplicationAppearance(applicationAppearance));
             },
             suffix: Toggle(
               value: applicationAppearance.oledBlack,
               onChanged: (value) {
                 applicationAppearance.oledBlack = value;
-                unawaited(applicationAppearance.save());
+                unawaited(settings.saveApplicationAppearance(applicationAppearance));
               },
             ),
           ),
@@ -76,13 +76,13 @@ class ApplicationAppearanceModal extends StatelessWidget {
             title: AppLocalizations.of(context).highContrast,
             onTap: () {
               applicationAppearance.highContrast = !applicationAppearance.highContrast;
-              unawaited(applicationAppearance.save());
+              unawaited(settings.saveApplicationAppearance(applicationAppearance));
             },
             suffix: Toggle(
               value: applicationAppearance.highContrast,
               onChanged: (value) {
                 applicationAppearance.highContrast = value;
-                unawaited(applicationAppearance.save());
+                unawaited(settings.saveApplicationAppearance(applicationAppearance));
               },
             ),
           ),

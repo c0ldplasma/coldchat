@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+import 'package:provider/provider.dart';
 
-import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
+import '../data/repositories/trigger_repository.dart';
 import '../data/user_trigger.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
@@ -13,14 +13,15 @@ class UserTriggersModal extends StatelessWidget {
   const UserTriggersModal({super.key});
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('UserTriggers'),
-    builder: (context, box) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<TriggerRepository>().userTriggerChanges,
+    builder: (context, _) {
+      final repository = context.read<TriggerRepository>();
       return ListView(
         shrinkWrap: true,
         children: [
           ModalHeader(title: AppLocalizations.of(context).userTriggers),
-          for (final userTrigger in box.values.cast<UserTrigger>()) ...[
+          for (final userTrigger in repository.userTriggers) ...[
             Tile(
               onTap: () => Modal.show(
                 context: context,
@@ -31,7 +32,7 @@ class UserTriggersModal extends StatelessWidget {
               ),
               suffix: InkWell(
                 borderRadius: BorderRadius.circular(24.0),
-                onTap: userTrigger.delete,
+                onTap: () => repository.deleteUserTrigger(userTrigger),
                 child: const Icon(Icons.delete_forever_rounded),
               ),
               title: userTrigger.login,

@@ -4,15 +4,18 @@ import 'dart:math' show min;
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../api/betterttv/betterttv_socket.dart';
 import '../../api/recentmessages/recentmessages.dart';
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/twitch.dart';
-import '../../data/active_account.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
+import '../../data/repositories/account_repository.dart';
+import '../../data/repositories/channel_repository.dart';
+import '../../data/repositories/emote_badge_cache_repository.dart';
+import '../../data/repositories/trigger_repository.dart';
+import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
@@ -117,34 +120,46 @@ class Client implements AccountConnector {
   Timer? _saveBttvProBadgesTimer;
   static const int _maxBttvProBadges = 5000;
 
+  /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
+  final AccountRepository? accounts;
+
+  /// The message and user triggers that highlight or block messages. Null in tests, then there are none.
+  final TriggerRepository? triggers;
+
+  /// Where chat history comes from. Asks Settings → Chat history before each request.
+  final RecentMessages recentMessages;
+
   Client({
     TwitchAccount? twitchAccount,
-    required Box<dynamic> channelsBox,
-    Box<dynamic>? cacheBox,
-    Box<dynamic>? whispersBox,
-  }) {
-    whispers = Whispers(this, box: whispersBox);
+    this.accounts,
+    this.triggers,
+    RecentMessages? recentMessages,
+    required ChannelRepository channelRepository,
+    EmoteBadgeCacheRepository? cacheRepository,
+    WhisperRepository? whisperRepository,
+  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true) {
+    whispers = Whispers(this, storage: whisperRepository);
 
     // Set up the cache before constructing channels so each Channel can
     // hydrate its emotes/badges from disk in its constructor (channels are
     // created inside ClientChannels). Otherwise the cache is still null when
     // they hydrate and third-party emotes won't resolve until the network
     // refresh lands.
-    if (cacheBox != null) {
-      cache = EmoteBadgeCache(box: cacheBox, providers: providers);
+    if (cacheRepository != null) {
+      cache = EmoteBadgeCache(repository: cacheRepository, providers: providers);
       _hydrateGlobalsFromCache();
       cache!.loadBttvProBadges().forEach((userId, url) => bttvProBadges[userId] = _bttvProBadge(url));
     }
 
     channels = ClientChannels(
       this,
-      channelsBox: channelsBox,
+      repository: channelRepository,
     );
 
     // Prioritize the channel the user last had open so it lands in the first
     // (larger) JOIN burst and comes up before the rest of the list.
-    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
-    if (lastChannel is String && lastChannel.isNotEmpty) {
+    final lastChannel = channelRepository.lastChannel;
+    if (lastChannel != null && lastChannel.isNotEmpty) {
       channels.state.firstWhereOrNull((c) => c.name == lastChannel)?.joinPriority = true;
     }
 
@@ -434,7 +449,10 @@ class Client implements AccountConnector {
   Future<bool> _fetchAndInsertHistory(Channel channel) async {
     final channelLogin = channel.name.substring(1);
     try {
-      final list = await RecentMessages.channel(channelLogin);
+      final list = await recentMessages.channel(channelLogin);
+      // Chat history is turned off: nothing was requested. Report it like a failure, so the next fetch (opening the
+      // chat, joining, reconnecting) tries again and picks the setting up if it was turned back on.
+      if (list == null) return false;
       unawaited(cache?.saveHistory(channelLogin, list));
       await insertHistoryMessages(receiver, list);
       return true;
@@ -520,7 +538,7 @@ class Client implements AccountConnector {
       twitchAccount.tokenData.expiresAt = fresh.expiresAt;
       twitchAccount.tokenData.scopes = fresh.scopes;
       try {
-        await twitchAccount.save();
+        await accounts?.update(twitchAccount);
       } catch (_) {
         // Not attached to a box (e.g. constructed in-memory) — nothing to persist.
       }
@@ -657,7 +675,10 @@ class Client implements AccountConnector {
           _joins.acknowledged(channel.name);
           channel.add(ChannelConnect());
           final channelLogin = channel.name.substring(1);
-          channel.pendingHistoryCached = cache?.loadHistory(channelLogin) ?? const <String>[];
+          // History cached on an earlier launch is only shown while chat history is on.
+          channel.pendingHistoryCached = recentMessages.enabled()
+              ? cache?.loadHistory(channelLogin) ?? const <String>[]
+              : const <String>[];
           // If the user opened this channel before we managed to JOIN, pull
           // recent-messages again now that we are actually subscribed — that
           // closes the gap between our pre-JOIN snapshot and live PRIVMSGs.

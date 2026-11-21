@@ -1,15 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider/provider.dart';
 
-import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
-import '../data/settings/application_appearance.dart';
+import '../components/toggle.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
-import '../theme/coldchat_theme.dart';
 import 'about.dart';
 import 'application_appearance.dart';
 import 'application_theme.dart';
@@ -26,12 +25,13 @@ class SettingsModal extends StatelessWidget {
   const SettingsModal({super.key});
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('Settings'),
-    builder: (context, box) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<SettingsRepository>().changes,
+    builder: (context, _) {
       final l10n = AppLocalizations.of(context);
-      final themeMode = (box.get('applicationAppearance') as ApplicationAppearance).themeMode;
-      final accent = ColdChatTheme.current(box);
+      final settings = context.read<SettingsRepository>();
+      final themeMode = settings.applicationAppearance.themeMode;
+      final accent = settings.accent;
       return ListView(
         shrinkWrap: true,
         children: [
@@ -71,7 +71,7 @@ class SettingsModal extends StatelessWidget {
             title: AppLocalizations.of(context).language,
             subtitle:
                 LocaleNamesLocalizationsDelegate.nativeLocaleNames[AppLocalizations.supportedLocales
-                    .firstWhereOrNull((element) => element.toLanguageTag() == box.get('locale'))
+                    .firstWhereOrNull((element) => element.toLanguageTag() == settings.locale)
                     .toString()] ??
                 AppLocalizations.of(context).systemDefault,
             prefix: const Icon(Icons.language_outlined),
@@ -107,12 +107,14 @@ class SettingsModal extends StatelessWidget {
             prefix: const Icon(Icons.info_outline_rounded),
             onTap: () => Modal.show(context: context, child: const AboutModal()),
           ),
-          BoxSwitchTile(
+          Tile(
             title: AppLocalizations.of(context).chatHistory,
             prefix: const Icon(Icons.history),
-            box: box,
-            boxDefault: true,
-            boxKey: 'recentMessagesChatHistory',
+            suffix: Toggle(
+              value: settings.chatHistory,
+              onChanged: settings.setChatHistory,
+            ),
+            onTap: () => settings.setChatHistory(!settings.chatHistory),
           ),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
+import 'package:provider/provider.dart';
 
 import '../components/separator.dart';
 import '../components/tile.dart';
 import '../data/message_trigger.dart';
+import '../data/repositories/trigger_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
@@ -129,9 +130,9 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
 
                       patternController.text = patternController.text.trim();
 
-                      final messageTriggersBox = Hive.box<dynamic>('MessageTriggers');
+                      final triggers = context.read<TriggerRepository>();
                       if (widget.messageTrigger == null) {
-                        await messageTriggersBox.add(
+                        await triggers.addMessageTrigger(
                           MessageTrigger(
                             pattern: patternController.text,
                             enableRegex: enableRegex,
@@ -144,7 +145,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
                         widget.messageTrigger!.pattern = patternController.text;
                         widget.messageTrigger!.enableRegex = enableRegex;
                         widget.messageTrigger!.caseSensitive = caseSensitive;
-                        await widget.messageTrigger!.save();
+                        await triggers.saveMessageTrigger(widget.messageTrigger!);
                       }
                     },
               child: Padding(

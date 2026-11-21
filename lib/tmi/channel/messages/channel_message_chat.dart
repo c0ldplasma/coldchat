@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../../data/badge_users.dart';
 import '../../../data/custom_badge.dart';
@@ -230,10 +229,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     final receiver = channel?.client.receiver;
     if (receiver != null) {
       // Check user triggers
-      final userTriggers = Hive.box<dynamic>('UserTriggers').values.cast<UserTrigger>();
-      final userTrigger = userTriggers.firstWhereOrNull(
-        (element) => element.login.toLowerCase() == user.login?.toLowerCase(),
-      );
+      final triggers = channel?.client.triggers;
+      final userTrigger = triggers?.userTriggerFor(user.login);
       if (userTrigger != null) {
         switch (UserTriggerType.values[userTrigger.type]) {
           case UserTriggerType.mention:
@@ -246,7 +243,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       }
 
       // Check message triggers
-      final messageTriggers = Hive.box<dynamic>('MessageTriggers').values.cast<MessageTrigger>();
+      final messageTriggers = triggers?.messageTriggers ?? const <MessageTrigger>[];
       final messageTrigger = messageTriggers.firstWhereOrNull((messageTrigger) {
         if (messageTrigger.enableRegex) {
           return messageTrigger.matchesRegex(body);

@@ -158,7 +158,10 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
 - Storage is **`hive_ce`**, the maintained continuation of hive 2 (which stopped at 2.2.3); it reads boxes written by
   hive 2 unchanged. Never change a `@HiveType` typeId or a `@HiveField` number of a stored model, or existing data
   stops loading: add new fields with new numbers and a `defaultValue`. Adapters are registered by hand in `main.dart`;
-  the generated `lib/hive_registrar.g.dart` lists them all for comparison.
+  the generated `lib/hive_registrar.g.dart` lists them all for comparison. All box access goes through the typed
+  repositories in `lib/data/repositories/` (opened together by `Repositories.open()` in `main.dart`, provided to
+  widgets with `context.read<...Repository>()`, passed to `Client` in its constructor): don't call `Hive.box` or
+  `box.listenable()` anywhere else, and keep box names and keys as constants on the repository that owns them.
 - Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/modal/login_flow.dart`) in the
   system's login sheet (ASWebAuthenticationSession / Android Custom Tab, via `flutter_web_auth_2`), not a web
   view. Twitch only redirects to web addresses, so the redirect is `docs/auth.html` on GitHub Pages
