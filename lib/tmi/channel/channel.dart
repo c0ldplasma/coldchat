@@ -275,7 +275,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       message.build();
       if (++processed % 20 == 0) await Future<void>.delayed(Duration.zero);
     }
-    channelMessages.emit([...channelMessages.state]);
+    channelMessages.refresh();
   }
 
   /// Rebuild the messages of one user, e.g. when their BetterTTV Pro badge
@@ -287,7 +287,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       message.build();
       changed = true;
     }
-    if (changed) channelMessages.emit([...channelMessages.state]);
+    if (changed) channelMessages.refresh();
   }
 
   Future<void> refreshEmotes() async {
