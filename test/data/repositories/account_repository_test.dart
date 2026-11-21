@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:coldchat/data/repositories/account_repository.dart';
@@ -33,6 +34,8 @@ class _FakeConnector implements AccountConnector {
 }
 
 void main() {
+  setUpAll(Hive.registerAdapters);
+
   group('accountAfterRemoving', () {
     test('switches to the first other account', () {
       final a = _account('1');
@@ -110,8 +113,6 @@ void main() {
     late AccountRepository repository;
     late Box<dynamic> accounts;
     late Box<dynamic> accountSettings;
-
-    setUpAll(Hive.registerAdapters);
 
     setUp(() async {
       tempDir = Directory.systemTemp.createTempSync('coldchat_account_repository_test');
@@ -305,6 +306,107 @@ void main() {
       final account = repository.accounts.single;
       expect(account.tokenData.hash, '1337@client-id-1');
       expect(account.userData?.displayName, 'Ronni');
+    });
+  });
+
+  group('AccountRepository.open with accountsPath', () {
+    late Directory tempDir;
+    late String loginsPath;
+
+    setUp(() {
+      tempDir = Directory.systemTemp.createTempSync('coldchat_account_move_test');
+      loginsPath = '${tempDir.path}/Logins';
+      Hive.init(tempDir.path);
+    });
+
+    tearDown(() async {
+      await Hive.close();
+      tempDir.deleteSync(recursive: true);
+    });
+
+    bool hasBoxFiles(String folder) => ['hive', 'hivec', 'lock'].any(
+      (extension) => File('$folder/twitchaccounts.$extension').existsSync(),
+    );
+
+    /// Stores [accounts] the way earlier versions did: in the home folder, the active one in AccountSettings.
+    Future<void> storeInHomeFolder(List<TwitchAccount> accounts, {String? active}) async {
+      final box = await Hive.openBox<dynamic>('TwitchAccounts');
+      for (final account in accounts) {
+        await box.put(account.tokenData.hash, account);
+      }
+      await box.close();
+      final settings = await Hive.openBox<dynamic>('AccountSettings');
+      if (active != null) await settings.put('activeTwitchAccount', active);
+      await settings.close();
+    }
+
+    test('moves the logins out of the home folder without logging anyone out', () async {
+      final withCookies = _account('2')..cookies = 'auth-token=secret';
+      await storeInHomeFolder([_account('1'), withCookies], active: '2@coldchat');
+
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts.map((account) => account.tokenData.hash), ['1@coldchat', '2@coldchat']);
+      expect(repository.active?.tokenData.accessToken, 'token-2-coldchat');
+      expect(repository.active?.cookies, isNull);
+      expect(hasBoxFiles(tempDir.path), isFalse);
+      expect(File('$loginsPath/twitchaccounts.hive').existsSync(), isTrue);
+      expect(File('$loginsPath/twitchaccounts.hive').readAsStringSync(encoding: latin1), isNot(contains('secret')));
+    });
+
+    test('leaves out the tokens of removed accounts that the old file still held', () async {
+      final box = await Hive.openBox<dynamic>('TwitchAccounts');
+      await box.put('1@coldchat', _account('1'));
+      await box.put('9@coldchat', _account('9'));
+      await box.delete('9@coldchat');
+      await box.close();
+      expect(File('${tempDir.path}/twitchaccounts.hive').readAsStringSync(encoding: latin1), contains('token-9'));
+
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts.map((account) => account.tokenData.hash), ['1@coldchat']);
+      expect(File('$loginsPath/twitchaccounts.hive').readAsStringSync(encoding: latin1), isNot(contains('token-9')));
+    });
+
+    test('keeps using the moved box at the next start', () async {
+      await storeInHomeFolder([_account('1')]);
+      final first = await AccountRepository.open(accountsPath: loginsPath);
+      await first.saveLogin(_account('2'));
+      await Hive.close();
+
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts.map((account) => account.tokenData.hash), ['1@coldchat', '2@coldchat']);
+      expect(hasBoxFiles(tempDir.path), isFalse);
+    });
+
+    test('finishes a move that was interrupted before the old box was deleted', () async {
+      await storeInHomeFolder([_account('1')]);
+      final copy = await Hive.openBox<dynamic>('TwitchAccounts', path: loginsPath);
+      await copy.put('1@coldchat', _account('1'));
+      await copy.close();
+
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts.map((account) => account.tokenData.hash), ['1@coldchat']);
+      expect(hasBoxFiles(tempDir.path), isFalse);
+    });
+
+    test('starts without logins on a fresh install', () async {
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts, isEmpty);
+      expect(hasBoxFiles(tempDir.path), isFalse);
+    });
+
+    test('moves the box in the stored-models fixture', () async {
+      File('test/fixtures/hive_models.hive').copySync('${tempDir.path}/twitchaccounts.hive');
+
+      final repository = await AccountRepository.open(accountsPath: loginsPath);
+
+      expect(repository.accounts.single.tokenData.hash, '1337@client-id-1');
+      expect(repository.accounts.single.userData?.displayName, 'Ronni');
+      expect(hasBoxFiles(tempDir.path), isFalse);
     });
   });
 }

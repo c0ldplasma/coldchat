@@ -145,6 +145,10 @@ The deployment target is iOS 15.0, which App Store Connect requires from Spring 
 (`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Signing is automatic with team `RA25PYVUTF`;
 `ios/ExportOptions.plist` exports for App Store Connect.
 
+The Twitch logins (`TwitchAccounts` box) are kept out of backups on both platforms: on Android by the rules in
+`android/app/src/main/res/xml/`, on iOS by storing the box in `Documents/Logins`, which `AppDelegate.swift` excludes
+from backups at every launch (`AccountRepository.iosLoginsFolder`; older installs are moved there at startup).
+
 `ios/Runner/PrivacyInfo.xcprivacy` is the app's privacy manifest: no tracking, no collected data, no
 required-reason APIs (plugins and the Flutter engine ship their own). Update it if the app ever starts using
 one, e.g. `UserDefaults` or file timestamps.
