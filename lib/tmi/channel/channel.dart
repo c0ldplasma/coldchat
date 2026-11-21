@@ -25,6 +25,7 @@ import 'channel_state.dart';
 import 'composer_draft.dart';
 import 'messages/channel_message_chat.dart';
 import 'messages/channel_message_state_change.dart';
+import 'transmitter_join.dart';
 
 class Channel extends Bloc<ChannelEvent, ChannelState> {
   Client client;
@@ -41,9 +42,20 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   Badges channelBadges = Badges();
   ChannelInfo channelInfo = ChannelInfo();
 
-  /// Whether the logged-in user is a moderator here, from the `badges` of the last USERSTATE. Twitch sends one after
-  /// joining and after each own message; it's reset on part, because the account may change before the next join.
+  /// Whether the logged-in user is a moderator here, from the `badges` of the last USERSTATE the transmitter got.
+  /// Twitch sends one after joining and after each own message; it's reset by [transmitterParted], because the
+  /// account may change before the next join.
   bool ownUserIsModerator = false;
+
+  /// Whether the transmitter has joined this channel, see [TransmitterJoin]. [state] is about the receiver.
+  final TransmitterJoin transmitterJoin = TransmitterJoin();
+
+  /// The transmitter left the channel (reconnect, account switch, logout): forget what was known about the own user
+  /// here until the next JOIN and USERSTATE.
+  void transmitterParted() {
+    ownUserIsModerator = false;
+    transmitterJoin.parted();
+  }
 
   /// Whether the account with [userId] can ban and time out users here: it's the broadcaster or a moderator.
   bool canModerate(String? userId) => userId != null && id != null && (id == userId || ownUserIsModerator);
@@ -122,7 +134,6 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       // already drained before the disconnect.
       recentMessagesFetched = false;
       joinBackfillDone = false;
-      ownUserIsModerator = false;
       emit(ChannelDisconnected());
     });
 
@@ -173,6 +184,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     for (final sub in _lookupSubs) {
       unawaited(sub.cancel());
     }
+    unawaited(transmitterJoin.close());
     return super.close();
   }
 
@@ -196,16 +208,15 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     super.onChange(change);
   }
 
-  /// Whether a message sent now would reach the channel. Before the JOIN is answered (e.g. while it waits for the
-  /// JOIN rate limit after an account switch) or while the sending connection is down, Twitch would drop it.
-  bool get canSend => canSendIn(state);
+  /// Whether a message sent now would reach the channel. Before the transmitter's JOIN is answered (e.g. while it
+  /// waits for the JOIN rate limit after an account switch) or while the transmitter is down, Twitch would drop it.
+  /// Reading the chat doesn't matter here: that's the receiver's job.
+  bool get canSend =>
+      canSendWith(transmitterConnected: client.transmitter.isConnected, transmitterJoined: transmitterJoin.state);
 
-  /// [canSend] for [state]: the channel is joined and its sending connection is up.
-  static bool canSendIn(ChannelState state) => switch (state) {
-    ChannelConnecting() => false,
-    ChannelStateWithConnection(:final transmitter) => transmitter.isConnected,
-    _ => false,
-  };
+  /// [canSend]: the transmitter is connected and Twitch acknowledged its JOIN of the channel.
+  static bool canSendWith({required bool transmitterConnected, required bool transmitterJoined}) =>
+      transmitterConnected && transmitterJoined;
 
   /// Sends [message] to the channel. Does nothing unless [canSend]; callers check it first so typed text isn't lost.
   Future<void> send(
@@ -221,8 +232,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       ircMessageToSend = '@${tags.entries.map((entry) => '${entry.key}=${entry.value}').join(';')} $ircMessageToSend';
     }
 
-    final realState = state as ChannelStateWithConnection;
-    unawaited(realState.transmitter.send(ircMessageToSend));
+    unawaited(client.transmitter.send(ircMessageToSend));
   }
 
   Future<void> refresh() async {

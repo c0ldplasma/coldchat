@@ -115,6 +115,7 @@ class ChannelViewState extends State<ChannelView> {
     _canSendSubscriptions.addAll([
       widget.channel.stream.listen(updateCanSend),
       widget.channel.client.transmitter.stream.listen(updateCanSend),
+      widget.channel.transmitterJoin.stream.listen(updateCanSend),
     ]);
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;

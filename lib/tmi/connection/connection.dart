@@ -6,6 +6,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
+import '../irc_log.dart';
 import '../log.dart';
 import '../logs.dart';
 import '../tmi_exception.dart';
@@ -32,6 +33,9 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   @override
   void onChange(Change<ConnectionState> change) {
     logs.add(Log(data: change));
+    ircLog(
+      '$name: ${change.currentState.runtimeType} -> ${change.nextState.runtimeType} as ${describe(change.nextState)}',
+    );
     onStateChange?.call(this, change);
     super.onChange(change);
   }
@@ -41,7 +45,24 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
 
   static WebSocketChannel _openIoSocket(Uri uri) => IOWebSocketChannel.connect(uri);
 
-  Connection({WebSocketChannel Function(Uri uri)? openSocket})
+  /// What the `[irc]` diagnostics call this connection, e.g. `receiver` or `transmitter`.
+  final String name;
+
+  /// The login a [state] is for, or `anonymous` for a `justinfan` connection, for the `[irc]` diagnostics.
+  static String describe(ConnectionState state) => switch (state) {
+    ConnectionStateWithCredentials(:final twitchAccount) =>
+      twitchAccount.tokenData.accessToken == null ? 'anonymous' : twitchAccount.tokenData.login,
+    _ => 'nobody',
+  };
+
+  /// Whether to request `twitch.tv/membership`, which adds every other user's JOIN and PART. The own JOIN is echoed
+  /// without it too.
+  final bool membership;
+
+  /// Which received lines are handed to [onReceive] (and kept in [logs]); null for all of them.
+  bool Function(irc.Message message)? accepts;
+
+  Connection({WebSocketChannel Function(Uri uri)? openSocket, this.name = 'connection', this.membership = true})
     : _openSocket = openSocket ?? _openIoSocket,
       super(ConnectionDisconnected()) {
     on<ConnectionConnect>((event, emit) async {
@@ -86,6 +107,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
           _lastAccount ??
           (state is ConnectionStateWithCredentials ? (state as ConnectionStateWithCredentials).twitchAccount : null);
       if (account == null) return;
+      ircLog('$name: reconnecting (${event.reason})');
       add(ConnectionConnect(account));
     });
 
@@ -154,7 +176,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       // cancelOnError: true,
     );
 
-    unawaited(send('CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership'));
+    unawaited(send('CAP REQ :twitch.tv/tags twitch.tv/commands${membership ? ' twitch.tv/membership' : ''}'));
     if (pass != null) unawaited(send('PASS $pass'));
     unawaited(send('NICK ${nick ?? 'justinfan6969'}'));
   }
@@ -192,7 +214,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     _reconnectTimer?.cancel();
     final seconds = (1 << _reconnectAttempts).clamp(1, 16);
     _reconnectAttempts++;
-    _reconnectTimer = Timer(Duration(seconds: seconds), () => add(ConnectionReconnect()));
+    _reconnectTimer = Timer(Duration(seconds: seconds), () => add(ConnectionReconnect(reason: 'socket closed')));
   }
 
   // Liveness watchdog. Mobile sockets routinely go half-open (lock screen /
@@ -233,7 +255,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     return false;
   }
 
-  void forceReconnect() => add(ConnectionReconnect());
+  void forceReconnect() => add(ConnectionReconnect(reason: 'forced'));
 
   void _startWatchdog() {
     _watchdog?.cancel();
@@ -247,7 +269,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     if (state is ConnectionConnecting) {
       final started = _connectStartedAt;
       if (started != null && now.difference(started) > _handshakeTimeout) {
-        add(ConnectionReconnect());
+        add(ConnectionReconnect(reason: 'handshake timed out'));
       }
       return;
     }
@@ -255,7 +277,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       final last = _lastInbound ?? _connectStartedAt;
       if (last == null) return;
       if (now.difference(last) > _inboundTimeout) {
-        add(ConnectionReconnect());
+        add(ConnectionReconnect(reason: 'nothing received for ${_inboundTimeout.inSeconds}s'));
         return;
       }
       // Proactively PING so a dead socket surfaces fast (no inbound -> timeout)
@@ -272,6 +294,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     try {
       _reconnectAttempts = 0;
       _lastInbound = DateTime.now();
+      // Lines this connection doesn't use are dropped before they're logged; it still answers Twitch's PING.
+      if (event.command != 'PING' && accepts?.call(event) == false) return;
       logs.add(Log(data: event));
       onReceive?.call(this, event);
       if (event.command == 'PING') {

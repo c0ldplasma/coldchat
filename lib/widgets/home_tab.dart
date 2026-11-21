@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +15,6 @@ import '../data/twitch/stream_data.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
-import '../tmi/channel/channel_event.dart';
 import '../tmi/client/client.dart';
 import '../tools/channel_ranking.dart';
 import 'avatar_button.dart';
@@ -28,10 +26,7 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
   final client = context.read<Client>();
   if (!client.channels.state.any((channel) => channel.name == channelName)) {
     client.channels.join(channelName);
-    unawaited(client.receiver.send('JOIN $channelName'));
-    client.channels.state
-        .firstWhereOrNull((channel) => channel.name == channelName)
-        ?.add(ChannelJoin(client.receiver, client.transmitter));
+    client.joinPending();
   }
   context.read<HomeTabSwitcher>().open(channelName);
 }
