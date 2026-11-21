@@ -11,6 +11,15 @@ import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
+import 'login_flow.dart';
+
+/// Whether [tokenData] may delete messages. Logins from before ColdChat requested the scope can't until they sign
+/// in again.
+bool canDeleteMessagesWith(TokenData? tokenData) =>
+    tokenData != null && tokenData.scopes.contains(Twitch.deleteChatMessageScope);
+
+/// Whether signing in again fixes a failed delete: Twitch answers 401 when the token lacks the scope.
+bool deleteFailureNeedsSignIn(Object error) => error is TwitchRequestException && error.statusCode == 401;
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;
@@ -73,15 +82,21 @@ class MessageModal extends StatelessWidget {
           prefix: const Icon(Icons.delete_outline_outlined),
           onTap: () async {
             final messenger = ScaffoldMessenger.of(context);
+            final navigator = Navigator.of(context);
             final l10n = AppLocalizations.of(context);
-            Navigator.of(context).pop();
-            final error = await deleteMessageAs(
+            navigator.pop();
+            final failure = await deleteMessageAs(
               message.channel!.client.transmitter.twitchAccount?.tokenData,
               l10n,
               broadcasterId: message.channel!.id,
               messageId: message.id,
             );
-            if (error != null) messenger.showSnackBar(SnackBar(content: Text(error)));
+            if (failure == null) return;
+            if (failure.needsSignIn) {
+              showSignInSnackBar(messenger, navigator, failure.text);
+            } else {
+              messenger.showSnackBar(SnackBar(content: Text(failure.text)));
+            }
           },
         ),
       Tile(
@@ -104,18 +119,20 @@ class MessageModal extends StatelessWidget {
   );
 }
 
-/// Deletes the message [messageId] in the channel [broadcasterId] as the account of [tokenData] and returns the text
-/// to show when that didn't work, or null once it's deleted. [client] is for tests.
-Future<String?> deleteMessageAs(
+/// Why deleting a message didn't work: the [text] to show, and whether signing in again fixes it.
+typedef DeleteMessageFailure = ({String text, bool needsSignIn});
+
+/// Deletes the message [messageId] in the channel [broadcasterId] as the account of [tokenData]. Returns null once
+/// it's deleted, otherwise what to tell the user. [client] is for tests.
+Future<DeleteMessageFailure?> deleteMessageAs(
   TokenData? tokenData,
   AppLocalizations l10n, {
   required String? broadcasterId,
   required String messageId,
   http.Client? client,
 }) async {
-  // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
-  if (tokenData == null || !tokenData.scopes.contains(Twitch.deleteChatMessageScope)) {
-    return l10n.deleteMessageNeedsScope;
+  if (tokenData == null || !canDeleteMessagesWith(tokenData)) {
+    return (text: l10n.deleteMessageNeedsScope, needsSignIn: true);
   }
   try {
     await Twitch.deleteChatMessage(
@@ -127,8 +144,10 @@ Future<String?> deleteMessageAs(
     );
     return null;
   } on TwitchRequestException catch (e) {
-    return e.statusCode == 401 ? l10n.deleteMessageNeedsScope : l10n.deleteMessageFailed(e.message);
+    return deleteFailureNeedsSignIn(e)
+        ? (text: l10n.deleteMessageNeedsScope, needsSignIn: true)
+        : (text: l10n.deleteMessageFailed(e.message), needsSignIn: false);
   } catch (e) {
-    return l10n.deleteMessageFailed('$e');
+    return (text: l10n.deleteMessageFailed('$e'), needsSignIn: false);
   }
 }

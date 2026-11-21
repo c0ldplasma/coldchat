@@ -20,7 +20,7 @@ TokenData _tokenData({List<String> scopes = const [Twitch.deleteChatMessageScope
 
 /// Deletes as [tokenData] against a Twitch that answers with [response] (or fails with [error]), and collects the
 /// requests in [requests].
-Future<String?> _delete(
+Future<DeleteMessageFailure?> _delete(
   TokenData? tokenData, {
   http.Response? response,
   Exception? error,
@@ -54,7 +54,7 @@ void main() {
   test('without a token asks to sign in again and sends nothing', () async {
     final requests = <http.Request>[];
 
-    expect(await _delete(null, requests: requests), l10n.deleteMessageNeedsScope);
+    expect(await _delete(null, requests: requests), (text: l10n.deleteMessageNeedsScope, needsSignIn: true));
     expect(requests, isEmpty);
   });
 
@@ -63,22 +63,22 @@ void main() {
 
     expect(
       await _delete(_tokenData(scopes: const ['chat:read', 'chat:edit']), requests: requests),
-      l10n.deleteMessageNeedsScope,
+      (text: l10n.deleteMessageNeedsScope, needsSignIn: true),
     );
     expect(requests, isEmpty);
   });
 
   test('a 401 from Twitch asks to sign in again', () async {
-    final text = await _delete(
+    final failure = await _delete(
       _tokenData(),
       response: http.Response('{"error":"Unauthorized","status":401,"message":"Missing scope"}', 401),
     );
 
-    expect(text, l10n.deleteMessageNeedsScope);
+    expect(failure, (text: l10n.deleteMessageNeedsScope, needsSignIn: true));
   });
 
   test('another refusal shows the reason Twitch gave', () async {
-    final text = await _delete(
+    final failure = await _delete(
       _tokenData(),
       response: http.Response(
         '{"error":"Bad Request","status":400,"message":"You cannot delete the broadcaster\'s messages."}',
@@ -86,12 +86,15 @@ void main() {
       ),
     );
 
-    expect(text, l10n.deleteMessageFailed("You cannot delete the broadcaster's messages."));
+    expect(failure, (
+      text: l10n.deleteMessageFailed("You cannot delete the broadcaster's messages."),
+      needsSignIn: false,
+    ));
   });
 
   test('a network error shows the error', () async {
-    final text = await _delete(_tokenData(), error: http.ClientException('Connection refused'));
+    final failure = await _delete(_tokenData(), error: http.ClientException('Connection refused'));
 
-    expect(text, l10n.deleteMessageFailed('ClientException: Connection refused'));
+    expect(failure, (text: l10n.deleteMessageFailed('ClientException: Connection refused'), needsSignIn: false));
   });
 }

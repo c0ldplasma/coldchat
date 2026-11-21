@@ -17,6 +17,7 @@ import '../tmi/moderation.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
+import 'login_flow.dart';
 
 class UserModal extends StatefulWidget {
   final String login;
@@ -34,6 +35,17 @@ class UserModal extends StatefulWidget {
 
 /// The scope Helix needs to ban, time out and unban. Logins from before the user card used it lack it.
 const String _moderationScope = 'moderator:manage:banned_users';
+
+/// Why an account can't ban, time out or unban; both are fixed by signing in (again).
+enum ModerationBlocker { needsLogin, needsScope }
+
+/// What keeps [tokenData] from moderating [broadcasterId]'s channel, or null when it can try. Failures of the
+/// request itself are not decided here: they show without a "Sign in" button.
+ModerationBlocker? moderationBlocker(TokenData? tokenData, {required String? broadcasterId}) {
+  if (tokenData == null || broadcasterId == null || tokenData.userId == null) return ModerationBlocker.needsLogin;
+  if (!tokenData.scopes.contains(_moderationScope)) return ModerationBlocker.needsScope;
+  return null;
+}
 
 class _UserModalState extends State<UserModal> {
   late final Future<TwitchProfile?> future;
@@ -62,18 +74,23 @@ class _UserModalState extends State<UserModal> {
   ) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     final tokenData = _moderatorTokenData;
     final broadcasterId = channel?.id;
     final moderatorId = tokenData?.userId;
-    Navigator.of(context).pop();
+    navigator.pop();
     String? error;
-    if (tokenData == null || broadcasterId == null || moderatorId == null) {
-      error = l10n.moderationNeedsLogin;
-    } else if (!tokenData.scopes.contains(_moderationScope)) {
-      error = l10n.moderationNeedsScope;
+    final blocker = moderationBlocker(tokenData, broadcasterId: broadcasterId);
+    if (blocker != null) {
+      final text = switch (blocker) {
+        ModerationBlocker.needsLogin => l10n.moderationNeedsLogin,
+        ModerationBlocker.needsScope => l10n.moderationNeedsScope,
+      };
+      showSignInSnackBar(messenger, navigator, text);
     } else {
       try {
-        await action(tokenData, broadcasterId, moderatorId);
+        // moderationBlocker made sure all three are there.
+        await action(tokenData!, broadcasterId!, moderatorId!);
       } on TwitchRequestException catch (e) {
         log('$e');
         error = l10n.moderationFailed(e.message);
@@ -244,13 +261,13 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
   /// Opens the conversation with this user as a tab and switches to it.
   Future<void> whisper() async {
     final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       await widget.client.whispers.openAndFocus(widget.user.login);
       navigator.popUntil((route) => route.isFirst);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(ChannelViewState.whisperErrorText(context, e))));
+      ChannelViewState.showWhisperError(messenger, navigator, e);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -99,6 +100,33 @@ Future<void> showTwitchLogin(BuildContext context) async {
   await Modal.show(
     context: navigator.context,
     child: VerifyTokenModal(token: accessToken, cookies: null),
+  );
+}
+
+/// Shows [message], an error that signing in (again) fixes, with a "Sign in" action that starts the Twitch login.
+///
+/// [navigator] must outlive the snack bar: these errors usually show after a sheet was closed, so pass a navigator
+/// captured before closing it, never the closed sheet's context. The new login becomes the active account
+/// (`VerifyTokenModal`), so nothing else has to happen afterwards. [onSignIn] is only replaced in tests.
+void showSignInSnackBar(
+  ScaffoldMessengerState messenger,
+  NavigatorState navigator,
+  String message, {
+  Future<void> Function(BuildContext context) onSignIn = showTwitchLogin,
+}) {
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(message),
+      // Long enough to reach the button, but still gone on its own instead of persisting like action snack bars do.
+      duration: const Duration(seconds: 8),
+      persist: false,
+      action: SnackBarAction(
+        label: AppLocalizations.of(messenger.context).signInAgain,
+        onPressed: () {
+          if (navigator.mounted) unawaited(onSignIn(navigator.context));
+        },
+      ),
+    ),
   );
 }
 
