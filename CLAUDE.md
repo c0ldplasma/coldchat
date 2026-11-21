@@ -82,13 +82,10 @@ don't need tests. If a test really isn't practical, say why in the PR descriptio
 
 ## Pull requests
 
-Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged** and need the required checks
-**Analyze, Android and iOS** to pass; head branches are deleted after merging. A PR does **not** have to be up to date
-with `main` before merging, so a green PR can be merged as is. Only a real merge conflict needs `main` merged into the
-branch (never rebase or force-push). Because two PRs that pass on their own can still break each other, the same checks
-run on every push to `main`: a red run there right after a merge means fixing it with a follow-up PR. The
-owner merges and turns on auto-merge, not the AI. Give PRs a descriptive title: `gh release create --generate-notes`
-builds the changelog from them.
+Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged** and need the required
+checks **Analyze, Android and iOS** to pass, but don't have to be up to date with `main`; head branches are deleted
+after merging. The owner merges and turns on auto-merge, not the AI. Give PRs a descriptive title:
+`gh release create --generate-notes` builds the changelog from them.
 
 ## Versioning
 
