@@ -124,6 +124,19 @@ abstract final class ColdChatTheme {
 
   static AccentColor custom(double hue, double chroma) => AccentColor(customId, hue, chroma);
 
+  /// The color wheel on the custom accent's swatch before a custom color is picked.
+  static const customAccentWheel = SweepGradient(
+    colors: [
+      Color(0xFFFF5A5A),
+      Color(0xFFFFC23D),
+      Color(0xFF7BD86B),
+      Color(0xFF3FC9D9),
+      Color(0xFF6B7CFF),
+      Color(0xFFD86BE0),
+      Color(0xFFFF5A5A),
+    ],
+  );
+
   /// The accent whose hue is closest to [color]'s. Greys and brown-greys (Blue Grey, Brown) get the default.
   static AccentColor closestAccent(Color color) {
     final hct = Hct.fromInt(color.toARGB32());
@@ -210,6 +223,23 @@ class ChatColors extends ThemeExtension<ChatColors> {
   static const List<BoxShadow> raisedShadow = [
     BoxShadow(color: Colors.black38, blurRadius: 8.0, offset: Offset(0.0, 2.0)),
   ];
+
+  // Fixed colors that mean the same thing in every accent and mode, so they don't come from the scheme.
+
+  /// The dot next to a live stream's viewer count, on the home tab and over stream thumbnails.
+  static const Color live = Colors.red;
+
+  /// The unread-notifications count on the avatar button, and its text.
+  static const Color unread = Colors.red;
+  static const Color onUnread = Colors.white;
+
+  /// The ban and unban buttons on a user card.
+  static const Color ban = Colors.red;
+  static const Color unban = Colors.green;
+
+  /// Twitch's brand purple, for the "Log in with Twitch" button and the Twitch logo in the emote picker.
+  static const Color twitchPurple = Color(0xFF9146FF);
+  static const Color onTwitchPurple = Colors.white;
 
   /// Links in chat messages, in the accent color like in Telegram.
   final Color link;

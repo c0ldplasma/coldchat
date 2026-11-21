@@ -8,6 +8,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../components/surface.dart';
 import '../../data/emote.dart';
 import '../../l10n/app_localizations.dart';
+import '../../theme/coldchat_theme.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
 import '../../tmi/emotes.dart';
@@ -339,7 +340,7 @@ class _EmotePickerState extends State<EmotePicker> {
     return switch (category) {
       'Twitch' => SvgPicture.asset(
         'assets/emote_providers/twitch.svg',
-        colorFilter: const ColorFilter.mode(Color(0xFF9146FF), BlendMode.srcIn),
+        colorFilter: const ColorFilter.mode(ChatColors.twitchPurple, BlendMode.srcIn),
       ),
       '7TV' => SvgPicture.asset(
         'assets/emote_providers/7tv.svg',

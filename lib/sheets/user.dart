@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../api/twitch/twitch_profile.dart';
 import '../l10n/app_localizations.dart';
+import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/client/client.dart';
@@ -96,7 +97,7 @@ class _UserModalState extends State<UserModal> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.block_rounded,
-                        color: Colors.red,
+                        color: ChatColors.ban,
                       ),
                       onPressed: () => _moderate(ModerationBan(profile.user.id)),
                     ),
@@ -137,7 +138,7 @@ class _UserModalState extends State<UserModal> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.block_rounded,
-                        color: Colors.green,
+                        color: ChatColors.unban,
                       ),
                       onPressed: () => _moderate(ModerationUnban(profile.user.id)),
                     ),

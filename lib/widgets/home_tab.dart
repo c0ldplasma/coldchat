@@ -14,6 +14,7 @@ import '../data/repositories/account_repository.dart';
 import '../data/twitch/stream_data.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
+import '../theme/coldchat_theme.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_lookups.dart';
 import '../tools/channel_ranking.dart';
@@ -133,11 +134,11 @@ class _HomeTabViewState extends State<_HomeTabView> {
         onRefresh: context.read<HomeStreamsCubit>().refresh,
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar.large(
+            SliverAppBar.large(
               surfaceTintColor: Colors.transparent,
               // foregroundColor: Colors.transparent,
-              title: Text('ColdChat'),
-              actions: [
+              title: Text(AppLocalizations.of(context).appName),
+              actions: const [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: AvatarButton(),
@@ -237,7 +238,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
                       Container(
                         width: 8.0,
                         height: 8.0,
-                        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                        decoration: const BoxDecoration(color: ChatColors.live, shape: BoxShape.circle),
                       ),
                       const SizedBox(width: 4.0),
                       Text(
@@ -425,7 +426,7 @@ class StreamPreviewSmall extends StatelessWidget {
                         width: 8.0,
                         height: 8.0,
                         decoration: const BoxDecoration(
-                          color: Colors.red,
+                          color: ChatColors.live,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -534,7 +535,7 @@ class StreamPreviewLarge extends StatelessWidget {
                         width: 8.0,
                         height: 8.0,
                         decoration: const BoxDecoration(
-                          color: Colors.red,
+                          color: ChatColors.live,
                           shape: BoxShape.circle,
                         ),
                       ),
