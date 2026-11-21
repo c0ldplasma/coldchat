@@ -185,10 +185,37 @@ void main() {
 
     // An unhandled `ready` error would fail this test as an uncaught async error.
     sockets.first.failToConnect(Exception("Failed host lookup: 'irc-ws.chat.twitch.tv'"));
-    // onError and onDone both schedule the reconnect; the second one sets the 2s backoff.
-    await Future<void>.delayed(const Duration(milliseconds: 2300));
+    // The first retry comes after the 1s backoff.
+    await Future<void>.delayed(const Duration(milliseconds: 1300));
 
     expect(sockets, hasLength(2));
+    expect(connection.channel, same(sockets.last));
+  });
+
+  test('each failed connect counts once toward the backoff: retries after 1s, then 2s', () async {
+    final sockets = <_FakeSocket>[];
+    final connection = Connection(
+      openSocket: (_) {
+        final socket = _FakeSocket();
+        sockets.add(socket);
+        return socket;
+      },
+    );
+    addTearDown(connection.close);
+
+    connection.add(ConnectionConnect(_account()));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+
+    // onError and onDone both fire for one failed socket; only one of them may schedule the retry.
+    sockets.last.failToConnect(Exception('no network'));
+    await Future<void>.delayed(const Duration(milliseconds: 1300));
+    expect(sockets, hasLength(2));
+
+    sockets.last.failToConnect(Exception('no network'));
+    await Future<void>.delayed(const Duration(milliseconds: 1300));
+    expect(sockets, hasLength(2));
+    await Future<void>.delayed(const Duration(milliseconds: 1000));
+    expect(sockets, hasLength(3));
     expect(connection.channel, same(sockets.last));
   });
 }
