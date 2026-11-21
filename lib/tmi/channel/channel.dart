@@ -359,10 +359,12 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   /// Everyone who wrote in the loaded chat, most recent first. Twitch only
   /// gives the full viewer list to the channel's moderators, so the chatter
   /// list and @-autocomplete use the people actually talking.
-  List<User> get recentChatters {
+  List<User> get recentChatters => chattersIn(channelMessages.state);
+
+  /// The users who wrote a chat message in [messages] (oldest first), most recent first and each once.
+  static List<User> chattersIn(List<ChannelMessage> messages) {
     final seen = <String>{};
     final chatters = <User>[];
-    final messages = channelMessages.state;
     for (var i = messages.length - 1; i >= 0; i--) {
       final message = messages[i];
       if (message is! ChannelMessageChat) continue;
