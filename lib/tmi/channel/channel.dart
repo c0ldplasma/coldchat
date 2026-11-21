@@ -16,6 +16,7 @@ import '../emotes.dart';
 import '../moderation.dart';
 import '../tmi_exception.dart';
 import '../user.dart';
+import 'can_send.dart';
 import 'channel_event.dart';
 import 'channel_info.dart';
 import 'channel_message.dart';
@@ -65,6 +66,12 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   /// The unsent composer text and reply target, kept here because the channel's view is disposed when its tab is
   /// off screen.
   final ComposerDraft composerDraft = ComposerDraft();
+
+  CanSend? _canSendCubit;
+
+  /// [canSend] as state, for the composer. Made on first use, so a channel that is never shown doesn't follow the
+  /// transmitter.
+  CanSend get canSendCubit => _canSendCubit ??= CanSend(transmitter: client.transmitter, join: transmitterJoin);
 
   // O(1) lookup maps for message building, rebuilt lazily and invalidated when
   // the underlying emote/badge sets change. Avoids concatenating the channel +
@@ -183,6 +190,8 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     for (final sub in _lookupSubs) {
       unawaited(sub.cancel());
     }
+    unawaited(_canSendCubit?.close());
+    unawaited(composerDraft.close());
     unawaited(transmitterJoin.close());
     return super.close();
   }

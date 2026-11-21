@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/services.dart';
 
+import '../../tmi/channel/composer_draft.dart';
+
 // Edits of the composer's text, as pure functions of its TextEditingValue.
 
 /// Replaces the last space-separated word of [value] with [word] and a space, caret at the end. Used when an
@@ -15,12 +17,7 @@ TextEditingValue completeLastWord(TextEditingValue value, String word) {
 
 /// Appends [word] as a new space-separated word, dropping empty words (repeated, leading and trailing spaces), caret
 /// at the end. Used to mention a user from the message sheet.
-TextEditingValue appendWord(TextEditingValue value, String word) {
-  final splits = value.text.split(' ');
-  splits.add(word);
-  splits.removeWhere((element) => element.isEmpty);
-  return _caretAtEnd(splits.join(' '));
-}
+TextEditingValue appendWord(TextEditingValue value, String word) => _caretAtEnd(appendWordTo(value.text, word));
 
 /// Inserts [url] in place of the selection (at the end without a valid one), with a space before it unless the text
 /// up to the selection's end already ends with one, and a space after it. The caret goes after the inserted text.

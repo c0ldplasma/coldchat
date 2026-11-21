@@ -60,7 +60,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
         // previous session (e.g. when it comes back via history on launch).
         final seenMentions = context.read<SeenMentionsRepository>();
         if (!seenMentions.contains(message.id)) {
-          BlocProvider.of<NotificationsCubit>(context).add(message);
+          context.read<NotificationsCubit>().add(message);
           seenMentions.markSeen(message.id);
         }
       }

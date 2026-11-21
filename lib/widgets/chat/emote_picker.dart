@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -11,6 +10,7 @@ import '../../data/emote.dart';
 import '../../l10n/app_localizations.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
+import '../../tmi/emotes.dart';
 import '../emoji_glyph.dart';
 import 'emote_picker_sections.dart';
 
@@ -75,41 +75,54 @@ class _EmotePickerState extends State<EmotePicker> {
   PickerMode mode = PickerMode.emote;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  late final List<StreamSubscription<dynamic>> emoteSubscriptions;
   final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
   // One key per section title, kept across rebuilds so the section headers aren't rebuilt from scratch every time;
   // the tab bar scrolls to a section by its key.
   final Map<String, GlobalKey> groupKeys = {};
 
   @override
-  void initState() {
-    // Emotes keep loading after the picker opens (Twitch's only arrive once
-    // the chat connection is up), so rebuild when any list changes.
-    emoteSubscriptions = [
-      if (widget.channel != null) widget.channel!.channelEmotes.stream.listen((_) => setState(() {})),
-      widget.client.globalEmotes.stream.listen((_) => setState(() {})),
-      widget.client.twitchUserEmotes.stream.listen((_) => setState(() {})),
-    ];
-    super.initState();
-  }
-
-  @override
   void dispose() {
-    for (final subscription in emoteSubscriptions) {
-      unawaited(subscription.cancel());
-    }
     searchController.dispose();
     scrollController.dispose();
     super.dispose();
   }
 
+  // Emotes keep loading after the picker opens (Twitch's only arrive once the chat connection is up), so it rebuilds
+  // when any list changes.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
+    bloc: widget.client.globalEmotes,
+    builder: (context, globalEmotes) => BlocBuilder<Emotes, List<Emote>>(
+      bloc: widget.client.twitchUserEmotes,
+      builder: (context, userEmotes) {
+        final channelEmotes = widget.channel?.channelEmotes;
+        if (channelEmotes == null) {
+          return _buildPicker(context, channelEmotes: const [], globalEmotes: globalEmotes, userEmotes: userEmotes);
+        }
+        return BlocBuilder<Emotes, List<Emote>>(
+          bloc: channelEmotes,
+          builder: (context, channelEmotes) => _buildPicker(
+            context,
+            channelEmotes: channelEmotes,
+            globalEmotes: globalEmotes,
+            userEmotes: userEmotes,
+          ),
+        );
+      },
+    ),
+  );
+
+  Widget _buildPicker(
+    BuildContext context, {
+    required List<Emote> channelEmotes,
+    required List<Emote> globalEmotes,
+    required List<Emote> userEmotes,
+  }) {
     // Grouped again only when an emote list changed, filtered again only when the search did.
     final pickerSections = sectionsCache.sectionsFor(
-      channelEmotes: widget.channel?.channelEmotes.state ?? const [],
-      globalEmotes: widget.client.globalEmotes.state,
-      userEmotes: widget.client.twitchUserEmotes.state,
+      channelEmotes: channelEmotes,
+      globalEmotes: globalEmotes,
+      userEmotes: userEmotes,
     );
     final sections = pickerSections.sections;
     final matchingSections = pickerSections.matching(searchController.text.toLowerCase());

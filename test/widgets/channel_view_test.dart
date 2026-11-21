@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:coldchat/components/bottom_bar.dart';
+import 'package:coldchat/data/custom_badge.dart';
 import 'package:coldchat/data/emote_button_icon.dart';
 import 'package:coldchat/data/filesharing/upload_queue_cubit.dart';
 import 'package:coldchat/data/notifications_cubit.dart';
 import 'package:coldchat/data/repositories/account_repository.dart';
 import 'package:coldchat/data/repositories/custom_command_repository.dart';
 import 'package:coldchat/data/repositories/settings_repository.dart';
+import 'package:coldchat/data/repositories/trigger_repository.dart';
 import 'package:coldchat/data/settings/chat_settings.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
+import 'package:coldchat/data/twitch/token_data.dart';
+import 'package:coldchat/data/twitch_account.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
@@ -19,7 +23,10 @@ import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
+import 'package:coldchat/tmi/connection/connection_event.dart';
+import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
 import 'package:coldchat/tmi/emotes.dart';
+import 'package:coldchat/tmi/user_badges.dart';
 import 'package:coldchat/widgets/channel_view.dart';
 import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
@@ -43,6 +50,16 @@ class _FakeClient implements Client {
   EmoteBadgeCache? cache;
   @override
   final Connection transmitter;
+  @override
+  UserBadges globalUserBadges = UserBadges();
+  @override
+  final Map<String, CustomBadge> bttvProBadges = {};
+  @override
+  TriggerRepository? get triggers => null;
+  @override
+  String? get ownLogin => null;
+  @override
+  bool isBlocked(String userId) => false;
 
   _FakeClient(this.transmitter);
 
@@ -53,12 +70,14 @@ class _FakeClient implements Client {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-/// Message number [i] in `#ronni`, sent [i] minutes after the first.
-ChannelMessageChat _message(int i) => ChannelMessageChat(
+/// Message number [i] in `#ronni`, sent [i] minutes after the first, in [channel] if given (the message sheet acts on
+/// it).
+ChannelMessageChat _message(int i, [Channel? channel]) => ChannelMessageChat(
   message: irc.Message.fromEvent(
     '@display-name=Ronni;id=message-$i;user-id=1337 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :message $i',
   ),
   dateTime: DateTime(2026, 11, 20).add(Duration(minutes: i)),
+  channel: channel,
 );
 
 const _statusBar = 47.0;
@@ -91,7 +110,7 @@ void main() {
 
   /// Shows a [ChannelView] with 20 messages under a [MediaQuery] taken from [mediaQuery], which the test changes to
   /// open the keyboard or move the status bar.
-  Future<void> showChannel(WidgetTester tester, ValueNotifier<MediaQueryData> mediaQuery) async {
+  Future<Channel> showChannel(WidgetTester tester, ValueNotifier<MediaQueryData> mediaQuery) async {
     final client = _FakeClient(transmitter);
     final channel = Channel(client: client, name: '#ronni');
     addTearDown(channel.close);
@@ -100,7 +119,7 @@ void main() {
     final uploads = UploadQueueCubit(api: offlineApi());
     addTearDown(uploads.close);
     for (var i = 0; i < 20; i++) {
-      channel.channelMessages.add(_message(i));
+      channel.channelMessages.add(_message(i, channel));
     }
     final settings = SettingsRepository(Hive.box<dynamic>('Settings'));
 
@@ -134,6 +153,7 @@ void main() {
     );
     // The chat's overlay height is applied in the frame after it was measured.
     await tester.pump();
+    return channel;
   }
 
   /// Lets the timer that hides the chat's search bar run out, so the test ends without pending timers.
@@ -203,4 +223,90 @@ void main() {
     expect(tester.widget<ChatView>(find.byType(ChatView)).padding, const EdgeInsets.only(top: 59.0));
     await finish(tester);
   });
+
+  /// Opens the message sheet of the newest message on screen, as a long press does, and taps [action] in it.
+  Future<void> tapInMessageSheet(WidgetTester tester, String action) async {
+    await tester.longPress(find.byType(ChatMessage).hitTestable().last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(action));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('Reply in the message sheet shows the message above the composer and the close button removes it', (
+    tester,
+  ) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    final channel = await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(composer()));
+    expect(find.text(l10n.replyingTo), findsNothing);
+
+    await tapInMessageSheet(tester, l10n.reply);
+
+    expect(find.text(l10n.replyingTo), findsOneWidget);
+    expect(
+      channel.composerDraft.state,
+      same(tester.widget<ChatMessage>(find.byType(ChatMessage).hitTestable().last).message),
+    );
+
+    await tester.tap(find.byIcon(Icons.close_outlined));
+    await tester.pump();
+    expect(find.text(l10n.replyingTo), findsNothing);
+    expect(channel.composerDraft.state, isNull);
+    await finish(tester);
+  });
+
+  testWidgets('Mention in the message sheet appends @login to what is typed in the composer', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(composer()));
+    await tester.enterText(composer(), 'hi ');
+    await tester.pump();
+
+    await tapInMessageSheet(tester, l10n.mentionUser);
+
+    expect(tester.widget<TextField>(composer()).controller!.text, 'hi @ronni');
+    await finish(tester);
+  });
+
+  testWidgets('the composer says it is connecting until the channel can be written to', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    final channel = await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(composer()));
+    String? hint() => tester.widget<TextField>(composer()).decoration!.hintText;
+    expect(hint(), l10n.channelConnecting('#ronni'));
+
+    await tester.runAsync(() async {
+      transmitter.add(ConnectionEstablished(tmi.ConnectionConnected(_account)));
+      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionConnected);
+    });
+    channel.transmitterJoin.joined();
+    await tester.pump();
+    expect(hint(), l10n.sendMessageIn('#ronni'));
+
+    channel.transmitterJoin.parted();
+    await tester.pump();
+    expect(hint(), l10n.channelConnecting('#ronni'));
+
+    await tester.runAsync(() async {
+      transmitter.add(ConnectionDisconnect());
+      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
+    });
+    await finish(tester);
+  });
 }
+
+final _account = TwitchAccount(
+  tokenData: TokenData(
+    clientId: null,
+    login: 'ronni',
+    scopes: const [],
+    userId: '1337',
+    expiresAt: null,
+    accessToken: 'token',
+  ),
+  userData: null,
+  cookies: null,
+);

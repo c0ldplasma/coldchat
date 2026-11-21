@@ -6,18 +6,14 @@ import '../l10n/app_localizations.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
-import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
 import 'login_flow.dart';
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;
-  final ChannelViewState? channelViewState;
-
   const MessageModal({
     super.key,
     required this.message,
-    this.channelViewState,
   });
 
   // Whispers can't be replied to or deleted.
@@ -41,7 +37,7 @@ class MessageModal extends StatelessWidget {
           prefix: const Icon(Icons.reply_outlined),
           onTap: () {
             Navigator.of(context).pop();
-            channelViewState?.setReplyChannelMessageChat(message);
+            message.channel?.composerDraft.replyTo(message);
           },
         ),
       Tile(
@@ -86,7 +82,8 @@ class MessageModal extends StatelessWidget {
         prefix: const Icon(Icons.alternate_email_outlined),
         onTap: () {
           Navigator.of(context).pop();
-          channelViewState?.addSplit('@${message.user.login}');
+          final login = message.user.login;
+          if (login != null) message.channel?.composerDraft.mention(login);
         },
       ),
       Tile(

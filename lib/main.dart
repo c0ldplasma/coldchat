@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
@@ -83,10 +84,10 @@ Future<void> main() async {
             recentMessages: RecentMessages(enabled: () => repositories.settings.chatHistory, api: api),
           ),
         ),
-        Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),
+        BlocProvider<NotificationsCubit>(create: (context) => NotificationsCubit()),
         // Above the channel views on purpose: an upload must survive switching
         // tabs and must never be awaited by the composer.
-        Provider<UploadQueueCubit>(create: (context) => UploadQueueCubit(api: api)),
+        BlocProvider<UploadQueueCubit>(create: (context) => UploadQueueCubit(api: api)),
       ],
       child: const App(),
     ),

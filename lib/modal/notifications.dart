@@ -11,9 +11,8 @@ class NotificationsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NotificationsCubit>(context).clearUnreads();
+    context.read<NotificationsCubit>().clearUnreads();
     return BlocBuilder<NotificationsCubit, NotificationsCubitState>(
-      bloc: BlocProvider.of<NotificationsCubit>(context),
       builder: (BuildContext context, state) => ListView(
         shrinkWrap: true,
         children: [
@@ -24,7 +23,7 @@ class NotificationsModal extends StatelessWidget {
               child: InkWell(
                 onTap: () async {
                   Navigator.of(context).pop();
-                  BlocProvider.of<NotificationsCubit>(context).clear();
+                  context.read<NotificationsCubit>().clear();
                 },
                 borderRadius: BorderRadius.circular(24.0),
                 child: const SizedBox(
