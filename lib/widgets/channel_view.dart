@@ -87,6 +87,16 @@ class ChannelViewState extends State<ChannelView> {
   // Rebuild the composer when the channel is joined or the sending connection drops, see [Channel.canSend].
   final List<StreamSubscription<Object?>> _canSendSubscriptions = [];
 
+  /// The chat above the composer, created once. The composer calls setState on every keystroke; handing Flutter the
+  /// same widget again makes it skip the chat instead of rebuilding the list and every visible message.
+  late Widget _chat = _ChannelChat(channel: widget.channel);
+
+  @override
+  void didUpdateWidget(ChannelView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.channel != oldWidget.channel) _chat = _ChannelChat(channel: widget.channel);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -495,22 +505,7 @@ class ChannelViewState extends State<ChannelView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-          child: Listener(
-            behavior: HitTestBehavior.opaque,
-            onPointerDown: (e) {
-              final currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus && currentFocus.hasFocus) {
-                FocusManager.instance.primaryFocus?.unfocus();
-              }
-            },
-            child: ChatView(
-              padding: MediaQuery.of(context).viewPadding,
-              channel: widget.channel,
-            ),
-          ),
-          // child: Container(),
-        ),
+        Expanded(child: _chat),
         BottomBar(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -813,6 +808,29 @@ class ChannelViewState extends State<ChannelView> {
       );
     });
   }
+}
+
+/// The chat of a [ChannelView]. Kept apart from the composer so typing doesn't rebuild it, and it reads only the view
+/// padding: [MediaQuery.of] would also rebuild it on every frame of the keyboard animation, which changes the insets.
+class _ChannelChat extends StatelessWidget {
+  final Channel channel;
+
+  const _ChannelChat({required this.channel});
+
+  @override
+  Widget build(BuildContext context) => Listener(
+    behavior: HitTestBehavior.opaque,
+    onPointerDown: (e) {
+      final currentFocus = FocusScope.of(context);
+      if (!currentFocus.hasPrimaryFocus && currentFocus.hasFocus) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      }
+    },
+    child: ChatView(
+      padding: MediaQuery.viewPaddingOf(context),
+      channel: channel,
+    ),
+  );
 }
 
 /// Whispers that arrive while ColdChat is closed never reach it, and Twitch gives apps no history to fetch them

@@ -108,7 +108,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
                   const HomePage(),
                   Container(
                     color: Theme.of(context).colorScheme.surface,
-                    height: MediaQuery.of(context).viewPadding.top,
+                    height: MediaQuery.viewPaddingOf(context).top,
                   ),
                 ],
               ),
