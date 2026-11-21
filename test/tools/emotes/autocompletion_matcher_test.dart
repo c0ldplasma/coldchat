@@ -80,6 +80,11 @@ void main() {
         expect(_names(rank('kap')), ['kappa', 'Kappa', 'KappaHD', 'KappaPride']);
       });
 
+      test('names starting with the search and as long as each other are sorted alphabetically', () {
+        final channelEmotes = [_emote('Kappu', _sevenTv), _emote('KappaHD', _sevenTv)];
+        expect(_names(rank('Kapp', channelEmotes: channelEmotes)), ['Kappa', 'Kappu', 'KappaHD']);
+      });
+
       test('names containing the search further in come last', () {
         expect(_names(rank('K', channelEmotes: const [])), ['Kappa', 'Keepo', 'MiniK']);
       });
