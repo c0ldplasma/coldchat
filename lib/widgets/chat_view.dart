@@ -131,6 +131,9 @@ class _ChatViewState extends State<ChatView> {
                     bottom: (widget.padding?.bottom ?? 0) + 8.0,
                   ),
                   reverse: true,
+                  // A chat too short to scroll would otherwise ignore drags, and the scroll notifications above are
+                  // the only way to bring back the hidden search bar, bell and avatar.
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: messages.length,
                   controller: scrollController,
                   itemBuilder: (BuildContext context, int index) {
