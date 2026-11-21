@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ),
             body: BlocBuilder<Connection, tmi.ConnectionState>(
-              bloc: context.read<Client>().receiver,
+              bloc: context.read<Client>().transmitter,
               builder: (context, connectionState) {
                 // The banner claims the status-bar inset itself, so drop the
                 // top inset for everything below it — otherwise the home
