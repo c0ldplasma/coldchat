@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,18 +12,35 @@ import 'upload_task.dart';
 ///
 /// Lives above the channel views so an upload survives tab switches and the
 /// composer never has to await anything: it starts a task, keeps accepting
-/// input, and gets the URL handed back through [onUploaded] when the host
-/// answers.
+/// input, and gets the URL handed back through [completed] and
+/// [takeUploadedUrls] when the host answers.
 class UploadQueueCubit extends Cubit<List<UploadTask>> {
   UploadQueueCubit() : super(const []);
 
-  /// Finished uploads, for the composer to insert at its caret. A broadcast
-  /// stream rather than a callback because every open channel tab listens and
-  /// filters by [UploadTask.channelName] — a single callback would be
-  /// overwritten by whichever tab registered last.
+  /// Signals finished uploads. A broadcast stream rather than a callback
+  /// because every open channel tab listens and filters by
+  /// [UploadTask.channelName] — a single callback would be overwritten by
+  /// whichever tab registered last. The URLs themselves wait in
+  /// [takeUploadedUrls]: a channel's view is disposed while its tab is off
+  /// screen, and an event nobody hears would drop the URL.
   final StreamController<UploadTask> _completed = StreamController<UploadTask>.broadcast();
 
   Stream<UploadTask> get completed => _completed.stream;
+
+  /// URLs of finished uploads per channel name that no composer has taken yet.
+  final Map<String, List<String>> _uploadedUrls = {};
+
+  /// Hands over (and forgets) the finished uploads' URLs for [channelName], oldest first.
+  List<String> takeUploadedUrls(String channelName) => _uploadedUrls.remove(channelName) ?? const [];
+
+  /// Keeps [task]'s URL for [takeUploadedUrls] and tells the listeners.
+  @visibleForTesting
+  void deliverCompleted(UploadTask task) {
+    final url = task.url;
+    if (url == null) return;
+    _uploadedUrls.putIfAbsent(task.channelName, () => []).add(url);
+    if (!_completed.isClosed) _completed.add(task);
+  }
 
   static const Duration _stallTimeout = Duration(seconds: 45);
 
@@ -122,7 +139,7 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
         task.url = url;
         task.client = null;
         _publish();
-        _completed.add(task);
+        deliverCompleted(task);
         remove(task);
         return;
       } catch (e) {
