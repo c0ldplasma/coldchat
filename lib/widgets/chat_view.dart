@@ -45,6 +45,18 @@ class _ChatViewState extends State<ChatView> {
   ScrollController scrollController = ScrollController();
   List<ChannelMessage>? scrollMessages;
 
+  /// The [ChatMessage] built for each message. Giving the list the same widget again lets Flutter skip rebuilding a
+  /// message that didn't change when another one arrives. Messages rebuilt in place ([ChannelMessages.revision]) and a
+  /// changed message appearance need new widgets, so then all of them are dropped.
+  Expando<ChatMessage> _messageWidgets = Expando();
+  int _messageWidgetsRevision = 0;
+  late final Listenable _messageAppearanceChanges;
+
+  void _dropMessageWidgets() => _messageWidgets = Expando();
+
+  ChatMessage _messageWidget(ChannelMessage message) =>
+      _messageWidgets[message] ??= ChatMessage(key: ObjectKey(message), message: message);
+
   /// Height of the search bar row (and avatar) floating over the top of the list, measured after layout. It's laid out
   /// even while faded out, so it stays the same whether the controls are shown or not.
   double _overlayHeight = 0.0;
@@ -81,11 +93,21 @@ class _ChatViewState extends State<ChatView> {
     // Show the chrome a bit longer right after the view appears.
     WidgetsBinding.instance.addPostFrameCallback((_) => _showChrome(linger: _chromeStartupLinger));
     searchFocusNode.addListener(() => setState(() {}));
+    _messageAppearanceChanges = context.read<SettingsRepository>().messageAppearanceChanges
+      ..addListener(_dropMessageWidgets);
+  }
+
+  @override
+  void didUpdateWidget(ChatView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // [ChannelMessages.revision] counts per channel.
+    if (oldWidget.channel != widget.channel) _dropMessageWidgets();
   }
 
   @override
   void dispose() {
     _hideChromeTimer?.cancel();
+    _messageAppearanceChanges.removeListener(_dropMessageWidgets);
     searchController.dispose();
     searchFocusNode.dispose();
     scrollController.dispose();
@@ -117,6 +139,15 @@ class _ChatViewState extends State<ChatView> {
               .toList();
         }
         if (widget.filter != null) messages = messages.where((element) => widget.filter!(element)).toList();
+        final revision = widget.channel.channelMessages.revision;
+        if (revision != _messageWidgetsRevision) {
+          _messageWidgetsRevision = revision;
+          _dropMessageWidgets();
+        }
+        // Where each message is now, built on the first lookup of this build. A new message goes in at index 0 (the
+        // list is reversed) and moves every other one up by one; this lets the list find a message's new index and
+        // keep its element, instead of giving its old element to whatever message is at its old index now.
+        Map<ChannelMessage, int>? indices;
         return Stack(
           children: [
             Positioned.fill(
@@ -151,11 +182,12 @@ class _ChatViewState extends State<ChatView> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: messages.length,
                   controller: scrollController,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ChatMessage(
-                      key: ObjectKey(messages.elementAt(index)),
-                      message: messages.elementAt(index),
-                    );
+                  itemBuilder: (BuildContext context, int index) => _messageWidget(messages.elementAt(index)),
+                  findChildIndexCallback: (key) {
+                    if (key is! ObjectKey) return null;
+                    indices ??= Map.identity()
+                      ..addEntries(messages.indexed.map((entry) => MapEntry(entry.$2, entry.$1)));
+                    return indices![key.value];
                   },
                 ),
               ),

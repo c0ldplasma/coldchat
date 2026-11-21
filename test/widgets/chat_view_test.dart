@@ -4,9 +4,11 @@ import 'package:coldchat/data/notifications_cubit.dart';
 import 'package:coldchat/data/repositories/account_repository.dart';
 import 'package:coldchat/data/repositories/settings_repository.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
+import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
+import 'package:coldchat/modal/user.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/cache.dart';
@@ -15,6 +17,7 @@ import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/widgets/avatar_button.dart';
+import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +38,10 @@ class _FakeClient implements Client {
 
   @override
   Future<void> ensureRecentMessages(Channel channel) async {}
+
+  /// Anonymous, so the user card doesn't ask Helix for a profile.
+  @override
+  TokenData? get apiTokenData => null;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -63,15 +70,25 @@ void main() {
 
   group('ChatView', () {
     late Directory tempDir;
+    late SettingsRepository settings;
 
     setUpAll(() async {
       Hive.registerAdapters();
       tempDir = Directory.systemTemp.createTempSync('coldchat_chat_view_test');
       Hive.init(tempDir.path);
-      final settings = await Hive.openBox<dynamic>('Settings');
-      await settings.put('messageAppearance', MessageAppearance());
+      await Hive.openBox<dynamic>('Settings');
       await Hive.openBox<dynamic>('AccountSettings');
       await Hive.openBox<dynamic>('TwitchAccounts');
+      settings = SettingsRepository(Hive.box<dynamic>('Settings'));
+    });
+
+    setUp(() async {
+      // Without timestamps and badges the user name is the first thing in a message's text.
+      await settings.saveMessageAppearance(
+        MessageAppearance()
+          ..timestamps = false
+          ..badges = false,
+      );
     });
 
     tearDownAll(() async {
@@ -81,23 +98,29 @@ void main() {
 
     const statusBar = 47.0;
 
-    /// Shows a chat of 100 messages like the channel view does (with the status bar as its padding) or like the user
-    /// card does (filtered, without padding), scrolls it all the way up and returns the oldest message.
-    Future<Finder> scrollToOldest(WidgetTester tester, {required bool filtered}) async {
+    /// A channel with [count] messages, closed after the test.
+    (Channel, List<ChannelMessageChat>) channelWith(int count) {
       final channel = Channel(client: _FakeClient(), name: '#ronni');
       addTearDown(channel.close);
+      final messages = [for (var i = 0; i < count; i++) _message(i)];
+      messages.forEach(channel.channelMessages.add);
+      return (channel, messages);
+    }
+
+    /// Shows [channel]'s chat like the channel view does (with the status bar as its padding) or like the user card
+    /// does (filtered, without padding).
+    Future<void> showChat(WidgetTester tester, Channel channel, {bool filtered = false}) async {
       final notifications = NotificationsCubit();
       addTearDown(notifications.close);
-      final messages = [for (var i = 0; i < 100; i++) _message(i)];
-      messages.forEach(channel.channelMessages.add);
 
       await tester.pumpWidget(
         MultiProvider(
           providers: [
-            Provider<SettingsRepository>.value(value: SettingsRepository(Hive.box<dynamic>('Settings'))),
+            Provider<SettingsRepository>.value(value: settings),
             Provider<AccountRepository>.value(
               value: AccountRepository(Hive.box<dynamic>('TwitchAccounts'), Hive.box<dynamic>('AccountSettings')),
             ),
+            Provider<Client>.value(value: channel.client),
             BlocProvider<NotificationsCubit>.value(value: notifications),
           ],
           child: MaterialApp(
@@ -124,6 +147,12 @@ void main() {
       );
       // The overlay's height is applied in the frame after it was measured.
       await tester.pump();
+    }
+
+    /// Shows a chat of 100 messages, scrolls it all the way up and returns the oldest message.
+    Future<Finder> scrollToOldest(WidgetTester tester, {required bool filtered}) async {
+      final (channel, messages) = channelWith(100);
+      await showChat(tester, channel, filtered: filtered);
 
       final list = tester.state<ScrollableState>(
         find.descendant(of: find.byType(ListView), matching: find.byType(Scrollable)),
@@ -153,6 +182,78 @@ void main() {
 
       expect(find.byType(AvatarButton), findsNothing);
       expect(tester.getTopLeft(oldest).dy, greaterThanOrEqualTo(tester.getBottomLeft(find.byType(TextField)).dy));
+      await finish(tester);
+    });
+
+    testWidgets('a new message keeps the elements of the messages already shown', (tester) async {
+      final (channel, messages) = channelWith(10);
+      await showChat(tester, channel);
+      final states = {for (final message in messages) message: tester.state(find.byKey(ObjectKey(message)))};
+
+      channel.channelMessages.add(_message(10));
+      await tester.pump();
+
+      expect(find.text('Ronni: message 10 ', findRichText: true), findsOneWidget);
+      for (final message in messages) {
+        expect(tester.state(find.byKey(ObjectKey(message))), same(states[message]));
+      }
+      await finish(tester);
+    });
+
+    testWidgets("a new message doesn't rebuild the messages already shown", (tester) async {
+      final (channel, messages) = channelWith(10);
+      await showChat(tester, channel);
+      final widgets = {for (final message in messages) message: tester.widget(find.byKey(ObjectKey(message)))};
+
+      channel.channelMessages.add(_message(10));
+      await tester.pump();
+
+      // The list got the very same widget again, so Flutter didn't build it again.
+      for (final message in messages) {
+        expect(tester.widget(find.byKey(ObjectKey(message))), same(widgets[message]));
+      }
+      await finish(tester);
+    });
+
+    testWidgets('a tap on a user name opens the user card even when a new message arrives during it', (tester) async {
+      final (channel, messages) = channelWith(10);
+      await showChat(tester, channel);
+
+      final name = tester.getTopLeft(find.byKey(ObjectKey(messages.last))) + const Offset(16.0, 8.0);
+      final gesture = await tester.startGesture(name);
+      channel.channelMessages.add(_message(10));
+      await tester.pump();
+      await gesture.up();
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(UserModal), findsOneWidget);
+      await finish(tester);
+    });
+
+    testWidgets('messages rebuilt in place show their new content after a refresh', (tester) async {
+      final (channel, messages) = channelWith(10);
+      await showChat(tester, channel);
+      expect(find.byType(BlockedChatMessage), findsNothing);
+
+      // Like Channel.rebuildMessages: the message itself changes, then the same messages are emitted again.
+      messages.last.blocked = true;
+      channel.channelMessages.refresh();
+      await tester.pump();
+
+      expect(find.byType(BlockedChatMessage), findsOneWidget);
+      await finish(tester);
+    });
+
+    testWidgets('the messages shown follow a change of the message appearance', (tester) async {
+      final (channel, _) = channelWith(10);
+      await showChat(tester, channel);
+      expect(find.text('Ronni: message 9 ', findRichText: true), findsOneWidget);
+
+      await tester.runAsync(() => settings.saveMessageAppearance(settings.messageAppearance..timestamps = true));
+      await tester.pump();
+
+      expect(find.text('0:09  Ronni: message 9 ', findRichText: true), findsOneWidget);
       await finish(tester);
     });
   });
