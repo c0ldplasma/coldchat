@@ -31,6 +31,7 @@ import '../../providers/provider.dart';
 import '../../providers/seventv.dart';
 import '../../providers/twitch.dart';
 import '../cache.dart';
+import '../channel/channel.dart';
 import '../channel/channel_event.dart';
 import '../channel/channel_message.dart';
 import '../channel/channel_state.dart';
@@ -350,38 +351,11 @@ class Client implements AccountConnector {
       case 'GLOBALUSERSTATE':
         // Only the logged-in transmitter gets one; the account's color and emotes are its business.
         if (connection != transmitter) break;
-        try {
-          if (connection.state is ConnectionStateWithCredentials) {
-            final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
-            session.ownColor = event.tags['color'];
-            final emotes = await helix
-                .forToken(stateTwitchAccount.tokenData)
-                .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
-            // Every account has at least the global Twitch emotes, so an empty
-            // result means the request failed: keep the cached list instead.
-            if (emotes.isNotEmpty) {
-              final userEmotes = [
-                for (final emote in emotes)
-                  Emote(
-                    id: emote.id,
-                    mipmap: emote.images.values.toList(),
-                    name: emote.name,
-                    provider: providers.firstWhere((element) => element.name == 'Twitch'),
-                  ),
-              ];
-              globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);
-            }
-          }
-        } catch (e) {
-          log('Couldn\'t get twitch user emotes');
-        }
+        await _globalUserState(connection, event);
         break;
       case 'JOIN':
-        final channelName = event.parameters[0];
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);
-        if (channel == null) {
-          break;
-        }
+        final channel = _channelNamed(event.parameters[0]);
+        if (channel == null) break;
 
         // Twitch echoes the JOIN with the nick the connection registered with, e.g. the receiver's justinfan nick.
         final connectionState = connection.state;
@@ -405,19 +379,10 @@ class Client implements AccountConnector {
       case 'PRIVMSG':
         if (event.command == 'USERNOTICE') log(event.raw);
 
-        final channelName = event.parameters[0];
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);
-        if (channel == null) {
-          break;
-        }
+        final channel = _channelNamed(event.parameters[0]);
+        if (channel == null) break;
 
-        final ChannelMessage message = ChannelMessageChat(
-          message: event,
-          dateTime: DateTime.fromMillisecondsSinceEpoch(
-            int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
-          ),
-          channel: channel,
-        );
+        final ChannelMessage message = ChannelMessageChat(message: event, dateTime: _sentAt(event), channel: channel);
 
         for (final listener in listeners) {
           listener.onMessageReceived(message);
@@ -428,16 +393,13 @@ class Client implements AccountConnector {
       case 'USERSTATE':
         // About the account in the channel, so only the transmitter's counts (the anonymous receiver isn't anyone).
         if (connection != transmitter) break;
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == event.parameters[0]);
+        final channel = _channelNamed(event.parameters[0]);
         if (channel == null) break;
         channel.applyUserState(event);
         break;
       case 'ROOMSTATE':
-        final channelName = event.parameters[0];
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);
-        if (channel == null) {
-          break;
-        }
+        final channel = _channelNamed(event.parameters[0]);
+        if (channel == null) break;
 
         channel.id = event.tags['room-id'];
         if (channel.id != null) globals.bttvSocket.join(channel.id!);
@@ -451,21 +413,9 @@ class Client implements AccountConnector {
         await channel.refresh();
         break;
       case 'CLEARCHAT':
-        final channelName = event.parameters[0];
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);
-        if (channel == null) {
-          break;
-        }
-
-        channel.channelMessages.add(
-          ChannelMessageBan(
-            message: event,
-            dateTime: DateTime.fromMillisecondsSinceEpoch(
-              int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
-            ),
-            channel: channel,
-          ),
-        );
+        final channel = _channelNamed(event.parameters[0]);
+        if (channel == null) break;
+        channel.channelMessages.add(ChannelMessageBan(message: event, dateTime: _sentAt(event), channel: channel));
         break;
       case 'NOTICE':
         // The handshake rejection arrives as `NOTICE * :Login authentication
@@ -474,11 +424,8 @@ class Client implements AccountConnector {
         // retried the same dead token forever. Catch it here instead.
         if (session.handleAuthFailureNotice(connection, event)) break;
 
-        final channelName = event.parameters[0];
-        final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);
-        if (channel == null) {
-          break;
-        }
+        final channel = _channelNamed(event.parameters[0]);
+        if (channel == null) break;
 
         // Both connections join the channel, so both are told it's suspended; the receiver's channel state shows it.
         if (event.tags['msg-id'] == 'msg_channel_suspended') {
@@ -491,19 +438,47 @@ class Client implements AccountConnector {
         final now = DateTime.now();
         if (isDuplicateNotice(channel.channelMessages.state, event, now)) break;
 
-        channel.channelMessages.add(
-          ChannelMessageNotice(
-            message: event,
-            dateTime: DateTime.fromMillisecondsSinceEpoch(
-              int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
-            ),
-            channel: channel,
-          ),
-        );
+        channel.channelMessages.add(ChannelMessageNotice(message: event, dateTime: _sentAt(event), channel: channel));
         break;
       default:
         log(event.raw);
         break;
+    }
+  }
+
+  Channel? _channelNamed(String name) => channels.state.firstWhereOrNull((channel) => channel.name == name);
+
+  /// When Twitch says [event] was sent, or now if it doesn't say.
+  static DateTime _sentAt(irc.Message event) => DateTime.fromMillisecondsSinceEpoch(
+    int.tryParse(event.tags['tmi-sent-ts'] ?? 'null') ?? DateTime.now().millisecondsSinceEpoch,
+  );
+
+  /// The transmitter's GLOBALUSERSTATE: the account's chat color and the Twitch emotes it can use everywhere.
+  Future<void> _globalUserState(Connection connection, irc.Message event) async {
+    try {
+      if (connection.state is ConnectionStateWithCredentials) {
+        final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
+        session.ownColor = event.tags['color'];
+        final emotes = await helix
+            .forToken(stateTwitchAccount.tokenData)
+            .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
+        // Every account has at least the global Twitch emotes, so an empty
+        // result means the request failed: keep the cached list instead.
+        if (emotes.isNotEmpty) {
+          final userEmotes = [
+            for (final emote in emotes)
+              Emote(
+                id: emote.id,
+                mipmap: emote.images.values.toList(),
+                name: emote.name,
+                provider: providers.firstWhere((element) => element.name == 'Twitch'),
+              ),
+          ];
+          globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);
+        }
+      }
+    } catch (e) {
+      log('Couldn\'t get twitch user emotes');
     }
   }
 }
