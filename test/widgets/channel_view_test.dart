@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:coldchat/components/bottom_bar.dart';
 import 'package:coldchat/components/modal.dart';
+import 'package:coldchat/components/tile.dart';
+import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/data/emote_button_icon.dart';
 import 'package:coldchat/data/filesharing/upload_queue_cubit.dart';
 import 'package:coldchat/data/notifications_cubit.dart';
@@ -19,6 +21,7 @@ import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/pages/home.dart';
 import 'package:coldchat/sheets/message.dart';
+import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
@@ -253,6 +256,43 @@ void main() {
     await finish(tester);
   });
 
+  testWidgets('sending without picking a suggestion closes the suggestions', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    final channel = await showChannel(tester, mediaQuery);
+    (channel.client as FakeClient).globals.emotes.change([
+      Emote(id: 'pog', name: 'PogChamp', mipmap: ['https://example.com/pog'], source: _TestSource()),
+    ]);
+    await tester.runAsync(() async {
+      transmitter.add(ConnectionEstablished(tmi.ConnectionConnected(_account)));
+      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionConnected);
+    });
+    channel.transmitterJoin.joined();
+    await tester.pump();
+    Finder suggestion(String title) => find.descendant(of: find.byType(Tile), matching: find.text(title));
+
+    // An emote, and Ronni because they wrote in the chat.
+    for (final (typed, title) in [('hi Pog', 'PogChamp'), ('hi ro', 'Ronni')]) {
+      await tester.enterText(composer(), typed);
+      await tester.pump();
+      expect(suggestion(title), findsOneWidget);
+
+      await tester.testTextInput.receiveAction(TextInputAction.send);
+      await tester.pump();
+
+      expect(tester.widget<TextField>(composer()).controller!.text, isEmpty);
+      expect(suggestion(title), findsNothing);
+    }
+
+    // The transmitter is shared by every test here: leave it disconnected again, as the next test expects.
+    channel.transmitterJoin.parted();
+    await tester.runAsync(() async {
+      transmitter.add(ConnectionDisconnect());
+      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
+    });
+    await finish(tester);
+  });
+
   testWidgets('the composer says it is connecting until the channel can be written to', (tester) async {
     final mediaQuery = statusBarOnly();
     addTearDown(mediaQuery.dispose);
@@ -406,3 +446,11 @@ final _account = TwitchAccount(
   userData: null,
   cookies: null,
 );
+
+class _TestSource extends ChatSource {
+  @override
+  String get name => '7TV';
+
+  @override
+  String? get description => null;
+}

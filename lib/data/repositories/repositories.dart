@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:hive_ce/hive_ce.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -63,9 +65,13 @@ class Repositories {
   static Future<Repositories> open(ApiClient api) async {
     // Not awaited: nothing depends on it, so it doesn't hold up the first frame.
     unawaited(deleteUnusedBoxes());
+    // Hive's home folder is the documents folder too (see Hive.initFlutter).
+    final accountsPath = Platform.isIOS
+        ? '${(await getApplicationDocumentsDirectory()).path}/${AccountRepository.iosLoginsFolder}'
+        : null;
     // Open the boxes concurrently instead of serially to shave startup time off the path before the first frame.
     final (accounts, settings, channels, whispers, triggers, customCommands, emoteBadgeCache, seenMentions) = await (
-      AccountRepository.open(),
+      AccountRepository.open(accountsPath: accountsPath),
       SettingsRepository.open(),
       ChannelRepository.open(),
       WhisperRepository.open(),

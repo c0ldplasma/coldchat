@@ -124,4 +124,48 @@ void main() {
       expect(Message.unescapeTagValue(r'\s\:\\\s'), r' ;\ ');
     });
   });
+
+  group('Message.commandOf', () {
+    test('finds the command after tags and a prefix, after a prefix only and with neither', () {
+      expect(Message.commandOf('@id=1;user-id=2 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :hi there'), 'PRIVMSG');
+      expect(Message.commandOf('@badges=;color= :tmi.twitch.tv USERSTATE #ronni'), 'USERSTATE');
+      expect(Message.commandOf(':ronni!ronni@ronni.tmi.twitch.tv JOIN #ronni'), 'JOIN');
+      expect(Message.commandOf('PING :tmi.twitch.tv'), 'PING');
+      expect(Message.commandOf('RECONNECT'), 'RECONNECT');
+    });
+
+    test('finds numeric commands', () {
+      expect(Message.commandOf(':tmi.twitch.tv 001 justinfan123 :Welcome, GLHF!'), '001');
+      expect(Message.commandOf(':justinfan123.tmi.twitch.tv 353 justinfan123 = #ronni :justinfan123'), '353');
+    });
+
+    test('is null for lines without a command, where fromEvent throws', () {
+      for (final line in [
+        '',
+        '@id=1',
+        '@id=1 ',
+        ':tmi.twitch.tv',
+        '@id=1 :tmi.twitch.tv',
+        ' PING',
+        '@a=b  PRIVMSG #x :two spaces',
+      ]) {
+        expect(Message.commandOf(line), isNull, reason: line);
+        expect(() => Message.fromEvent(line), throwsA(isA<InvalidIrcMessageException>()), reason: line);
+      }
+    });
+
+    test('agrees with fromEvent', () {
+      for (final line in [
+        '@id=1;user-id=2 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :hi there',
+        '@login=ronni;target-msg-id=m1 :tmi.twitch.tv CLEARMSG #ronni :hello',
+        '@msg-id=slow_on :tmi.twitch.tv NOTICE #ronni :This room is now in slow mode.',
+        ':tmi.twitch.tv CAP * ACK :twitch.tv/tags twitch.tv/commands',
+        ':tmi.twitch.tv 001 justinfan123 :Welcome, GLHF!',
+        'PING :tmi.twitch.tv',
+        'RECONNECT',
+      ]) {
+        expect(Message.commandOf(line), Message.fromEvent(line).command, reason: line);
+      }
+    });
+  });
 }

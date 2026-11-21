@@ -54,8 +54,12 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   /// without it too.
   final bool membership;
 
-  /// Which received lines are handed to [onReceive]; null for all of them.
-  bool Function(irc.Message message)? accepts;
+  /// The commands of the received lines handed to [onReceive]; null for all of them. The others are dropped before
+  /// they're parsed, except PING, which is always answered.
+  Set<String>? acceptedCommands;
+
+  /// Whether a line with [command] is handled: PING always, the rest as [acceptedCommands] says.
+  bool _accepts(String command) => command == 'PING' || (acceptedCommands?.contains(command) ?? true);
 
   Connection({WebSocketChannel Function(Uri uri)? openSocket, this.name = 'connection', this.membership = true})
     : _openSocket = openSocket ?? _openIoSocket,
@@ -167,6 +171,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
                 .split('\r\n')
                 .where((String singleEvent) => singleEvent.isNotEmpty)
                 .map((String singleEvent) => singleEvent.trim())) {
+          // Lines this connection doesn't use are dropped unparsed: on the transmitter that is all the chat. One
+          // without a command goes on to the parser, which rejects it as before.
+          final command = irc.Message.commandOf(singleEvent);
+          if (command != null && !_accepts(command)) continue;
           final message = irc.Message.fromEvent(singleEvent);
           unawaited(receive(message));
         }
@@ -295,7 +303,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       _reconnectAttempts = 0;
       _lastInbound = DateTime.now();
       // Lines this connection doesn't use are dropped before they're handled; it still answers Twitch's PING.
-      if (event.command != 'PING' && accepts?.call(event) == false) return;
+      if (!_accepts(event.command)) return;
       onReceive?.call(this, event);
       if (event.command == 'PING') {
         await send('PONG :${event.parameters.join(' ')}');

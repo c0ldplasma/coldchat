@@ -82,10 +82,10 @@ don't need tests. If a test really isn't practical, say why in the PR descriptio
 
 ## Pull requests
 
-Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged**, need the required checks
-**Analyze, Android and iOS** to pass and must be up to date with `main`; head branches are deleted after merging. The
-owner merges and turns on auto-merge, not the AI. Give PRs a descriptive title: `gh release create --generate-notes`
-builds the changelog from them.
+Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged** and need the required
+checks **Analyze, Android and iOS** to pass, but don't have to be up to date with `main`; head branches are deleted
+after merging. The owner merges and turns on auto-merge, not the AI. Give PRs a descriptive title:
+`gh release create --generate-notes` builds the changelog from them.
 
 ## Versioning
 
@@ -145,6 +145,10 @@ The deployment target is iOS 15.0, which App Store Connect requires from Spring 
 (`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Signing is automatic with team `RA25PYVUTF`;
 `ios/ExportOptions.plist` exports for App Store Connect.
 
+The Twitch logins (`TwitchAccounts` box) are kept out of backups on both platforms: on Android by the rules in
+`android/app/src/main/res/xml/`, on iOS by storing the box in `Documents/Logins`, which `AppDelegate.swift` excludes
+from backups at every launch (`AccountRepository.iosLoginsFolder`; older installs are moved there at startup).
+
 `ios/Runner/PrivacyInfo.xcprivacy` is the app's privacy manifest: no tracking, no collected data, no
 required-reason APIs (plugins and the Flutter engine ship their own). Update it if the app ever starts using
 one, e.g. `UserDefaults` or file timestamps.
@@ -186,8 +190,9 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   after changing an annotated model, run `dart run build_runner build --delete-conflicting-outputs`.
 - Storage is **`hive_ce`**, the maintained continuation of hive 2 (which stopped at 2.2.3); it reads boxes written by
   hive 2 unchanged. Never change a `@HiveType` typeId or a `@HiveField` number of a stored model, or existing data
-  stops loading: add new fields with new numbers and a `defaultValue`. Adapters are registered by hand in `main.dart`;
-  the generated `lib/hive_registrar.g.dart` lists them all for comparison. All box access goes through the typed
+  stops loading: add new fields with new numbers and a `defaultValue`. `main.dart` registers the adapters with
+  `Hive.registerAdapters()` from the generated `lib/hive_registrar.g.dart`, which lists every `@HiveType`; never
+  register one by hand (`test/architecture_test.dart` checks). All box access goes through the typed
   repositories in `lib/data/repositories/` (opened together by `Repositories.open()` in `main.dart`, provided to
   widgets with `context.read<...Repository>()`, passed to `Client` in its constructor): don't call `Hive.box` or
   `box.listenable()` anywhere else, and keep box names and keys as constants on the repository that owns them.

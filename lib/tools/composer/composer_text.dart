@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/services.dart';
 
 import '../../tmi/channel/composer_draft.dart';
@@ -19,39 +17,27 @@ TextEditingValue completeLastWord(TextEditingValue value, String word) {
 /// at the end. Used to mention a user from the message sheet.
 TextEditingValue appendWord(TextEditingValue value, String word) => _caretAtEnd(appendWordTo(value.text, word));
 
-/// Inserts [url] in place of the selection (at the end without a valid one), with a space before it unless the text
-/// up to the selection's end already ends with one, and a space after it. The caret goes after the inserted text.
-TextEditingValue insertUploadedUrl(TextEditingValue value, String url) {
+/// Inserts [word] (an emote from the picker or an uploaded file's link) in place of the selection, or at the end of
+/// the text without a valid selection. A space goes before it unless it starts the text or follows whitespace, and
+/// one after it unless whitespace follows, so it stays a word of its own (emote codes only render as one). The caret
+/// goes after the inserted text.
+TextEditingValue insertWord(TextEditingValue value, String word) {
   final text = value.text;
   final selection = value.selection;
-  final at = selection.isValid ? selection.end : text.length;
-  final start = selection.isValid ? selection.start : at;
+  final valid = selection.isValid && selection.end <= text.length;
+  final start = valid ? selection.start : text.length;
+  final end = valid ? selection.end : text.length;
 
-  final needsLeadingSpace = at > 0 && !text.substring(0, at).endsWith(' ');
-  final insertion = '${needsLeadingSpace ? ' ' : ''}$url ';
+  final needsLeadingSpace = start > 0 && !_isWhitespace(text[start - 1]);
+  final needsTrailingSpace = end == text.length || !_isWhitespace(text[end]);
+  final insertion = '${needsLeadingSpace ? ' ' : ''}$word${needsTrailingSpace ? ' ' : ''}';
   return TextEditingValue(
-    text: text.replaceRange(start, at, insertion),
+    text: text.replaceRange(start, end, insertion),
     selection: TextSelection.collapsed(offset: start + insertion.length),
   );
 }
 
-/// Inserts [insert] (from the emote picker) at the selection's base offset (the start without a valid selection),
-/// with a space before and after it unless the neighbouring character already is one. A selected range is kept, not
-/// replaced. The caret goes after the inserted text.
-TextEditingValue insertAtCaret(TextEditingValue value, String insert) {
-  final text = value.text;
-  final cursorPosition = max(0, value.selection.baseOffset);
-  if (text.isEmpty || cursorPosition >= text.length || text[cursorPosition] != ' ') {
-    insert = '$insert ';
-  }
-  if (cursorPosition > 0 && text[cursorPosition - 1] != ' ') {
-    insert = ' $insert';
-  }
-  return TextEditingValue(
-    text: text.substring(0, cursorPosition) + insert + text.substring(cursorPosition),
-    selection: TextSelection.collapsed(offset: cursorPosition + insert.length),
-  );
-}
+bool _isWhitespace(String char) => char.trim().isEmpty;
 
 TextEditingValue _caretAtEnd(String text) => TextEditingValue(
   text: text,

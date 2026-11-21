@@ -8,8 +8,12 @@ class ChatterinoApi {
 
   ChatterinoApi(this._api);
 
+  /// The answer is `{"badges": [...]}`.
   Future<List<ChatterinoBadge>> badges() => _api.getJson(
     Uri.parse('https://api.chatterino.com/badges'),
-    (json) => [for (final badge in json as List<dynamic>) ChatterinoBadge.fromJson(badge as JsonMap)],
+    (json) => [
+      for (final badge in ((json as JsonMap)['badges'] as List<dynamic>?) ?? const <dynamic>[])
+        if (badge is Map<String, dynamic>) ChatterinoBadge.fromJson(badge),
+    ],
   );
 }

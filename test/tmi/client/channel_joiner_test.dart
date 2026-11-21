@@ -181,21 +181,109 @@ void main() {
     expect(channels.map((channel) => channel.state), everyElement(isA<ChannelConnecting>()));
   });
 
-  test('a JOIN without an echo is sent again after it timed out, at most 3 times', () async {
+  /// Runs a join pass every 2 seconds for [duration] and returns when each receiver JOIN of [channel] was sent,
+  /// relative to the start.
+  Future<List<int>> joinTimes(ChannelJoiner j, _FakeConnection connection, String channel, Duration duration) async {
+    final start = now;
+    final times = <int>[];
+    while (now.difference(start) < duration) {
+      final before = connection.sent.length;
+      j.joinPending();
+      await settle();
+      if (connection.sent.skip(before).any((line) => line.substring(5).split(',').contains(channel))) {
+        times.add(now.difference(start).inSeconds);
+      }
+      now = now.add(const Duration(seconds: 2));
+    }
+    return times;
+  }
+
+  test('a JOIN without an echo is retried at once 3 times, then after a growing delay', () async {
     addChannels(['#gone']);
     receiver.goOnline();
     final j = joiner();
 
-    for (var attempt = 0; attempt < 5; attempt++) {
+    final times = await joinTimes(j, receiver, '#gone', const Duration(minutes: 10));
+
+    // 20 s timeout, the part and the JOIN on the next passes; then 30 s, 60 s, 120 s and 240 s on top of the timeout.
+    expect(times, [0, 22, 44, 96, 178, 320, 582]);
+    expect(channels.single.state, isA<ChannelConnecting>(), reason: 'shown as connecting while it waits');
+  });
+
+  test('a JOIN that is answered late still connects the channel and resets the retries', () async {
+    addChannels(['#slow']);
+    receiver.goOnline();
+    final j = joiner();
+    await joinTimes(j, receiver, '#slow', const Duration(seconds: 70));
+    expect(receiver.sent, hasLength(3));
+
+    j.receiverJoined('#slow');
+    channels.single.add(ChannelConnect());
+    await settle();
+    final times = await joinTimes(j, receiver, '#slow', const Duration(minutes: 5));
+
+    expect(times, isEmpty);
+    expect(channels.single.state, isA<ChannelConnected>());
+  });
+
+  test('the transmitter retries an unanswered JOIN the same way', () async {
+    addChannels(['#gone']);
+    transmitter.goOnline();
+    final j = joiner();
+
+    final times = await joinTimes(j, transmitter, '#gone', const Duration(minutes: 10));
+
+    // The transmitter doesn't part first, so each JOIN goes out on the pass right after the delay.
+    expect(times, [0, 20, 40, 90, 170, 310, 570]);
+  });
+
+  test('a channel Twitch says is suspended is not retried', () async {
+    addChannels(['#suspended']);
+    receiver.goOnline();
+    transmitter.goOnline();
+    final j = joiner();
+    j.joinPending();
+    await settle();
+    channels.single.add(ChannelSuspend());
+    await settle();
+    expect(channels.single.state, isA<ChannelSuspended>());
+
+    await joinTimes(j, receiver, '#suspended', const Duration(minutes: 10));
+
+    expect(receiver.sent, ['JOIN #suspended']);
+    expect(transmitter.sent, ['JOIN #suspended']);
+  });
+
+  test('retries stay within the rate limit', () async {
+    addChannels([for (var i = 0; i < 40; i++) '#c$i']);
+    receiver.goOnline();
+    transmitter.goOnline();
+    final j = joiner();
+    final receiverSentAt = <DateTime>[];
+    final transmitterSentAt = <DateTime>[];
+
+    final start = now;
+    while (now.difference(start) < const Duration(minutes: 10)) {
+      final receiverBefore = receiver.sent.length;
+      final transmitterBefore = transmitter.sent.length;
       j.joinPending();
       await settle();
-      now = now.add(const Duration(seconds: 21));
-      // The first pass after the timeout parts the channel, the next one joins it again.
-      j.joinPending();
-      await settle();
+      for (final line in receiver.sent.skip(receiverBefore)) {
+        receiverSentAt.addAll(List.filled(line.split(',').length, now));
+      }
+      for (final line in transmitter.sent.skip(transmitterBefore)) {
+        transmitterSentAt.addAll(List.filled(line.split(',').length, now));
+      }
+      now = now.add(const Duration(seconds: 2));
     }
 
-    expect(receiver.sent, ['JOIN #gone', 'JOIN #gone', 'JOIN #gone']);
+    expect(receiverSentAt.length, greaterThan(6 * 40), reason: 'every channel is still being retried');
+    for (final sentAt in [receiverSentAt, transmitterSentAt]) {
+      for (final t in sentAt) {
+        final inWindow = sentAt.where((s) => !s.isBefore(t) && s.difference(t) < const Duration(seconds: 10));
+        expect(inWindow.length, lessThanOrEqualTo(18));
+      }
+    }
   });
 
   test('passes run every 2 seconds until closed', () {
