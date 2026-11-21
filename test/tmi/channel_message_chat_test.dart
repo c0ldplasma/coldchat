@@ -34,6 +34,14 @@ void main() {
     expect(message.replyInfo, isNull);
   });
 
+  test('turns an escaped zero width joiner (U+E0002) back into U+200D', () {
+    // 👨 U+E0002 💻 is how a Chatterino-style client escapes 👨‍💻.
+    final message = chat('\u{1F468}\u{E0002}\u{1F4BB} hi');
+
+    expect(message.body, '\u{1F468}\u{200D}\u{1F4BB} hi');
+    expect(message.splits, ['\u{1F468}\u{200D}\u{1F4BB}', 'hi']);
+  });
+
   group('user color', () {
     test('comes from the color tag', () {
       expect(chat('hi').user.color, const Color(0xFF1E90FF));
