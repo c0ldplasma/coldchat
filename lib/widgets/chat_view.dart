@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../components/boxlistener.dart';
+import '../components/size_reporter.dart';
 import '../components/surface.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/coldchat_theme.dart';
@@ -15,6 +17,12 @@ import '../tmi/channel/messages/channel_message_chat.dart';
 import 'avatar_button.dart';
 import 'chat_avatar_visibility.dart';
 import 'chat_message.dart';
+
+/// The chat list's top padding. Scrolled all the way up, the oldest message has to sit below the floating search bar
+/// and avatar, which take [overlayHeight] from the top of the chat (safe area included), instead of behind them.
+/// [insetTop] is the top of the padding the chat was given; until the overlay is measured the list keeps 8 px below it.
+double chatListTopPadding({required double insetTop, required double overlayHeight}) =>
+    max(insetTop + 8.0, overlayHeight);
 
 class ChatView extends StatefulWidget {
   final Channel channel;
@@ -37,6 +45,15 @@ class _ChatViewState extends State<ChatView> {
   final FocusNode searchFocusNode = FocusNode();
   ScrollController scrollController = ScrollController();
   List<ChannelMessage>? scrollMessages;
+
+  /// Height of the search bar row (and avatar) floating over the top of the list, measured after layout. It's laid out
+  /// even while faded out, so it stays the same whether the controls are shown or not.
+  double _overlayHeight = 0.0;
+
+  void _onOverlaySize(Size size) {
+    if (!mounted || size.height == _overlayHeight) return;
+    setState(() => _overlayHeight = size.height);
+  }
 
   // Keep the top chrome (search bar, notifications bell, scroll-to-bottom
   // button) visible for a while after the user stops interacting instead of
@@ -127,7 +144,7 @@ class _ChatViewState extends State<ChatView> {
                 child: ListView.builder(
                   // padding: MediaQuery.of(context).padding.copyWith(bottom: MediaQuery.of(context).padding.bottom + 8.0),
                   padding: (widget.padding ?? EdgeInsets.zero).copyWith(
-                    top: (widget.padding?.top ?? 0) + 8.0,
+                    top: chatListTopPadding(insetTop: widget.padding?.top ?? 0, overlayHeight: _overlayHeight),
                     bottom: (widget.padding?.bottom ?? 0) + 8.0,
                   ),
                   reverse: true,
@@ -183,53 +200,58 @@ class _ChatViewState extends State<ChatView> {
             //     ],
             //   ),
             // ),
-            SafeArea(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: chromeShown ? 1.0 : 0.0,
-                      child: IgnorePointer(
-                        ignoring: !chromeShown,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(128.0),
-                              boxShadow: ChatColors.raisedShadow,
-                            ),
-                            child: Surface(
-                              borderRadius: BorderRadius.circular(128.0),
-                              type: SurfaceType.surfaceVariant,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: TextField(
-                                  controller: searchController,
-                                  focusNode: searchFocusNode,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: AppLocalizations.of(context).search,
-                                    isDense: true,
-                                    // Like the home tab's search field: accent icon on the neutral pill.
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsetsDirectional.only(end: 8.0),
-                                      child: Icon(
-                                        Icons.search,
-                                        size: 20.0,
-                                        color: Theme.of(context).colorScheme.primary,
+            SizeReporter(
+              onSize: _onOverlaySize,
+              child: SafeArea(
+                // The bottom inset is below the composer, not under this row; it would only inflate the measured height.
+                bottom: false,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 200),
+                        opacity: chromeShown ? 1.0 : 0.0,
+                        child: IgnorePointer(
+                          ignoring: !chromeShown,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(128.0),
+                                boxShadow: ChatColors.raisedShadow,
+                              ),
+                              child: Surface(
+                                borderRadius: BorderRadius.circular(128.0),
+                                type: SurfaceType.surfaceVariant,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: TextField(
+                                    controller: searchController,
+                                    focusNode: searchFocusNode,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: AppLocalizations.of(context).search,
+                                      isDense: true,
+                                      // Like the home tab's search field: accent icon on the neutral pill.
+                                      prefixIcon: Padding(
+                                        padding: const EdgeInsetsDirectional.only(end: 8.0),
+                                        child: Icon(
+                                          Icons.search,
+                                          size: 20.0,
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
                                       ),
+                                      prefixIconConstraints: const BoxConstraints(),
+                                      suffixIconConstraints: const BoxConstraints(),
+                                      suffixIcon: searching
+                                          ? GestureDetector(
+                                              onTap: () => setState(() => searchController.clear()),
+                                              child: const Icon(Icons.close_rounded, size: 20.0),
+                                            )
+                                          : null,
                                     ),
-                                    prefixIconConstraints: const BoxConstraints(),
-                                    suffixIconConstraints: const BoxConstraints(),
-                                    suffixIcon: searching
-                                        ? GestureDetector(
-                                            onTap: () => setState(() => searchController.clear()),
-                                            child: const Icon(Icons.close_rounded, size: 20.0),
-                                          )
-                                        : null,
+                                    onChanged: (text) => setState(() {}),
                                   ),
-                                  onChanged: (text) => setState(() {}),
                                 ),
                               ),
                             ),
@@ -237,16 +259,16 @@ class _ChatViewState extends State<ChatView> {
                         ),
                       ),
                     ),
-                  ),
-                  if (widget.filter == null)
-                    ChatAvatarVisibility(
-                      chromeShown: chromeShown,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                        child: AvatarButton(floating: true),
+                    if (widget.filter == null)
+                      ChatAvatarVisibility(
+                        chromeShown: chromeShown,
+                        child: const Padding(
+                          padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                          child: AvatarButton(floating: true),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
             Positioned(
