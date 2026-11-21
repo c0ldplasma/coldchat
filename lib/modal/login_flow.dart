@@ -28,6 +28,7 @@ const List<String> _scopes = [
   'channel:moderate',
   'channel:read:redemptions',
   'moderator:manage:automod',
+  'moderator:manage:chat_messages',
   'channel:manage:broadcast',
   // Whispers
   'whispers:read',
