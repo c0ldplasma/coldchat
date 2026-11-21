@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -36,8 +40,27 @@ class Repositories {
     required this.emoteButtonIcon,
   });
 
+  /// Boxes earlier versions opened but never wrote anything to. Their files are deleted at startup.
+  ///
+  /// `ChatSettings`: opened since the Chatsen 2 code ColdChat is based on, but chat settings were always stored under
+  /// the `chatSettings` key of the `Settings` box.
+  static const List<String> unusedBoxNames = ['ChatSettings'];
+
+  /// Deletes the files of [unusedBoxNames]. A failure is logged and otherwise ignored: the files are empty and harmless.
+  static Future<void> deleteUnusedBoxes() async {
+    for (final name in unusedBoxNames) {
+      try {
+        await Hive.deleteBoxFromDisk(name);
+      } catch (e) {
+        log('Could not delete the unused $name box: $e');
+      }
+    }
+  }
+
   /// Opens every repository. Call after `Hive.initFlutter()` and registering the adapters.
   static Future<Repositories> open() async {
+    // Not awaited: nothing depends on it, so it doesn't hold up the first frame.
+    unawaited(deleteUnusedBoxes());
     // Open the boxes concurrently instead of serially to shave startup time off the path before the first frame.
     final (accounts, settings, channels, whispers, triggers, customCommands, emoteBadgeCache, seenMentions) = await (
       AccountRepository.open(),
