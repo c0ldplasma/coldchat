@@ -489,6 +489,18 @@ class AppLocalizationsNo extends AppLocalizations {
   String get blockFailed => 'Blokkeringslisten kunne ikke endres. Sjekk tilkoblingen din og prøv igjen.';
 
   @override
+  String get moderationNeedsLogin => 'Logg inn med Twitch for å moderere denne kanalen.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Logg inn på nytt for å utestenge brukere og gi dem timeout. Innloggingen din er fra før ColdChat kunne det.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Det fungerte ikke: $reason';
+  }
+
+  @override
   String get contact => 'Kontakt og tilbakemelding';
 
   @override

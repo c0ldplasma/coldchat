@@ -490,6 +490,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get blockFailed => 'Không thể thay đổi danh sách chặn. Hãy kiểm tra kết nối và thử lại.';
 
   @override
+  String get moderationNeedsLogin => 'Đăng nhập bằng Twitch để kiểm duyệt kênh này.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Hãy đăng nhập lại để cấm và tạm khóa người dùng. Lần đăng nhập của bạn có từ trước khi ColdChat hỗ trợ việc này.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Không thành công: $reason';
+  }
+
+  @override
   String get contact => 'Liên hệ & góp ý';
 
   @override

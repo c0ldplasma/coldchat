@@ -306,8 +306,7 @@ class Twitch {
       final responseJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
       return TwitchBanResponseData.fromJson((responseJson['data'] as List<dynamic>)[0] as JsonMap);
     } else {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
-      throw Exception('${errorJson['error']}: ${errorJson['message']}');
+      throw _requestException(response);
     }
   }
 
@@ -327,10 +326,7 @@ class Twitch {
       },
     );
 
-    if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
-      throw Exception('${errorJson['error']}: ${errorJson['message']}');
-    }
+    if (response.statusCode != 204) throw _requestException(response);
   }
 
   /// Blocks [userId] for the account of [tokenData] (`user:manage:blocked_users`).

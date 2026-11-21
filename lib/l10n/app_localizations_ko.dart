@@ -488,6 +488,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get blockFailed => '차단 목록을 변경할 수 없어요. 연결 상태를 확인하고 다시 시도하세요.';
 
   @override
+  String get moderationNeedsLogin => '이 채널을 관리하려면 Twitch로 로그인하세요.';
+
+  @override
+  String get moderationNeedsScope => '사용자를 차단하거나 타임아웃하려면 다시 로그인하세요. 현재 로그인은 ColdChat이 이 기능을 지원하기 전의 것이에요.';
+
+  @override
+  String moderationFailed(String reason) {
+    return '실패했어요: $reason';
+  }
+
+  @override
   String get contact => '문의 및 피드백';
 
   @override

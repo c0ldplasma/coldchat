@@ -355,7 +355,7 @@ class Client {
       } on irc.InvalidIrcMessageException {
         continue;
       }
-      if (ircMessage.command == 'ROOMSTATE' || ircMessage.command == 'NOTICE') continue;
+      if (const {'ROOMSTATE', 'NOTICE', 'USERSTATE'}.contains(ircMessage.command)) continue;
       parsed.add(ircMessage);
     }
     if (parsed.isEmpty) return;
@@ -682,6 +682,14 @@ class Client {
         }
 
         channel.channelMessages.add(message);
+        break;
+      case 'USERSTATE':
+        final channel = channels.state.firstWhereOrNull((channel) => channel.name == event.parameters[0]);
+        if (channel == null) break;
+        final badges = (event.tags['badges'] ?? '').split(',');
+        channel.ownUserIsModerator = badges.any(
+          (badge) => badge.startsWith('moderator/') || badge.startsWith('broadcaster/'),
+        );
         break;
       case 'ROOMSTATE':
         final channelName = event.parameters[0];

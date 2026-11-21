@@ -39,6 +39,13 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   Badges channelBadges = Badges();
   ChannelInfo channelInfo = ChannelInfo();
 
+  /// Whether the logged-in user is a moderator here, from the `badges` of the last USERSTATE. Twitch sends one after
+  /// joining and after each own message; it's reset on part, because the account may change before the next join.
+  bool ownUserIsModerator = false;
+
+  /// Whether the account with [userId] can ban and time out users here: it's the broadcaster or a moderator.
+  bool canModerate(String? userId) => userId != null && id != null && (id == userId || ownUserIsModerator);
+
   /// The unsent composer text and reply target, kept here because the channel's view is disposed when its tab is
   /// off screen.
   final ComposerDraft composerDraft = ComposerDraft();
@@ -110,6 +117,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       // already drained before the disconnect.
       recentMessagesFetched = false;
       joinBackfillDone = false;
+      ownUserIsModerator = false;
       emit(ChannelDisconnected());
     });
 

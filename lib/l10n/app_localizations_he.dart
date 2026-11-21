@@ -489,6 +489,18 @@ class AppLocalizationsHe extends AppLocalizations {
   String get blockFailed => 'לא ניתן לשנות את רשימת החסימות. יש לבדוק את החיבור ולנסות שוב.';
 
   @override
+  String get moderationNeedsLogin => 'יש להתחבר עם Twitch כדי לנהל את הערוץ הזה.';
+
+  @override
+  String get moderationNeedsScope =>
+      'יש להתחבר מחדש כדי להרחיק משתמשים ולהשעות אותם זמנית. ההתחברות שלך היא מלפני ש-ColdChat תמך בזה.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'זה לא הצליח: $reason';
+  }
+
+  @override
   String get contact => 'יצירת קשר ומשוב';
 
   @override

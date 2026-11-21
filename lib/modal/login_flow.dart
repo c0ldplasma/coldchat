@@ -29,6 +29,8 @@ const List<String> _scopes = [
   'channel:read:redemptions',
   'moderator:manage:automod',
   'moderator:manage:chat_messages',
+  // Ban, time out and unban from the user card
+  'moderator:manage:banned_users',
   'channel:manage:broadcast',
   // Whispers
   'whispers:read',

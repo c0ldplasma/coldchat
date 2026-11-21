@@ -490,6 +490,18 @@ class AppLocalizationsCs extends AppLocalizations {
   String get blockFailed => 'Seznam blokovaných se nepodařilo změnit. Zkontroluj připojení a zkus to znovu.';
 
   @override
+  String get moderationNeedsLogin => 'Pro moderování tohoto kanálu se přihlas přes Twitch.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Pro banování a timeouty uživatelů se přihlas znovu. Tvoje přihlášení je starší, než to ColdChat uměl.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Nepovedlo se: $reason';
+  }
+
+  @override
   String get contact => 'Kontakt a zpětná vazba';
 
   @override

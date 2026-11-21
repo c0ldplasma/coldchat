@@ -489,6 +489,18 @@ class AppLocalizationsSr extends AppLocalizations {
   String get blockFailed => 'Листа блокираних не може да се промени. Провери везу и покушај поново.';
 
   @override
+  String get moderationNeedsLogin => 'Пријави се преко Twitch-а да би модерисао овај канал.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Пријави се поново да би бановао и давао тајмаут корисницима. Твоја пријава је старија од те могућности у ColdChat-у.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Није успело: $reason';
+  }
+
+  @override
   String get contact => 'Контакт и повратне информације';
 
   @override

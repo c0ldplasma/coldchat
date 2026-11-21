@@ -489,6 +489,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get blockFailed => 'Не удалось изменить список блокировки. Проверь подключение и попробуй ещё раз.';
 
   @override
+  String get moderationNeedsLogin => 'Войди через Twitch, чтобы модерировать этот канал.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Войди заново, чтобы банить пользователей и давать им тайм-ауты. Твой вход был выполнен до того, как ColdChat научился это делать.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Не получилось: $reason';
+  }
+
+  @override
   String get contact => 'Связь и отзывы';
 
   @override

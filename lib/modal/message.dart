@@ -22,6 +22,16 @@ class MessageModal extends StatelessWidget {
   // Whispers can't be replied to or deleted.
   bool get _whisper => message.channel is WhisperChannel;
 
+  /// Only moderators and the broadcaster can delete messages on Twitch, not even their own, so the action is
+  /// hidden for everyone else, like the ban and timeout row on the user card.
+  bool get _canDelete {
+    final channel = message.channel;
+    if (channel == null || _whisper) return false;
+    final tokenData = channel.client.transmitter.twitchAccount?.tokenData;
+    if (tokenData?.accessToken == null) return false;
+    return channel.canModerate(tokenData!.userId);
+  }
+
   @override
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
@@ -57,7 +67,7 @@ class MessageModal extends StatelessWidget {
           );
         },
       ),
-      if (!_whisper)
+      if (_canDelete)
         Tile(
           title: AppLocalizations.of(context).deleteMessage,
           prefix: const Icon(Icons.delete_outline_outlined),
