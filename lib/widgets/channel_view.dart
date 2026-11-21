@@ -420,24 +420,29 @@ class ChannelViewState extends State<ChannelView> {
                   ),
                 ),
               _ReplyBar(draft: widget.channel.composerDraft),
-              Surface(
-                type: SurfaceType.secondary,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      for (final autocompletionItem in getAutocompletionItems())
-                        Tile(
-                          onTap: autocompletionItem.onTap,
-                          onLongPress: autocompletionItem.onLongPress,
-                          prefix: autocompletionItem.prefix,
-                          title: autocompletionItem.title,
-                          subtitle: autocompletionItem.subtitle,
-                        ),
-                    ],
+              // Follows the text however it changes (typing, sending clears it, a completion or mention edits it), not
+              // only the rebuilds typing causes: sending clears the field without one.
+              ListenableBuilder(
+                listenable: textEditingController,
+                builder: (context, _) => Surface(
+                  type: SurfaceType.secondary,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        for (final autocompletionItem in getAutocompletionItems())
+                          Tile(
+                            onTap: autocompletionItem.onTap,
+                            onLongPress: autocompletionItem.onLongPress,
+                            prefix: autocompletionItem.prefix,
+                            title: autocompletionItem.title,
+                            subtitle: autocompletionItem.subtitle,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
