@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Inicia sesión con Twitch para enviar susurros.",
   "whisperNeedsScope": "Vuelve a iniciar sesión para enviar y recibir susurros. Tu sesión es de antes de que ColdChat los admitiera.",
   "whisperUserNotFound": "No hay ningún usuario de Twitch con ese nombre.",
+  "messageNotSentNotConnected": "Aún no hay conexión con este canal. Tu mensaje no se ha enviado.",
   "whisperFailed": "Susurro no enviado: {reason}",
   "@whisperFailed": {
     "placeholders": {

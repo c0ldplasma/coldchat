@@ -542,6 +542,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get whisperUserNotFound => 'その名前のTwitchユーザーは存在しません。';
 
   @override
+  String get messageNotSentNotConnected => 'このチャンネルにはまだ接続していません。メッセージは送信されませんでした。';
+
+  @override
   String whisperFailed(String reason) {
     return 'ウィスパーを送信できませんでした：$reason';
   }

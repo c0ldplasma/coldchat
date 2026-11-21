@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Συνδέσου με το Twitch για να στέλνεις ψιθύρους.",
   "whisperNeedsScope": "Συνδέσου ξανά για να στέλνεις και να λαμβάνεις ψιθύρους. Η σύνδεσή σου είναι από πριν το ColdChat τους υποστηρίξει.",
   "whisperUserNotFound": "Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.",
+  "messageNotSentNotConnected": "Δεν έχεις συνδεθεί ακόμα σε αυτό το κανάλι. Το μήνυμά σου δεν στάλθηκε.",
   "whisperFailed": "Ο ψίθυρος δεν στάλθηκε: {reason}",
   "@whisperFailed": {
     "placeholders": {

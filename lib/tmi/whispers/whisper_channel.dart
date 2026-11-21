@@ -46,6 +46,10 @@ class WhisperChannel extends Channel {
     return _whisperEmoteLookup = map;
   }
 
+  // Never joined over IRC; whispers go through Helix, which reports its own errors.
+  @override
+  bool get canSend => true;
+
   @override
   Future<void> send(String message, {Map<String, String>? tags}) => client.whispers.send(this, message);
 

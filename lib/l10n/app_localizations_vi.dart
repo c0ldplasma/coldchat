@@ -547,6 +547,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get whisperUserNotFound => 'Không có người dùng Twitch nào có tên này.';
 
   @override
+  String get messageNotSentNotConnected => 'Chưa kết nối với kênh này. Tin nhắn của bạn chưa được gửi.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Chưa gửi được tin thì thầm: $reason';
   }

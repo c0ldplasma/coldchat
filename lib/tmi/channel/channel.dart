@@ -191,13 +191,23 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     super.onChange(change);
   }
 
+  /// Whether a message sent now would reach the channel. Before the JOIN is answered (e.g. while it waits for the
+  /// JOIN rate limit after an account switch) or while the sending connection is down, Twitch would drop it.
+  bool get canSend => canSendIn(state);
+
+  /// [canSend] for [state]: the channel is joined and its sending connection is up.
+  static bool canSendIn(ChannelState state) => switch (state) {
+    ChannelConnecting() => false,
+    ChannelStateWithConnection(:final transmitter) => transmitter.isConnected,
+    _ => false,
+  };
+
+  /// Sends [message] to the channel. Does nothing unless [canSend]; callers check it first so typed text isn't lost.
   Future<void> send(
     String message, {
     Map<String, String>? tags,
   }) async {
-    if (state is! ChannelStateWithConnection) {
-      return;
-    }
+    if (!canSend) return;
 
     if (tags?.isEmpty == true) tags = null;
 

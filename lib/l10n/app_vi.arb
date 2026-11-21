@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Hãy đăng nhập Twitch để gửi tin thì thầm.",
   "whisperNeedsScope": "Hãy đăng nhập lại để gửi và nhận tin thì thầm. Phiên đăng nhập của bạn có từ trước khi ColdChat hỗ trợ tính năng này.",
   "whisperUserNotFound": "Không có người dùng Twitch nào có tên này.",
+  "messageNotSentNotConnected": "Chưa kết nối với kênh này. Tin nhắn của bạn chưa được gửi.",
   "whisperFailed": "Chưa gửi được tin thì thầm: {reason}",
   "@whisperFailed": {
     "placeholders": {

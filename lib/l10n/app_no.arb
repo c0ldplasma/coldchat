@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Logg inn med Twitch for å sende hviskemeldinger.",
   "whisperNeedsScope": "Logg inn igjen for å sende og motta hviskemeldinger. Innloggingen din er fra før ColdChat støttet dem.",
   "whisperUserNotFound": "Det finnes ingen Twitch-bruker med det navnet.",
+  "messageNotSentNotConnected": "Ikke koblet til denne kanalen ennå. Meldingen din ble ikke sendt.",
   "whisperFailed": "Hviskemeldingen ble ikke sendt: {reason}",
   "@whisperFailed": {
     "placeholders": {

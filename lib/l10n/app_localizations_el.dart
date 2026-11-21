@@ -548,6 +548,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get whisperUserNotFound => 'Δεν υπάρχει χρήστης του Twitch με αυτό το όνομα.';
 
   @override
+  String get messageNotSentNotConnected => 'Δεν έχεις συνδεθεί ακόμα σε αυτό το κανάλι. Το μήνυμά σου δεν στάλθηκε.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Ο ψίθυρος δεν στάλθηκε: $reason';
   }

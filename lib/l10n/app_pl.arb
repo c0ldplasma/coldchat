@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Zaloguj się przez Twitcha, aby wysyłać szepty.",
   "whisperNeedsScope": "Zaloguj się ponownie, aby wysyłać i odbierać szepty. Twoje logowanie pochodzi z czasu, zanim ColdChat zaczął je obsługiwać.",
   "whisperUserNotFound": "Na Twitchu nie ma użytkownika o tej nazwie.",
+  "messageNotSentNotConnected": "Nie połączono jeszcze z tym kanałem. Twoja wiadomość nie została wysłana.",
   "whisperFailed": "Nie wysłano szeptu: {reason}",
   "@whisperFailed": {
     "placeholders": {
