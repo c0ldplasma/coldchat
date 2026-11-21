@@ -180,9 +180,9 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     }
 
     final userId = user.id;
-    if (userId != null) badges.addAll(channel?.client.globalUserBadges.badgesOf(userId) ?? const []);
+    if (userId != null) badges.addAll(channel?.client.globals.userBadges.badgesOf(userId) ?? const []);
 
-    final bttvProBadge = channel?.client.bttvProBadges[user.id];
+    final bttvProBadge = channel?.client.globals.bttvProBadges[user.id];
     if (bttvProBadge != null) badges.add(bttvProBadge);
 
     final emoteLookup = channel?.emoteLookup ?? const <String, Emote>{};

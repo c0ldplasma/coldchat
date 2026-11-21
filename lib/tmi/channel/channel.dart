@@ -87,7 +87,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     final cached = _emoteLookup;
     if (cached != null) return cached;
     final map = <String, Emote>{};
-    for (final e in client.globalEmotes.state) {
+    for (final e in client.globals.emotes.state) {
       // Emojis stay plain text so they render in the platform's emoji font,
       // the same as emojis attached to other text already do.
       if (e.provider is EmojiProvider) continue;
@@ -103,7 +103,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     final cached = _badgeLookup;
     if (cached != null) return cached;
     final map = <String, CustomBadge>{};
-    for (final b in client.globalBadges.state) {
+    for (final b in client.globals.badges.state) {
       map[b.id] = b;
     }
     for (final b in channelBadges.state) {
@@ -118,9 +118,9 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   }) : super(ChannelDisconnected()) {
     _lookupSubs.addAll([
       channelEmotes.stream.listen((_) => _emoteLookup = null),
-      client.globalEmotes.stream.listen((_) => _emoteLookup = null),
+      client.globals.emotes.stream.listen((_) => _emoteLookup = null),
       channelBadges.stream.listen((_) => _badgeLookup = null),
-      client.globalBadges.stream.listen((_) => _badgeLookup = null),
+      client.globals.badges.stream.listen((_) => _badgeLookup = null),
     ]);
     // Hydrate channel emotes/badges from disk immediately on construction —
     // keyed by channel login, which (unlike the room id) is known before

@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:coldchat/data/repositories/whisper_repository.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/data/twitch_account.dart';
-import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/cache.dart';
+import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/tmi/whispers/whispers.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
@@ -14,11 +13,7 @@ import 'package:hive_ce/hive_ce.dart';
 /// Just what a whisper tab reads from its client when it's created.
 class _FakeClient implements Client {
   @override
-  Emotes globalEmotes = Emotes();
-  @override
-  Badges globalBadges = Badges();
-  @override
-  Emotes twitchUserEmotes = Emotes();
+  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
   @override
   EmoteBadgeCache? cache;
 

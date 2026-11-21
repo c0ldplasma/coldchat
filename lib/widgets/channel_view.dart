@@ -331,8 +331,8 @@ class ChannelViewState extends State<ChannelView> {
 
     final sortedEmotes = _autocompletion.emotes(
       channelEmotes: widget.channel.channelEmotes.state,
-      globalEmotes: widget.channel.client.globalEmotes.state,
-      userEmotes: widget.channel.client.twitchUserEmotes.state,
+      globalEmotes: widget.channel.client.globals.emotes.state,
+      userEmotes: widget.channel.client.globals.twitchUserEmotes.state,
       search: currentSearch,
       needsColon: chatSettings.emoteAutocompletionWithColon,
     );

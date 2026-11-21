@@ -3,8 +3,8 @@ import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/providers/emojis.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
+import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/widgets/chat/emote_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,9 +14,7 @@ import '../../api/fake_api.dart';
 /// Just the emote lists the picker reads from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
   @override
-  Emotes globalEmotes = Emotes();
-  @override
-  Emotes twitchUserEmotes = Emotes();
+  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -31,9 +29,9 @@ Emote _emojiEmote(String name, String code, String category) =>
 void main() {
   testWidgets('shows newly loaded emotes and filters by the search', (tester) async {
     final client = _FakeClient();
-    addTearDown(client.globalEmotes.close);
-    addTearDown(client.twitchUserEmotes.close);
-    client.globalEmotes.change([
+    addTearDown(client.globals.emotes.close);
+    addTearDown(client.globals.twitchUserEmotes.close);
+    client.globals.emotes.change([
       _emojiEmote('grinning', '😀', 'Smileys & Emotion'),
       _emojiEmote('dog', '🐶', 'Animals & Nature'),
     ]);
@@ -66,7 +64,7 @@ void main() {
     expect(find.text('🐶'), findsOneWidget);
 
     // Emotes that load while the picker is open show up.
-    client.globalEmotes.change([...client.globalEmotes.state, _emojiEmote('smile', '😄', 'Smileys & Emotion')]);
+    client.globals.emotes.change([...client.globals.emotes.state, _emojiEmote('smile', '😄', 'Smileys & Emotion')]);
     await tester.pump();
     expect(find.text('😄'), findsOneWidget);
 

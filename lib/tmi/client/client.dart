@@ -7,7 +7,6 @@ import 'package:collection/collection.dart';
 
 import '../../api/api_client.dart';
 import '../../api/betterttv/betterttv.dart';
-import '../../api/betterttv/betterttv_socket.dart';
 import '../../api/dankchat/dankchat.dart';
 import '../../api/emojis/emoji_data.dart';
 import '../../api/frankerfacez/frankerfacez.dart';
@@ -17,7 +16,6 @@ import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/helix_api.dart';
 import '../../api/twitch/twitch.dart';
 import '../../api/twitch/twitch_auth_api.dart';
-import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
 import '../../data/repositories/channel_repository.dart';
@@ -27,16 +25,13 @@ import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
-import '../../providers/badge_provider.dart';
 import '../../providers/betterttv.dart';
 import '../../providers/dankchat.dart';
 import '../../providers/emojis.dart';
-import '../../providers/emote_provider.dart';
 import '../../providers/frankerfacez.dart';
 import '../../providers/provider.dart';
 import '../../providers/seventv.dart';
 import '../../providers/twitch.dart';
-import '../badges.dart';
 import '../cache.dart';
 import '../channel/channel.dart';
 import '../channel/channel_event.dart';
@@ -49,11 +44,10 @@ import '../channel/messages/channel_message_notice.dart';
 import '../connection/connection.dart';
 import '../connection/connection_event.dart';
 import '../connection/connection_state.dart';
-import '../emotes.dart';
 import '../irc_log.dart';
-import '../user_badges.dart';
 import '../whispers/whisper_channel.dart';
 import '../whispers/whispers.dart';
+import 'chat_globals.dart';
 import 'client_channels.dart';
 import 'client_listener.dart';
 import 'join_scheduler.dart';
@@ -109,9 +103,7 @@ class Client implements AccountConnector {
       await helix.forToken(state.twitchAccount.tokenData).unblockUser(userId);
       state.blockedUserIds.remove(userId);
     }
-    for (final channel in channels.state) {
-      channel.rebuildMessagesFrom(userId);
-    }
+    _rebuildMessagesFrom(userId);
   }
 
   /// The own login that mentions highlight, or null while logged out.
@@ -143,19 +135,8 @@ class Client implements AccountConnector {
 
   List<ClientListener> listeners = [];
 
-  Emotes twitchUserEmotes = Emotes();
-  Emotes globalEmotes = Emotes();
-  Badges globalBadges = Badges();
-  Emotes emojis = Emotes();
-  UserBadges globalUserBadges = UserBadges();
-
-  // BetterTTV Pro badges by Twitch user id. They only arrive when a Pro user
-  // opens a channel we're in, so they're kept on disk to show up on history
-  // and on later launches too.
-  final Map<String, CustomBadge> bttvProBadges = {};
-  late final BetterTTVSocket bttvSocket = BetterTTVSocket(onLookupUser: _onBttvLookupUser);
-  Timer? _saveBttvProBadgesTimer;
-  static const int _maxBttvProBadges = 5000;
+  /// The global emotes and badges, the account's Twitch emotes and the BetterTTV Pro badges.
+  late final ChatGlobals globals;
 
   /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
   final AccountRepository? accounts;
@@ -207,9 +188,13 @@ class Client implements AccountConnector {
     // refresh lands.
     if (cacheRepository != null) {
       cache = EmoteBadgeCache(repository: cacheRepository, providers: this.providers);
-      _hydrateGlobalsFromCache();
-      cache!.loadBttvProBadges().forEach((userId, url) => bttvProBadges[userId] = _bttvProBadge(url));
     }
+    globals = ChatGlobals(
+      providers: this.providers,
+      cache: cache,
+      onBadgesChanged: _rebuildChannelMessages,
+      onUserBadgeChanged: _rebuildMessagesFrom,
+    );
 
     channels = ClientChannels(
       this,
@@ -252,9 +237,9 @@ class Client implements AccountConnector {
     _apiAccount = twitchAccount;
     if (twitchAccount != null) unawaited(connectAs(twitchAccount));
 
-    unawaited(refreshGlobalEmotes());
-    unawaited(refreshGlobalBadges());
-    unawaited(refreshGlobalUserBadges());
+    unawaited(globals.refreshEmotes());
+    unawaited(globals.refreshBadges());
+    unawaited(globals.refreshUserBadges());
   }
 
   /// An account-less login: Twitch's anonymous `justinfan` nick with a random number and no token. Twitch lets it
@@ -277,115 +262,22 @@ class Client implements AccountConnector {
     for (final timer in _timers) {
       timer.cancel();
     }
+    globals.close();
     await _channelFocusRequests.close();
     await Future.wait([receiver.close(), transmitter.close()]);
   }
-
-  void _hydrateGlobalsFromCache() {
-    final c = cache;
-    if (c == null) return;
-    final emotes = c.loadEmotes(EmoteBadgeCache.globalEmotesKey);
-    if (emotes.isNotEmpty) globalEmotes.change(emotes);
-    final badges = c.loadBadges(EmoteBadgeCache.globalBadgesKey);
-    if (badges.isNotEmpty) globalBadges.change(badges);
-    final userBadges = c.loadUserBadges(EmoteBadgeCache.globalUserBadgesKey);
-    if (userBadges.isNotEmpty) globalUserBadges.change(userBadges);
-  }
-
-  Future<void> refreshGlobalEmotes() async {
-    final emoteProviders = providers.whereType<EmoteProvider>();
-    final results = await Future.wait(
-      emoteProviders.map((emoteProvider) async {
-        try {
-          return await emoteProvider.globalEmotes().timeout(Provider.timeout);
-        } catch (e) {
-          log('Couldn\'t get ${emoteProvider.name} global emotes: $e');
-          // A provider that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
-          return [...globalEmotes.state.where((emote) => emote.provider.name == emoteProvider.name)];
-        }
-      }),
-    );
-    final merged = [for (final list in results) ...list];
-    globalEmotes.change(merged);
-    unawaited(cache?.saveEmotes(EmoteBadgeCache.globalEmotesKey, merged));
-  }
-
-  Future<void> refreshGlobalBadges() async {
-    final badgeProviders = providers.whereType<BadgeProvider>();
-    final results = await Future.wait(
-      badgeProviders.map((badgeProvider) async {
-        try {
-          return await badgeProvider.globalBadges().timeout(Provider.timeout);
-        } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global badges: $e');
-          return [...globalBadges.state.where((badge) => badge.provider.name == badgeProvider.name)];
-        }
-      }),
-    );
-    final merged = [for (final list in results) ...list];
-    final changed = !_sameIds(globalBadges.state.map((b) => b.id), merged.map((b) => b.id));
-    globalBadges.change(merged);
-    unawaited(cache?.saveBadges(EmoteBadgeCache.globalBadgesKey, merged));
-    if (changed) _rebuildChannelMessages();
-  }
-
-  Future<void> refreshGlobalUserBadges() async {
-    final badgeProviders = providers.whereType<BadgeProvider>();
-    final results = await Future.wait(
-      badgeProviders.map((badgeProvider) async {
-        try {
-          return await badgeProvider.globalUserBadges().timeout(Provider.timeout);
-        } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global user badges: $e');
-          return [...globalUserBadges.state.where((users) => users.badge.provider.name == badgeProvider.name)];
-        }
-      }),
-    );
-    final merged = [for (final list in results) ...list];
-    final changed = !UserBadges.sameHolders(globalUserBadges.state, merged);
-    globalUserBadges.change(merged);
-    unawaited(cache?.saveUserBadges(EmoteBadgeCache.globalUserBadgesKey, merged));
-    if (changed) _rebuildChannelMessages();
-  }
-
-  CustomBadge _bttvProBadge(String url) => CustomBadge(
-    id: 'bttv-pro',
-    name: 'BetterTTV Pro',
-    mipmap: [url],
-    provider: providers.whereType<BetterTTVProvider>().first,
-  );
-
-  void _onBttvLookupUser(BetterTTVProBadge lookup) {
-    final url = lookup.url;
-    final previous = bttvProBadges.remove(lookup.userId);
-    if (url != null) {
-      // Re-inserting keeps the map ordered by last sighting, so the cap below
-      // drops the users seen longest ago.
-      bttvProBadges[lookup.userId] = previous?.mipmap.first == url ? previous! : _bttvProBadge(url);
-      while (bttvProBadges.length > _maxBttvProBadges) {
-        bttvProBadges.remove(bttvProBadges.keys.first);
-      }
-    }
-    if (previous?.mipmap.first != url) {
-      for (final channel in channels.state) {
-        channel.rebuildMessagesFrom(lookup.userId);
-      }
-    }
-    _saveBttvProBadgesTimer?.cancel();
-    _saveBttvProBadgesTimer = Timer(const Duration(seconds: 5), () {
-      unawaited(
-        cache?.saveBttvProBadges({for (final entry in bttvProBadges.entries) entry.key: entry.value.mipmap.first}),
-      );
-    });
-  }
-
-  static bool _sameIds(Iterable<String> a, Iterable<String> b) => const IterableEquality<String>().equals(a, b);
 
   // Messages resolve their badges when they're built, so history inserted
   // before the global badges arrived would otherwise never show them.
   void _rebuildChannelMessages() {
     for (final channel in [...channels.state, ...whispers.state]) {
       unawaited(channel.rebuildMessages());
+    }
+  }
+
+  void _rebuildMessagesFrom(String userId) {
+    for (final channel in channels.state) {
+      channel.rebuildMessagesFrom(userId);
     }
   }
 
@@ -640,7 +532,7 @@ class Client implements AccountConnector {
     ]);
     final receiverAlive = results[0];
     final transmitterAlive = !checkTransmitter || results[1];
-    bttvSocket.reconnect();
+    globals.bttvSocket.reconnect();
     eventSub.reconnect();
     if (!transmitterAlive) {
       ircLog('transmitter: no answer after resuming');
@@ -734,11 +626,10 @@ class Client implements AccountConnector {
     // has to load them now.
     final gainedApiAccess = _apiAccount?.tokenData.accessToken == null && twitchAccount.tokenData.accessToken != null;
     _apiAccount = twitchAccount;
-    if (gainedApiAccess) unawaited(refreshGlobalBadges());
+    if (gainedApiAccess) unawaited(globals.refreshBadges());
     ircLog('transmitter: switching to ${twitchAccount.tokenData.login}');
 
-    final userId = twitchAccount.tokenData.userId;
-    twitchUserEmotes.change(userId != null ? cache?.loadEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId)) ?? [] : []);
+    globals.showCachedTwitchUserEmotes(twitchAccount.tokenData.userId);
 
     whispers.setAccount(twitchAccount);
     ownColor = null;
@@ -759,7 +650,7 @@ class Client implements AccountConnector {
   void disconnect() {
     ircLog('transmitter: logging out');
     _apiAccount = null;
-    twitchUserEmotes.change([]);
+    globals.showCachedTwitchUserEmotes(null);
     whispers.setAccount(null);
     ownColor = null;
     eventSub.connect(null);
@@ -853,9 +744,7 @@ class Client implements AccountConnector {
                     provider: providers.firstWhere((element) => element.name == 'Twitch'),
                   ),
               ];
-              twitchUserEmotes.change(userEmotes);
-              final userId = stateTwitchAccount.tokenData.userId;
-              if (userId != null) unawaited(cache?.saveEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId), userEmotes));
+              globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);
             }
           }
         } catch (e) {
@@ -937,7 +826,7 @@ class Client implements AccountConnector {
         }
 
         channel.id = event.tags['room-id'];
-        if (channel.id != null) bttvSocket.join(channel.id!);
+        if (channel.id != null) globals.bttvSocket.join(channel.id!);
 
         // Paint cached history first using the emotes already hydrated from
         // disk at channel construction, so it shows immediately instead of

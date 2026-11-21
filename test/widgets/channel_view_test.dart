@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:coldchat/components/bottom_bar.dart';
 import 'package:coldchat/components/modal.dart';
-import 'package:coldchat/data/custom_badge.dart';
 import 'package:coldchat/data/emote_button_icon.dart';
 import 'package:coldchat/data/filesharing/upload_queue_cubit.dart';
 import 'package:coldchat/data/notifications_cubit.dart';
@@ -22,17 +21,15 @@ import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/modal/message.dart';
 import 'package:coldchat/pages/home.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
-import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
+import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/client/client_channels.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:coldchat/tmi/connection/connection_event.dart';
 import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
-import 'package:coldchat/tmi/emotes.dart';
-import 'package:coldchat/tmi/user_badges.dart';
 import 'package:coldchat/tmi/whispers/whispers.dart';
 import 'package:coldchat/widgets/channel_view.dart';
 import 'package:coldchat/widgets/chat_message.dart';
@@ -48,19 +45,11 @@ import '../api/fake_api.dart';
 /// Just what a [Channel] and its [ChannelView] read from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
   @override
-  Emotes globalEmotes = Emotes();
-  @override
-  Badges globalBadges = Badges();
-  @override
-  Emotes twitchUserEmotes = Emotes();
+  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
   @override
   EmoteBadgeCache? cache;
   @override
   final Connection transmitter;
-  @override
-  UserBadges globalUserBadges = UserBadges();
-  @override
-  final Map<String, CustomBadge> bttvProBadges = {};
   @override
   TriggerRepository? get triggers => null;
   @override

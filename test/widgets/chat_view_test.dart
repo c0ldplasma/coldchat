@@ -10,12 +10,11 @@ import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/modal/user.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
-import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
+import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/widgets/avatar_button.dart';
 import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
@@ -28,11 +27,7 @@ import 'package:provider/provider.dart';
 /// Just what a [Channel] and its [ChatView] read from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
   @override
-  Emotes globalEmotes = Emotes();
-  @override
-  Badges globalBadges = Badges();
-  @override
-  Emotes twitchUserEmotes = Emotes();
+  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
   @override
   EmoteBadgeCache? cache;
 
