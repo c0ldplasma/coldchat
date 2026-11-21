@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,10 +9,10 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../../components/surface.dart';
 import '../../data/emote.dart';
 import '../../l10n/app_localizations.dart';
-import '../../providers/emojis.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
 import '../emoji_glyph.dart';
+import 'emote_picker_sections.dart';
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String title;
@@ -39,8 +38,6 @@ class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
-
-const twitchSection = 'Twitch';
 
 enum PickerMode {
   gif,
@@ -79,6 +76,10 @@ class _EmotePickerState extends State<EmotePicker> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   late final List<StreamSubscription<dynamic>> emoteSubscriptions;
+  final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
+  // One key per section title, kept across rebuilds so the section headers aren't rebuilt from scratch every time;
+  // the tab bar scrolls to a section by its key.
+  final Map<String, GlobalKey> groupKeys = {};
 
   @override
   void initState() {
@@ -104,30 +105,17 @@ class _EmotePickerState extends State<EmotePicker> {
 
   @override
   Widget build(BuildContext context) {
-    final channelEmotes = widget.channel?.channelEmotes.state ?? [];
-    final globalEmotes = widget.client.globalEmotes.state + widget.client.twitchUserEmotes.state;
-    final allEmotes = channelEmotes + globalEmotes;
-
-    final emoteGroups = <String, List<Emote>>{};
-    final emojiGroups = <String, List<Emote>>{};
-    final groupKeys = <String, GlobalKey>{};
-    for (final providerGroup in groupBy(allEmotes, (emote) => emote.provider).entries) {
-      // Emojis go after all Twitch/7TV/BTTV/FFZ sections.
-      final target = providerGroup.key is EmojiProvider ? emojiGroups : emoteGroups;
-      for (final category in groupBy(providerGroup.value, (emote) => emote.category).entries) {
-        target.putIfAbsent(category.key ?? providerGroup.key.name, () => []);
-        target[category.key ?? providerGroup.key.name]!.addAll(category.value);
-        groupKeys.putIfAbsent(category.key ?? providerGroup.key.name, GlobalKey.new);
-      }
+    // Grouped again only when an emote list changed, filtered again only when the search did.
+    final pickerSections = sectionsCache.sectionsFor(
+      channelEmotes: widget.channel?.channelEmotes.state ?? const [],
+      globalEmotes: widget.client.globalEmotes.state,
+      userEmotes: widget.client.twitchUserEmotes.state,
+    );
+    final sections = pickerSections.sections;
+    final matchingSections = pickerSections.matching(searchController.text.toLowerCase());
+    for (final section in sections) {
+      groupKeys.putIfAbsent(section.title, GlobalKey.new);
     }
-    // There are always Twitch emotes, so keep their section in place with a
-    // spinner while they load instead of having it pop in later.
-    if (!emoteGroups.containsKey(twitchSection)) {
-      emoteGroups[twitchSection] = [];
-      groupKeys[twitchSection] = GlobalKey();
-    }
-    final groups = {...emoteGroups, ...emojiGroups};
-    final search = searchController.text.toLowerCase();
 
     const icons = {
       'Symbols': Icon(Icons.star_border_outlined),
@@ -192,25 +180,22 @@ class _EmotePickerState extends State<EmotePicker> {
                             ),
                           ],
                         ),
-                        for (final category in groups.entries.where(
-                          (group) =>
-                              (group.value.isEmpty && search.isEmpty) ||
-                              group.value.any((emote) => emote.name.toLowerCase().contains(search)),
-                        ))
+                        for (final section in matchingSections)
                           MultiSliver(
+                            key: ValueKey(section.title),
                             pushPinnedChildren: true,
                             children: [
                               SliverPinnedHeader(
-                                key: groupKeys[category.key],
+                                key: groupKeys[section.title],
                                 child: ColoredBox(
                                   color: Theme.of(context).colorScheme.surface,
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 8.0, bottom: 4.0, left: 4.0, right: 4.0),
-                                    child: Text(category.key),
+                                    child: Text(section.title),
                                   ),
                                 ),
                               ),
-                              if (category.value.isEmpty)
+                              if (section.emotes.isEmpty)
                                 const SliverToBoxAdapter(
                                   child: Padding(
                                     padding: EdgeInsets.all(16.0),
@@ -222,32 +207,35 @@ class _EmotePickerState extends State<EmotePicker> {
                                     ),
                                   ),
                                 ),
-                              SliverGrid.extent(
-                                maxCrossAxisExtent: 32.0 + 16.0,
-                                children: [
-                                  for (final emote in category.value.where(
-                                    (emote) => emote.name.toLowerCase().contains(search),
-                                  ))
-                                    Tooltip(
-                                      message: emote.name,
-                                      child: InkWell(
-                                        onTap: () async => widget.onPickButtonIcon != null
-                                            ? widget.onPickButtonIcon!(emote)
-                                            : widget.insertFieldInput(emote.code ?? emote.name),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: EmoteGlyph(
-                                            emote: emote,
-                                            size: 32.0,
-                                            image: () => CachedNetworkImage(
-                                              imageUrl: emote.mipmap.last,
-                                              fit: BoxFit.cover,
-                                            ),
+                              // Built lazily: only the emotes on screen get a widget, not all
+                              // few thousand on every rebuild.
+                              SliverGrid.builder(
+                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 32.0 + 16.0,
+                                ),
+                                itemCount: section.emotes.length,
+                                itemBuilder: (context, index) {
+                                  final emote = section.emotes[index];
+                                  return Tooltip(
+                                    message: emote.name,
+                                    child: InkWell(
+                                      onTap: () async => widget.onPickButtonIcon != null
+                                          ? widget.onPickButtonIcon!(emote)
+                                          : widget.insertFieldInput(emote.code ?? emote.name),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: EmoteGlyph(
+                                          emote: emote,
+                                          size: 32.0,
+                                          image: () => CachedNetworkImage(
+                                            imageUrl: emote.mipmap.last,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
                                     ),
-                                ],
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -262,7 +250,7 @@ class _EmotePickerState extends State<EmotePicker> {
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.zero,
                         children: [
-                          for (final category in groups.keys)
+                          for (final tab in sections)
                             Padding(
                               padding: const EdgeInsets.all(4.0),
                               // Thin outline so the circles stand out against the bar, which
@@ -277,7 +265,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                   type: SurfaceType.surface,
                                   onTap: () async {
                                     // Null when search hides the section.
-                                    final context = groupKeys[category]?.currentContext;
+                                    final context = groupKeys[tab.title]?.currentContext;
                                     if (context == null) return;
                                     // Scroll straight to where the section starts. The viewport lays
                                     // out every section, so this is known even for sections far off
@@ -303,16 +291,16 @@ class _EmotePickerState extends State<EmotePicker> {
                                   },
                                   borderRadius: BorderRadius.circular(64.0),
                                   child: Tooltip(
-                                    message: category,
+                                    message: tab.title,
                                     child: AspectRatio(
                                       aspectRatio: 1 / 1,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Center(
                                           child:
-                                              icons[category] ??
-                                              providerLogo(context, category) ??
-                                              firstEmoteIcon(groups[category]!),
+                                              icons[tab.title] ??
+                                              providerLogo(context, tab.title) ??
+                                              firstEmoteIcon(tab.emotes),
                                         ),
                                       ),
                                     ),

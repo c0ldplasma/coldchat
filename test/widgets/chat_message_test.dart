@@ -51,8 +51,7 @@ void main() {
     final name = tester.getTopLeft(find.byType(RichText).first) + const Offset(4.0, 4.0);
     final gesture = await tester.startGesture(name);
 
-    // A new message arriving in the chat list replaces the element of every visible message (they're keyed by
-    // message), like this.
+    // A pending message replaced by the sent one gets a new element (they're keyed by message), like this.
     await tester.pumpWidget(app(ChatMessage(key: const ValueKey(2), message: chat('second'))));
 
     await gesture.up();
