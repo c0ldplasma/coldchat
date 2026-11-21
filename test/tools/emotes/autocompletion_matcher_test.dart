@@ -5,7 +5,7 @@ import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_message.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/user.dart';
-import 'package:coldchat/widgets/chat/autocompletion_matcher.dart';
+import 'package:coldchat/tools/emotes/autocompletion_matcher.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _Source extends ChatSource {

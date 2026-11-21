@@ -11,8 +11,8 @@ import '../../l10n/app_localizations.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
 import '../../tmi/emotes.dart';
+import '../../tools/emotes/emote_picker_sections.dart';
 import '../emoji_glyph.dart';
-import 'emote_picker_sections.dart';
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   final String title;

@@ -2,7 +2,7 @@ import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/sources/emoji_source.dart';
-import 'package:coldchat/widgets/chat/emote_picker_sections.dart';
+import 'package:coldchat/tools/emotes/emote_picker_sections.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../api/fake_api.dart';

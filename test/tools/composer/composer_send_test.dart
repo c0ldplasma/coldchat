@@ -1,4 +1,4 @@
-import 'package:coldchat/widgets/chat/composer_send.dart';
+import 'package:coldchat/tools/composer/composer_send.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
