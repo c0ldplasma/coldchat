@@ -7,6 +7,7 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'api/recentmessages/recentmessages.dart';
 import 'app.dart';
 import 'data/custom_command.dart';
 import 'data/filesharing/upload_queue_cubit.dart';
@@ -74,6 +75,7 @@ Future<void> main() async {
             channelRepository: repositories.channels,
             cacheRepository: repositories.emoteBadgeCache,
             whisperRepository: repositories.whispers,
+            recentMessages: RecentMessages(enabled: () => repositories.settings.chatHistory),
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),

@@ -126,14 +126,18 @@ class Client implements AccountConnector {
   /// The message and user triggers that highlight or block messages. Null in tests, then there are none.
   final TriggerRepository? triggers;
 
+  /// Where chat history comes from. Asks Settings → Chat history before each request.
+  final RecentMessages recentMessages;
+
   Client({
     TwitchAccount? twitchAccount,
     this.accounts,
     this.triggers,
+    RecentMessages? recentMessages,
     required ChannelRepository channelRepository,
     EmoteBadgeCacheRepository? cacheRepository,
     WhisperRepository? whisperRepository,
-  }) {
+  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true) {
     whispers = Whispers(this, storage: whisperRepository);
 
     // Set up the cache before constructing channels so each Channel can
@@ -445,7 +449,10 @@ class Client implements AccountConnector {
   Future<bool> _fetchAndInsertHistory(Channel channel) async {
     final channelLogin = channel.name.substring(1);
     try {
-      final list = await RecentMessages.channel(channelLogin);
+      final list = await recentMessages.channel(channelLogin);
+      // Chat history is turned off: nothing was requested. Report it like a failure, so the next fetch (opening the
+      // chat, joining, reconnecting) tries again and picks the setting up if it was turned back on.
+      if (list == null) return false;
       unawaited(cache?.saveHistory(channelLogin, list));
       await insertHistoryMessages(receiver, list);
       return true;
@@ -668,7 +675,10 @@ class Client implements AccountConnector {
           _joins.acknowledged(channel.name);
           channel.add(ChannelConnect());
           final channelLogin = channel.name.substring(1);
-          channel.pendingHistoryCached = cache?.loadHistory(channelLogin) ?? const <String>[];
+          // History cached on an earlier launch is only shown while chat history is on.
+          channel.pendingHistoryCached = recentMessages.enabled()
+              ? cache?.loadHistory(channelLogin) ?? const <String>[]
+              : const <String>[];
           // If the user opened this channel before we managed to JOIN, pull
           // recent-messages again now that we are actually subscribed — that
           // closes the gap between our pre-JOIN snapshot and live PRIVMSGs.

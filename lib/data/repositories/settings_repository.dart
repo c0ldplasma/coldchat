@@ -166,7 +166,8 @@ class SettingsRepository {
     keys: const [emoteButtonIconKey, emoteButtonGrayscaleKey],
   );
 
-  /// Settings → Chat history. On unless turned off.
+  /// Settings → Chat history: whether chat history from before joining is fetched from recent-messages.robotty.de
+  /// (see `RecentMessages`). On unless turned off, also for installs that never touched the switch.
   bool get chatHistory {
     final value = _box.get(chatHistoryKey);
     return value is bool ? value : true;
