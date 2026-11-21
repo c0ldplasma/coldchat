@@ -8,11 +8,13 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
+import '../data/active_account.dart';
 import '../data/notifications_cubit.dart';
 import '../data/twitch_account.dart';
 import '../modal/coldchat.dart';
 import '../modal/notifications.dart';
 import '../theme/coldchat_theme.dart';
+import '../tmi/client/client.dart';
 
 class AvatarButton extends StatefulWidget {
   /// Over the chat's messages it gets the same shadow as the chat's other floating controls; on the home tab it sits
@@ -117,13 +119,12 @@ class _AvatarButtonState extends State<AvatarButton> {
                                       case AvatarButtonDirection.none:
                                         break;
                                     }
-                                    unawaited(
-                                      accountSettingsBox.put(
-                                        'activeTwitchAccount',
-                                        twitchAccountsBox.keys.elementAt(indexOfActiveAccountHash),
-                                      ),
-                                    );
                                     direction = AvatarButtonDirection.none;
+                                    if (indexOfActiveAccountHash < 0) return;
+                                    final nextAccount =
+                                        twitchAccountsBox.getAt(indexOfActiveAccountHash) as TwitchAccount;
+                                    if (nextAccount.tokenData.hash == activeAccountHash) return;
+                                    unawaited(setActiveAccount(context.read<Client>(), nextAccount));
                                   },
                                   child: InkWell(
                                     onTap: () async {

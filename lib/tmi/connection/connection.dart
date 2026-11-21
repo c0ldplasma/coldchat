@@ -53,7 +53,15 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     on<ConnectionEstablished>((event, emit) => emit(event.state));
 
     on<ConnectionDisconnect>((event, emit) async {
-      await close();
+      // Logging out: drop the socket and forget the account so no reconnect
+      // path (backoff, watchdog, app resume) brings it back. Not close(): that
+      // would end the bloc, and a later login could never connect again.
+      _lastAccount = null;
+      _credentialsRejected = false;
+      _reconnectTimer?.cancel();
+      _reconnectTimer = null;
+      _connectStartedAt = null;
+      await cancel();
       emit(ConnectionDisconnected());
     });
 
