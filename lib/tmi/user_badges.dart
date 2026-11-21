@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 
-/// The global third-party badges (7TV, BTTV, FFZ, DankChat) and the users who have them.
+/// The global third-party badges (7TV, BTTV, FFZ, DankChat, Chatterino) and the users who have them.
 ///
 /// The sources list users per badge; [badgesOf] answers the other way round, which is what every chat message
 /// asks. The index is rebuilt on every new state, so a user who gains or loses a badge gets the new set on their

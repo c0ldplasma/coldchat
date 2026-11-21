@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 
 import '../../api/api_client.dart';
 import '../../api/betterttv/betterttv.dart';
+import '../../api/chatterino/chatterino.dart';
 import '../../api/dankchat/dankchat.dart';
 import '../../api/emojis/emoji_data.dart';
 import '../../api/frankerfacez/frankerfacez.dart';
@@ -25,6 +26,7 @@ import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
 import '../../sources/bttv_source.dart';
 import '../../sources/chat_source.dart';
+import '../../sources/chatterino_source.dart';
 import '../../sources/dankchat_source.dart';
 import '../../sources/emoji_source.dart';
 import '../../sources/ffz_source.dart';
@@ -85,6 +87,7 @@ class Client implements AccountConnector {
         BttvSource(BttvApi(api)),
         FfzSource(FfzApi(api)),
         DankChatSource(DankChatApi(api)),
+        ChatterinoSource(ChatterinoApi(api)),
         TwitchSource(helix: helix),
         EmojiSource(EmojiDataApi(api)),
       ];
