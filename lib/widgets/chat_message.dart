@@ -95,8 +95,7 @@ class _BlockedChatMessageState extends State<BlockedChatMessage> {
   }
 }
 
-// ignore: must_be_immutable
-class ChatMessage extends StatelessWidget {
+class ChatMessage extends StatefulWidget {
   // Twitch's classic text emoticons (the smiley set) are tiny glyph images
   // and look oversized when rendered at the same height as named emotes like
   // Kappa/PogChamp, so they get a smaller, near-text height.
@@ -137,137 +136,187 @@ class ChatMessage extends StatelessWidget {
   };
 
   final ChannelMessage message;
-  late MessageAppearance messageAppearance;
   final bool renderMentions;
 
-  ChatMessage({
+  const ChatMessage({
     super.key,
     required this.message,
     this.renderMentions = true,
-  }) {
-    messageAppearance = Hive.box<dynamic>('Settings').get('messageAppearance') as MessageAppearance;
+  });
+
+  @override
+  State<ChatMessage> createState() => _ChatMessageState();
+}
+
+class _ChatMessageState extends State<ChatMessage> {
+  // The tap recognizers of the text spans (the user name and links) belong to this state, so they are disposed with
+  // it. A recognizer created in build and never disposed outlives its element: the chat list replaces every visible
+  // message's element when a new message arrives, and a tap that ended after that ran its callback with an unmounted
+  // context (Navigator.of then failed a null check). Disposing a recognizer cancels a tap it is still tracking.
+  TapGestureRecognizer? _nameRecognizer;
+  final Map<String, TapGestureRecognizer> _urlRecognizers = {};
+
+  TapGestureRecognizer get _nameTap => _nameRecognizer ??= TapGestureRecognizer()..onTap = _openUserCard;
+
+  TapGestureRecognizer _urlTap(String url) => _urlRecognizers.putIfAbsent(
+    url,
+    () =>
+        TapGestureRecognizer()
+          ..onTap = () => unawaited(launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)),
+  );
+
+  void _openUserCard() {
+    final message = widget.message;
+    if (!mounted || message is! ChannelMessageChat) return;
+    unawaited(
+      Modal.show(
+        context: context,
+        child: UserModal(
+          login: message.message.prefix!.split('!').first,
+          channel: message.channel,
+        ),
+      ),
+    );
   }
 
   @override
-  Widget build(BuildContext context) => Builder(
-    builder: (context) {
-      if (message is ChannelMessageChat) {
-        final chatMessage = message as ChannelMessageChat;
-        if (chatMessage.subInfo != null) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
-            child: Wrap(
-              alignment: WrapAlignment.start,
-              children: [
-                Surface(
-                  type: SurfaceType.tertiary,
-                  borderRadius: BorderRadius.circular(18.0 * messageAppearance.scale),
-                  onTap: () async {},
-                  onLongPress: () => Modal.show(
-                    context: context,
-                    child: MessageModal(
-                      message: chatMessage,
-                      channelViewState: ChannelView.of(context),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 12.0 * messageAppearance.scale,
-                      vertical: 8.0 * messageAppearance.scale,
-                    ),
-                    child: Wrap(
-                      alignment: WrapAlignment.start,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              WidgetSpan(
-                                child: Icon(
-                                  chatMessage.subInfo!.msgParamWasGifted
-                                      ? Icons.card_giftcard_outlined
-                                      : Icons.star_border_outlined,
-                                  size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale,
-                                ),
-                              ),
-                              WidgetSpan(
-                                child: SizedBox(
-                                  height: 8.0 * messageAppearance.scale,
-                                  width: 8.0 * messageAppearance.scale,
-                                ),
-                              ),
-                              TextSpan(text: '${chatMessage.subInfo?.systemMsg}'),
-                            ],
-                          ),
-                          style: TextStyle(
-                            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale,
-                          ),
-                        ),
-                        buildMessageContent(context, chatMessage, messageAppearance),
-                      ],
-                    ),
+  void didUpdateWidget(ChatMessage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.message != widget.message) _disposeUrlRecognizers();
+  }
+
+  void _disposeUrlRecognizers() {
+    for (final recognizer in _urlRecognizers.values) {
+      recognizer.dispose();
+    }
+    _urlRecognizers.clear();
+  }
+
+  @override
+  void dispose() {
+    _nameRecognizer?.dispose();
+    _disposeUrlRecognizers();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final messageAppearance = Hive.box<dynamic>('Settings').get('messageAppearance') as MessageAppearance;
+    if (widget.message is ChannelMessageChat) {
+      final chatMessage = widget.message as ChannelMessageChat;
+      if (chatMessage.subInfo != null) {
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
+          child: Wrap(
+            alignment: WrapAlignment.start,
+            children: [
+              Surface(
+                type: SurfaceType.tertiary,
+                borderRadius: BorderRadius.circular(18.0 * messageAppearance.scale),
+                onTap: () async {},
+                onLongPress: () => Modal.show(
+                  context: context,
+                  child: MessageModal(
+                    message: chatMessage,
+                    channelViewState: ChannelView.of(context),
                   ),
                 ),
-              ],
-            ),
-          );
-        }
-
-        final widget = Surface(
-          type: chatMessage.blocked
-              ? SurfaceType.error
-              : chatMessage.mentionned && renderMentions
-              ? SurfaceType.primary
-              : SurfaceType.transparent,
-          onTap: () async {},
-          onLongPress: () => Modal.show(
-            context: context,
-            child: MessageModal(
-              message: chatMessage,
-              channelViewState: ChannelView.of(context),
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
-            child: buildMessageContent(context, chatMessage, messageAppearance),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12.0 * messageAppearance.scale,
+                    vertical: 8.0 * messageAppearance.scale,
+                  ),
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: Icon(
+                                chatMessage.subInfo!.msgParamWasGifted
+                                    ? Icons.card_giftcard_outlined
+                                    : Icons.star_border_outlined,
+                                size: Theme.of(context).textTheme.titleLarge!.fontSize! * messageAppearance.scale,
+                              ),
+                            ),
+                            WidgetSpan(
+                              child: SizedBox(
+                                height: 8.0 * messageAppearance.scale,
+                                width: 8.0 * messageAppearance.scale,
+                              ),
+                            ),
+                            TextSpan(text: '${chatMessage.subInfo?.systemMsg}'),
+                          ],
+                        ),
+                        style: TextStyle(
+                          fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize! * messageAppearance.scale,
+                        ),
+                      ),
+                      _buildMessageContent(chatMessage, messageAppearance),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
-        if (chatMessage.blocked) {
-          return BlockedChatMessage(
-            widget: widget,
-            messageAppearance: messageAppearance,
-          );
-        }
-
-        return widget;
-      } else if (message is ChannelMessageBan) {
-        return ChatBanChip(messageAppearance: messageAppearance, message: message as ChannelMessageBan);
-      } else if (message is ChannelMessageNotice) {
-        return ChatNoticeChip(messageAppearance: messageAppearance, message: message as ChannelMessageNotice);
-      } else if (message is ChannelMessageEvent) {
-        return Container();
-      } else if (message is ChannelMessageStateChange) {
-        return _ChannelStatusLine(message: message as ChannelMessageStateChange, messageAppearance: messageAppearance);
       }
-      return Text('Unhandled message type: ${message.runtimeType}');
-    },
-  );
+
+      final content = Surface(
+        type: chatMessage.blocked
+            ? SurfaceType.error
+            : chatMessage.mentionned && widget.renderMentions
+            ? SurfaceType.primary
+            : SurfaceType.transparent,
+        onTap: () async {},
+        onLongPress: () => Modal.show(
+          context: context,
+          child: MessageModal(
+            message: chatMessage,
+            channelViewState: ChannelView.of(context),
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),
+          child: _buildMessageContent(chatMessage, messageAppearance),
+        ),
+      );
+      if (chatMessage.blocked) {
+        return BlockedChatMessage(
+          widget: content,
+          messageAppearance: messageAppearance,
+        );
+      }
+
+      return content;
+    } else if (widget.message is ChannelMessageBan) {
+      return ChatBanChip(messageAppearance: messageAppearance, message: widget.message as ChannelMessageBan);
+    } else if (widget.message is ChannelMessageNotice) {
+      return ChatNoticeChip(messageAppearance: messageAppearance, message: widget.message as ChannelMessageNotice);
+    } else if (widget.message is ChannelMessageEvent) {
+      return Container();
+    } else if (widget.message is ChannelMessageStateChange) {
+      return _ChannelStatusLine(
+        message: widget.message as ChannelMessageStateChange,
+        messageAppearance: messageAppearance,
+      );
+    }
+    return Text('Unhandled message type: ${widget.message.runtimeType}');
+  }
 
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
     image: CachedNetworkImageProvider(emote.mipmap.last),
     height:
         (emote.provider.name == 'Emoji' ||
-                (emote.provider.name == 'Twitch' && _twitchClassicEmoticons.contains(emote.name))
+                (emote.provider.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
             ? 24.0
             : 32.0) *
         (1.0 / messageAppearance.scale),
     filterQuality: FilterQuality.high,
   );
 
-  static Widget buildMessageContent(
-    BuildContext context,
-    ChannelMessageChat message,
-    MessageAppearance messageAppearance,
-  ) {
+  Widget _buildMessageContent(ChannelMessageChat message, MessageAppearance messageAppearance) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -348,18 +397,7 @@ class ChatMessage extends StatelessWidget {
                   fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
                   color: ChatColors.of(context).nameColor(message.user.color, Theme.of(context).colorScheme),
                 ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    unawaited(
-                      Modal.show(
-                        context: context,
-                        child: UserModal(
-                          login: message.message.prefix!.split('!').first,
-                          channel: message.channel,
-                        ),
-                      ),
-                    );
-                  },
+                recognizer: _nameTap,
               ),
               for (final split in message.splits) ...[
                 if (split is String)
@@ -413,11 +451,7 @@ class ChatMessage extends StatelessWidget {
                       decorationColor: ChatColors.of(context).link,
                       fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
                     ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => launchUrl(
-                        Uri.parse(split.url),
-                        mode: LaunchMode.externalApplication,
-                      ),
+                    recognizer: _urlTap(split.url),
                   ),
               ],
             ],
