@@ -51,10 +51,55 @@ void main() {
       needsColon: needsColon,
     );
 
-    test('puts names starting with the search first, each group in channel, global, user order', () {
+    test('puts names starting with the search first, then the ones containing it, in channel, global, user order', () {
       final matcher = AutocompletionMatcher();
       expect(_names(match(matcher, 'happy')), ['happyCat', 'HappyJack', 'peepoHappy', 'ronniHappy']);
       expect(_names(match(matcher, 'kappa')), ['Kappa', 'KappaPride']);
+    });
+
+    group('ranking', () {
+      // A channel's 7TV emotes come before the global ones, so without ranking the longer names win.
+      final channel = [_emote('KappaPride', _sevenTv), _emote('kappa', _sevenTv), _emote('KappaHD', _sevenTv)];
+      final global = [_emote('MiniK', _twitch), _emote('Kappa', _twitch), _emote('Keepo', _twitch)];
+
+      List<Emote> rank(String search, {List<Emote>? channelEmotes}) => AutocompletionMatcher().emotes(
+        channelEmotes: channelEmotes ?? channel,
+        globalEmotes: global,
+        userEmotes: const [],
+        search: search,
+        needsColon: false,
+      );
+
+      test('the exact name as typed comes first, then the same name in another case', () {
+        expect(_names(rank('Kappa')), ['Kappa', 'kappa', 'KappaHD', 'KappaPride']);
+        expect(_names(rank('kappa')), ['kappa', 'Kappa', 'KappaHD', 'KappaPride']);
+      });
+
+      test('names starting with the search are sorted alphabetically, ignoring case', () {
+        expect(_names(rank('Kap')), ['Kappa', 'kappa', 'KappaHD', 'KappaPride']);
+        expect(_names(rank('kap')), ['kappa', 'Kappa', 'KappaHD', 'KappaPride']);
+      });
+
+      test('alphabetical, not by length: KappaHD comes before Kappu', () {
+        final channelEmotes = [_emote('Kappu', _sevenTv), _emote('KappaHD', _sevenTv)];
+        expect(_names(rank('Kapp', channelEmotes: channelEmotes)), ['Kappa', 'KappaHD', 'Kappu']);
+      });
+
+      test('names containing the search further in come last', () {
+        expect(_names(rank('K', channelEmotes: const [])), ['Kappa', 'Keepo', 'MiniK']);
+      });
+
+      test('equal matches keep the channel, global, user order', () {
+        final twin = _emote('Kappa', _sevenTv);
+        final ranked = rank('Kappa', channelEmotes: [twin]);
+        expect(ranked.first, same(twin));
+        expect(ranked[1].source, _twitch);
+      });
+
+      test('a leading or trailing colon still finds the exact name first', () {
+        expect(_names(rank(':Kappa')).first, 'Kappa');
+        expect(_names(rank(':Kappa:')), ['Kappa', 'kappa']);
+      });
     });
 
     test('matches the :name: form, so a colon finds the start or the end of a name', () {

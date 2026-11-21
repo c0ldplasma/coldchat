@@ -313,7 +313,8 @@ class ChannelViewState extends State<ChannelView> {
 
   List<AutocompletionItem> getAutocompletionItems() {
     if (textEditingController.text.split(' ').last.length < 2) return [];
-    final currentSearch = textEditingController.text.split(' ').last.toLowerCase();
+    final typed = textEditingController.text.split(' ').last;
+    final currentSearch = typed.toLowerCase();
 
     final chatSettings = context.read<SettingsRepository>().chatSettings;
 
@@ -321,7 +322,8 @@ class ChannelViewState extends State<ChannelView> {
       channelEmotes: widget.channel.channelEmotes.state,
       globalEmotes: widget.channel.client.globals.emotes.state,
       userEmotes: widget.channel.client.globals.twitchUserEmotes.state,
-      search: currentSearch,
+      // As typed: emote names are case-sensitive, so `Kappa` ranks above `kappa` for "Kappa".
+      search: typed,
       needsColon: chatSettings.emoteAutocompletionWithColon,
     );
     final matchingChatters = _autocompletion.chatters(
