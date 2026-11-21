@@ -15,6 +15,7 @@ import '../modal/notifications.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/client/client.dart';
 import '../tools/account_swipe.dart';
+import '../tools/browser_warmup.dart';
 
 class AvatarButton extends StatefulWidget {
   /// Over the chat's messages it gets the same shadow as the chat's other floating controls; on the home tab it sits
@@ -96,6 +97,9 @@ class _AvatarButtonState extends State<AvatarButton> {
                               borderRadius: BorderRadius.circular(24.0),
                               clipBehavior: Clip.antiAlias,
                               child: InkWell(
+                                // Start the login browser as the finger goes down, a little before the account sheet
+                                // (which warms it up too) is shown; a cold browser needs every bit of head start.
+                                onTapDown: (_) => BrowserWarmup.warmUp(BrowserWarmup.twitchLogin).ignore(),
                                 onTap: () async {
                                   unawaited(
                                     Modal.show(
