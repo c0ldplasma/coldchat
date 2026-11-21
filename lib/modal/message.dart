@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 import '../api/twitch/twitch.dart';
 import '../components/tile.dart';
+import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
@@ -26,10 +29,7 @@ class MessageModal extends StatelessWidget {
   /// hidden for everyone else, like the ban and timeout row on the user card.
   bool get _canDelete {
     final channel = message.channel;
-    if (channel == null || _whisper) return false;
-    final tokenData = channel.client.transmitter.twitchAccount?.tokenData;
-    if (tokenData?.accessToken == null) return false;
-    return channel.canModerate(tokenData!.userId);
+    return canModerateAs(channel, channel?.client.transmitter.twitchAccount?.tokenData);
   }
 
   @override
@@ -75,30 +75,13 @@ class MessageModal extends StatelessWidget {
             final messenger = ScaffoldMessenger.of(context);
             final l10n = AppLocalizations.of(context);
             Navigator.of(context).pop();
-            final tokenData = message.channel!.client.transmitter.twitchAccount?.tokenData;
-            // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
-            if (tokenData == null || !tokenData.scopes.contains(Twitch.deleteChatMessageScope)) {
-              messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageNeedsScope)));
-              return;
-            }
-            try {
-              await Twitch.deleteChatMessage(
-                tokenData,
-                broadcasterId: message.channel!.id!,
-                moderatorId: tokenData.userId!,
-                messageId: message.id,
-              );
-            } on TwitchRequestException catch (e) {
-              messenger.showSnackBar(
-                SnackBar(
-                  content: Text(
-                    e.statusCode == 401 ? l10n.deleteMessageNeedsScope : l10n.deleteMessageFailed(e.message),
-                  ),
-                ),
-              );
-            } catch (e) {
-              messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed('$e'))));
-            }
+            final error = await deleteMessageAs(
+              message.channel!.client.transmitter.twitchAccount?.tokenData,
+              l10n,
+              broadcasterId: message.channel!.id,
+              messageId: message.id,
+            );
+            if (error != null) messenger.showSnackBar(SnackBar(content: Text(error)));
           },
         ),
       Tile(
@@ -119,4 +102,33 @@ class MessageModal extends StatelessWidget {
       ),
     ],
   );
+}
+
+/// Deletes the message [messageId] in the channel [broadcasterId] as the account of [tokenData] and returns the text
+/// to show when that didn't work, or null once it's deleted. [client] is for tests.
+Future<String?> deleteMessageAs(
+  TokenData? tokenData,
+  AppLocalizations l10n, {
+  required String? broadcasterId,
+  required String messageId,
+  http.Client? client,
+}) async {
+  // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
+  if (tokenData == null || !tokenData.scopes.contains(Twitch.deleteChatMessageScope)) {
+    return l10n.deleteMessageNeedsScope;
+  }
+  try {
+    await Twitch.deleteChatMessage(
+      tokenData,
+      broadcasterId: broadcasterId!,
+      moderatorId: tokenData.userId!,
+      messageId: messageId,
+      client: client,
+    );
+    return null;
+  } on TwitchRequestException catch (e) {
+    return e.statusCode == 401 ? l10n.deleteMessageNeedsScope : l10n.deleteMessageFailed(e.message);
+  } catch (e) {
+    return l10n.deleteMessageFailed('$e');
+  }
 }

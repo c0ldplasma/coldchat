@@ -359,24 +359,33 @@ class Twitch {
 
   /// Deletes the single message [messageId] (needs [deleteChatMessageScope]). Helix deletes every message in the
   /// channel when `message_id` is missing, so an empty id is rejected instead of being sent.
+  ///
+  /// [client] is for tests; without one the request goes through a client of its own that is closed afterwards.
   static Future<void> deleteChatMessage(
     TokenData tokenData, {
     required String broadcasterId,
     required String moderatorId,
     required String messageId,
+    http.Client? client,
   }) async {
     if (messageId.isEmpty) throw ArgumentError.value(messageId, 'messageId', 'must not be empty');
-    final response = await http.delete(
-      Uri.https('api.twitch.tv', '/helix/moderation/chat', {
-        'broadcaster_id': broadcasterId,
-        'moderator_id': moderatorId,
-        'message_id': messageId,
-      }),
-      headers: {
-        'Authorization': 'Bearer ${tokenData.accessToken}',
-        'Client-Id': '${tokenData.clientId}',
-      },
-    );
+    final httpClient = client ?? http.Client();
+    final http.Response response;
+    try {
+      response = await httpClient.delete(
+        Uri.https('api.twitch.tv', '/helix/moderation/chat', {
+          'broadcaster_id': broadcasterId,
+          'moderator_id': moderatorId,
+          'message_id': messageId,
+        }),
+        headers: {
+          'Authorization': 'Bearer ${tokenData.accessToken}',
+          'Client-Id': '${tokenData.clientId}',
+        },
+      );
+    } finally {
+      if (client == null) httpClient.close();
+    }
 
     if (response.statusCode != 204) throw _requestException(response);
   }
