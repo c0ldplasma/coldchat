@@ -262,6 +262,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get enableRegex => 'regex चालू करें';
 
   @override
+  String get invalidRegex => 'यह मान्य regex नहीं है';
+
+  @override
   String get caseSensitive => 'केस-सेंसिटिव';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get deleteMessage => 'संदेश मिटाएं';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'संदेश नहीं हटाया गया: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'संदेश हटाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat संदेश नहीं हटा सकता था।';
 
   @override
   String get mentionUser => 'उपयोगकर्ता को मेंशन करें';
