@@ -550,6 +550,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get whisperUserNotFound => 'Aucun utilisateur Twitch ne porte ce nom.';
 
   @override
+  String get messageNotSentNotConnected => 'Pas encore connecté à cette chaîne. Ton message n\'a pas été envoyé.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Chuchotement non envoyé : $reason';
   }

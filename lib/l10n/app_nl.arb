@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Log in met Twitch om fluisterberichten te sturen.",
   "whisperNeedsScope": "Log opnieuw in om fluisterberichten te sturen en te ontvangen. Je login is van voordat ColdChat ze ondersteunde.",
   "whisperUserNotFound": "Er is geen Twitch-gebruiker met die naam.",
+  "messageNotSentNotConnected": "Nog niet verbonden met dit kanaal. Je bericht is niet verzonden.",
   "whisperFailed": "Fluisterbericht niet verstuurd: {reason}",
   "@whisperFailed": {
     "placeholders": {

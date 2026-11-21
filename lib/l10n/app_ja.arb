@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "ウィスパーを送るには、Twitchでログインしてください。",
   "whisperNeedsScope": "ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。",
   "whisperUserNotFound": "その名前のTwitchユーザーは存在しません。",
+  "messageNotSentNotConnected": "このチャンネルにはまだ接続していません。メッセージは送信されませんでした。",
   "whisperFailed": "ウィスパーを送信できませんでした：{reason}",
   "@whisperFailed": {
     "placeholders": {

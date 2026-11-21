@@ -128,6 +128,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     if (generation != _connectGeneration || isClosed) return;
     final socket = _openSocket(Uri.parse('wss://irc-ws.chat.twitch.tv:443'));
     channel = socket;
+    // A failed connect (e.g. no network) completes `ready` with the same error
+    // the stream reports. The stream's onError/onDone below does the
+    // reconnecting; unhandled, `ready` would only add an uncaught exception.
+    unawaited(socket.ready.catchError((Object error) => logs.add(Log(data: error))));
 
     subscription = socket.stream.listen(
       (event) async {

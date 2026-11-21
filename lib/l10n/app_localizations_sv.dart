@@ -547,6 +547,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get whisperUserNotFound => 'Det finns ingen Twitch-användare med det namnet.';
 
   @override
+  String get messageNotSentNotConnected => 'Inte ansluten till den här kanalen än. Ditt meddelande skickades inte.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Viskningen skickades inte: $reason';
   }

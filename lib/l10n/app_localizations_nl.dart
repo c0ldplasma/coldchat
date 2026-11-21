@@ -551,6 +551,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get whisperUserNotFound => 'Er is geen Twitch-gebruiker met die naam.';
 
   @override
+  String get messageNotSentNotConnected => 'Nog niet verbonden met dit kanaal. Je bericht is niet verzonden.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Fluisterbericht niet verstuurd: $reason';
   }

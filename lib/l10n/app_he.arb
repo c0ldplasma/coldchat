@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "כדי לשלוח לחישות, יש להתחבר עם Twitch.",
   "whisperNeedsScope": "כדי לשלוח ולקבל לחישות, יש להתחבר מחדש. ההתחברות הנוכחית היא מלפני ש-ColdChat תמכה בהן.",
   "whisperUserNotFound": "אין משתמש Twitch בשם הזה.",
+  "messageNotSentNotConnected": "עדיין אין חיבור לערוץ הזה. ההודעה שלך לא נשלחה.",
   "whisperFailed": "הלחישה לא נשלחה: {reason}",
   "@whisperFailed": {
     "placeholders": {
