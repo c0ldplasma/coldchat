@@ -262,6 +262,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get enableRegex => 'שימוש ב-regex';
 
   @override
+  String get invalidRegex => 'regex לא תקין';
+
+  @override
   String get caseSensitive => 'תלוי רישיות';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get deleteMessage => 'מחיקת ההודעה';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'ההודעה לא נמחקה: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'יש להתחבר מחדש כדי למחוק הודעות. ההתחברות שלך היא מלפני ש-ColdChat יכלה למחוק אותן.';
 
   @override
   String get mentionUser => 'אזכור המשתמש';

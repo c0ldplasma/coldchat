@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
@@ -12,7 +13,7 @@ import 'connection_event.dart';
 import 'connection_state.dart';
 
 class Connection extends Bloc<ConnectionEvent, ConnectionState> {
-  IOWebSocketChannel? channel;
+  WebSocketChannel? channel;
   StreamSubscription<dynamic>? subscription;
   void Function(Connection connection, ConnectionEvent event)? onEventTrigger;
   void Function(Connection connection, Change<ConnectionState> change)? onStateChange;
@@ -35,7 +36,14 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     super.onChange(change);
   }
 
-  Connection() : super(ConnectionDisconnected()) {
+  /// Opens the IRC socket. Replaceable so tests can connect to a fake.
+  final WebSocketChannel Function(Uri uri) _openSocket;
+
+  static WebSocketChannel _openIoSocket(Uri uri) => IOWebSocketChannel.connect(uri);
+
+  Connection({WebSocketChannel Function(Uri uri)? openSocket})
+    : _openSocket = openSocket ?? _openIoSocket,
+      super(ConnectionDisconnected()) {
     on<ConnectionConnect>((event, emit) async {
       _lastAccount = event.twitchAccount;
       // A connect with (presumably) fresh credentials clears the auth lock so
@@ -53,7 +61,15 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     on<ConnectionEstablished>((event, emit) => emit(event.state));
 
     on<ConnectionDisconnect>((event, emit) async {
-      await close();
+      // Logging out: drop the socket and forget the account so no reconnect
+      // path (backoff, watchdog, app resume) brings it back. Not close(): that
+      // would end the bloc, and a later login could never connect again.
+      _lastAccount = null;
+      _credentialsRejected = false;
+      _reconnectTimer?.cancel();
+      _reconnectTimer = null;
+      _connectStartedAt = null;
+      await cancel();
       emit(ConnectionDisconnected());
     });
 
@@ -79,6 +95,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       _reconnectTimer?.cancel();
       _reconnectTimer = null;
       _connectStartedAt = null;
+      // Abandon a connect() that is still tearing down the previous socket.
+      _connectGeneration++;
       await cancel();
       emit(ConnectionInvalidCredentials(event.twitchAccount));
     });
@@ -99,10 +117,19 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     _connectStartedAt = DateTime.now();
     _lastInbound = null;
     _lastPingSentAt = null;
+    final generation = ++_connectGeneration;
     await cancel();
-    channel = IOWebSocketChannel.connect(Uri.parse('wss://irc-ws.chat.twitch.tv:443'));
+    // Bloc runs the events of one handler concurrently, so a second connect()
+    // (e.g. the forced reconnect on app resume racing the watchdog's) can start
+    // while this one is still awaiting cancel(). Only the newest one may open a
+    // socket; if this one opened its socket too, it would overwrite the other's
+    // channel/subscription and leave that socket open but untracked, and its
+    // later onDone would tear down the healthy connection with a reconnect.
+    if (generation != _connectGeneration || isClosed) return;
+    final socket = _openSocket(Uri.parse('wss://irc-ws.chat.twitch.tv:443'));
+    channel = socket;
 
-    subscription = channel?.stream.listen(
+    subscription = socket.stream.listen(
       (event) async {
         for (final singleEvent
             in (event as String)
@@ -114,8 +141,12 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
           unawaited(receive(message));
         }
       },
-      onDone: _scheduleReconnect,
-      onError: (error) => _scheduleReconnect(),
+      onDone: () {
+        if (generation == _connectGeneration) _scheduleReconnect();
+      },
+      onError: (Object error) {
+        if (generation == _connectGeneration) _scheduleReconnect();
+      },
       // cancelOnError: true,
     );
 
@@ -141,6 +172,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   // can pre-empt a frozen/pending backoff instead of racing it.
   int _reconnectAttempts = 0;
   Timer? _reconnectTimer;
+
+  /// Bumped by every connect() and by everything that abandons the connection,
+  /// so a connect() that was overtaken while awaiting cancel() gives up.
+  int _connectGeneration = 0;
 
   /// Set once the token was refused; blocks the automatic retry paths (socket
   /// close, handshake timeout, liveness watchdog) until a re-login arrives.
@@ -252,9 +287,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
       await oldSubscription?.cancel();
     } catch (_) {}
     // Do NOT await the close: a dead/half-open socket (lock-screen suspend,
-    // network handoff) can make sink.close() hang forever. Because the bloc
-    // processes events sequentially, an awaited close here would freeze the
-    // ConnectionConnect handler and every queued reconnect with it, leaving the
+    // network handoff) can make sink.close() hang forever. An awaited close
+    // here would keep connect() from ever opening the new socket, leaving the
     // chat stuck on ChannelDisconnected. Fire-and-forget instead.
     if (oldChannel != null) unawaited(oldChannel.sink.close().catchError((_) {}));
   }
@@ -263,6 +297,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   Future<void> close() {
     _watchdog?.cancel();
     _reconnectTimer?.cancel();
+    _connectGeneration++;
     // Stop delivering socket lines to a closed bloc (and its closed logs).
     unawaited(subscription?.cancel());
     return super.close();
