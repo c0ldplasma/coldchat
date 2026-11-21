@@ -191,6 +191,7 @@
   "copyText": "テキストをコピー",
   "copyTextSubtitle": "長押しでユーザー名ごとコピー",
   "deleteMessage": "メッセージを削除",
+  "deleteMessageFailed": "メッセージを削除できませんでした。このチャンネルのモデレーターである必要があります。",
   "mentionUser": "ユーザーをメンション",
   "copyMessageId": "メッセージIDをコピー",
   "theme": "テーマ",

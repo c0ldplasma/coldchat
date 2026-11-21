@@ -283,6 +283,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get deleteMessage => 'Radera meddelande';
 
   @override
+  String get deleteMessageFailed => 'Meddelandet kunde inte tas bort. Du måste vara moderator i den här kanalen.';
+
+  @override
   String get mentionUser => 'Nämn användare';
 
   @override

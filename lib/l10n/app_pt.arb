@@ -191,6 +191,7 @@
   "copyText": "Copiar texto",
   "copyTextSubtitle": "Segure para copiar o texto com o nome de usuário",
   "deleteMessage": "Excluir mensagem",
+  "deleteMessageFailed": "Não foi possível excluir a mensagem. Você precisa ser moderador deste canal.",
   "mentionUser": "Mencionar usuário",
   "copyMessageId": "Copiar ID da mensagem",
   "theme": "Tema",

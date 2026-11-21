@@ -283,6 +283,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get deleteMessage => 'מחיקת ההודעה';
 
   @override
+  String get deleteMessageFailed => 'לא ניתן למחוק את ההודעה. צריך להיות מנהל בערוץ הזה.';
+
+  @override
   String get mentionUser => 'אזכור המשתמש';
 
   @override

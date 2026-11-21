@@ -191,6 +191,7 @@
   "copyText": "Kopiraj tekst",
   "copyTextSubtitle": "Zadrži za kopiranje teksta s korisničkim imenom",
   "deleteMessage": "Izbriši poruku",
+  "deleteMessageFailed": "Poruku nije moguće izbrisati. Moraš biti moderator ovog kanala.",
   "mentionUser": "Spomeni korisnika",
   "copyMessageId": "Kopiraj ID poruke",
   "theme": "Tema",

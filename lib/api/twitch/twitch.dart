@@ -358,16 +358,21 @@ class Twitch {
     }
   }
 
+  /// Deletes the single message [messageId]. Helix deletes every message in the channel when `message_id` is
+  /// missing, so an empty id is rejected instead of being sent.
   static Future<void> deleteChatMessage(
     TokenData tokenData, {
     required String broadcasterId,
     required String moderatorId,
-    String? messageId,
+    required String messageId,
   }) async {
+    if (messageId.isEmpty) throw ArgumentError.value(messageId, 'messageId', 'must not be empty');
     final response = await http.delete(
-      Uri.parse(
-        'https://api.twitch.tv/helix/moderation/chat?broadcaster_id=$broadcasterId&moderator_id=$moderatorId${messageId != null ? '&message_id=$messageId' : ''}',
-      ),
+      Uri.https('api.twitch.tv', '/helix/moderation/chat', {
+        'broadcaster_id': broadcasterId,
+        'moderator_id': moderatorId,
+        'message_id': messageId,
+      }),
       headers: {
         'Authorization': 'Bearer ${tokenData.accessToken}',
         'Client-Id': '${tokenData.clientId}',

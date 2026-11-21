@@ -283,6 +283,9 @@ class AppLocalizationsNo extends AppLocalizations {
   String get deleteMessage => 'Slett melding';
 
   @override
+  String get deleteMessageFailed => 'Meldingen kunne ikke slettes. Du må være moderator i denne kanalen.';
+
+  @override
   String get mentionUser => 'Nevn bruker';
 
   @override

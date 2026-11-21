@@ -285,6 +285,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get deleteMessage => 'Bericht verwijderen';
 
   @override
+  String get deleteMessageFailed => 'Het bericht kan niet worden verwijderd. Je moet moderator van dit kanaal zijn.';
+
+  @override
   String get mentionUser => 'Gebruiker vermelden';
 
   @override

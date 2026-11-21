@@ -623,6 +623,12 @@ abstract class AppLocalizations {
   /// **'Delete message'**
   String get deleteMessage;
 
+  /// No description provided for @deleteMessageFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The message couldn\'t be deleted. You need to be a moderator of this channel.'**
+  String get deleteMessageFailed;
+
   /// No description provided for @mentionUser.
   ///
   /// In en, this message translates to:

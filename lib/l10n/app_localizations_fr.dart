@@ -285,6 +285,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get deleteMessage => 'Supprimer le message';
 
   @override
+  String get deleteMessageFailed => 'Impossible de supprimer le message. Tu dois être modérateur de cette chaîne.';
+
+  @override
   String get mentionUser => 'Mentionner l\'utilisateur';
 
   @override

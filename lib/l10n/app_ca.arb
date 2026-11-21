@@ -191,6 +191,7 @@
   "copyText": "Copia el text",
   "copyTextSubtitle": "Mantén premut per copiar amb el nom d'usuari",
   "deleteMessage": "Suprimeix el missatge",
+  "deleteMessageFailed": "No s'ha pogut eliminar el missatge. Has de ser moderador d'aquest canal.",
   "mentionUser": "Esmenta l'usuari",
   "copyMessageId": "Copia l'ID del missatge",
   "theme": "Tema",

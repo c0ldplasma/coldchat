@@ -283,6 +283,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteMessage => '메시지 삭제';
 
   @override
+  String get deleteMessageFailed => '메시지를 삭제할 수 없어요. 이 채널의 모더레이터여야 해요.';
+
+  @override
   String get mentionUser => '사용자 멘션';
 
   @override

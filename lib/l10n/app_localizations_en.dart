@@ -283,6 +283,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteMessage => 'Delete message';
 
   @override
+  String get deleteMessageFailed => 'The message couldn\'t be deleted. You need to be a moderator of this channel.';
+
+  @override
   String get mentionUser => 'Mention user';
 
   @override

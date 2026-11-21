@@ -62,13 +62,19 @@ class MessageModal extends StatelessWidget {
           title: AppLocalizations.of(context).deleteMessage,
           prefix: const Icon(Icons.delete_outline_outlined),
           onTap: () async {
+            final messenger = ScaffoldMessenger.of(context);
+            final failedText = AppLocalizations.of(context).deleteMessageFailed;
             Navigator.of(context).pop();
-            await Twitch.deleteChatMessage(
-              message.channel!.client.transmitter.twitchAccount!.tokenData,
-              broadcasterId: message.channel!.id!,
-              moderatorId: message.channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-            );
-            // await message.channel?.send('/delete ${message.id}');
+            try {
+              await Twitch.deleteChatMessage(
+                message.channel!.client.transmitter.twitchAccount!.tokenData,
+                broadcasterId: message.channel!.id!,
+                moderatorId: message.channel!.client.transmitter.twitchAccount!.tokenData.userId!,
+                messageId: message.id,
+              );
+            } catch (_) {
+              messenger.showSnackBar(SnackBar(content: Text(failedText)));
+            }
           },
         ),
       Tile(

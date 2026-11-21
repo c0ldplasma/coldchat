@@ -191,6 +191,7 @@
   "copyText": "Kopírovat text",
   "copyTextSubtitle": "Podržením zkopíruješ text i s uživatelským jménem",
   "deleteMessage": "Smazat zprávu",
+  "deleteMessageFailed": "Zprávu se nepodařilo smazat. Musíš být moderátorem tohoto kanálu.",
   "mentionUser": "Zmínit uživatele",
   "copyMessageId": "Kopírovat ID zprávy",
   "theme": "Motiv",

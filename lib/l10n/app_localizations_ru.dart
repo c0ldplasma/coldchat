@@ -283,6 +283,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get deleteMessage => 'Удалить сообщение';
 
   @override
+  String get deleteMessageFailed => 'Не удалось удалить сообщение. Для этого нужно быть модератором этого канала.';
+
+  @override
   String get mentionUser => 'Упомянуть пользователя';
 
   @override

@@ -283,6 +283,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteMessage => 'メッセージを削除';
 
   @override
+  String get deleteMessageFailed => 'メッセージを削除できませんでした。このチャンネルのモデレーターである必要があります。';
+
+  @override
   String get mentionUser => 'ユーザーをメンション';
 
   @override

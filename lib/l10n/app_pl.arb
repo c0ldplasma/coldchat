@@ -191,6 +191,7 @@
   "copyText": "Kopiuj tekst",
   "copyTextSubtitle": "Przytrzymaj, aby skopiować z nazwą użytkownika",
   "deleteMessage": "Usuń wiadomość",
+  "deleteMessageFailed": "Nie udało się usunąć wiadomości. Musisz być moderatorem tego kanału.",
   "mentionUser": "Oznacz użytkownika",
   "copyMessageId": "Kopiuj ID wiadomości",
   "theme": "Motyw",

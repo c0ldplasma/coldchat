@@ -283,6 +283,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteMessage => 'Xóa tin nhắn';
 
   @override
+  String get deleteMessageFailed => 'Không thể xóa tin nhắn. Bạn cần là người kiểm duyệt của kênh này.';
+
+  @override
   String get mentionUser => 'Nhắc đến người dùng';
 
   @override

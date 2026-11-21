@@ -283,6 +283,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get deleteMessage => 'Suprimeix el missatge';
 
   @override
+  String get deleteMessageFailed => 'No s\'ha pogut eliminar el missatge. Has de ser moderador d\'aquest canal.';
+
+  @override
   String get mentionUser => 'Esmenta l\'usuari';
 
   @override

@@ -283,6 +283,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get deleteMessage => 'संदेश मिटाएं';
 
   @override
+  String get deleteMessageFailed => 'संदेश हटाया नहीं जा सका। इसके लिए आपको इस चैनल का मॉडरेटर होना चाहिए।';
+
+  @override
   String get mentionUser => 'उपयोगकर्ता को मेंशन करें';
 
   @override

@@ -283,6 +283,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deleteMessage => 'Mesajı sil';
 
   @override
+  String get deleteMessageFailed => 'Mesaj silinemedi. Bu kanalda moderatör olman gerekiyor.';
+
+  @override
   String get mentionUser => 'Kullanıcıdan bahset';
 
   @override

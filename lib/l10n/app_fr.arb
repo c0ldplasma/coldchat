@@ -191,6 +191,7 @@
   "copyText": "Copier le texte",
   "copyTextSubtitle": "Maintiens pour copier avec le nom d'utilisateur",
   "deleteMessage": "Supprimer le message",
+  "deleteMessageFailed": "Impossible de supprimer le message. Tu dois être modérateur de cette chaîne.",
   "mentionUser": "Mentionner l'utilisateur",
   "copyMessageId": "Copier l'ID du message",
   "theme": "Thème",

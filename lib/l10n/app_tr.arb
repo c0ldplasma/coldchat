@@ -191,6 +191,7 @@
   "copyText": "Metni kopyala",
   "copyTextSubtitle": "Kullanıcı adıyla kopyalamak için basılı tut",
   "deleteMessage": "Mesajı sil",
+  "deleteMessageFailed": "Mesaj silinemedi. Bu kanalda moderatör olman gerekiyor.",
   "mentionUser": "Kullanıcıdan bahset",
   "copyMessageId": "Mesaj kimliğini kopyala",
   "theme": "Tema",

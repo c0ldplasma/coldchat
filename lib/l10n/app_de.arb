@@ -135,6 +135,7 @@
   "copyText": "Kopieren",
   "copyTextSubtitle": "Halten, um mit Benutzernamen zu kopieren",
   "deleteMessage": "Nachricht löschen",
+  "deleteMessageFailed": "Die Nachricht konnte nicht gelöscht werden. Dafür musst du Moderator in diesem Kanal sein.",
   "mentionUser": "Benutzer erwähnen",
   "copyMessageId": "Nachrichten-ID kopieren",
   "theme": "Farben",

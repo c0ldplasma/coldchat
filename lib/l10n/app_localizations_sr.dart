@@ -283,6 +283,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get deleteMessage => 'Избриши поруку';
 
   @override
+  String get deleteMessageFailed => 'Порука не може да се обрише. Мораш да будеш модератор овог канала.';
+
+  @override
   String get mentionUser => 'Помени корисника';
 
   @override

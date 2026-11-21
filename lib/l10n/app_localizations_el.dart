@@ -283,6 +283,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get deleteMessage => 'Διαγραφή μηνύματος';
 
   @override
+  String get deleteMessageFailed =>
+      'Δεν ήταν δυνατή η διαγραφή του μηνύματος. Πρέπει να είσαι συντονιστής σε αυτό το κανάλι.';
+
+  @override
   String get mentionUser => 'Αναφορά χρήστη';
 
   @override

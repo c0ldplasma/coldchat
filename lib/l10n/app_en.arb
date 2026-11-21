@@ -158,6 +158,7 @@
   "copyText": "Copy text",
   "copyTextSubtitle": "Hold to copy message text with username",
   "deleteMessage": "Delete message",
+  "deleteMessageFailed": "The message couldn't be deleted. You need to be a moderator of this channel.",
   "mentionUser": "Mention user",
   "copyMessageId": "Copy message ID",
   "theme": "Theme",

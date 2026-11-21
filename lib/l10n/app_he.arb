@@ -191,6 +191,7 @@
   "copyText": "העתקת טקסט",
   "copyTextSubtitle": "לחיצה ארוכה מעתיקה יחד עם שם המשתמש",
   "deleteMessage": "מחיקת ההודעה",
+  "deleteMessageFailed": "לא ניתן למחוק את ההודעה. צריך להיות מנהל בערוץ הזה.",
   "mentionUser": "אזכור המשתמש",
   "copyMessageId": "העתקת מזהה ההודעה",
   "theme": "ערכת נושא",

@@ -191,6 +191,7 @@
   "copyText": "Tekst kopiëren",
   "copyTextSubtitle": "Houd vast om de tekst met gebruikersnaam te kopiëren",
   "deleteMessage": "Bericht verwijderen",
+  "deleteMessageFailed": "Het bericht kan niet worden verwijderd. Je moet moderator van dit kanaal zijn.",
   "mentionUser": "Gebruiker vermelden",
   "copyMessageId": "Bericht-ID kopiëren",
   "theme": "Thema",

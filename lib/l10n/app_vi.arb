@@ -191,6 +191,7 @@
   "copyText": "Sao chép văn bản",
   "copyTextSubtitle": "Nhấn giữ để sao chép kèm tên người dùng",
   "deleteMessage": "Xóa tin nhắn",
+  "deleteMessageFailed": "Không thể xóa tin nhắn. Bạn cần là người kiểm duyệt của kênh này.",
   "mentionUser": "Nhắc đến người dùng",
   "copyMessageId": "Sao chép ID tin nhắn",
   "theme": "Chủ đề",

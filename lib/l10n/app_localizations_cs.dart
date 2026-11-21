@@ -283,6 +283,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get deleteMessage => 'Smazat zprávu';
 
   @override
+  String get deleteMessageFailed => 'Zprávu se nepodařilo smazat. Musíš být moderátorem tohoto kanálu.';
+
+  @override
   String get mentionUser => 'Zmínit uživatele';
 
   @override

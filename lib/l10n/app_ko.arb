@@ -191,6 +191,7 @@
   "copyText": "텍스트 복사",
   "copyTextSubtitle": "길게 누르면 사용자 이름과 함께 복사",
   "deleteMessage": "메시지 삭제",
+  "deleteMessageFailed": "메시지를 삭제할 수 없어요. 이 채널의 모더레이터여야 해요.",
   "mentionUser": "사용자 멘션",
   "copyMessageId": "메시지 ID 복사",
   "theme": "테마",

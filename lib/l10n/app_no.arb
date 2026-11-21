@@ -191,6 +191,7 @@
   "copyText": "Kopier tekst",
   "copyTextSubtitle": "Hold inne for å kopiere teksten med brukernavn",
   "deleteMessage": "Slett melding",
+  "deleteMessageFailed": "Meldingen kunne ikke slettes. Du må være moderator i denne kanalen.",
   "mentionUser": "Nevn bruker",
   "copyMessageId": "Kopier meldings-ID",
   "theme": "Tema",

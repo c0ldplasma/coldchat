@@ -191,6 +191,7 @@
   "copyText": "Kopiera text",
   "copyTextSubtitle": "Håll in för att kopiera texten med användarnamn",
   "deleteMessage": "Radera meddelande",
+  "deleteMessageFailed": "Meddelandet kunde inte tas bort. Du måste vara moderator i den här kanalen.",
   "mentionUser": "Nämn användare",
   "copyMessageId": "Kopiera meddelande-ID",
   "theme": "Tema",
