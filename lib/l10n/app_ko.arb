@@ -184,6 +184,7 @@
   "mention": "멘션",
   "block": "차단",
   "enableRegex": "regex 사용",
+  "invalidRegex": "유효하지 않은 regex입니다",
   "caseSensitive": "대소문자 구분",
   "messageTriggers": "메시지 트리거",
   "newMessageTrigger": "새 메시지 트리거",

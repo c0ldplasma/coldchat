@@ -262,6 +262,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get enableRegex => 'Använd regex';
 
   @override
+  String get invalidRegex => 'Inte ett giltigt regex';
+
+  @override
   String get caseSensitive => 'Skiftlägeskänslig';
 
   @override

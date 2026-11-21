@@ -184,6 +184,7 @@
   "mention": "Zmínka",
   "block": "Zablokovat",
   "enableRegex": "Povolit regex",
+  "invalidRegex": "Neplatný regex",
   "caseSensitive": "Rozlišovat velká a malá písmena",
   "messageTriggers": "Spouštěče zpráv",
   "newMessageTrigger": "Nový spouštěč zpráv",

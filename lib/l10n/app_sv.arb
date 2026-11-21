@@ -184,6 +184,7 @@
   "mention": "Omnämnande",
   "block": "Blockera",
   "enableRegex": "Använd regex",
+  "invalidRegex": "Inte ett giltigt regex",
   "caseSensitive": "Skiftlägeskänslig",
   "messageTriggers": "Meddelandeutlösare",
   "newMessageTrigger": "Ny meddelandeutlösare",

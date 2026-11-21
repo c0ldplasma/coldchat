@@ -184,6 +184,7 @@
   "mention": "Vurgula",
   "block": "Engelle",
   "enableRegex": "Regex kullan",
+  "invalidRegex": "Geçersiz regex",
   "caseSensitive": "Büyük/küçük harfe duyarlı",
   "messageTriggers": "Mesaj tetikleyicileri",
   "newMessageTrigger": "Yeni mesaj tetikleyicisi",

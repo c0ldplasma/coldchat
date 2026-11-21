@@ -262,6 +262,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get enableRegex => 'Povolit regex';
 
   @override
+  String get invalidRegex => 'Neplatný regex';
+
+  @override
   String get caseSensitive => 'Rozlišovat velká a malá písmena';
 
   @override

@@ -262,6 +262,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get enableRegex => 'Fes servir regex';
 
   @override
+  String get invalidRegex => 'No és un regex vàlid';
+
+  @override
   String get caseSensitive => 'Distingeix majúscules i minúscules';
 
   @override

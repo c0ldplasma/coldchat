@@ -184,6 +184,7 @@
   "mention": "मेंशन",
   "block": "ब्लॉक",
   "enableRegex": "regex चालू करें",
+  "invalidRegex": "यह मान्य regex नहीं है",
   "caseSensitive": "केस-सेंसिटिव",
   "messageTriggers": "संदेश ट्रिगर",
   "newMessageTrigger": "नया संदेश ट्रिगर",

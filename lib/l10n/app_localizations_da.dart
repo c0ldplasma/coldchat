@@ -262,6 +262,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get enableRegex => 'Brug regex';
 
   @override
+  String get invalidRegex => 'Ikke et gyldigt regex';
+
+  @override
   String get caseSensitive => 'Skeln mellem store og små bogstaver';
 
   @override

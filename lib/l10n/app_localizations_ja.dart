@@ -262,6 +262,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enableRegex => '正規表現（regex）を使用';
 
   @override
+  String get invalidRegex => '無効な正規表現です';
+
+  @override
   String get caseSensitive => '大文字と小文字を区別';
 
   @override

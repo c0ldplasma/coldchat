@@ -151,6 +151,7 @@
   "mention": "Mention",
   "block": "Block",
   "enableRegex": "Enable regex",
+  "invalidRegex": "Not a valid regex",
   "caseSensitive": "Case sensitive",
   "messageTriggers": "Message triggers",
   "newMessageTrigger": "New message trigger",

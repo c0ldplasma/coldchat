@@ -262,6 +262,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get enableRegex => 'Regex kullan';
 
   @override
+  String get invalidRegex => 'Geçersiz regex';
+
+  @override
   String get caseSensitive => 'Büyük/küçük harfe duyarlı';
 
   @override

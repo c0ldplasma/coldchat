@@ -262,6 +262,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get enableRegex => 'Bật regex';
 
   @override
+  String get invalidRegex => 'Regex không hợp lệ';
+
+  @override
   String get caseSensitive => 'Phân biệt chữ hoa/thường';
 
   @override

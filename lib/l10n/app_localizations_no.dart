@@ -262,6 +262,9 @@ class AppLocalizationsNo extends AppLocalizations {
   String get enableRegex => 'Bruk regex';
 
   @override
+  String get invalidRegex => 'Ikke et gyldig regex';
+
+  @override
   String get caseSensitive => 'Skill mellom store og små bokstaver';
 
   @override

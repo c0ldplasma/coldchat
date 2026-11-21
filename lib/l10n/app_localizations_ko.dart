@@ -262,6 +262,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get enableRegex => 'regex 사용';
 
   @override
+  String get invalidRegex => '유효하지 않은 regex입니다';
+
+  @override
   String get caseSensitive => '대소문자 구분';
 
   @override

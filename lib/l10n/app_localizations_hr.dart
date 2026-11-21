@@ -262,6 +262,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get enableRegex => 'Uključi regex';
 
   @override
+  String get invalidRegex => 'Neispravan regex';
+
+  @override
   String get caseSensitive => 'Razlikuj velika i mala slova';
 
   @override

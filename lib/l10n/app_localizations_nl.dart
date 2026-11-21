@@ -264,6 +264,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get enableRegex => 'Regex gebruiken';
 
   @override
+  String get invalidRegex => 'Geen geldige regex';
+
+  @override
   String get caseSensitive => 'Hoofdlettergevoelig';
 
   @override
