@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../api/twitch/twitch.dart';
 import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
@@ -20,12 +18,14 @@ import '../data/repositories/custom_command_repository.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/login_flow.dart';
+import '../modal/whisper_errors.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
-import '../tmi/whispers/whispers.dart';
 import 'chat/autocompletion_matcher.dart';
+import 'chat/composer_send.dart';
+import 'chat/composer_text.dart';
 import 'chat/emote_picker.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_message.dart';
@@ -161,64 +161,31 @@ class ChannelViewState extends State<ChannelView> {
   Future<void> sendMessage() async {
     // TODO: Implement reactions here
 
-    var text = textEditingController.text;
+    final original = textEditingController.text;
+    final customCommand = context.read<CustomCommandRepository>().commandFor(original.trim().split(' ').first);
+    final text = customCommand?.expand(original) ?? original;
 
-    final textSplits = text.trim().split(' ');
-    if (textSplits.isNotEmpty) {
-      final customCommand = context.read<CustomCommandRepository>().commandFor(textSplits.first);
-      if (customCommand != null) {
-        text = customCommand.command;
-        text = text.replaceAllMapped(
-          RegExp(r'{\d*}'),
-          (match) {
-            final matchText = match.group(0) ?? '{}';
-            final matchContent = matchText.substring(1, matchText.length - 1);
-            final index = int.tryParse(matchContent);
-            if (index != null && index < textSplits.length && index > 0) {
-              return textSplits[index];
-            }
-            return '';
-          },
-        );
-        text = text.replaceAllMapped(
-          RegExp(r'{\d*\+}'),
-          (match) {
-            final matchText = match.group(0) ?? '{+}';
-            final matchContent = matchText.substring(1, matchText.length - 2);
-            final index = int.tryParse(matchContent);
-            if (index != null && index < textSplits.length && index > 0) {
-              return textSplits.skip(index).join(' ');
-            }
-            return '';
-          },
-        );
-      }
-    }
-
-    final whisperCommand = _whisperCommand.firstMatch(text.trim());
-    if (whisperCommand != null || widget.channel is WhisperChannel) {
-      final original = textEditingController.text;
+    final action = composerSendFor(
+      text,
+      isWhisperChannel: widget.channel is WhisperChannel,
+      canSend: widget.channel.canSend,
+    );
+    final whispers = widget.channel.client.whispers;
+    final Future<void> Function()? sendWhisper = switch (action) {
+      OpenWhisper(:final login) => () => whispers.openAndFocus(login),
+      SendWhisper(:final login, :final message) => () => whispers.sendTo(login, message),
+      SendInWhisperChannel() => () => widget.channel.send(text),
+      SendToChannel() || NotConnected() => null,
+    };
+    if (sendWhisper != null) {
       setReplyChannelMessageChat(null);
       textEditingController.clear();
-      final whispers = widget.channel.client.whispers;
-      final login = whisperCommand?.group(1);
-      final whisperText = whisperCommand?.group(2)?.trim() ?? '';
-      unawaited(
-        _sendWhisper(
-          () => login == null
-              ? widget.channel.send(text)
-              : whisperText.isEmpty
-              ? whispers.openAndFocus(login)
-              : whispers.sendTo(login, whisperText),
-          original,
-        ),
-      );
+      unawaited(_sendWhisper(sendWhisper, original));
       return;
     }
 
-    // Not joined yet (e.g. the JOIN still waits for the rate limit after an account switch): Twitch would drop the
-    // message, so keep it in the composer and say so instead of clearing it.
-    if (!widget.channel.canSend) {
+    // Keep the message in the composer and say so instead of clearing it.
+    if (action is NotConnected) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).messageNotSentNotConnected)));
@@ -239,9 +206,6 @@ class ChannelViewState extends State<ChannelView> {
     textEditingController.clear();
   }
 
-  // `/w <user> [message]`, as on Twitch. Twitch no longer accepts it over IRC, so it goes through Helix.
-  static final RegExp _whisperCommand = RegExp(r'^/(?:w|whisper)\s+@?(\S+)(?:\s+(.*))?$', dotAll: true);
-
   /// Runs [send] and, if the whisper isn't sent, says why and puts [original] back into an empty composer.
   Future<void> _sendWhisper(Future<void> Function() send, String original) async {
     try {
@@ -255,29 +219,6 @@ class ChannelViewState extends State<ChannelView> {
       }
       showWhisperError(ScaffoldMessenger.of(context), Navigator.of(context), e);
     }
-  }
-
-  /// Shows why a whisper couldn't be sent or opened, with a "Sign in" action when a new login fixes it.
-  static void showWhisperError(ScaffoldMessengerState messenger, NavigatorState navigator, Object error) {
-    final text = whisperErrorText(messenger.context, error);
-    if (whisperErrorNeedsSignIn(error)) {
-      showSignInSnackBar(messenger, navigator, text);
-    } else {
-      messenger.showSnackBar(SnackBar(content: Text(text)));
-    }
-  }
-
-  /// Whether signing in (again) fixes [error]: no login, or one from before ColdChat supported whispers.
-  static bool whisperErrorNeedsSignIn(Object error) => error is WhisperUnavailableException;
-
-  static String whisperErrorText(BuildContext context, Object error) {
-    final l10n = AppLocalizations.of(context);
-    if (error is WhisperUnavailableException) {
-      return error.missingScope ? l10n.whisperNeedsScope : l10n.whisperNeedsLogin;
-    }
-    if (error is WhisperUserNotFoundException) return l10n.whisperUserNotFound;
-    if (error is TwitchRequestException) return l10n.whisperFailed(error.message);
-    return l10n.whisperFailed('$error');
   }
 
   /// Pick files and hand them to the global upload queue.
@@ -371,18 +312,13 @@ class ChannelViewState extends State<ChannelView> {
   /// Drop [url] where the caret is, preserving whatever has been typed since
   /// the upload started, and leave the caret after it ready for more text.
   void _insertUploadedUrl(String url) {
-    final text = textEditingController.text;
-    final selection = textEditingController.selection;
-    final at = selection.isValid ? selection.end : text.length;
+    textEditingController.value = insertUploadedUrl(textEditingController.value, url);
+  }
 
-    final needsLeadingSpace = at > 0 && !text.substring(0, at).endsWith(' ');
-    final insertion = '${needsLeadingSpace ? ' ' : ''}$url ';
-    final updated = text.replaceRange(selection.isValid ? selection.start : at, at, insertion);
-
-    textEditingController.value = TextEditingValue(
-      text: updated,
-      selection: TextSelection.collapsed(offset: (selection.isValid ? selection.start : at) + insertion.length),
-    );
+  /// Puts [word] in place of the word being typed, for a tapped autocompletion.
+  void _complete(String word) {
+    textEditingController.value = completeLastWord(textEditingController.value, word);
+    setState(() {});
   }
 
   @override
@@ -435,18 +371,7 @@ class ChannelViewState extends State<ChannelView> {
           ),
           title: user.displayName ?? user.login!,
           subtitle: user.login,
-          onTap: () {
-            final splits = textEditingController.text.split(' ');
-            splits.removeLast();
-            splits.add('${user.login} ');
-            textEditingController.text = splits.join(' ');
-            textEditingController.selection = TextSelection.fromPosition(
-              TextPosition(
-                offset: textEditingController.text.length,
-              ),
-            );
-            setState(() {});
-          },
+          onTap: () => _complete('${user.login}'),
         ),
       for (final customCommand in context.read<CustomCommandRepository>().commandsStartingWith(
         textEditingController.text,
@@ -457,18 +382,7 @@ class ChannelViewState extends State<ChannelView> {
           shortened: Text(customCommand.trigger),
           title: customCommand.trigger,
           subtitle: customCommand.command,
-          onTap: () {
-            final splits = textEditingController.text.split(' ');
-            splits.removeLast();
-            splits.add('${customCommand.trigger} ');
-            textEditingController.text = splits.join(' ');
-            textEditingController.selection = TextSelection.fromPosition(
-              TextPosition(
-                offset: textEditingController.text.length,
-              ),
-            );
-            setState(() {});
-          },
+          onTap: () => _complete(customCommand.trigger),
         ),
       for (final emote in sortedEmotes)
         AutocompletionItem(
@@ -485,18 +399,7 @@ class ChannelViewState extends State<ChannelView> {
           ),
           title: emote.name,
           subtitle: emote.provider.name,
-          onTap: () {
-            final splits = textEditingController.text.split(' ');
-            splits.removeLast();
-            splits.add('${emote.code ?? emote.name} ');
-            textEditingController.text = splits.join(' ');
-            textEditingController.selection = TextSelection.fromPosition(
-              TextPosition(
-                offset: textEditingController.text.length,
-              ),
-            );
-            setState(() {});
-          },
+          onTap: () => _complete(emote.code ?? emote.name),
         ),
     ];
   }
@@ -766,22 +669,7 @@ class ChannelViewState extends State<ChannelView> {
                           },
                           insertFieldInput: (text) async {
                             setState(() {
-                              final cursorPosition = max(0, textEditingController.selection.baseOffset);
-                              if (textEditingController.text.isEmpty ||
-                                  cursorPosition >= textEditingController.text.length ||
-                                  textEditingController.text[cursorPosition] != ' ') {
-                                text = '$text ';
-                              }
-                              if (cursorPosition > 0 && textEditingController.text[cursorPosition - 1] != ' ') {
-                                text = ' $text';
-                              }
-                              textEditingController.text =
-                                  textEditingController.text.substring(0, cursorPosition) +
-                                  text +
-                                  textEditingController.text.substring(cursorPosition);
-                              textEditingController.selection = TextSelection.fromPosition(
-                                TextPosition(offset: cursorPosition + text.length),
-                              );
+                              textEditingController.value = insertAtCaret(textEditingController.value, text);
                             });
                           },
                         ),
@@ -797,15 +685,7 @@ class ChannelViewState extends State<ChannelView> {
   void addSplit(String? text) {
     if (text == null) return;
     setState(() {
-      final splits = textEditingController.text.split(' ');
-      splits.add(text);
-      splits.removeWhere((element) => element.isEmpty);
-      textEditingController.text = splits.join(' ');
-      textEditingController.selection = TextSelection.fromPosition(
-        TextPosition(
-          offset: textEditingController.text.length,
-        ),
-      );
+      textEditingController.value = appendWord(textEditingController.value, text);
     });
   }
 }
