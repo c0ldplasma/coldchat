@@ -15,6 +15,7 @@ import '../data/twitch/stream_data.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
 import '../tmi/client/client.dart';
+import '../tmi/client/client_lookups.dart';
 import '../tools/channel_ranking.dart';
 import 'avatar_button.dart';
 import 'logged_out_start.dart';
@@ -65,10 +66,7 @@ class HomeTab extends StatelessWidget {
       final accounts = context.read<AccountRepository>();
       final client = context.read<Client>();
       return ChannelSearchCubit(
-        helix: () {
-          final account = accounts.active;
-          return account == null ? null : client.helix.forToken(account.tokenData);
-        },
+        helix: () => client.helixAsActive(accounts),
       );
     },
     child: const _HomeTabView(),

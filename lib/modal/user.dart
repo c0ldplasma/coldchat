@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../api/twitch/helix_api.dart';
-import '../api/twitch/twitch.dart';
 import '../api/twitch/twitch_profile.dart';
-import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/client/client.dart';
+import '../tmi/client/client_lookups.dart';
 import '../tmi/moderation.dart';
 import '../tools/duration_text.dart';
 import '../widgets/chat_view.dart';
@@ -35,19 +33,12 @@ class UserModal extends StatefulWidget {
   State<UserModal> createState() => _UserModalState();
 }
 
-/// The scope Helix needs to ban, time out and unban. Logins from before the user card used it lack it.
-const String _moderationScope = 'moderator:manage:banned_users';
-
-/// Why an account can't ban, time out or unban; both are fixed by signing in (again).
-enum ModerationBlocker { needsLogin, needsScope }
-
-/// What keeps [tokenData] from moderating [broadcasterId]'s channel, or null when it can try. Failures of the
-/// request itself are not decided here: they show without a "Sign in" button.
-ModerationBlocker? moderationBlocker(TokenData? tokenData, {required String? broadcasterId}) {
-  if (tokenData == null || broadcasterId == null || tokenData.userId == null) return ModerationBlocker.needsLogin;
-  if (!tokenData.scopes.contains(_moderationScope)) return ModerationBlocker.needsScope;
-  return null;
-}
+/// What to tell the user when a ban, timeout or unban failed with [failure].
+String moderationFailureText(AppLocalizations l10n, ModerationFailure failure) => switch (failure) {
+  ModerationNeedsLogin() => l10n.moderationNeedsLogin,
+  ModerationNeedsScope() => l10n.moderationNeedsScope,
+  ModerationRequestFailed(:final reason) => l10n.moderationFailed(reason),
+};
 
 class _UserModalState extends State<UserModal> {
   late final Future<TwitchProfile?> future;
@@ -59,52 +50,24 @@ class _UserModalState extends State<UserModal> {
     super.initState();
     // Profiles come from Helix, which needs a login. Without one the panel
     // still shows the user's messages.
-    final client = channel?.client ?? context.read<Client>();
-    final tokenData = client.apiTokenData;
-    future = tokenData == null
-        ? Future.value(null)
-        : client.helix.forToken(tokenData).profile(widget.login).catchError((_) => null);
+    future = (channel?.client ?? context.read<Client>()).profileOf(widget.login);
   }
 
-  /// The token of the account that sends to [channel], or null while anonymous or disconnected.
-  TokenData? get _moderatorTokenData {
-    final tokenData = channel?.client.transmitter.twitchAccount?.tokenData;
-    return tokenData?.accessToken == null ? null : tokenData;
-  }
-
-  /// Bans, times out or unbans through [action] and closes the card. A failure shows in a SnackBar, which is only
-  /// visible once the sheet is gone.
-  Future<void> _moderate(
-    Future<void> Function(HelixApi helix, String broadcasterId, String moderatorId) action,
-  ) async {
+  /// Bans, times out or unbans and closes the card. A failure shows in a SnackBar, which is only visible once the
+  /// sheet is gone.
+  Future<void> _moderate(ModerationAction action) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
-    final tokenData = _moderatorTokenData;
-    final broadcasterId = channel?.id;
-    final moderatorId = tokenData?.userId;
     navigator.pop();
-    String? error;
-    final blocker = moderationBlocker(tokenData, broadcasterId: broadcasterId);
-    if (blocker != null) {
-      final text = switch (blocker) {
-        ModerationBlocker.needsLogin => l10n.moderationNeedsLogin,
-        ModerationBlocker.needsScope => l10n.moderationNeedsScope,
-      };
+    final failure = await (channel?.moderate(action) ?? Future.value(const ModerationNeedsLogin()));
+    if (failure == null) return;
+    final text = moderationFailureText(l10n, failure);
+    if (failure.needsSignIn) {
       showSignInSnackBar(messenger, navigator, text);
     } else {
-      try {
-        // moderationBlocker made sure all three are there.
-        await action(channel!.client.helix.forToken(tokenData!), broadcasterId!, moderatorId!);
-      } on TwitchRequestException catch (e) {
-        log('$e');
-        error = l10n.moderationFailed(e.message);
-      } catch (e) {
-        log('$e');
-        error = l10n.moderationFailed('$e');
-      }
+      messenger.showSnackBar(SnackBar(content: Text(text)));
     }
-    if (error != null) messenger.showSnackBar(SnackBar(content: Text(error)));
   }
 
   @override
@@ -112,7 +75,7 @@ class _UserModalState extends State<UserModal> {
     future: future,
     builder: (BuildContext context, AsyncSnapshot<TwitchProfile?> snapshot) {
       final shownChannel = channel;
-      final canModerate = canModerateAs(shownChannel, _moderatorTokenData);
+      final canModerate = shownChannel?.canModerateHere ?? false;
       final loading = snapshot.connectionState != ConnectionState.done;
       final profile = snapshot.data;
       return ListView(
@@ -135,13 +98,7 @@ class _UserModalState extends State<UserModal> {
                         Icons.block_rounded,
                         color: Colors.red,
                       ),
-                      onPressed: () => _moderate(
-                        (helix, broadcasterId, moderatorId) => helix.ban(
-                          broadcasterId: broadcasterId,
-                          moderatorId: moderatorId,
-                          userId: profile.user.id,
-                        ),
-                      ),
+                      onPressed: () => _moderate(ModerationBan(profile.user.id)),
                     ),
                   ),
                   Expanded(
@@ -167,14 +124,7 @@ class _UserModalState extends State<UserModal> {
                                     .timeoutUserForDuration(shortDuration(time.value, AppLocalizations.of(context))),
                                 child: TextButton(
                                   child: Text(time.key),
-                                  onPressed: () => _moderate(
-                                    (helix, broadcasterId, moderatorId) => helix.ban(
-                                      broadcasterId: broadcasterId,
-                                      moderatorId: moderatorId,
-                                      userId: profile.user.id,
-                                      duration: time.value.inSeconds,
-                                    ),
-                                  ),
+                                  onPressed: () => _moderate(ModerationTimeout(profile.user.id, time.value)),
                                 ),
                               ),
                           ],
@@ -189,13 +139,7 @@ class _UserModalState extends State<UserModal> {
                         Icons.block_rounded,
                         color: Colors.green,
                       ),
-                      onPressed: () => _moderate(
-                        (helix, broadcasterId, moderatorId) => helix.unban(
-                          broadcasterId: broadcasterId,
-                          moderatorId: moderatorId,
-                          userId: profile.user.id,
-                        ),
-                      ),
+                      onPressed: () => _moderate(ModerationUnban(profile.user.id)),
                     ),
                   ),
                 ],

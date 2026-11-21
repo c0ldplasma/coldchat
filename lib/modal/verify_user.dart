@@ -9,6 +9,7 @@ import '../data/twitch/user_data.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
+import '../tmi/client/client_lookups.dart';
 
 class VerifyUserModal extends StatefulWidget {
   final TokenData tokenData;
@@ -30,7 +31,7 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
   @override
   void initState() {
     final accounts = context.read<AccountRepository>();
-    future = context.read<Client>().helix.forToken(widget.tokenData).userData();
+    future = context.read<Client>().userDataFor(widget.tokenData);
     unawaited(
       future.then(
         (value) async {

@@ -18,6 +18,15 @@ on macOS with Xcode 26.5 / Flutter 3.47.8 (stable).
 [GHSA-frr6-h895-5pxp](https://github.com/dart-lang/sdk/security/advisories/GHSA-frr6-h895-5pxp): `dart:io` on
 Android trusts compromised eMudhra intermediate CAs, which allows TLS MitM of e.g. the Twitch token.
 
+## Widgets only render state
+
+Widgets (`lib/widgets/`, `lib/pages/`, `lib/components/`, `lib/modal/`) render state and forward user actions,
+nothing more. Requests, parsing, text transformations and decisions go into Cubits, repositories or plain functions in
+`lib/data/`, `lib/tmi/` or `lib/tools/`, with unit tests there; the widget calls them and shows the result (texts from
+`AppLocalizations` are picked in the widget, from a typed result). A widget never calls Helix, the `ApiClient` or
+`package:http` itself: Helix lookups for the UI are in `lib/tmi/client/client_lookups.dart`, moderation in
+`lib/tmi/moderation.dart`. `test/architecture_test.dart` enforces the network part in CI; the rest is up to review.
+
 ## Localization
 
 `lib/l10n/app_localizations*.dart` is **generated but checked in**. After editing any `lib/l10n/*.arb`:

@@ -17,6 +17,7 @@ import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_channels.dart';
+import '../tmi/client/client_lookups.dart';
 import '../tmi/connection/connection.dart';
 import '../tmi/connection/connection_state.dart' as tmi;
 import '../tmi/whispers/whisper_channel.dart';
@@ -190,10 +191,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       final accounts = context.read<AccountRepository>();
       final client = context.read<Client>();
       return HomeStreamsCubit(
-        helix: () {
-          final account = accounts.active;
-          return account == null ? null : client.helix.forToken(account.tokenData);
-        },
+        helix: () => client.helixAsActive(accounts),
         accountChanges: accounts.activeChanges,
       );
     },

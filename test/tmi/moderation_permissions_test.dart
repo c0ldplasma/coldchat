@@ -1,8 +1,7 @@
 import 'package:coldchat/api/twitch/helix_api.dart';
 import 'package:coldchat/api/twitch/twitch.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
-import 'package:coldchat/modal/message.dart';
-import 'package:coldchat/modal/user.dart';
+import 'package:coldchat/tmi/moderation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 TokenData _token(List<String> scopes) => TokenData(
