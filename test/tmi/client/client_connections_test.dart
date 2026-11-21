@@ -289,15 +289,21 @@ void main() {
       expect(Client.transmitterCommands, {'001', 'GLOBALUSERSTATE', 'USERSTATE', 'JOIN', 'NOTICE'});
     });
 
-    test('drops chat lines before they are logged, still answers PING, and asks for no membership', () async {
+    test('drops chat lines before they are handled, still answers PING, and asks for no membership', () async {
       await withTwitchApi(() async {
         final setup = await joined(account: _account('moddy'));
-        final logged = setup.transmitter.connection.logs.state.length;
+        final connection = setup.transmitter.connection;
+        final handled = <String>[];
+        final onReceive = connection.onReceive!;
+        connection.onReceive = (connection, message) {
+          handled.add(message.command);
+          onReceive(connection, message);
+        };
 
         for (var i = 0; i < 20; i++) {
           await setup.transmitter.receive('@id=x$i;user-id=1 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :hi $i');
         }
-        expect(setup.transmitter.connection.logs.state, hasLength(logged));
+        expect(handled, isEmpty);
 
         await setup.transmitter.receive('PING :tmi.twitch.tv');
         expect(setup.transmitter.sent.last, 'PONG :tmi.twitch.tv');

@@ -7,8 +7,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
 import '../irc_log.dart';
-import '../log.dart';
-import '../logs.dart';
 import '../tmi_exception.dart';
 import 'connection_event.dart';
 import 'connection_state.dart';
@@ -21,18 +19,15 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   void Function(Connection connection, irc.Message event)? onReceive;
   TwitchAccount? get twitchAccount =>
       (state is ConnectionStateWithCredentials) ? (state as ConnectionStateWithCredentials).twitchAccount : null;
-  Logs logs = Logs();
 
   @override
   void onEvent(ConnectionEvent event) {
-    logs.add(Log(data: event));
     onEventTrigger?.call(this, event);
     super.onEvent(event);
   }
 
   @override
   void onChange(Change<ConnectionState> change) {
-    logs.add(Log(data: change));
     ircLog(
       '$name: ${change.currentState.runtimeType} -> ${change.nextState.runtimeType} as ${describe(change.nextState)}',
     );
@@ -59,7 +54,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   /// without it too.
   final bool membership;
 
-  /// Which received lines are handed to [onReceive] (and kept in [logs]); null for all of them.
+  /// Which received lines are handed to [onReceive]; null for all of them.
   bool Function(irc.Message message)? accepts;
 
   Connection({WebSocketChannel Function(Uri uri)? openSocket, this.name = 'connection', this.membership = true})
@@ -153,7 +148,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     // A failed connect (e.g. no network) completes `ready` with the same error
     // the stream reports. The stream's onError/onDone below does the
     // reconnecting; unhandled, `ready` would only add an uncaught exception.
-    unawaited(socket.ready.catchError((Object error) => logs.add(Log(data: error))));
+    unawaited(socket.ready.catchError((Object error) => ircLog('$name: could not connect: $error')));
 
     subscription = socket.stream.listen(
       (event) async {
@@ -184,10 +179,10 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
   Future<void> send(String message) async {
     try {
       if (channel == null) throw const TmiException('not connected');
-      logs.add(Log(data: irc.Message.fromEvent(message), outgoing: true));
       channel?.sink.add(message);
     } catch (e) {
-      logs.add(Log(data: e));
+      // Not the line itself: PASS carries the token.
+      ircLog('$name: could not send: $e');
     }
   }
 
@@ -294,15 +289,14 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     try {
       _reconnectAttempts = 0;
       _lastInbound = DateTime.now();
-      // Lines this connection doesn't use are dropped before they're logged; it still answers Twitch's PING.
+      // Lines this connection doesn't use are dropped before they're handled; it still answers Twitch's PING.
       if (event.command != 'PING' && accepts?.call(event) == false) return;
-      logs.add(Log(data: event));
       onReceive?.call(this, event);
       if (event.command == 'PING') {
         await send('PONG :${event.parameters.join(' ')}');
       }
     } catch (e) {
-      logs.add(Log(data: e));
+      ircLog('$name: could not handle ${event.command}: $e');
     }
   }
 
@@ -326,7 +320,7 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     _watchdog?.cancel();
     _reconnectTimer?.cancel();
     _connectGeneration++;
-    // Stop delivering socket lines to a closed bloc (and its closed logs).
+    // Stop delivering socket lines to a closed bloc.
     unawaited(subscription?.cancel());
     return super.close();
   }
