@@ -27,6 +27,7 @@ import '../tmi/channel/messages/channel_message_event.dart';
 import '../tmi/channel/messages/channel_message_notice.dart';
 import '../tmi/channel/messages/channel_message_state_change.dart';
 import '../tmi/channel/messages/embeds/image_embed.dart';
+import '../tools/clock_time.dart';
 import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
 import 'chat/reply_painter.dart';
@@ -359,7 +360,7 @@ class _ChatMessageState extends State<ChatMessage> {
             children: [
               if (messageAppearance.timestamps)
                 TextSpan(
-                  text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')}  ',
+                  text: '${clockTimeOf(context, message.dateTime)}  ',
                   style: TextStyle(
                     color: ChatColors.of(context).muted,
                     fontSize: (Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0) * messageAppearance.scale,
@@ -495,8 +496,7 @@ class _ChannelStatusLine extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           children: [
-            if (messageAppearance.timestamps)
-              TextSpan(text: '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')}  '),
+            if (messageAppearance.timestamps) TextSpan(text: '${clockTimeOf(context, message.dateTime)}  '),
             TextSpan(
               text: text,
               style: const TextStyle(fontStyle: FontStyle.italic),

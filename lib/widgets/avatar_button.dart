@@ -139,7 +139,7 @@ class _AvatarButtonState extends State<AvatarButton> {
             Material(
               borderRadius: BorderRadius.circular(128.0),
               // type: SurfaceType.error,
-              color: Colors.red,
+              color: ChatColors.unread,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: 26.0, minHeight: 26.0),
                 child: Padding(
@@ -147,7 +147,7 @@ class _AvatarButtonState extends State<AvatarButton> {
                   child: Text(
                     '${state.unread}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: ChatColors.onUnread),
                   ),
                 ),
               ),

@@ -55,7 +55,8 @@ Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb`
 there is no translation service, translations are written along with the change. CI fails if a language
 lacks a key (gen-l10n lists those in `build/untranslated_messages.json`) or if the checked-in
 `app_localizations*.dart` don't match the arb files. Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
-don't put user-facing text in Dart string literals.
+don't put user-facing text in Dart string literals. Times of day go through `clockTimeOf` (`lib/tools/clock_time.dart`),
+which follows the language (12-hour in English, 24-hour in German) and the phone's 24-hour setting.
 
 ## CI and tooling
 
@@ -123,6 +124,9 @@ sheets, raised pills, links, chatter name readability) are in the `ChatColors` t
 `ChatColors.of(context)` instead of picking scheme colors or checking the brightness in a widget. Don't wrap widgets
 in a `Theme(...)` to recolor them: a bottom sheet opened below one keeps a frozen copy of it and stops following
 light/dark switches. Pass colors with `DefaultTextStyle`/`IconTheme` instead, like `Surface` does.
+Colors with a fixed meaning in every accent and mode (the live dot, the unread badge, ban/unban, Twitch purple) are
+static constants on `ChatColors`. `test/architecture_test.dart` fails on a `Color(0x…)` or a named `Colors.*` outside
+`lib/theme/`; only black, white and transparent are allowed there (scrims and text over stream thumbnails).
 
 Gotcha: `ConnectionState` collides with Flutter's own `ConnectionState` from `package:flutter/material.dart`.
 In any widget file, import the TMI one with a prefix:

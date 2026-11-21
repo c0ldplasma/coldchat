@@ -22,6 +22,10 @@ final _cubitInPlainProvider = RegExp(r'\bProvider<\w*(Cubit|Bloc)>');
 /// An adapter registered by hand instead of through the generated `Hive.registerAdapters()`.
 final _handRegisteredAdapter = RegExp(r'\bregisterAdapter\(');
 
+/// A color picked in code rather than taken from the theme: a hex literal or a named Material color. Black, white
+/// and transparent stay allowed for scrims, overlays on images and invisible backgrounds.
+final _hardcodedColor = RegExp(r'\bColor\(0x|\bColors\.(?!black|white|transparent)\w+');
+
 final _import = RegExp(r'''^import\s+'([^']+)'(?:\s+as\s+\w+)?;''', multiLine: true);
 
 /// The Dart files in [folder], without generated ones.
@@ -100,6 +104,20 @@ void main() {
     test('Cubits and Blocs are provided with BlocProvider', () {
       expect(_matchingLines(files, _cubitInPlainProvider), isEmpty, reason: _stateHint);
     });
+  });
+
+  // Keep in sync with the colors paragraph in CLAUDE.md.
+  test('colors come from lib/theme', () {
+    final files = [
+      for (final file in _dartFiles('lib'))
+        if (!_relative(file).startsWith('lib${Platform.pathSeparator}theme${Platform.pathSeparator}')) file,
+    ];
+    expect(files, isNotEmpty);
+    expect(
+      _matchingLines(files, _hardcodedColor),
+      isEmpty,
+      reason: 'Name the color in lib/theme/coldchat_theme.dart (ColorScheme or ChatColors) and use it from there.',
+    );
   });
 
   // A stored model whose adapter isn't registered makes opening its box throw, and main() never reaches runApp.

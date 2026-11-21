@@ -76,18 +76,6 @@ class _Swatch extends StatelessWidget {
 
   const _Swatch({required this.name, required this.color, required this.selected, required this.onTap});
 
-  static const _rainbow = SweepGradient(
-    colors: [
-      Color(0xFFFF5A5A),
-      Color(0xFFFFC23D),
-      Color(0xFF7BD86B),
-      Color(0xFF3FC9D9),
-      Color(0xFF6B7CFF),
-      Color(0xFFD86BE0),
-      Color(0xFFFF5A5A),
-    ],
-  );
-
   @override
   Widget build(BuildContext context) {
     final onColor = color == null
@@ -121,7 +109,7 @@ class _Swatch extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: color,
-                  gradient: color == null ? _rainbow : null,
+                  gradient: color == null ? ColdChatTheme.customAccentWheel : null,
                 ),
                 child: selected ? Icon(Icons.check_rounded, color: onColor) : null,
               ),

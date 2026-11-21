@@ -7,6 +7,7 @@ import '../l10n/app_localizations.dart';
 import '../sheets/about.dart';
 import '../sheets/login.dart';
 import '../sheets/twitch_token_input.dart';
+import '../theme/coldchat_theme.dart';
 import '../tools/browser_warmup.dart';
 
 /// The home tab before any Twitch account is added: what ColdChat is and one button to sign in.
@@ -14,8 +15,6 @@ import '../tools/browser_warmup.dart';
 /// Long-pressing the button opens the access-token input instead, like long-pressing "Add another account" in the
 /// account sheet. App review uses it to sign in without Twitch's email code.
 class LoggedOutStart extends StatelessWidget {
-  static const Color twitchPurple = Color(0xFF9146FF);
-
   const LoggedOutStart({super.key});
 
   void _open(String url) => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
@@ -68,8 +67,8 @@ class LoggedOutStart extends StatelessWidget {
                     width: double.infinity,
                     child: FilledButton.icon(
                       style: FilledButton.styleFrom(
-                        backgroundColor: twitchPurple,
-                        foregroundColor: Colors.white,
+                        backgroundColor: ChatColors.twitchPurple,
+                        foregroundColor: ChatColors.onTwitchPurple,
                         minimumSize: const Size.fromHeight(52.0),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.0)),
                         textStyle: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
@@ -80,7 +79,7 @@ class LoggedOutStart extends StatelessWidget {
                         'assets/emote_providers/twitch.svg',
                         width: 20.0,
                         height: 20.0,
-                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(ChatColors.onTwitchPurple, BlendMode.srcIn),
                       ),
                       label: Text(l10n.loginWithTwitch),
                     ),

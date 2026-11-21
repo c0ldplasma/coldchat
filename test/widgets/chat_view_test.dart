@@ -229,7 +229,7 @@ void main() {
       await tester.runAsync(() => settings.saveMessageAppearance(settings.messageAppearance..timestamps = true));
       await tester.pump();
 
-      expect(find.text('0:09  Ronni: message 9 ', findRichText: true), findsOneWidget);
+      expect(find.text('12:09 AM  Ronni: message 9 ', findRichText: true), findsOneWidget);
       await finish(tester);
     });
   });

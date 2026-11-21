@@ -7,6 +7,7 @@ import '../tmi/channel/composer_draft.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
+import '../tools/clock_time.dart';
 import '../widgets/chat_message.dart';
 import 'login.dart';
 
@@ -57,13 +58,9 @@ class MessageModal extends StatelessWidget {
           await Clipboard.setData(ClipboardData(text: message.body));
         },
         onLongPress: () async {
+          final time = clockTimeOf(context, message.dateTime);
           Navigator.of(context).pop();
-          await Clipboard.setData(
-            ClipboardData(
-              text:
-                  '${message.dateTime.hour}:${message.dateTime.minute.toString().padLeft(2, '0')} ${message.user.displayName}: ${message.body}',
-            ),
-          );
+          await Clipboard.setData(ClipboardData(text: '$time ${message.user.displayName}: ${message.body}'));
         },
       ),
       if (_canDelete)
