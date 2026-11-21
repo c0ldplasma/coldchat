@@ -16,10 +16,10 @@ import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/client/client.dart';
 import '../tmi/moderation.dart';
 import '../tools/duration_text.dart';
-import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
 import 'login_flow.dart';
+import 'whisper_errors.dart';
 
 class UserModal extends StatefulWidget {
   final String login;
@@ -269,7 +269,7 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
       navigator.popUntil((route) => route.isFirst);
     } catch (e) {
       if (!mounted) return;
-      ChannelViewState.showWhisperError(messenger, navigator, e);
+      showWhisperError(messenger, navigator, e);
     }
   }
 
