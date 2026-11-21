@@ -262,6 +262,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get enableRegex => 'Uključi regex';
 
   @override
+  String get invalidRegex => 'Neispravan regex';
+
+  @override
   String get caseSensitive => 'Razlikuj velika i mala slova';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Izbriši poruku';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Poruka nije izbrisana: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Prijavi se ponovno za brisanje poruka. Tvoja prijava je iz vremena prije nego što je ColdChat to mogao.';
 
   @override
   String get mentionUser => 'Spomeni korisnika';

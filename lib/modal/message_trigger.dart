@@ -40,6 +40,10 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
     super.dispose();
   }
 
+  bool get _invalidRegex => enableRegex && !MessageTrigger.isValidRegex(patternController.text.trim());
+
+  bool get _canSave => patternController.text.isNotEmpty && !_invalidRegex;
+
   @override
   Widget build(BuildContext context) => ListView(
     shrinkWrap: true,
@@ -53,6 +57,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
             labelText: AppLocalizations.of(context).pattern,
             border: InputBorder.none,
             filled: true,
+            errorText: _invalidRegex ? AppLocalizations.of(context).invalidRegex : null,
           ),
           onChanged: (text) => setState(() {}),
         ),
@@ -117,7 +122,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
           ),
           Expanded(
             child: InkWell(
-              onTap: patternController.text.isEmpty
+              onTap: !_canSave
                   ? null
                   : () async {
                       Navigator.of(context).pop();
@@ -148,9 +153,7 @@ class _MessageTriggerModalState extends State<MessageTriggerModal> {
                   child: Text(
                     AppLocalizations.of(context).save,
                     style: TextStyle(
-                      color: patternController.text.isEmpty
-                          ? Theme.of(context).colorScheme.error
-                          : Theme.of(context).colorScheme.primary,
+                      color: !_canSave ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

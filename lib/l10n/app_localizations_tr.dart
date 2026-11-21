@@ -262,6 +262,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get enableRegex => 'Regex kullan';
 
   @override
+  String get invalidRegex => 'Geçersiz regex';
+
+  @override
   String get caseSensitive => 'Büyük/küçük harfe duyarlı';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Mesajı sil';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Mesaj silinmedi: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Mesajları silmek için tekrar giriş yap. Girişin, ColdChat\'in mesaj silebildiği zamandan önceye ait.';
 
   @override
   String get mentionUser => 'Kullanıcıdan bahset';
