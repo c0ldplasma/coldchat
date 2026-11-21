@@ -6,7 +6,6 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../components/boxlistener.dart';
 import '../components/surface.dart';
-import '../data/notifications_cubit.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
@@ -14,6 +13,7 @@ import '../tmi/channel/channel_message.dart';
 import '../tmi/channel/channel_messages.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import 'avatar_button.dart';
+import 'chat_avatar_visibility.dart';
 import 'chat_message.dart';
 
 class ChatView extends StatefulWidget {
@@ -239,11 +239,8 @@ class _ChatViewState extends State<ChatView> {
                     ),
                   ),
                   if (widget.filter == null)
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: (chromeShown || BlocProvider.of<NotificationsCubit>(context).state.unread > 0)
-                          ? 1.0
-                          : 0.0,
+                    ChatAvatarVisibility(
+                      chromeShown: chromeShown,
                       child: const Padding(
                         padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
                         child: AvatarButton(floating: true),
