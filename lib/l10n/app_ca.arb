@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Inicia la sessió amb Twitch per enviar xiuxiueigs.",
   "whisperNeedsScope": "Torna a iniciar la sessió per enviar i rebre xiuxiueigs. La teva sessió és d'abans que ColdChat els admetés.",
   "whisperUserNotFound": "No hi ha cap usuari de Twitch amb aquest nom.",
+  "messageNotSentNotConnected": "Encara no s'ha connectat a aquest canal. El teu missatge no s'ha enviat.",
   "whisperFailed": "No s'ha enviat el xiuxiueig: {reason}",
   "@whisperFailed": {
     "placeholders": {

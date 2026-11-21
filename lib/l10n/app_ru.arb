@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Войди через Twitch, чтобы отправлять шепот.",
   "whisperNeedsScope": "Войди снова, чтобы отправлять и получать шепот. Твой вход сделан ещё до того, как ColdChat начал его поддерживать.",
   "whisperUserNotFound": "Пользователя Twitch с таким именем нет.",
+  "messageNotSentNotConnected": "Подключение к этому каналу ещё не установлено. Сообщение не отправлено.",
   "whisperFailed": "Шепот не отправлен: {reason}",
   "@whisperFailed": {
     "placeholders": {

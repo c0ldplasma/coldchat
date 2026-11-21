@@ -545,6 +545,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get whisperUserNotFound => 'Не постоји Twitch корисник са тим именом.';
 
   @override
+  String get messageNotSentNotConnected => 'Још ниси повезан са овим каналом. Твоја порука није послата.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Шапат није послат: $reason';
   }

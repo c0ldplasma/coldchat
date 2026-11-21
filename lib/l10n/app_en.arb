@@ -265,6 +265,8 @@
   "whisperNeedsLogin": "Sign in with Twitch to send whispers.",
   "whisperNeedsScope": "Sign in again to send and receive whispers. Your login is from before ColdChat supported them.",
   "whisperUserNotFound": "There is no Twitch user with that name.",
+  "messageNotSentNotConnected": "Not connected to this channel yet. Your message wasn't sent.",
+  "@messageNotSentNotConnected": {"description": "SnackBar when a chat message is sent before the channel is joined; the typed text stays in the composer"},
   "whisperFailed": "Whisper not sent: {reason}",
   "@whisperFailed": {"placeholders": {"reason": {"type": "String"}}},
   "whisperHistoryHint": "Whispers sent to you while ColdChat was closed don't show up here, because Twitch doesn't share whisper history with apps. You can read them on Twitch, behind the whispers icon at the top right.",

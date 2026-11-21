@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Fısıltı göndermek için Twitch ile giriş yap.",
   "whisperNeedsScope": "Fısıltı gönderip almak için tekrar giriş yap. Girişin, ColdChat fısıltıları desteklemeden önceye ait.",
   "whisperUserNotFound": "Bu adda bir Twitch kullanıcısı yok.",
+  "messageNotSentNotConnected": "Henüz bu kanala bağlanılmadı. Mesajın gönderilmedi.",
   "whisperFailed": "Fısıltı gönderilmedi: {reason}",
   "@whisperFailed": {
     "placeholders": {

@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Entre com a Twitch para enviar sussurros.",
   "whisperNeedsScope": "Entre de novo para enviar e receber sussurros. Seu login é de antes de o ColdChat ter suporte a eles.",
   "whisperUserNotFound": "Não existe usuário da Twitch com esse nome.",
+  "messageNotSentNotConnected": "Ainda não há ligação a este canal. A tua mensagem não foi enviada.",
   "whisperFailed": "Sussurro não enviado: {reason}",
   "@whisperFailed": {
     "placeholders": {
