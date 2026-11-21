@@ -693,4 +693,29 @@ class AppLocalizationsRu extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count дн.';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count ч';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count мин';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count с';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }

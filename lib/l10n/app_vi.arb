@@ -368,5 +368,10 @@
   "channelBanned": "Bạn đã bị cấm khỏi {channel}",
   "durationDays": "{count, plural, other{{count} ngày}}",
   "durationHours": "{count, plural, other{{count} giờ}}",
-  "durationMinutes": "{count, plural, other{{count} phút}}"
+  "durationMinutes": "{count, plural, other{{count} phút}}",
+  "durationDaysShort": "{count} ngày",
+  "durationHoursShort": "{count} giờ",
+  "durationMinutesShort": "{count} phút",
+  "durationSecondsShort": "{count} giây",
+  "durationPair": "{larger} {smaller}"
 }

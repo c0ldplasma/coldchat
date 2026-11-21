@@ -4,6 +4,7 @@ import '../../components/surface.dart';
 import '../../data/settings/message_appearance.dart';
 import '../../l10n/app_localizations.dart';
 import '../../tmi/channel/messages/channel_message_ban.dart';
+import '../../tools/duration_text.dart';
 
 class ChatBanChip extends StatelessWidget {
   const ChatBanChip({
@@ -60,8 +61,9 @@ class ChatBanChip extends StatelessWidget {
                                     TextSpan(text: AppLocalizations.of(context).permabanned),
                                   if (message.duration != null)
                                     TextSpan(
-                                      text: AppLocalizations.of(context)
-                                          .bannedForDuration(message.duration.toString().split('.').first),
+                                      text: AppLocalizations.of(context).bannedForDuration(
+                                        shortDuration(message.duration!, AppLocalizations.of(context)),
+                                      ),
                                     ),
                                 ],
                               ),

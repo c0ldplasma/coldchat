@@ -368,5 +368,10 @@
   "channelBanned": "{channel}からBANされています",
   "durationDays": "{count, plural, other{{count}日}}",
   "durationHours": "{count, plural, other{{count}時間}}",
-  "durationMinutes": "{count, plural, other{{count}分}}"
+  "durationMinutes": "{count, plural, other{{count}分}}",
+  "durationDaysShort": "{count}日",
+  "durationHoursShort": "{count}時間",
+  "durationMinutesShort": "{count}分",
+  "durationSecondsShort": "{count}秒",
+  "durationPair": "{larger}{smaller}"
 }

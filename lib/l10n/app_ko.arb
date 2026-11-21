@@ -368,5 +368,10 @@
   "channelBanned": "{channel}에서 차단되었습니다",
   "durationDays": "{count, plural, other{{count}일}}",
   "durationHours": "{count, plural, other{{count}시간}}",
-  "durationMinutes": "{count, plural, other{{count}분}}"
+  "durationMinutes": "{count, plural, other{{count}분}}",
+  "durationDaysShort": "{count}일",
+  "durationHoursShort": "{count}시간",
+  "durationMinutesShort": "{count}분",
+  "durationSecondsShort": "{count}초",
+  "durationPair": "{larger} {smaller}"
 }

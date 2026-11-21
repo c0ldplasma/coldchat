@@ -14,6 +14,7 @@ import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/client/client.dart';
 import '../tmi/moderation.dart';
+import '../tools/duration_text.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
@@ -160,7 +161,7 @@ class _UserModalState extends State<UserModal> {
                             }.entries)
                               Tooltip(
                                 message: AppLocalizations.of(context)
-                                    .timeoutUserForDuration(time.value.toString().split('.').first),
+                                    .timeoutUserForDuration(shortDuration(time.value, AppLocalizations.of(context))),
                                 child: TextButton(
                                   child: Text(time.key),
                                   onPressed: () => _moderate(

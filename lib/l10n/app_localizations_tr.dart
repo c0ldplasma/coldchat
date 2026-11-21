@@ -684,4 +684,29 @@ class AppLocalizationsTr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count gün';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count sa.';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count dk.';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count sn.';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }
