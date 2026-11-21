@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 /// The folders that hold the UI: widgets, pages, shared components and sheets.
-const _uiFolders = ['lib/widgets', 'lib/pages', 'lib/components', 'lib/modal'];
+const _uiFolders = ['lib/widgets', 'lib/pages', 'lib/components', 'lib/sheets'];
 
 /// What a file in `lib/api/` must not contain for the UI to import it: then it talks to the network itself instead of
 /// only declaring models or exceptions.

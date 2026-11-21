@@ -4,9 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../components/modal.dart';
 import '../l10n/app_localizations.dart';
-import '../modal/about.dart';
-import '../modal/login_flow.dart';
-import '../modal/twitch_token_input.dart';
+import '../sheets/about.dart';
+import '../sheets/login.dart';
+import '../sheets/twitch_token_input.dart';
 import '../tools/browser_warmup.dart';
 
 /// The home tab before any Twitch account is added: what ColdChat is and one button to sign in.

@@ -8,7 +8,7 @@ import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/chat_message.dart';
-import 'login_flow.dart';
+import 'login.dart';
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;

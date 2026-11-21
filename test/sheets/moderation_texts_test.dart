@@ -1,6 +1,6 @@
 import 'package:coldchat/l10n/app_localizations.dart';
-import 'package:coldchat/modal/message.dart';
-import 'package:coldchat/modal/user.dart';
+import 'package:coldchat/sheets/message.dart';
+import 'package:coldchat/sheets/user.dart';
 import 'package:coldchat/tmi/moderation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';

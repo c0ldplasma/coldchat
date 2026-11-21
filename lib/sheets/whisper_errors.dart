@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../api/twitch/twitch.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/whispers/whispers.dart';
-import 'login_flow.dart';
+import 'login.dart';
 
 /// Shows why a whisper couldn't be sent or opened, with a "Sign in" action when a new login fixes it.
 void showWhisperError(ScaffoldMessengerState messenger, NavigatorState navigator, Object error) {

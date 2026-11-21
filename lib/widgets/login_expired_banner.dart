@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../l10n/app_localizations.dart';
-import '../modal/login_flow.dart';
+import '../sheets/login.dart';
 import '../tmi/client/client.dart';
 import '../tmi/connection/connection.dart';
 import '../tmi/connection/connection_state.dart' as tmi;

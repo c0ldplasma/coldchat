@@ -19,7 +19,7 @@
     <p>Returning to ColdChat&hellip;</p>
     <a id="back" href="coldchat://auth">Open ColdChat</a>
   </main>
-  <!-- Twitch redirects here after a login (lib/modal/login_flow.dart). This page only hands Twitch's answer to the
+  <!-- Twitch redirects here after a login (lib/api/twitch/twitch_oauth.dart). This page only hands Twitch's answer to the
        app: the access token is in the fragment, which the browser never sends to this server, and nothing is
        stored or loaded from anywhere else. The button is for browsers that block the automatic hand-over. -->
   <script>var target = 'coldchat://auth' + location.search + location.hash; document.getElementById('back').href = target; location.replace(target);</script>
