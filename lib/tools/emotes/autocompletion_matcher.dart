@@ -33,10 +33,17 @@ class AutocompletionMatcher {
   bool? _chatterNeedsAt;
   List<User> _chatterMatches = const [];
 
-  /// The emotes whose `:name:` contains [search] (lowercase), from the channel's emotes, the global ones and the
-  /// user's Twitch emotes in that order. Those whose name starts with the search come first, each group in that
-  /// order. With [needsColon] (Settings → autocomplete emotes only with `:`) a search without a leading `:`
-  /// matches nothing.
+  /// The emotes whose `:name:` contains [search] (as typed; matching ignores case), from the channel's emotes, the
+  /// global ones and the user's Twitch emotes. Ranked like the channel search, adapted to emotes, whose names are
+  /// case-sensitive:
+  ///
+  /// 1. the exact name, as typed (`Kappa` for "Kappa"),
+  /// 2. the exact name in another case (`kappa` for "Kappa"),
+  /// 3. names starting with the search: those matching its case first, then the shortest,
+  /// 4. names containing it further in.
+  ///
+  /// Ties keep the order channel, global, user. With [needsColon] (Settings → autocomplete emotes only with `:`) a
+  /// search without a leading `:` matches nothing.
   List<Emote> emotes({
     required List<Emote> channelEmotes,
     required List<Emote> globalEmotes,
@@ -59,20 +66,35 @@ class AutocompletionMatcher {
     _emoteSearch = search;
     _emoteNeedsColon = needsColon;
     if (needsColon && !search.startsWith(':')) return _emoteMatches = const [];
-    // Emotes whose name starts with the search go first, then the ones that
-    // only match further into the name.
-    final prefix = search.startsWith(':') ? search : ':$search';
-    final startingWith = <Emote>[];
-    final containing = <Emote>[];
+    final lower = search.toLowerCase();
+    final prefix = lower.startsWith(':') ? lower : ':$lower';
+    // The name the user means, without the `:` that only mark the start or end of a name.
+    final name = search.replaceAll(RegExp(r'^:|:$'), '');
+    final nameLower = name.toLowerCase();
+    final matches = <({Emote emote, int tier, int index})>[];
     for (var i = 0; i < _emotes.length; i++) {
       final key = _emoteKeys[i];
-      if (key.startsWith(prefix)) {
-        startingWith.add(_emotes[i]);
-      } else if (key.contains(search)) {
-        containing.add(_emotes[i]);
-      }
+      if (!key.contains(lower)) continue;
+      final emote = _emotes[i];
+      final tier = emote.name == name
+          ? 0
+          : emote.name.toLowerCase() == nameLower
+          ? 1
+          : key.startsWith(prefix)
+          ? (emote.name.startsWith(name) ? 2 : 3)
+          : 4;
+      matches.add((emote: emote, tier: tier, index: i));
     }
-    return _emoteMatches = [...startingWith, ...containing];
+    matches.sort((a, b) {
+      final byTier = a.tier.compareTo(b.tier);
+      if (byTier != 0) return byTier;
+      if (a.tier == 2 || a.tier == 3) {
+        final byLength = a.emote.name.length.compareTo(b.emote.name.length);
+        if (byLength != 0) return byLength;
+      }
+      return a.index.compareTo(b.index);
+    });
+    return _emoteMatches = [for (final match in matches) match.emote];
   }
 
   /// The [Channel.chattersIn] [messages] whose `@login` contains [search] (lowercase), most recent first. With
