@@ -3,6 +3,8 @@ import 'package:coldchat/data/filesharing/upload_task.dart';
 import 'package:coldchat/tmi/channel/composer_draft.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../api/fake_api.dart';
+
 UploadTask _finished(String channelName, String url) => UploadTask(
   id: 0,
   filename: 'a.png',
@@ -35,7 +37,7 @@ void main() {
 
   group('UploadQueueCubit.takeUploadedUrls', () {
     test('keeps finished URLs until the channel takes them', () async {
-      final queue = UploadQueueCubit();
+      final queue = UploadQueueCubit(api: offlineApi());
       addTearDown(queue.close);
 
       // Nobody listens, as when the channel's tab is off screen.
@@ -49,7 +51,7 @@ void main() {
     });
 
     test('tells listeners about finished uploads', () async {
-      final queue = UploadQueueCubit();
+      final queue = UploadQueueCubit(api: offlineApi());
       addTearDown(queue.close);
 
       final next = queue.completed.first;

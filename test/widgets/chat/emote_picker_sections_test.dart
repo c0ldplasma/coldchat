@@ -1,8 +1,11 @@
+import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/providers/emojis.dart';
 import 'package:coldchat/providers/provider.dart';
 import 'package:coldchat/widgets/chat/emote_picker_sections.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../api/fake_api.dart';
 
 class _Provider extends Provider {
   @override
@@ -17,7 +20,7 @@ class _Provider extends Provider {
 final _twitch = _Provider('Twitch');
 final _sevenTv = _Provider('7TV');
 final _bttv = _Provider('BetterTTV');
-final _emoji = EmojiProvider();
+final _emoji = EmojiProvider(EmojiDataApi(offlineApi()));
 
 Emote _emote(String name, Provider provider, {String? category}) =>
     Emote(id: name, name: name, mipmap: ['https://example.com/$name'], provider: provider, category: category);

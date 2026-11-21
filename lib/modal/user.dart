@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../api/twitch/helix_api.dart';
 import '../api/twitch/twitch.dart';
 import '../api/twitch/twitch_profile.dart';
 import '../data/twitch/token_data.dart';
@@ -58,8 +59,11 @@ class _UserModalState extends State<UserModal> {
     super.initState();
     // Profiles come from Helix, which needs a login. Without one the panel
     // still shows the user's messages.
-    final tokenData = (channel?.client ?? context.read<Client>()).apiTokenData;
-    future = tokenData == null ? Future.value(null) : Twitch.profile(tokenData, widget.login).catchError((_) => null);
+    final client = channel?.client ?? context.read<Client>();
+    final tokenData = client.apiTokenData;
+    future = tokenData == null
+        ? Future.value(null)
+        : client.helix.forToken(tokenData).profile(widget.login).catchError((_) => null);
   }
 
   /// The token of the account that sends to [channel], or null while anonymous or disconnected.
@@ -71,7 +75,7 @@ class _UserModalState extends State<UserModal> {
   /// Bans, times out or unbans through [action] and closes the card. A failure shows in a SnackBar, which is only
   /// visible once the sheet is gone.
   Future<void> _moderate(
-    Future<void> Function(TokenData tokenData, String broadcasterId, String moderatorId) action,
+    Future<void> Function(HelixApi helix, String broadcasterId, String moderatorId) action,
   ) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
@@ -91,7 +95,7 @@ class _UserModalState extends State<UserModal> {
     } else {
       try {
         // moderationBlocker made sure all three are there.
-        await action(tokenData!, broadcasterId!, moderatorId!);
+        await action(channel!.client.helix.forToken(tokenData!), broadcasterId!, moderatorId!);
       } on TwitchRequestException catch (e) {
         log('$e');
         error = l10n.moderationFailed(e.message);
@@ -132,8 +136,7 @@ class _UserModalState extends State<UserModal> {
                         color: Colors.red,
                       ),
                       onPressed: () => _moderate(
-                        (tokenData, broadcasterId, moderatorId) => Twitch.ban(
-                          tokenData,
+                        (helix, broadcasterId, moderatorId) => helix.ban(
                           broadcasterId: broadcasterId,
                           moderatorId: moderatorId,
                           userId: profile.user.id,
@@ -165,8 +168,7 @@ class _UserModalState extends State<UserModal> {
                                 child: TextButton(
                                   child: Text(time.key),
                                   onPressed: () => _moderate(
-                                    (tokenData, broadcasterId, moderatorId) => Twitch.ban(
-                                      tokenData,
+                                    (helix, broadcasterId, moderatorId) => helix.ban(
                                       broadcasterId: broadcasterId,
                                       moderatorId: moderatorId,
                                       userId: profile.user.id,
@@ -188,8 +190,7 @@ class _UserModalState extends State<UserModal> {
                         color: Colors.green,
                       ),
                       onPressed: () => _moderate(
-                        (tokenData, broadcasterId, moderatorId) => Twitch.unban(
-                          tokenData,
+                        (helix, broadcasterId, moderatorId) => helix.unban(
                           broadcasterId: broadcasterId,
                           moderatorId: moderatorId,
                           userId: profile.user.id,

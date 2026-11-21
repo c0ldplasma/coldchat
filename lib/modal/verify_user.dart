@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../api/twitch/twitch.dart';
 import '../data/repositories/account_repository.dart';
 import '../data/twitch/token_data.dart';
 import '../data/twitch/user_data.dart';
@@ -31,7 +30,7 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
   @override
   void initState() {
     final accounts = context.read<AccountRepository>();
-    future = Twitch.userData(widget.tokenData);
+    future = context.read<Client>().helix.forToken(widget.tokenData).userData();
     unawaited(
       future.then(
         (value) async {

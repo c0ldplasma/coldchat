@@ -5,6 +5,7 @@ import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import '../../api/api_client.dart';
 import '../emote_button_icon.dart';
 import 'account_repository.dart';
 import 'channel_repository.dart';
@@ -57,8 +58,9 @@ class Repositories {
     }
   }
 
-  /// Opens every repository. Call after `Hive.initFlutter()` and registering the adapters.
-  static Future<Repositories> open() async {
+  /// Opens every repository. Call after `Hive.initFlutter()` and registering the adapters. [api] downloads the emote
+  /// button's image.
+  static Future<Repositories> open(ApiClient api) async {
     // Not awaited: nothing depends on it, so it doesn't hold up the first frame.
     unawaited(deleteUnusedBoxes());
     // Open the boxes concurrently instead of serially to shave startup time off the path before the first frame.
@@ -81,7 +83,7 @@ class Repositories {
       customCommands: customCommands,
       emoteBadgeCache: emoteBadgeCache,
       seenMentions: seenMentions,
-      emoteButtonIcon: await EmoteButtonIcon.open(settings),
+      emoteButtonIcon: await EmoteButtonIcon.open(settings, api),
     );
   }
 

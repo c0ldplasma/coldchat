@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../api/twitch/twitch.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
@@ -41,7 +40,9 @@ class _ChattersModalState extends State<ChattersModal> {
     final tokenData = widget.channel.client.apiTokenData;
     if (tokenData == null) return;
     try {
-      final users = await Twitch.usersByLogin(tokenData, [for (final chatter in chatters) chatter.login!]);
+      final users = await widget.channel.client.helix.forToken(tokenData).usersByLogin([
+        for (final chatter in chatters) chatter.login!,
+      ]);
       if (!mounted) return;
       setState(() => avatarUrls = {for (final user in users) user.login: user.profileImageUrl});
     } catch (_) {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import '../api/twitch/twitch.dart';
+import '../api/twitch/helix_api.dart';
 import '../components/separator.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
@@ -81,8 +81,7 @@ class _HomeTabState extends State<HomeTab> {
       topStreams = null;
       return;
     }
-    recommendedStreams = Twitch.streams(
-      account.tokenData,
+    recommendedStreams = _helix(account).streams(
       userLogins: [
         'forsen',
         'btmc',
@@ -96,8 +95,11 @@ class _HomeTabState extends State<HomeTab> {
         'vedal987',
       ],
     );
-    topStreams = Twitch.streams(account.tokenData);
+    topStreams = _helix(account).streams();
   }
+
+  /// Helix as [account].
+  HelixApi _helix(TwitchAccount account) => context.read<Client>().helix.forToken(account.tokenData);
 
   TwitchAccount? _activeAccount() => context.read<AccountRepository>().active;
 
@@ -139,7 +141,7 @@ class _HomeTabState extends State<HomeTab> {
     }
     searchDebounce = Timer(const Duration(milliseconds: 250), () {
       if (!mounted || account == null) return;
-      setState(() => searchResults = searchChannels(account!.tokenData, text));
+      setState(() => searchResults = searchChannels(_helix(account!), text));
     });
   }
 

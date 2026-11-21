@@ -1,5 +1,4 @@
-import 'package:http/http.dart' as http;
-
+import '../api_client.dart';
 import '../json_isolate.dart';
 
 /// Chat history from before joining a channel, from recent-messages.robotty.de.
@@ -10,27 +9,23 @@ class RecentMessages {
   /// Whether history may be fetched, e.g. `() => settings.chatHistory`.
   final bool Function() enabled;
 
-  /// For tests; without one every request goes through a client of its own that is closed afterwards.
-  final http.Client? client;
+  final ApiClient api;
 
-  RecentMessages({required this.enabled, this.client});
+  RecentMessages({required this.enabled, required this.api});
 
   static Uri uri(String channelLogin) =>
       Uri.parse('https://recent-messages.robotty.de/api/v2/recent-messages/$channelLogin');
 
   /// The recent messages of [channelLogin] as IRC lines, or null without any request while chat history is off.
+  ///
+  /// The status isn't checked, as it never was: an error answer that still has a `messages` list is used like any
+  /// other, and one without throws while decoding.
   Future<List<String>?> channel(String channelLogin) async {
     if (!enabled()) return null;
-    final httpClient = client ?? http.Client();
-    final http.Response response;
-    try {
-      response = await httpClient.get(uri(channelLogin));
-    } finally {
-      if (client == null) httpClient.close();
-    }
-    return decodeJsonInIsolate(
-      response.bodyBytes,
-      (json) => List<String>.from((json as JsonMap)['messages'] as List<dynamic>),
-    );
+    final response = await api.send('GET', uri(channelLogin));
+    return ApiClient.decode(response, _messages, inIsolate: true);
   }
+
+  // Static, so it can be sent to the isolate that decodes the response.
+  static List<String> _messages(dynamic json) => List<String>.from((json as JsonMap)['messages'] as List<dynamic>);
 }

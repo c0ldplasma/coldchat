@@ -1,7 +1,6 @@
-import '../../api/twitch/twitch.dart';
+import '../../api/twitch/helix_api.dart';
 import '../../api/twitch/twitch_profile.dart';
 import '../../tools/channel_ranking.dart';
-import 'token_data.dart';
 
 /// The channel search on the home tab: Twitch's search, completed and sorted by [rankChannels].
 ///
@@ -9,14 +8,14 @@ import 'token_data.dart';
 /// can fall outside the candidates it returns. A channel typed out exactly is therefore also looked up by login and
 /// added if the search missed it. Live channels get their viewer count and game from one
 /// stream lookup, which also corrects the search's live flag.
-Future<List<ChannelCandidate>> searchChannels(TokenData tokenData, String rawQuery) async {
+Future<List<ChannelCandidate>> searchChannels(HelixApi helix, String rawQuery) async {
   final query = normalizeChannelQuery(rawQuery);
   if (query.isEmpty) return [];
 
   final (found, exactUsers) = await (
-    Twitch.channelSearch(tokenData, query),
+    helix.channelSearch(query),
     couldBeLogin(query)
-        ? Twitch.usersByLogin(tokenData, [query.toLowerCase()]).catchError((_) => <TwitchUser>[])
+        ? helix.usersByLogin([query.toLowerCase()]).catchError((_) => <TwitchUser>[])
         : Future.value(<TwitchUser>[]),
   ).wait;
 
@@ -42,7 +41,7 @@ Future<List<ChannelCandidate>> searchChannels(TokenData tokenData, String rawQue
   ].take(100).toList();
   if (toCheck.isNotEmpty) {
     try {
-      final streams = {for (final s in await Twitch.streams(tokenData, userLogins: toCheck)) s.userLogin: s};
+      final streams = {for (final s in await helix.streams(userLogins: toCheck)) s.userLogin: s};
       for (final login in toCheck) {
         final candidate = candidates[login]!;
         final stream = streams[login];

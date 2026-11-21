@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 
+import '../../api/api_client.dart';
 import '../../api/filesharing/upload_host.dart';
 import 'upload_task.dart';
 
@@ -16,11 +16,16 @@ import 'upload_task.dart';
 /// [takeUploadedUrls] when the host answers.
 class UploadQueueCubit extends Cubit<List<UploadTask>> {
   UploadQueueCubit({
+    required this.api,
     Future<Uint8List> Function(String path)? readBytes,
     List<UploadHost>? hosts,
   }) : _readBytes = readBytes ?? _readFile,
        _hosts = hosts ?? UploadHosts.chain,
        super(const []);
+
+  /// Hands out a client of its own for every attempt: closing it is how an attempt is aborted (cancel, stall), which
+  /// the shared client must survive.
+  final ApiClient api;
 
   /// Seams for tests; the app uses the real file system and host chain.
   final Future<Uint8List> Function(String path) _readBytes;
@@ -133,7 +138,7 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
       task.lastProgressAt = DateTime.now();
       task.processingSince = null;
       task.abortFailure = null;
-      final client = http.Client();
+      final client = api.openClient();
       task.client = client;
       _publish();
 

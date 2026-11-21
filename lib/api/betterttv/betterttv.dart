@@ -1,32 +1,47 @@
-import 'package:http/http.dart' as http;
-
+import '../api_client.dart';
 import '../json_isolate.dart';
 import 'betterttv_badge.dart';
 import 'betterttv_emote.dart';
 import 'betterttv_user.dart';
 
-class BetterTTV {
-  static Future<List<BetterTTVEmote>> globalEmotes() async {
-    final response = await http.get(Uri.parse('https://api.betterttv.net/3/cached/emotes/global'));
-    return decodeJsonInIsolate(
-      response.bodyBytes,
-      (json) => [for (final emote in json as List<dynamic>) BetterTTVEmote.fromJson(emote as JsonMap)],
-    );
+/// BetterTTV's emotes and badges. No login.
+class BttvApi {
+  final ApiClient _api;
+
+  BttvApi(this._api);
+
+  Future<List<BetterTTVEmote>> globalEmotes() =>
+      _api.getJson(Uri.parse('https://api.betterttv.net/3/cached/emotes/global'), _emotes, inIsolate: true);
+
+  /// The BetterTTV account of the Twitch user [uid], or null when there is none.
+  Future<BetterTTVUser?> user(String uid) async {
+    try {
+      return await _api.getJson(
+        Uri.parse('https://api.betterttv.net/3/cached/users/twitch/$uid'),
+        _user,
+        inIsolate: true,
+      );
+    } on ApiException catch (e) {
+      // BetterTTV answers 404 for a Twitch user without a BetterTTV account.
+      if (e.statusCode == 404) return null;
+      rethrow;
+    }
   }
 
-  static Future<BetterTTVUser?> user(String uid) async {
-    final response = await http.get(Uri.parse('https://api.betterttv.net/3/cached/users/twitch/$uid'));
-    return decodeJsonInIsolate(response.bodyBytes, (json) {
-      final data = json as JsonMap;
-      return data['id'] == null ? null : BetterTTVUser.fromJson(data);
-    });
+  Future<List<BetterTTVBadge>> badges() =>
+      _api.getJson(Uri.parse('https://api.betterttv.net/3/cached/badges'), _badges, inIsolate: true);
+
+  // Static, so they can be sent to the isolate that decodes the response.
+  static List<BetterTTVEmote> _emotes(dynamic json) => [
+    for (final emote in json as List<dynamic>) BetterTTVEmote.fromJson(emote as JsonMap),
+  ];
+
+  static BetterTTVUser? _user(dynamic json) {
+    final data = json as JsonMap;
+    return data['id'] == null ? null : BetterTTVUser.fromJson(data);
   }
 
-  static Future<List<BetterTTVBadge>> badges() async {
-    final response = await http.get(Uri.parse('https://api.betterttv.net/3/cached/badges'));
-    return decodeJsonInIsolate(
-      response.bodyBytes,
-      (json) => [for (final badge in json as List<dynamic>) BetterTTVBadge.fromJson(badge as JsonMap)],
-    );
-  }
+  static List<BetterTTVBadge> _badges(dynamic json) => [
+    for (final badge in json as List<dynamic>) BetterTTVBadge.fromJson(badge as JsonMap),
+  ];
 }

@@ -8,6 +8,10 @@ import 'emote_provider.dart';
 import 'provider.dart';
 
 class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
+  final FfzApi api;
+
+  FrankerFaceZProvider(this.api);
+
   @override
   String get name => 'FrankerFaceZ';
 
@@ -16,7 +20,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> globalEmotes() async {
-    final globalSets = await FrankerFaceZ.globalSets();
+    final globalSets = await api.globalSets();
     return [
       for (final emoteSet in globalSets)
         for (final emote in emoteSet.emoticons)
@@ -34,7 +38,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> channelEmotes(String uid) async {
-    final user = await FrankerFaceZ.user(uid);
+    final user = await api.user(uid);
     return [
       for (final emoteSet in user.sets.values)
         for (final emote in emoteSet.emoticons)
@@ -84,7 +88,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<BadgeUsers>> globalUserBadges() async {
-    final badges = await FrankerFaceZ.badges();
+    final badges = await api.badges();
     return [
       for (final badge in badges.badges)
         BadgeUsers(

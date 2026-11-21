@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../api/twitch/twitch.dart';
 import '../components/modal.dart';
 import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
+import '../tmi/client/client.dart';
 import 'verify_user.dart';
 
 class VerifyTokenModal extends StatefulWidget {
@@ -27,7 +28,7 @@ class _VerifyTokenModalState extends State<VerifyTokenModal> {
 
   @override
   void initState() {
-    future = Twitch.validateToken(widget.token);
+    future = context.read<Client>().twitchAuth.validateToken(widget.token);
     unawaited(
       future.then(
         (value) async {

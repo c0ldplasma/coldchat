@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
-import '../../api/twitch/twitch.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../irc/message.dart' as irc;
@@ -350,7 +349,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     final tokenData = client.apiTokenData;
     if (tokenData == null) return;
     try {
-      channelInfo.emit(await Twitch.profile(tokenData, name.replaceFirst('#', '')));
+      channelInfo.emit(await client.helix.forToken(tokenData).profile(name.replaceFirst('#', '')));
     } catch (e) {
       log('Couldn\'t get channel info for $name: $e');
     }

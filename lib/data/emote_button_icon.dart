@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import '../api/api_client.dart';
 import '../providers/emojis.dart';
 import 'emote.dart';
 import 'repositories/settings_repository.dart';
@@ -18,15 +19,19 @@ import 'repositories/settings_repository.dart';
 class EmoteButtonIcon {
   final SettingsRepository settings;
 
+  /// Downloads the emote images.
+  final ApiClient api;
+
   // Resolved once at startup so the button can build synchronously. Only file
   // names are stored: the absolute container path changes between iOS
   // installs and updates.
   final Directory? directory;
 
-  EmoteButtonIcon(this.settings, {this.directory});
+  EmoteButtonIcon(this.settings, {required this.api, this.directory});
 
-  static Future<EmoteButtonIcon> open(SettingsRepository settings) async => EmoteButtonIcon(
+  static Future<EmoteButtonIcon> open(SettingsRepository settings, ApiClient api) async => EmoteButtonIcon(
     settings,
+    api: api,
     directory: Directory('${(await getApplicationSupportDirectory()).path}/emote_button'),
   );
 
@@ -65,7 +70,7 @@ class EmoteButtonIcon {
       return;
     }
 
-    final response = await http.get(Uri.parse(emote.mipmap.last)).timeout(const Duration(seconds: 30));
+    final response = await api.send('GET', Uri.parse(emote.mipmap.last), timeout: const Duration(seconds: 30));
     if (response.statusCode != 200 || response.bodyBytes.isEmpty) {
       throw HttpException('HTTP ${response.statusCode}', uri: Uri.parse(emote.mipmap.last));
     }
