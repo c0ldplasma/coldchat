@@ -383,7 +383,7 @@ class ChannelViewState extends State<ChannelView> {
             image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
           ),
           title: emote.name,
-          subtitle: emote.provider.name,
+          subtitle: emote.source.name,
           onTap: () => _complete(emote.code ?? emote.name),
         ),
     ];

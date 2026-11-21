@@ -3,13 +3,13 @@ import 'dart:convert';
 import '../api/dankchat/dankchat.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
-import 'badge_provider.dart';
-import 'provider.dart';
+import 'badge_source.dart';
+import 'chat_source.dart';
 
-class DankChatProvider extends Provider with BadgeProvider {
+class DankChatSource extends ChatSource with BadgeSource {
   final DankChatApi api;
 
-  DankChatProvider(this.api);
+  DankChatSource(this.api);
 
   @override
   String get name => 'DankChat';
@@ -38,7 +38,7 @@ class DankChatProvider extends Provider with BadgeProvider {
             mipmap: [
               badge.url,
             ],
-            provider: this,
+            source: this,
           ),
           users: badge.users,
         ),

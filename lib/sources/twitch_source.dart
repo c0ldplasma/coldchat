@@ -2,16 +2,16 @@ import '../api/twitch/helix_api.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
-import 'badge_provider.dart';
-import 'emote_provider.dart';
-import 'provider.dart';
+import 'badge_source.dart';
+import 'chat_source.dart';
+import 'emote_source.dart';
 
-class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
+class TwitchSource extends ChatSource with EmoteSource, BadgeSource {
   /// Helix as the account whose token badges are loaded with. Badges can't be loaded without one, e.g. while
   /// browsing anonymously or without [helix].
   final HelixApi? helix;
 
-  TwitchProvider({this.helix});
+  TwitchSource({this.helix});
 
   HelixApi get _requireHelix {
     final helix = this.helix;
@@ -40,7 +40,7 @@ class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
               twitchBadgeVersion.value.imageUrl2x,
               twitchBadgeVersion.value.imageUrl4x,
             ],
-            provider: this,
+            source: this,
           ),
     ];
   }
@@ -60,7 +60,7 @@ class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
               twitchBadgeVersion.value.imageUrl2x,
               twitchBadgeVersion.value.imageUrl4x,
             ],
-            provider: this,
+            source: this,
           ),
     ];
   }

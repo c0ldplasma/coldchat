@@ -10,8 +10,8 @@ import 'package:coldchat/data/settings/application_appearance.dart';
 import 'package:coldchat/data/settings/chat_settings.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
 import 'package:coldchat/hive_registrar.g.dart';
-import 'package:coldchat/providers/emojis.dart';
-import 'package:coldchat/providers/seventv.dart';
+import 'package:coldchat/sources/emoji_source.dart';
+import 'package:coldchat/sources/seventv_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
@@ -231,7 +231,7 @@ void main() {
         name: 'fire',
         code: '🔥',
         mipmap: const [],
-        provider: EmojiProvider(EmojiDataApi(offlineApi())),
+        source: EmojiSource(EmojiDataApi(offlineApi())),
       );
 
       await icon.set(emoji);
@@ -256,7 +256,7 @@ void main() {
         id: 'p',
         name: 'Pog',
         mipmap: const ['https://cdn.7tv.app/emote/p/1x.webp', 'https://cdn.7tv.app/emote/p/4x.webp'],
-        provider: SevenTVProvider(SevenTvApi(offlineApi())),
+        source: SevenTvSource(SevenTvApi(offlineApi())),
       );
 
       await expectLater(icon.set(pog), throwsA(isA<HttpException>()));

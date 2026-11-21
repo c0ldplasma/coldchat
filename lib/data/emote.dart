@@ -1,4 +1,4 @@
-import '../providers/provider.dart';
+import '../sources/chat_source.dart';
 
 class EmoteFlags {
   /// Zero-width (7TV, BetterTTV): drawn on top of the emote before it.
@@ -24,7 +24,7 @@ class Emote {
   String? description;
   List<String> mipmap;
   int flags;
-  Provider provider;
+  ChatSource source;
   String? category;
 
   Emote({
@@ -34,7 +34,7 @@ class Emote {
     this.description,
     required this.mipmap,
     this.flags = 0,
-    required this.provider,
+    required this.source,
     this.category,
   });
 }

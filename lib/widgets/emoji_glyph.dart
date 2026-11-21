@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/emote.dart';
-import '../providers/emojis.dart';
+import '../sources/emoji_source.dart';
 
 /// Draws an emote, using the platform's emoji font for emojis (Apple's on
 /// iOS, Google's on Android) instead of an image.
@@ -19,7 +19,7 @@ class EmoteGlyph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (emote.provider is! EmojiProvider || emote.code == null) return image();
+    if (emote.source is! EmojiSource || emote.code == null) return image();
     return SizedBox.square(
       dimension: size,
       child: FittedBox(

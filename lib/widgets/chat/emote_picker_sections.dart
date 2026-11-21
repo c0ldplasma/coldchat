@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
 
 import '../../data/emote.dart';
-import '../../providers/emojis.dart';
+import '../../sources/emoji_source.dart';
 
 const twitchSection = 'Twitch';
 
-/// A section of the emote picker: an emote category (e.g. an emoji group) or else a provider, with its emotes.
+/// A section of the emote picker: an emote category (e.g. an emoji group) or else a source, with its emotes.
 class EmoteSection {
   final String title;
   final List<Emote> emotes;
@@ -40,11 +40,11 @@ class EmotePickerSections {
     final allEmotes = [...channelEmotes, ...globalEmotes, ...userEmotes];
     final emoteGroups = <String, List<Emote>>{};
     final emojiGroups = <String, List<Emote>>{};
-    for (final providerGroup in groupBy(allEmotes, (emote) => emote.provider).entries) {
+    for (final sourceGroup in groupBy(allEmotes, (emote) => emote.source).entries) {
       // Emojis go after all Twitch/7TV/BTTV/FFZ sections.
-      final target = providerGroup.key is EmojiProvider ? emojiGroups : emoteGroups;
-      for (final category in groupBy(providerGroup.value, (emote) => emote.category).entries) {
-        target.putIfAbsent(category.key ?? providerGroup.key.name, () => []).addAll(category.value);
+      final target = sourceGroup.key is EmojiSource ? emojiGroups : emoteGroups;
+      for (final category in groupBy(sourceGroup.value, (emote) => emote.category).entries) {
+        target.putIfAbsent(category.key ?? sourceGroup.key.name, () => []).addAll(category.value);
       }
     }
     // There are always Twitch emotes, so keep their section in place with a

@@ -3,14 +3,14 @@ import '../api/seventv/seventv_emote.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
-import 'badge_provider.dart';
-import 'emote_provider.dart';
-import 'provider.dart';
+import 'badge_source.dart';
+import 'chat_source.dart';
+import 'emote_source.dart';
 
-class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
+class SevenTvSource extends ChatSource with EmoteSource, BadgeSource {
   final SevenTvApi api;
 
-  SevenTVProvider(this.api);
+  SevenTvSource(this.api);
 
   @override
   String get name => '7TV';
@@ -30,7 +30,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
             for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
               'https:${emote.data.host.url}/${urlArray.name}',
           ],
-          provider: this,
+          source: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
     ];
@@ -48,7 +48,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
             for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
               'https:${emote.data.host.url}/${urlArray.name}',
           ],
-          provider: this,
+          source: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
     ];
@@ -78,7 +78,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
             mipmap: [
               for (final url in badge.urls) url.last,
             ],
-            provider: this,
+            source: this,
           ),
           users: badge.users,
         ),

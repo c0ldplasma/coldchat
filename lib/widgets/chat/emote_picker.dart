@@ -312,7 +312,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                         child: Center(
                                           child:
                                               icons[tab.title] ??
-                                              providerLogo(context, tab.title) ??
+                                              sourceLogo(context, tab.title) ??
                                               firstEmoteIcon(tab.emotes),
                                         ),
                                       ),
@@ -333,8 +333,8 @@ class _EmotePickerState extends State<EmotePicker> {
     );
   }
 
-  /// Logo for a provider's section, or null if [category] isn't a provider.
-  Widget? providerLogo(BuildContext context, String category) {
+  /// Logo for a source's section, or null if [category] isn't a source.
+  Widget? sourceLogo(BuildContext context, String category) {
     final onSurface = Theme.of(context).colorScheme.onSurface;
     return switch (category) {
       'Twitch' => SvgPicture.asset(
@@ -454,11 +454,11 @@ class _EmotePickerState extends State<EmotePicker> {
 
 SliverList.list(
           children: [
-            for (final providerGroup in groupBy(allEmotes, (emote) => emote.provider).entries) ...[
+            for (final sourceGroup in groupBy(allEmotes, (emote) => emote.source).entries) ...[
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  providerGroup.key.name,
+                  sourceGroup.key.name,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ),
@@ -468,8 +468,8 @@ SliverList.list(
                 padding: MediaQuery.of(context).padding.copyWith(top: 0.0, bottom: 0.0),
                 maxCrossAxisExtent: 32.0 + 24.0,
                 children: [
-                  // Group emotes by provider
-                  for (final emote in providerGroup.value)
+                  // Group emotes by source
+                  for (final emote in sourceGroup.value)
                     Tooltip(
                       message: emote.name,
                       child: InkWell(

@@ -1,11 +1,11 @@
 import 'package:coldchat/data/badge_users.dart';
 import 'package:coldchat/data/custom_badge.dart';
-import 'package:coldchat/providers/provider.dart';
+import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/tmi/user_badges.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _Provider implements Provider {
-  _Provider(this.name);
+class _Source implements ChatSource {
+  _Source(this.name);
 
   @override
   final String name;
@@ -14,15 +14,15 @@ class _Provider implements Provider {
   String? get description => null;
 }
 
-CustomBadge badge(String id, {String provider = '7TV'}) =>
-    CustomBadge(id: id, name: id, mipmap: const [], provider: _Provider(provider));
+CustomBadge badge(String id, {String source = '7TV'}) =>
+    CustomBadge(id: id, name: id, mipmap: const [], source: _Source(source));
 
 BadgeUsers holders(CustomBadge badge, List<String> users) => BadgeUsers(badge: badge, users: users);
 
 void main() {
   final staff = badge('staff');
-  final supporter = badge('supporter', provider: 'FFZ');
-  final pro = badge('pro', provider: 'BTTV');
+  final supporter = badge('supporter', source: 'FFZ');
+  final pro = badge('pro', source: 'BTTV');
 
   group('badgesOf', () {
     test('is empty before any badges are loaded and for users without one', () {
@@ -48,7 +48,7 @@ void main() {
       expect(badges.badgesOf('3'), [pro]);
     });
 
-    test('lists a badge once when a provider names the user twice', () {
+    test('lists a badge once when a source names the user twice', () {
       final badges = UserBadges()
         ..change([
           holders(staff, ['1', '1']),
@@ -103,7 +103,7 @@ void main() {
       );
     });
 
-    test('is false when a badge is added, removed or from another provider', () {
+    test('is false when a badge is added, removed or from another source', () {
       expect(
         UserBadges.sameHolders([], [
           holders(staff, ['1']),
@@ -122,7 +122,7 @@ void main() {
             holders(staff, ['1']),
           ],
           [
-            holders(badge('staff', provider: 'FFZ'), ['1']),
+            holders(badge('staff', source: 'FFZ'), ['1']),
           ],
         ),
         isFalse,

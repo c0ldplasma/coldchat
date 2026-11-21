@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../data/emote.dart';
-import '../../providers/emojis.dart';
+import '../../sources/emoji_source.dart';
 import '../channel/channel.dart';
 
 /// A whisper conversation with one user. It is a [Channel] so the chat view, composer and emote picker work
@@ -37,7 +37,7 @@ class WhisperChannel extends Channel {
     if (cached != null) return cached;
     final map = <String, Emote>{};
     for (final e in client.globals.emotes.state) {
-      if (e.provider is EmojiProvider) continue;
+      if (e.source is EmojiSource) continue;
       map[e.code ?? e.name] = e;
     }
     for (final e in client.globals.twitchUserEmotes.state) {

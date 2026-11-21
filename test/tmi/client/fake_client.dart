@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:coldchat/data/repositories/trigger_repository.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
-import 'package:coldchat/providers/provider.dart';
+import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/client/account_session.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// Just what channels, whisper tabs and the chat widgets read from their client. The real [Client] opens connections
 /// and timers. Anything else a test calls fails with a [NoSuchMethodError].
 ///
-/// Without arguments it's logged out, fetches no history, has no emote or badge providers and no cache.
+/// Without arguments it's logged out, fetches no history, has no emote or badge sources and no cache.
 class FakeClient implements Client {
   final Connection? _transmitter;
 
@@ -46,15 +46,15 @@ class FakeClient implements Client {
   final StreamController<String> _focusRequests = StreamController.broadcast();
 
   /// [transmitter] is only needed by tests that send; [ownLogin], [blockedUserIds] and [apiTokenData] are what the
-  /// [session] answers; [providers] feed the [globals].
+  /// [session] answers; [sources] feed the [globals].
   FakeClient({
     this._transmitter,
     String? ownLogin,
     Set<String> blockedUserIds = const {},
     TokenData? apiTokenData,
-    List<Provider> providers = const [],
+    List<ChatSource> sources = const [],
   }) : session = FakeSession(ownLogin: ownLogin, blockedUserIds: blockedUserIds, apiTokenData: apiTokenData) {
-    globals = ChatGlobals(providers: providers, onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
+    globals = ChatGlobals(sources: sources, onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
   }
 
   @override

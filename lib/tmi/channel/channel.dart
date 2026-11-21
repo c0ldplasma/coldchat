@@ -6,10 +6,10 @@ import 'package:bloc/bloc.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../irc/message.dart' as irc;
-import '../../providers/badge_provider.dart';
-import '../../providers/emojis.dart';
-import '../../providers/emote_provider.dart';
-import '../../providers/provider.dart';
+import '../../sources/badge_source.dart';
+import '../../sources/chat_source.dart';
+import '../../sources/emoji_source.dart';
+import '../../sources/emote_source.dart';
 import '../badges.dart';
 import '../client/client.dart';
 import '../emotes.dart';
@@ -90,7 +90,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
     for (final e in client.globals.emotes.state) {
       // Emojis stay plain text so they render in the platform's emoji font,
       // the same as emojis attached to other text already do.
-      if (e.provider is EmojiProvider) continue;
+      if (e.source is EmojiSource) continue;
       map[e.code ?? e.name] = e;
     }
     for (final e in channelEmotes.state) {
@@ -301,15 +301,15 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   Future<void> refreshEmotes() async {
     if (id == null) throw const TmiException('invalid channel id');
 
-    final emoteProviders = client.providers.whereType<EmoteProvider>();
+    final emoteSources = client.sources.whereType<EmoteSource>();
     final results = await Future.wait(
-      emoteProviders.map((emoteProvider) async {
+      emoteSources.map((emoteSource) async {
         try {
-          return await emoteProvider.channelEmotes(id!).timeout(Provider.timeout);
+          return await emoteSource.channelEmotes(id!).timeout(ChatSource.timeout);
         } catch (e) {
-          log('Couldn\'t get ${emoteProvider.name} channel emotes for $name ($id): $e');
-          // A provider that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
-          return [...channelEmotes.state.where((emote) => emote.provider.name == emoteProvider.name)];
+          log('Couldn\'t get ${emoteSource.name} channel emotes for $name ($id): $e');
+          // A source that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
+          return [...channelEmotes.state.where((emote) => emote.source.name == emoteSource.name)];
         }
       }),
     );
@@ -322,14 +322,14 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   Future<void> refreshBadges() async {
     if (id == null) throw const TmiException('invalid channel id');
 
-    final badgeProviders = client.providers.whereType<BadgeProvider>();
+    final badgeSources = client.sources.whereType<BadgeSource>();
     final results = await Future.wait(
-      badgeProviders.map((badgeProvider) async {
+      badgeSources.map((badgeSource) async {
         try {
-          return await badgeProvider.channelBadges(id!).timeout(Provider.timeout);
+          return await badgeSource.channelBadges(id!).timeout(ChatSource.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} channel badges for $name ($id): $e');
-          return [...channelBadges.state.where((badge) => badge.provider.name == badgeProvider.name)];
+          log('Couldn\'t get ${badgeSource.name} channel badges for $name ($id): $e');
+          return [...channelBadges.state.where((badge) => badge.source.name == badgeSource.name)];
         }
       }),
     );

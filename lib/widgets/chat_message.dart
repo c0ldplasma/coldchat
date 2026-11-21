@@ -302,8 +302,8 @@ class _ChatMessageState extends State<ChatMessage> {
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
     image: CachedNetworkImageProvider(emote.mipmap.last),
     height:
-        (emote.provider.name == 'Emoji' ||
-                (emote.provider.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
+        (emote.source.name == 'Emoji' ||
+                (emote.source.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
             ? 24.0
             : 32.0) *
         (1.0 / messageAppearance.scale),

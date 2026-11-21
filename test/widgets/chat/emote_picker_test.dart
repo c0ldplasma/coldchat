@@ -1,7 +1,7 @@
 import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
-import 'package:coldchat/providers/emojis.dart';
+import 'package:coldchat/sources/emoji_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/widgets/chat/emote_picker.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../api/fake_api.dart';
 import '../../tmi/client/fake_client.dart';
 
-final _emoji = EmojiProvider(EmojiDataApi(offlineApi()));
+final _emoji = EmojiSource(EmojiDataApi(offlineApi()));
 
 /// An emoji, drawn as text so the test loads no images.
 Emote _emojiEmote(String name, String code, String category) =>
-    Emote(id: name, name: name, code: code, mipmap: const [''], provider: _emoji, category: category);
+    Emote(id: name, name: name, code: code, mipmap: const [''], source: _emoji, category: category);
 
 void main() {
   testWidgets('shows newly loaded emotes and filters by the search', (tester) async {

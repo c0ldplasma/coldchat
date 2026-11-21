@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:coldchat/api/twitch/helix_api.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
-import 'package:coldchat/providers/twitch.dart';
+import 'package:coldchat/sources/twitch_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
@@ -45,8 +45,8 @@ void main() {
   });
 
   test('without a login no badges are requested', () async {
-    await expectLater(TwitchProvider(helix: helix()).globalBadges(), throwsException);
-    await expectLater(TwitchProvider().channelBadges('1'), throwsException);
+    await expectLater(TwitchSource(helix: helix()).globalBadges(), throwsException);
+    await expectLater(TwitchSource().channelBadges('1'), throwsException);
     expect(requests, isEmpty);
   });
 
@@ -60,7 +60,7 @@ void main() {
       accessToken: 'a',
     );
 
-    final badges = await TwitchProvider(helix: helix()).channelBadges('22484632');
+    final badges = await TwitchSource(helix: helix()).channelBadges('22484632');
 
     expect(requests.single.url, Uri.parse('https://api.twitch.tv/helix/chat/badges?broadcaster_id=22484632'));
     expect(badges.single.id, 'moderator/1');

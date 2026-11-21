@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../data/emote.dart';
 import '../l10n/app_localizations.dart';
-import '../providers/emote_provider.dart';
+import '../sources/emote_source.dart';
 
 class EmoteModal extends StatelessWidget {
   final Emote emote;
@@ -13,7 +13,7 @@ class EmoteModal extends StatelessWidget {
   EmoteModal({
     super.key,
     required this.emote,
-  }) : url = (emote.provider as EmoteProvider).emoteUrl(emote.id);
+  }) : url = (emote.source as EmoteSource).emoteUrl(emote.id);
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -34,7 +34,7 @@ class EmoteModal extends StatelessWidget {
                 emote.name,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
-              Text(emote.provider.name),
+              Text(emote.source.name),
             ],
           ),
         ),
