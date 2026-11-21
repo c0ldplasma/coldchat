@@ -262,6 +262,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get enableRegex => 'Χρήση regex';
 
   @override
+  String get invalidRegex => 'Μη έγκυρο regex';
+
+  @override
   String get caseSensitive => 'Διάκριση πεζών-κεφαλαίων';
 
   @override

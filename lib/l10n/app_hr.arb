@@ -184,6 +184,7 @@
   "mention": "Spominjanje",
   "block": "Blokiraj",
   "enableRegex": "Uključi regex",
+  "invalidRegex": "Neispravan regex",
   "caseSensitive": "Razlikuj velika i mala slova",
   "messageTriggers": "Okidači poruka",
   "newMessageTrigger": "Novi okidač poruka",

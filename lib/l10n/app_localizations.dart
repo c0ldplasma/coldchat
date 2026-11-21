@@ -581,6 +581,12 @@ abstract class AppLocalizations {
   /// **'Enable regex'**
   String get enableRegex;
 
+  /// No description provided for @invalidRegex.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a valid regex'**
+  String get invalidRegex;
+
   /// No description provided for @caseSensitive.
   ///
   /// In en, this message translates to:

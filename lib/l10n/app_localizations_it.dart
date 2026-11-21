@@ -263,6 +263,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get enableRegex => 'Usa regex';
 
   @override
+  String get invalidRegex => 'Regex non valida';
+
+  @override
   String get caseSensitive => 'Distingui maiuscole/minuscole';
 
   @override

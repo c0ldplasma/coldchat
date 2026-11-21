@@ -262,6 +262,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get enableRegex => 'Укључи regex';
 
   @override
+  String get invalidRegex => 'Неважећи regex';
+
+  @override
   String get caseSensitive => 'Разликуј велика и мала слова';
 
   @override

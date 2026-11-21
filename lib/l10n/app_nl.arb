@@ -184,6 +184,7 @@
   "mention": "Vermelding",
   "block": "Blokkeren",
   "enableRegex": "Regex gebruiken",
+  "invalidRegex": "Geen geldige regex",
   "caseSensitive": "Hoofdlettergevoelig",
   "messageTriggers": "Berichttriggers",
   "newMessageTrigger": "Nieuwe berichttrigger",

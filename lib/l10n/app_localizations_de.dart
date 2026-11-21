@@ -264,6 +264,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get enableRegex => 'Regex verwenden';
 
   @override
+  String get invalidRegex => 'Kein gültiger Regex';
+
+  @override
   String get caseSensitive => 'Groß-/Kleinschreibung beachten';
 
   @override

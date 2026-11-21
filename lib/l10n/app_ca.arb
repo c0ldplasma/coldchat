@@ -184,6 +184,7 @@
   "mention": "Menció",
   "block": "Bloqueja",
   "enableRegex": "Fes servir regex",
+  "invalidRegex": "No és un regex vàlid",
   "caseSensitive": "Distingeix majúscules i minúscules",
   "messageTriggers": "Activadors de missatges",
   "newMessageTrigger": "Activador nou",

@@ -184,6 +184,7 @@
   "mention": "Menzione",
   "block": "Blocca",
   "enableRegex": "Usa regex",
+  "invalidRegex": "Regex non valida",
   "caseSensitive": "Distingui maiuscole/minuscole",
   "messageTriggers": "Attivatori messaggio",
   "newMessageTrigger": "Nuovo attivatore",

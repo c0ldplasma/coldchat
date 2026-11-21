@@ -262,6 +262,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get enableRegex => 'Włącz regex';
 
   @override
+  String get invalidRegex => 'Nieprawidłowy regex';
+
+  @override
   String get caseSensitive => 'Rozróżniaj wielkość liter';
 
   @override

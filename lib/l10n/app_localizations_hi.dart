@@ -262,6 +262,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get enableRegex => 'regex चालू करें';
 
   @override
+  String get invalidRegex => 'यह मान्य regex नहीं है';
+
+  @override
   String get caseSensitive => 'केस-सेंसिटिव';
 
   @override

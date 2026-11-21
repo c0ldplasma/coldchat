@@ -184,6 +184,7 @@
   "mention": "Omtale",
   "block": "Blokker",
   "enableRegex": "Bruk regex",
+  "invalidRegex": "Ikke et gyldig regex",
   "caseSensitive": "Skill mellom store og små bokstaver",
   "messageTriggers": "Meldingsutløsere",
   "newMessageTrigger": "Ny meldingsutløser",

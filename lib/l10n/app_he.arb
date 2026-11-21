@@ -184,6 +184,7 @@
   "mention": "אזכור",
   "block": "חסימה",
   "enableRegex": "שימוש ב-regex",
+  "invalidRegex": "regex לא תקין",
   "caseSensitive": "תלוי רישיות",
   "messageTriggers": "טריגרים להודעות",
   "newMessageTrigger": "טריגר הודעה חדש",

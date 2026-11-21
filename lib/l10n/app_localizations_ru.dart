@@ -262,6 +262,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enableRegex => 'Использовать regex';
 
   @override
+  String get invalidRegex => 'Недопустимый regex';
+
+  @override
   String get caseSensitive => 'Учитывать регистр';
 
   @override

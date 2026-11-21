@@ -262,6 +262,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get enableRegex => 'שימוש ב-regex';
 
   @override
+  String get invalidRegex => 'regex לא תקין';
+
+  @override
   String get caseSensitive => 'תלוי רישיות';
 
   @override

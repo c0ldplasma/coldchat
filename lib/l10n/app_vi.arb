@@ -184,6 +184,7 @@
   "mention": "Nhắc đến",
   "block": "Chặn",
   "enableRegex": "Bật regex",
+  "invalidRegex": "Regex không hợp lệ",
   "caseSensitive": "Phân biệt chữ hoa/thường",
   "messageTriggers": "Bộ lọc tin nhắn",
   "newMessageTrigger": "Bộ lọc tin nhắn mới",
