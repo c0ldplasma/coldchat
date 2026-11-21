@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
@@ -77,10 +78,18 @@ class _HomeTabState extends State<HomeTab> {
   Future<List<StreamData>>? topStreams;
   Future<List<ChannelCandidate>>? searchResults;
   Timer? searchDebounce;
+  late final ValueListenable<Box<dynamic>> activeAccountListenable;
 
-  Future<void> refresh() async {
+  // Starts loading the streams again. Without an account there is nothing to load.
+  void refresh() {
+    final account = this.account;
+    if (account == null) {
+      recommendedStreams = null;
+      topStreams = null;
+      return;
+    }
     recommendedStreams = Twitch.streams(
-      account!.tokenData,
+      account.tokenData,
       userLogins: [
         'forsen',
         'btmc',
@@ -94,11 +103,27 @@ class _HomeTabState extends State<HomeTab> {
         'vedal987',
       ],
     );
-    topStreams = Twitch.streams(account!.tokenData);
+    topStreams = Twitch.streams(account.tokenData);
+  }
+
+  TwitchAccount? _activeAccount() {
+    final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
+    return Hive.box<dynamic>('TwitchAccounts').values.firstWhereOrNull(
+      (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
+    ) as TwitchAccount?;
+  }
+
+  void _onActiveAccountChanged() {
+    if (!mounted) return;
+    setState(() {
+      account = _activeAccount();
+      refresh();
+    });
   }
 
   @override
   void dispose() {
+    activeAccountListenable.removeListener(_onActiveAccountChanged);
     searchDebounce?.cancel();
     searchRequest.removeListener(_focusSearchIfRequested);
     searchFocus.dispose();
@@ -141,23 +166,13 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void initState() {
-    final twitchAccountsBox = Hive.box<dynamic>('TwitchAccounts');
-    final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
-    account = twitchAccountsBox.values.firstWhereOrNull(
-      (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
-    ) as TwitchAccount?;
-
-    accountSettingsBox.listenable().addListener(() {
-      account = twitchAccountsBox.values.firstWhereOrNull(
-        (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
-      ) as TwitchAccount?;
-      setState(refresh);
-    });
-
-    if (account != null) {
-      unawaited(refresh());
-    }
     super.initState();
+    account = _activeAccount();
+    refresh();
+
+    // Removed again in dispose: TabBarView disposes this page whenever another tab is shown.
+    activeAccountListenable = Hive.box<dynamic>('AccountSettings').listenable(keys: const ['activeTwitchAccount'])
+      ..addListener(_onActiveAccountChanged);
 
     searchRequest.addListener(_focusSearchIfRequested);
     // The request may have come while this tab wasn't built yet.
@@ -174,7 +189,7 @@ class _HomeTabState extends State<HomeTab> {
       return RefreshIndicator(
         onRefresh: () {
           setState(refresh);
-          return Future.wait([recommendedStreams!, topStreams!]);
+          return Future.wait([?recommendedStreams, ?topStreams]);
         },
         child: CustomScrollView(
           slivers: [
