@@ -54,68 +54,55 @@ void main() {
     });
   });
 
-  group('insertUploadedUrl', () {
+  group('insertWord', () {
     const url = 'https://i.example/a.png';
 
-    test('without a valid selection appends with spaces around it', () {
-      expect(_show(insertUploadedUrl(_value('', selection: _invalid), url)), '$url |');
-      expect(_show(insertUploadedUrl(_value('hi', selection: _invalid), url)), 'hi $url |');
-      expect(_show(insertUploadedUrl(_value('hi ', selection: _invalid), url)), 'hi $url |');
+    test('into empty text adds only a space after it', () {
+      expect(_show(insertWord(_value(''), 'Kappa')), 'Kappa |');
+      expect(_show(insertWord(_value('', selection: _invalid), url)), '$url |');
     });
 
-    test('inserts at the caret', () {
-      expect(_show(insertUploadedUrl(_value('hi', caret: 0), url)), '$url |hi');
-      expect(_show(insertUploadedUrl(_value('hi there', caret: 3), url)), 'hi $url |there');
-      expect(_show(insertUploadedUrl(_value('hi there'), url)), 'hi there $url |');
+    test('at the end adds a space before it unless one is there, and one after it', () {
+      expect(_show(insertWord(_value('hi'), 'Kappa')), 'hi Kappa |');
+      expect(_show(insertWord(_value('hi '), 'Kappa')), 'hi Kappa |');
+      expect(_show(insertWord(_value('hi there'), url)), 'hi there $url |');
     });
 
-    test('always adds a space after it, even before an existing one', () {
-      expect(_show(insertUploadedUrl(_value('hi there', caret: 2), url)), 'hi $url | there');
+    test('at the caret adds spaces only where the neighbouring character is no whitespace', () {
+      expect(_show(insertWord(_value('hi there', caret: 2), 'Kappa')), 'hi Kappa| there');
+      expect(_show(insertWord(_value('hi there', caret: 3), 'Kappa')), 'hi Kappa |there');
+      expect(_show(insertWord(_value('hi there', caret: 0), 'Kappa')), 'Kappa |hi there');
+      expect(_show(insertWord(_value('hithere', caret: 2), 'Kappa')), 'hi Kappa |there');
+      expect(_show(insertWord(_value('hi\nthere', caret: 3), 'Kappa')), 'hi\nKappa |there');
+      expect(_show(insertWord(_value('hi there', caret: 2), url)), 'hi $url| there');
     });
 
-    test('replaces a selected range', () {
-      const selection = TextSelection(baseOffset: 3, extentOffset: 6);
-      expect(_show(insertUploadedUrl(_value('ab cd ef', selection: selection), url)), 'ab $url |ef');
-      const reversed = TextSelection(baseOffset: 6, extentOffset: 3);
-      expect(_show(insertUploadedUrl(_value('ab cd ef', selection: reversed), url)), 'ab $url |ef');
+    test('without a valid selection appends, for emotes and uploads alike', () {
+      expect(_show(insertWord(_value('hi', selection: _invalid), 'Kappa')), 'hi Kappa |');
+      expect(_show(insertWord(_value('hi', selection: _invalid), url)), 'hi $url |');
+      expect(_show(insertWord(_value('hi ', selection: _invalid), url)), 'hi $url |');
+      // A selection left over from longer text counts as none.
+      expect(_show(insertWord(_value('hi', caret: 5), 'Kappa')), 'hi Kappa |');
     });
 
-    test('decides on the leading space by the text up to the end of the selected range', () {
-      // The selected text doesn't end with a space, so a space is added although the range starts after one.
+    test('replaces a selected range in either direction', () {
       const selection = TextSelection(baseOffset: 3, extentOffset: 5);
-      expect(_show(insertUploadedUrl(_value('ab cd', selection: selection), url)), 'ab  $url |');
+      expect(_show(insertWord(_value('ab cd ef', selection: selection), url)), 'ab $url| ef');
+      const reversed = TextSelection(baseOffset: 5, extentOffset: 3);
+      expect(_show(insertWord(_value('ab cd ef', selection: reversed), 'Kappa')), 'ab Kappa| ef');
+      const withSpace = TextSelection(baseOffset: 3, extentOffset: 6);
+      expect(_show(insertWord(_value('ab cd ef', selection: withSpace), url)), 'ab $url |ef');
+    });
+
+    test('decides on the leading space by the character before the selection start', () {
+      const atEnd = TextSelection(baseOffset: 3, extentOffset: 5);
+      expect(_show(insertWord(_value('ab cd', selection: atEnd), url)), 'ab $url |');
       const fromStart = TextSelection(baseOffset: 0, extentOffset: 2);
-      expect(_show(insertUploadedUrl(_value('ab cd', selection: fromStart), url)), ' $url | cd');
-    });
-  });
-
-  group('insertAtCaret', () {
-    test('into empty text adds a space after it', () {
-      expect(_show(insertAtCaret(_value(''), 'Kappa')), 'Kappa |');
-      expect(_show(insertAtCaret(_value('', selection: _invalid), 'Kappa')), 'Kappa |');
-    });
-
-    test('at the end adds a space before and after it', () {
-      expect(_show(insertAtCaret(_value('hi'), 'Kappa')), 'hi Kappa |');
-      expect(_show(insertAtCaret(_value('hi '), 'Kappa')), 'hi Kappa |');
-    });
-
-    test('adds spaces only where the neighbouring character is none', () {
-      expect(_show(insertAtCaret(_value('hi there', caret: 2), 'Kappa')), 'hi Kappa| there');
-      expect(_show(insertAtCaret(_value('hi there', caret: 3), 'Kappa')), 'hi Kappa |there');
-      expect(_show(insertAtCaret(_value('hi there', caret: 0), 'Kappa')), 'Kappa |hi there');
-      expect(_show(insertAtCaret(_value('hithere', caret: 2), 'Kappa')), 'hi Kappa |there');
-    });
-
-    test('without a valid selection inserts at the start', () {
-      expect(_show(insertAtCaret(_value('hi', selection: _invalid), 'Kappa')), 'Kappa |hi');
-    });
-
-    test('inserts at the base of a selected range and keeps the selected text', () {
-      const selection = TextSelection(baseOffset: 0, extentOffset: 2);
-      expect(_show(insertAtCaret(_value('hi', selection: selection), 'Kappa')), 'Kappa |hi');
-      const reversed = TextSelection(baseOffset: 2, extentOffset: 0);
-      expect(_show(insertAtCaret(_value('hi', selection: reversed), 'Kappa')), 'hi Kappa |');
+      expect(_show(insertWord(_value('ab cd', selection: fromStart), url)), '$url| cd');
+      const midWord = TextSelection(baseOffset: 1, extentOffset: 4);
+      expect(_show(insertWord(_value('ab cd', selection: midWord), 'Kappa')), 'a Kappa |d');
+      const all = TextSelection(baseOffset: 0, extentOffset: 5);
+      expect(_show(insertWord(_value('ab cd', selection: all), 'Kappa')), 'Kappa |');
     });
   });
 }
