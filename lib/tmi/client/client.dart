@@ -546,6 +546,17 @@ class Client {
     unawaited(validateCredentials(twitchAccount));
   }
 
+  /// Logs out: closes both chat connections and stops whispers until [connectAs] is called again.
+  void disconnect() {
+    _apiAccount = null;
+    twitchUserEmotes.change([]);
+    whispers.setAccount(null);
+    ownColor = null;
+    eventSub.connect(null);
+    receiver.add(ConnectionDisconnect());
+    transmitter.add(ConnectionDisconnect());
+  }
+
   Future<void> stateChange(Connection connection, Change<ConnectionState> change) async {
     // final matchingChannels = channels.state.where((channel) => channel.state is ChannelStateWithConnection && (channel.state as ChannelStateWithConnection).receiver == this);
     for (final channel in channels.state) {
