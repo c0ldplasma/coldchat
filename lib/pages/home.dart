@@ -287,23 +287,28 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 // tab's large app bar and the chat view would each add it a
                 // second time and leave a gap under the banner.
                 final loginExpired = connectionState is tmi.ConnectionInvalidCredentials;
+                final tabs = TabBarView(
+                  controller: tabController,
+                  children: [
+                    const HomeTab(),
+                    for (final channel in state)
+                      ChannelView(
+                        key: ObjectKey(channel),
+                        channel: channel,
+                      ),
+                  ],
+                );
                 return Column(
                   children: [
                     const LoginExpiredBanner(),
                     Expanded(
-                      child: MediaQuery.removePadding(
-                        context: context,
-                        removeTop: loginExpired,
-                        child: TabBarView(
-                          controller: tabController,
-                          children: [
-                            const HomeTab(),
-                            for (final channel in state)
-                              ChannelView(
-                                key: ObjectKey(channel),
-                                channel: channel,
-                              ),
-                          ],
+                      // removePadding depends on all of MediaQuery, which changes on every frame of the keyboard
+                      // animation. Only this Builder rebuilds then, with the same tabs, so the chats below don't.
+                      child: Builder(
+                        builder: (context) => MediaQuery.removePadding(
+                          context: context,
+                          removeTop: loginExpired,
+                          child: tabs,
                         ),
                       ),
                     ),
