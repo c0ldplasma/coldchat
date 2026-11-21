@@ -10,6 +10,7 @@ import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/separator.dart';
 import '../components/tile.dart';
+import '../data/active_account.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
@@ -158,10 +159,7 @@ class TwitchAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        unawaited(context.read<Client>().connectAs(twitchAccount));
-
-        final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
-        await accountSettingsBox.put('activeTwitchAccount', twitchAccount.tokenData.hash);
+        await setActiveAccount(context.read<Client>(), twitchAccount);
       },
       onLongPress: () {
         unawaited(

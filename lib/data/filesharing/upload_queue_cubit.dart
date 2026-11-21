@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,18 +12,48 @@ import 'upload_task.dart';
 ///
 /// Lives above the channel views so an upload survives tab switches and the
 /// composer never has to await anything: it starts a task, keeps accepting
-/// input, and gets the URL handed back through [onUploaded] when the host
-/// answers.
+/// input, and gets the URL handed back through [completed] and
+/// [takeUploadedUrls] when the host answers.
 class UploadQueueCubit extends Cubit<List<UploadTask>> {
-  UploadQueueCubit() : super(const []);
+  UploadQueueCubit({
+    Future<Uint8List> Function(String path)? readBytes,
+    List<UploadHost>? hosts,
+  }) : _readBytes = readBytes ?? _readFile,
+       _hosts = hosts ?? UploadHosts.chain,
+       super(const []);
 
-  /// Finished uploads, for the composer to insert at its caret. A broadcast
-  /// stream rather than a callback because every open channel tab listens and
-  /// filters by [UploadTask.channelName] — a single callback would be
-  /// overwritten by whichever tab registered last.
+  /// Seams for tests; the app uses the real file system and host chain.
+  final Future<Uint8List> Function(String path) _readBytes;
+  final List<UploadHost> _hosts;
+
+  // Async read: readAsBytesSync on the UI isolate janks visibly on anything
+  // large, and file pickers happily hand back 100MB videos.
+  static Future<Uint8List> _readFile(String path) => File(path).readAsBytes();
+
+  /// Signals finished uploads. A broadcast stream rather than a callback
+  /// because every open channel tab listens and filters by
+  /// [UploadTask.channelName] — a single callback would be overwritten by
+  /// whichever tab registered last. The URLs themselves wait in
+  /// [takeUploadedUrls]: a channel's view is disposed while its tab is off
+  /// screen, and an event nobody hears would drop the URL.
   final StreamController<UploadTask> _completed = StreamController<UploadTask>.broadcast();
 
   Stream<UploadTask> get completed => _completed.stream;
+
+  /// URLs of finished uploads per channel name that no composer has taken yet.
+  final Map<String, List<String>> _uploadedUrls = {};
+
+  /// Hands over (and forgets) the finished uploads' URLs for [channelName], oldest first.
+  List<String> takeUploadedUrls(String channelName) => _uploadedUrls.remove(channelName) ?? const [];
+
+  /// Keeps [task]'s URL for [takeUploadedUrls] and tells the listeners.
+  @visibleForTesting
+  void deliverCompleted(UploadTask task) {
+    final url = task.url;
+    if (url == null) return;
+    _uploadedUrls.putIfAbsent(task.channelName, () => []).add(url);
+    if (!_completed.isClosed) _completed.add(task);
+  }
 
   static const Duration _stallTimeout = Duration(seconds: 45);
 
@@ -53,21 +83,29 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
       path: path,
       size: 0,
       channelName: channelName,
-      hostName: UploadHosts.chain.first.name,
+      hostName: _hosts.first.name,
     );
     emit([...state, task]);
     _ensureWatchdog();
 
+    await _readAndRun(task);
+  }
+
+  /// Whether [task] should still go ahead: not cancelled, and still in the
+  /// queue (a failed task can be dismissed while its retry reads the file).
+  bool _isActive(UploadTask task) =>
+      task.status != UploadStatus.cancelled && state.any((element) => element.id == task.id);
+
+  Future<void> _readAndRun(UploadTask task) async {
     final Uint8List bytes;
     try {
-      // Async read: readAsBytesSync on the UI isolate janks visibly on
-      // anything large, and file pickers happily hand back 100MB videos.
-      bytes = await File(path).readAsBytes();
+      bytes = await _readBytes(task.path);
     } catch (e) {
-      _failUnreadable(task, e);
+      if (_isActive(task)) _failUnreadable(task, e);
       return;
     }
-
+    // Reading a big video takes a while; the user may have cancelled meanwhile.
+    if (!_isActive(task)) return;
     await _runChain(task, bytes);
   }
 
@@ -83,10 +121,11 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
     task.errorStatus = null;
     task.errorDetail = null;
     _publish();
+    _ensureWatchdog();
 
-    for (var i = 0; i < UploadHosts.chain.length; i++) {
-      final host = UploadHosts.chain[i];
-      if (task.status == UploadStatus.cancelled) return;
+    for (var i = 0; i < _hosts.length; i++) {
+      final host = _hosts[i];
+      if (!_isActive(task)) return;
 
       task.hostName = host.name;
       task.sent = 0;
@@ -122,7 +161,7 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
         task.url = url;
         task.client = null;
         _publish();
-        _completed.add(task);
+        deliverCompleted(task);
         remove(task);
         return;
       } catch (e) {
@@ -134,7 +173,7 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
         // Recorded for every host, so the chip can say "Retrying with nuuls…"
         // while the chain continues, and the details dialog can list them all.
         task.attempts.add(failure);
-        if (i == UploadHosts.chain.length - 1) _failChain(task);
+        if (i == _hosts.length - 1) _failChain(task);
       } finally {
         client.close();
         if (identical(task.client, client)) task.client = null;
@@ -187,14 +226,16 @@ class UploadQueueCubit extends Cubit<List<UploadTask>> {
   }
 
   Future<void> retry(UploadTask task) async {
-    final Uint8List bytes;
-    try {
-      bytes = await File(task.path).readAsBytes();
-    } catch (e) {
-      _failUnreadable(task, e);
-      return;
-    }
-    await _runChain(task, bytes);
+    // Leave the failed state before the first await, so a second tap while the
+    // file is read is a no-op instead of starting a second chain on this task.
+    if (task.status != UploadStatus.failed || !_isActive(task)) return;
+    task.status = UploadStatus.uploading;
+    task.sent = 0;
+    task.lastProgressAt = DateTime.now();
+    task.errorKind = null;
+    _publish();
+    _ensureWatchdog();
+    await _readAndRun(task);
   }
 
   void cancel(UploadTask task) {

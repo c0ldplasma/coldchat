@@ -4,11 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../components/modal.dart';
 import '../components/separator.dart';
+import '../data/active_account.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
+import '../tmi/client/client.dart';
 import 'components/modal_header.dart';
 import 'verify_token.dart';
 
@@ -98,7 +101,12 @@ class TwitchAccountModal extends StatelessWidget {
         onTap: () async {
           final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
           if (accountSettingsBox.get('activeTwitchAccount') == twitchAccount.tokenData.hash) {
-            await accountSettingsBox.delete('activeTwitchAccount');
+            // Switch to another saved account, or log out when this was the last one. The avatar shows which
+            // account is active, so the switch is visible.
+            final remaining = Hive.box<dynamic>('TwitchAccounts').values.cast<TwitchAccount>().where(
+              (account) => account.tokenData.hash != twitchAccount.tokenData.hash,
+            );
+            await setActiveAccount(context.read<Client>(), remaining.firstOrNull);
           }
           await twitchAccount.delete();
           if (!context.mounted) return;
