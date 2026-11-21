@@ -1,0 +1,59 @@
+import 'dart:io';
+
+import 'package:coldchat/data/settings/message_appearance.dart';
+import 'package:coldchat/hive_registrar.g.dart';
+import 'package:coldchat/l10n/app_localizations.dart';
+import 'package:coldchat/theme/coldchat_theme.dart';
+import 'package:coldchat/widgets/chat_message.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce/hive_ce.dart';
+
+import '../tmi/channel_message_chat_test.dart' show chat;
+
+Widget app(Widget child) => MaterialApp(
+  theme: ColdChatTheme.build(ColdChatTheme.defaultAccent, Brightness.dark),
+  localizationsDelegates: AppLocalizations.localizationsDelegates,
+  supportedLocales: AppLocalizations.supportedLocales,
+  home: Scaffold(body: child),
+);
+
+void main() {
+  late Directory tempDir;
+
+  setUpAll(() async {
+    Hive.registerAdapters();
+    tempDir = Directory.systemTemp.createTempSync('coldchat_chat_message_test');
+    Hive.init(tempDir.path);
+    final settings = await Hive.openBox<dynamic>('Settings');
+    // Without timestamps and badges the user name is the first thing in the message's text.
+    await settings.put(
+      'messageAppearance',
+      MessageAppearance()
+        ..timestamps = false
+        ..badges = false,
+    );
+  });
+
+  tearDownAll(() async {
+    await Hive.close();
+    tempDir.deleteSync(recursive: true);
+  });
+
+  testWidgets('a tap on the user name that ends after the message was replaced does nothing', (tester) async {
+    await tester.pumpWidget(app(ChatMessage(key: const ValueKey(1), message: chat('first'))));
+
+    final name = tester.getTopLeft(find.byType(RichText).first) + const Offset(4.0, 4.0);
+    final gesture = await tester.startGesture(name);
+
+    // A new message arriving in the chat list replaces the element of every visible message (they're keyed by
+    // message), like this.
+    await tester.pumpWidget(app(ChatMessage(key: const ValueKey(2), message: chat('second'))));
+
+    await gesture.up();
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.byType(BottomSheet), findsNothing);
+  });
+}
