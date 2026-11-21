@@ -44,31 +44,6 @@ class Modal extends StatelessWidget {
     );
   }
 
-  Widget build2(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0) + MediaQuery.of(context).viewInsets,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Material(
-              color: ChatColors.of(context).sheet,
-              clipBehavior: clipBehavior,
-              borderRadius: BorderRadius.circular(8.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 1024.0,
-                  maxHeight: (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.vertical) * 0.8,
-                ),
-                child: child,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   static Future<void> show({
     required BuildContext context,
     required Widget child,

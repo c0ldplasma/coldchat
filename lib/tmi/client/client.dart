@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 
 import '../../api/api_client.dart';
 import '../../api/betterttv/betterttv.dart';
+import '../../api/chatterino/chatterino.dart';
 import '../../api/dankchat/dankchat.dart';
 import '../../api/emojis/emoji_data.dart';
 import '../../api/frankerfacez/frankerfacez.dart';
@@ -25,6 +26,7 @@ import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
 import '../../sources/bttv_source.dart';
 import '../../sources/chat_source.dart';
+import '../../sources/chatterino_source.dart';
 import '../../sources/dankchat_source.dart';
 import '../../sources/emoji_source.dart';
 import '../../sources/ffz_source.dart';
@@ -85,6 +87,7 @@ class Client implements AccountConnector {
         BttvSource(BttvApi(api)),
         FfzSource(FfzApi(api)),
         DankChatSource(DankChatApi(api)),
+        ChatterinoSource(ChatterinoApi(api)),
         TwitchSource(helix: helix),
         EmojiSource(EmojiDataApi(api)),
       ];
@@ -191,8 +194,9 @@ class Client implements AccountConnector {
     this.transmitter.onReceive = receive;
     this.receiver.onStateChange = (connection, change) => joiner.receiverStateChanged(change);
     this.transmitter.onStateChange = (connection, change) => joiner.transmitterStateChanged(change);
-    // The chat also arrives on the transmitter, as it's in every channel: drop it before it's logged or handled.
-    this.transmitter.accepts = (message) => transmitterCommands.contains(message.command);
+    // The chat also arrives on the transmitter, as it's in every channel: drop it unparsed, before it's logged or
+    // handled.
+    this.transmitter.acceptedCommands = transmitterCommands;
 
     // Reading needs no account: the receiver is anonymous from the start and stays so.
     this.receiver.add(ConnectionConnect(anonymousAccount()));

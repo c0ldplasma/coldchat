@@ -97,14 +97,6 @@ class CreditsModal extends StatelessWidget {
     shrinkWrap: true,
     children: [
       ModalHeader(title: AppLocalizations.of(context).credits),
-      // Tile(
-      //   title: 'Midori',
-      //   subtitle: 'French translation',
-      //   prefix: CircleAvatar(
-      //     backgroundImage: NetworkImage('https://avatars.githubusercontent.com/u/25180625?v=4'),
-      //   ),
-      //   onTap: () => launchUrl(Uri.parse('https://google.com'), mode: LaunchMode.externalApplication),
-      // ),
       for (final credit in credits)
         Tile(
           title: credit.name,

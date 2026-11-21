@@ -192,44 +192,6 @@ class _ChatViewState extends State<ChatView> {
                 ),
               ),
             ),
-            // Material(
-            //   color: Theme.of(context).colorScheme.primaryContainer,
-            //   child: Column(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       if (scrollMessages != null)
-            //         Ink(
-            //           color: Theme.of(context).colorScheme.tertiaryContainer,
-            //           height: 32.0 + 24.0,
-            //           child: InkWell(
-            //             onTap: () {
-            //               scrollMessages = null;
-            //               setState(() {});
-            //               WidgetsBinding.instance.scheduleFrameCallback((_) {
-            //                 scrollController.jumpTo(scrollController.position.minScrollExtent);
-            //               });
-            //             },
-            //             child: Row(
-            //               mainAxisAlignment: MainAxisAlignment.center,
-            //               children: [
-            //                 Icon(
-            //                   Icons.arrow_downward_rounded,
-            //                   color: Theme.of(context).colorScheme.onTertiaryContainer,
-            //                 ),
-            //                 const SizedBox(width: 4.0),
-            //                 Text(
-            //                   AppLocalizations.of(context).scrollToBottom,
-            //                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            //                         color: Theme.of(context).colorScheme.onTertiaryContainer,
-            //                       ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         ),
-            //     ],
-            //   ),
-            // ),
             SizeReporter(
               onSize: _onOverlaySize,
               child: SafeArea(

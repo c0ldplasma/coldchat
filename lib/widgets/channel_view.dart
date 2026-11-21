@@ -19,7 +19,6 @@ import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../sheets/login.dart';
 import '../sheets/whisper_errors.dart';
-import '../theme/coldchat_theme.dart';
 import '../tmi/channel/can_send.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/composer_draft.dart';
@@ -47,20 +46,12 @@ class ChannelView extends StatefulWidget {
   State<ChannelView> createState() => ChannelViewState();
 }
 
-enum AutocompletionType {
-  emote,
-  user,
-  customCommand,
-}
-
 class AutocompletionItem {
   final Widget? prefix;
   final String title;
   final String? subtitle;
   final void Function()? onTap;
   final void Function()? onLongPress;
-  final Widget? shortened;
-  final AutocompletionType type;
 
   AutocompletionItem({
     this.prefix,
@@ -68,15 +59,12 @@ class AutocompletionItem {
     this.subtitle,
     this.onTap,
     this.onLongPress,
-    this.shortened,
-    required this.type,
   });
 }
 
 class ChannelViewState extends State<ChannelView> {
   final FocusNode textFocusNode = FocusNode();
   final TextEditingController textEditingController = TextEditingController();
-  bool spamming = false;
   bool emoteKeyboard = false;
   // The emote menu is open to choose the button's emote (long-press on it).
   bool pickingButtonIcon = false;
@@ -300,7 +288,7 @@ class ChannelViewState extends State<ChannelView> {
   /// Drop [url] where the caret is, preserving whatever has been typed since
   /// the upload started, and leave the caret after it ready for more text.
   void _insertUploadedUrl(String url) {
-    textEditingController.value = insertUploadedUrl(textEditingController.value, url);
+    textEditingController.value = insertWord(textEditingController.value, url);
   }
 
   /// Puts [word] in place of the word being typed, for a tapped autocompletion.
@@ -345,15 +333,7 @@ class ChannelViewState extends State<ChannelView> {
     return [
       for (final user in matchingChatters)
         AutocompletionItem(
-          type: AutocompletionType.user,
           prefix: const Icon(Icons.person_outline_rounded),
-          shortened: Text(
-            '@${user.displayName ?? user.login}',
-            style: TextStyle(
-              color: ChatColors.of(context).nameColor(user.color, Theme.of(context).colorScheme),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           title: user.displayName ?? user.login!,
           subtitle: user.login,
           onTap: () => _complete('${user.login}'),
@@ -362,22 +342,14 @@ class ChannelViewState extends State<ChannelView> {
         textEditingController.text,
       ))
         AutocompletionItem(
-          type: AutocompletionType.customCommand,
           prefix: const Icon(Icons.keyboard_command_key_rounded),
-          shortened: Text(customCommand.trigger),
           title: customCommand.trigger,
           subtitle: customCommand.command,
           onTap: () => _complete(customCommand.trigger),
         ),
       for (final emote in sortedEmotes)
         AutocompletionItem(
-          type: AutocompletionType.emote,
           prefix: EmoteGlyph(
-            emote: emote,
-            size: 24.0,
-            image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
-          ),
-          shortened: EmoteGlyph(
             emote: emote,
             size: 24.0,
             image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
@@ -420,90 +392,32 @@ class ChannelViewState extends State<ChannelView> {
                   ),
                 ),
               _ReplyBar(draft: widget.channel.composerDraft),
-              Surface(
-                type: SurfaceType.secondary,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      for (final autocompletionItem in getAutocompletionItems())
-                        Tile(
-                          onTap: autocompletionItem.onTap,
-                          onLongPress: autocompletionItem.onLongPress,
-                          prefix: autocompletionItem.prefix,
-                          title: autocompletionItem.title,
-                          subtitle: autocompletionItem.subtitle,
-                        ),
-                    ],
+              // Follows the text however it changes (typing, sending clears it, a completion or mention edits it), not
+              // only the rebuilds typing causes: sending clears the field without one.
+              ListenableBuilder(
+                listenable: textEditingController,
+                builder: (context, _) => Surface(
+                  type: SurfaceType.secondary,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 56.0 * 4.5),
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        for (final autocompletionItem in getAutocompletionItems())
+                          Tile(
+                            onTap: autocompletionItem.onTap,
+                            onLongPress: autocompletionItem.onLongPress,
+                            prefix: autocompletionItem.prefix,
+                            title: autocompletionItem.title,
+                            subtitle: autocompletionItem.subtitle,
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              // Surface(
-              //   type: SurfaceType.tertiary,
-              //   child: SizedBox(
-              //     height: 56.0,
-              //     child: ListView(
-              //       padding: EdgeInsets.zero,
-              //       scrollDirection: Axis.horizontal,
-              //       children: [
-              //         for (final autocompletionItem in getAutocompletionItems())
-              //           InkWell(
-              //             onTap: autocompletionItem.onTap,
-              //             onLongPress: autocompletionItem.onLongPress,
-              //             child: ConstrainedBox(
-              //               constraints: BoxConstraints(minWidth: 56.0),
-              //               child: Padding(
-              //                 padding: const EdgeInsets.all(12.0),
-              //                 child: autocompletionItem.shortened,
-              //               ),
-              //             ),
-              //             // title: autocompletionItem.title,
-              //             // subtitle: autocompletionItem.subtitle,
-              //           ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // if (textEditingController.text.split(' ').last.length >= 2 && (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).any((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
-              //   Ink(
-              //     color: Theme.of(context).colorScheme.secondaryContainer,
-              //     child: SizedBox(
-              //       height: 32.0 + 24.0,
-              //       child: ListView(
-              //         scrollDirection: Axis.horizontal,
-              //         children: [
-              //           for (final emote in (widget.channel.channelEmotes.state + widget.channel.client.globalEmotes.state).where((emote) => emote.name.toLowerCase().contains(textEditingController.text.split(' ').last.toLowerCase())))
-              //             Tooltip(
-              //               message: emote.name,
-              //               child: InkWell(
-              //                 onTap: () {
-              //                   final splits = textEditingController.text.split(' ');
-              //                   splits.removeLast();
-              //                   splits.add('${emote.code ?? emote.name} ');
-              //                   textEditingController.text = splits.join(' ');
-              //                   textEditingController.selection = TextSelection.fromPosition(
-              //                     TextPosition(
-              //                       offset: textEditingController.text.length,
-              //                     ),
-              //                   );
-              //                   setState(() {});
-              //                 },
-              //                 child: Padding(
-              //                   padding: const EdgeInsets.all(12.0),
-              //                   child: Image.network(
-              //                     emote.mipmap.last,
-              //                   ),
-              //                 ),
-              //               ),
-              //             ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-
               SizedBox(
                 height: 48.0,
                 child: Row(
@@ -568,18 +482,13 @@ class ChannelViewState extends State<ChannelView> {
                     // const Separator(axis: Axis.vertical),
                     InkWell(
                       onTap: sendMessage,
-                      onLongPress: () {
-                        setState(() {
-                          spamming = !spamming;
-                        });
-                      },
                       child: SizedBox(
                         width: 48.0,
                         height: 48.0,
                         child: BlocBuilder<CanSend, bool>(
                           bloc: widget.channel.canSendCubit,
                           builder: (context, canSend) => Icon(
-                            spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
+                            Icons.send_rounded,
                             color: canSend
                                 ? Theme.of(context).colorScheme.primary
                                 : Theme.of(context).colorScheme.onSurfaceVariant,
@@ -631,7 +540,7 @@ class ChannelViewState extends State<ChannelView> {
                           },
                           insertFieldInput: (text) async {
                             setState(() {
-                              textEditingController.value = insertAtCaret(textEditingController.value, text);
+                              textEditingController.value = insertWord(textEditingController.value, text);
                             });
                           },
                         ),

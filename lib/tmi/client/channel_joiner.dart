@@ -63,14 +63,16 @@ class ChannelJoiner {
 
   void _receiverJoinPass() {
     if (receiver.state is! ConnectionConnected) return;
-    // A JOIN that never got an echo (dropped by Twitch, or the channel doesn't exist) would leave the channel
-    // connecting forever: queue it again, a limited number of times.
+    // A JOIN that never got an echo (dropped by Twitch) would leave the channel connecting forever: queue it again,
+    // after a growing delay once it went unanswered a few times. The channel shows as connecting meanwhile. A channel
+    // Twitch says is suspended (or doesn't exist) is no longer connecting, so it isn't retried.
     for (final name in _joins.takeTimedOut()) {
       final channel = channels().firstWhereOrNull((channel) => channel.name == name);
       if (channel == null || channel.state is! ChannelConnecting) continue;
-      final retry = _joins.canRetry(name);
-      ircLog('receiver: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
-      if (retry) channel.add(ChannelPart());
+      ircLog('receiver: JOIN $name timed out, ${_retryLog(_joins.retryDelay(name))}');
+    }
+    for (final channel in channels()) {
+      if (channel.state is ChannelConnecting && _joins.isDue(channel.name)) channel.add(ChannelPart());
     }
     final disconnected = channels().where((channel) => channel.state is ChannelDisconnected).toList();
     if (disconnected.isEmpty) return;
@@ -89,19 +91,19 @@ class ChannelJoiner {
   }
 
   /// Joins the channels on the transmitter too, so it gets the account's USERSTATE there. Same rate limit and retries
-  /// as the receiver, with its own [JoinScheduler] because the limit is per account.
+  /// as the receiver, with its own [JoinScheduler] because the limit is per account. Only the receiver handles the
+  /// suspended NOTICE, so the transmitter skips the channels the receiver marked suspended.
   void _transmitterJoinPass() {
     if (transmitter.state is! ConnectionConnected) return;
     for (final name in _transmitterJoins.takeTimedOut()) {
-      final retry = _transmitterJoins.canRetry(name);
-      ircLog('transmitter: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
+      ircLog('transmitter: JOIN $name timed out, ${_retryLog(_transmitterJoins.retryDelay(name))}');
     }
     final unjoined = channels()
         .where(
           (channel) =>
               !channel.transmitterJoin.state &&
-              !_transmitterJoins.isPending(channel.name) &&
-              _transmitterJoins.canRetry(channel.name),
+              channel.state is! ChannelSuspended &&
+              _transmitterJoins.canJoin(channel.name),
         )
         .toList();
     if (unjoined.isEmpty) return;
@@ -115,6 +117,8 @@ class ChannelJoiner {
     ircLog('transmitter: JOIN $names');
     unawaited(transmitter.send('JOIN $names'));
   }
+
+  static String _retryLog(Duration delay) => delay == Duration.zero ? 'retrying' : 'retrying in ${delay.inSeconds} s';
 
   /// Twitch echoed the receiver's JOIN of [channelName].
   void receiverJoined(String channelName) => _joins.acknowledged(channelName);

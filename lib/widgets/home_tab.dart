@@ -32,30 +32,6 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
   context.read<HomeTabSwitcher>().open(channelName);
 }
 
-class HomeSearchBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeSearchBar({super.key});
-
-  @override
-  Widget build(BuildContext context) => const Placeholder();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(48.0);
-}
-
-class SliverSearchBar extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) => const SafeArea(child: Placeholder());
-
-  @override
-  double get maxExtent => 256.0;
-
-  @override
-  double get minExtent => 256.0;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
-}
-
 /// The home tab: channel search, recommended and top streams. The streams come from the [HomeStreamsCubit] the home
 /// page provides; the search lives (and resets) with this tab.
 class HomeTab extends StatelessWidget {
@@ -303,66 +279,6 @@ class _StreamLists extends StatelessWidget {
         ],
       );
     },
-  );
-}
-
-class StreamPreviewPill extends StatelessWidget {
-  const StreamPreviewPill({
-    super.key,
-    required this.stream,
-  });
-
-  final StreamData stream;
-
-  @override
-  Widget build(BuildContext context) => Surface(
-    type: SurfaceType.surfaceVariant,
-    borderRadius: BorderRadius.circular(12.0),
-    shouldClip: true,
-    onTap: () {},
-    child: Stack(
-      children: [
-        Positioned.fill(
-          child: Ink.image(
-            image: NetworkImage(stream.thumbnailUrl.replaceAll('{width}', '1920').replaceAll('{height}', '1080')),
-            fit: BoxFit.cover,
-          ),
-        ),
-        Positioned.fill(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withValues(alpha: 0.66),
-                  Colors.black.withValues(alpha: 0.66),
-                ],
-                stops: const [
-                  0.0,
-                  1.0,
-                ],
-              ),
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(stream.userName, style: Theme.of(context).textTheme.titleLarge),
-              Text(
-                stream.title,
-                style: Theme.of(context).textTheme.titleMedium,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
   );
 }
 

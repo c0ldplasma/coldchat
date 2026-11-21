@@ -19,6 +19,9 @@ final _stateLookup = RegExp(r'\bfindAncestorStateOfType\b');
 /// A Cubit or Bloc provided with plain `Provider`, which never closes it; `BlocProvider` does.
 final _cubitInPlainProvider = RegExp(r'\bProvider<\w*(Cubit|Bloc)>');
 
+/// An adapter registered by hand instead of through the generated `Hive.registerAdapters()`.
+final _handRegisteredAdapter = RegExp(r'\bregisterAdapter\(');
+
 /// A color picked in code rather than taken from the theme: a hex literal or a named Material color. Black, white
 /// and transparent stay allowed for scrims, overlays on images and invisible backgrounds.
 final _hardcodedColor = RegExp(r'\bColor\(0x|\bColors\.(?!black|white|transparent)\w+');
@@ -116,6 +119,19 @@ void main() {
       reason: 'Name the color in lib/theme/coldchat_theme.dart (ColorScheme or ChatColors) and use it from there.',
     );
   });
+
+  // A stored model whose adapter isn't registered makes opening its box throw, and main() never reaches runApp.
+  // The tests register the generated list too, so only this check catches main.dart not using it.
+  group('Hive adapters', () {
+    test('main.dart registers the generated adapter list', () {
+      final main = File('lib/main.dart').readAsStringSync();
+      expect(_code(main), contains('Hive.registerAdapters()'), reason: _hiveHint);
+    });
+
+    test('no adapter is registered by hand', () {
+      expect(_matchingLines(_dartFiles('lib'), _handRegisteredAdapter), isEmpty, reason: _hiveHint);
+    });
+  });
 }
 
 const _hint =
@@ -126,3 +142,7 @@ const _stateHint =
     'Runtime state lives in a Cubit/Bloc provided with BlocProvider (or owned by Client/Channel) and rendered with '
     'BlocBuilder; saved settings in a repository\'s changes Listenable rendered with ListenableBuilder. Widgets reach '
     'shared state through those, never through another widget\'s State (see CLAUDE.md).';
+
+const _hiveHint =
+    'Register Hive adapters only with Hive.registerAdapters() from the generated lib/hive_registrar.g.dart, in '
+    'main.dart before the boxes are opened; it lists every @HiveType, so none can be forgotten (see CLAUDE.md).';

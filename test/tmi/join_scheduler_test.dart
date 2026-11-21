@@ -101,29 +101,77 @@ void main() {
       expect(joins.takeTimedOut(), ['#b']);
     });
 
-    test('a channel can be retried until it has had three JOINs', () {
+    test('a timed out channel can be joined again right away for its first three JOINs', () {
       for (var attempt = 1; attempt <= 3; attempt++) {
-        expect(joins.canRetry('#missing'), isTrue);
+        expect(joins.canJoin('#missing'), isTrue);
         joins.sent(['#missing']);
-        advance(const Duration(seconds: 30));
+        expect(joins.canJoin('#missing'), isFalse, reason: 'pending');
+        expect(joins.isDue('#missing'), isFalse);
+        advance(const Duration(seconds: 20));
         expect(joins.takeTimedOut(), ['#missing']);
+        if (attempt < 3) {
+          expect(joins.isDue('#missing'), isTrue);
+          expect(joins.canJoin('#missing'), isTrue);
+        }
       }
-      expect(joins.canRetry('#missing'), isFalse);
     });
 
-    test('an echo resets the retry count', () {
-      joins.sent(['#a']);
-      joins.sent(['#a']);
-      joins.sent(['#a']);
-      expect(joins.canRetry('#a'), isFalse);
+    test('after three unanswered JOINs the delay starts at 30 s and doubles up to 5 minutes', () {
+      final delays = <Duration>[];
+      for (var attempt = 1; attempt <= 9; attempt++) {
+        joins.sent(['#missing']);
+        advance(const Duration(seconds: 20));
+        expect(joins.takeTimedOut(), ['#missing']);
+        delays.add(joins.retryDelay('#missing'));
+        final delay = delays.last;
+        if (delay > Duration.zero) {
+          advance(delay - const Duration(milliseconds: 1));
+          expect(joins.isDue('#missing'), isFalse);
+          expect(joins.canJoin('#missing'), isFalse);
+          advance(const Duration(milliseconds: 1));
+        }
+        expect(joins.isDue('#missing'), isTrue);
+        expect(joins.canJoin('#missing'), isTrue);
+      }
+      expect(delays.map((delay) => delay.inSeconds), [0, 0, 30, 60, 120, 240, 300, 300, 300]);
+    });
+
+    test('backoff is configurable', () {
+      joins = JoinScheduler(
+        maxAttempts: 1,
+        firstBackoff: const Duration(seconds: 5),
+        maxBackoff: const Duration(seconds: 8),
+        now: () => now,
+      );
+      final delays = <int>[];
+      for (var attempt = 0; attempt < 3; attempt++) {
+        joins.sent(['#a']);
+        delays.add(joins.retryDelay('#a').inSeconds);
+      }
+      expect(delays, [5, 8, 8]);
+    });
+
+    test('an echo resets the retry count and the delay', () {
+      for (var attempt = 0; attempt < 4; attempt++) {
+        joins.sent(['#a']);
+        advance(const Duration(seconds: 20));
+        joins.takeTimedOut();
+      }
+      expect(joins.canJoin('#a'), isFalse);
       joins.acknowledged('#a');
-      expect(joins.canRetry('#a'), isTrue);
+      expect(joins.canJoin('#a'), isTrue);
+      expect(joins.isDue('#a'), isFalse);
+      expect(joins.retryDelay('#a'), Duration.zero);
     });
 
-    test('reset forgets pending JOINs and retry counts', () {
+    test('reset forgets pending JOINs, retry counts and delays', () {
       joins.sent(['#a', '#a', '#a']);
+      advance(const Duration(seconds: 20));
+      joins.takeTimedOut();
+      expect(joins.canJoin('#a'), isFalse);
       joins.reset();
-      expect(joins.canRetry('#a'), isTrue);
+      expect(joins.canJoin('#a'), isTrue);
+      expect(joins.isDue('#a'), isFalse);
       advance(const Duration(minutes: 1));
       expect(joins.takeTimedOut(), isEmpty);
     });
