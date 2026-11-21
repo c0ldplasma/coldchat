@@ -10,7 +10,6 @@ import 'package:coldchat/data/repositories/account_repository.dart';
 import 'package:coldchat/data/repositories/channel_repository.dart';
 import 'package:coldchat/data/repositories/custom_command_repository.dart';
 import 'package:coldchat/data/repositories/settings_repository.dart';
-import 'package:coldchat/data/repositories/trigger_repository.dart';
 import 'package:coldchat/data/settings/chat_settings.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
@@ -21,18 +20,12 @@ import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/modal/message.dart';
 import 'package:coldchat/pages/home.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
-import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
-import 'package:coldchat/tmi/client/account_session.dart';
-import 'package:coldchat/tmi/client/chat_globals.dart';
-import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/client/client_channels.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:coldchat/tmi/connection/connection_event.dart';
 import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
-import 'package:coldchat/tmi/whispers/whispers.dart';
 import 'package:coldchat/widgets/channel_view.dart';
 import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
@@ -43,70 +36,7 @@ import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 
 import '../api/fake_api.dart';
-
-/// Logged out: no own login to highlight, nobody blocked.
-class _FakeSession implements AccountSession {
-  @override
-  String? get ownLogin => null;
-
-  @override
-  bool isBlocked(String userId) => false;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-/// Fetches no history.
-class _FakeHistory implements ChatHistory {
-  @override
-  Future<void> ensureRecentMessages(Channel channel) async {}
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-/// Just what a [Channel] and its [ChannelView] read from the client. The real [Client] opens connections and timers.
-class _FakeClient implements Client {
-  @override
-  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
-  @override
-  EmoteBadgeCache? cache;
-  @override
-  final Connection transmitter;
-  @override
-  TriggerRepository? get triggers => null;
-  @override
-  final AccountSession session = _FakeSession();
-
-  @override
-  late final Whispers whispers = Whispers(this);
-  @override
-  late ClientChannels channels = _FakeChannels();
-
-  final StreamController<String> _focusRequests = StreamController.broadcast();
-  @override
-  Stream<String> get channelFocusRequests => _focusRequests.stream;
-  @override
-  void focusChannel(String channelName) => _focusRequests.add(channelName);
-
-  _FakeClient(this.transmitter);
-
-  @override
-  final ChatHistory history = _FakeHistory();
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
-
-/// The joined channels, without the joining.
-class _FakeChannels extends Cubit<List<Channel>> implements ClientChannels {
-  _FakeChannels() : super(const []);
-
-  void show(List<Channel> channels) => emit(channels);
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+import '../tmi/client/fake_client.dart';
 
 /// Only the last shown channel, kept in memory.
 class _FakeChannelRepository implements ChannelRepository {
@@ -163,7 +93,7 @@ void main() {
   /// Shows a [ChannelView] with 20 messages under a [MediaQuery] taken from [mediaQuery], which the test changes to
   /// open the keyboard or move the status bar.
   Future<Channel> showChannel(WidgetTester tester, ValueNotifier<MediaQueryData> mediaQuery) async {
-    final client = _FakeClient(transmitter);
+    final client = FakeClient(transmitter: transmitter);
     final channel = Channel(client: client, name: '#ronni');
     addTearDown(channel.close);
     final notifications = NotificationsCubit();
@@ -350,20 +280,20 @@ void main() {
     await finish(tester);
   });
   group('from a message sheet of another channel', () {
-    late _FakeClient client;
+    late FakeClient client;
     late Channel a;
     late Channel b;
 
     /// The home page with the tabs of `#a` and `#b`, showing `#a`. `#b` has 3 messages.
     Future<void> showHome(WidgetTester tester) async {
-      client = _FakeClient(transmitter);
-      addTearDown(client._focusRequests.close);
+      client = FakeClient(transmitter: transmitter);
+      addTearDown(client.closeFocusRequests);
       addTearDown(client.whispers.close);
       a = Channel(client: client, name: '#a');
       b = Channel(client: client, name: '#b');
       addTearDown(a.close);
       addTearDown(b.close);
-      (client.channels as _FakeChannels).show([a, b]);
+      (client.channels as FakeChannels).show([a, b]);
       addTearDown(client.channels.close);
       for (var i = 0; i < 3; i++) {
         b.channelMessages.add(_message(i, b));

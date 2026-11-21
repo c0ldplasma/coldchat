@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_event.dart';
 import 'package:coldchat/tmi/channel/channel_state.dart';
 import 'package:coldchat/tmi/client/channel_joiner.dart';
-import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/client/join_scheduler.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
@@ -12,16 +10,7 @@ import 'package:coldchat/tmi/connection/connection_state.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Just what a [Channel] reads from its client when it's created. The real [Client] opens connections and timers.
-class _FakeClient implements Client {
-  @override
-  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
-  @override
-  EmoteBadgeCache? cache;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+import 'fake_client.dart';
 
 /// A connection that records what it sends, in whatever [state] the test sets.
 class _FakeConnection implements Connection {
@@ -54,7 +43,7 @@ void main() {
 
   void addChannels(Iterable<String> names) {
     for (final name in names) {
-      final channel = Channel(client: _FakeClient(), name: name);
+      final channel = Channel(client: FakeClient(), name: name);
       addTearDown(channel.close);
       channels.add(channel);
     }
