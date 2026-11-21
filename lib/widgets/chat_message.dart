@@ -150,9 +150,10 @@ class ChatMessage extends StatefulWidget {
 
 class _ChatMessageState extends State<ChatMessage> {
   // The tap recognizers of the text spans (the user name and links) belong to this state, so they are disposed with
-  // it. A recognizer created in build and never disposed outlives its element: the chat list replaces every visible
-  // message's element when a new message arrives, and a tap that ended after that ran its callback with an unmounted
-  // context (Navigator.of then failed a null check). Disposing a recognizer cancels a tap it is still tracking.
+  // it. A recognizer created in build and never disposed outlives its element: when a message's element goes away (a
+  // pending message replaced by the sent one, a message dropped from the list) a tap that ended after that ran its
+  // callback with an unmounted context (Navigator.of then failed a null check). Disposing a recognizer cancels a tap it
+  // is still tracking.
   TapGestureRecognizer? _nameRecognizer;
   final Map<String, TapGestureRecognizer> _urlRecognizers = {};
 

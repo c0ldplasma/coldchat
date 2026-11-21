@@ -194,4 +194,17 @@ void main() {
     expect(messages.state, isNot(same(before)));
     expect(_names(messages), ['a']);
   });
+
+  test('only refresh counts up the revision', () {
+    final messages = _messages()..add(_Chat('a', 1));
+    final before = messages.revision;
+
+    messages
+      ..add(_Chat('b', 2))
+      ..replace(messages.state.last, _Chat('c', 2));
+    expect(messages.revision, before);
+
+    messages.refresh();
+    expect(messages.revision, before + 1);
+  });
 }
