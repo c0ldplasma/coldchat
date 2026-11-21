@@ -22,6 +22,7 @@ import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
 import '../data/settings/chat_settings.dart';
 import '../l10n/app_localizations.dart';
+import '../modal/login_flow.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
@@ -225,7 +226,17 @@ class ChannelViewState extends State<ChannelView> {
         textEditingController.selection = TextSelection.collapsed(offset: original.length);
         setState(() {});
       }
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(whisperErrorText(context, e))));
+      showWhisperError(ScaffoldMessenger.of(context), Navigator.of(context), e);
+    }
+  }
+
+  /// Shows why a whisper couldn't be sent or opened, with a "Sign in" action when a new login fixes it.
+  static void showWhisperError(ScaffoldMessengerState messenger, NavigatorState navigator, Object error) {
+    final text = whisperErrorText(messenger.context, error);
+    if (error is WhisperUnavailableException) {
+      showSignInSnackBar(messenger, navigator, text);
+    } else {
+      messenger.showSnackBar(SnackBar(content: Text(text)));
     }
   }
 
@@ -497,9 +508,20 @@ class ChannelViewState extends State<ChannelView> {
               if (widget.channel is WhisperChannel && !widget.channel.client.whispers.hasScope)
                 Surface(
                   type: SurfaceType.error,
+                  onTap: () => showTwitchLogin(context),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                    child: Text(AppLocalizations.of(context).whisperNeedsScope),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(AppLocalizations.of(context).whisperNeedsScope)),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          AppLocalizations.of(context).signInAgain,
+                          // Only the weight: the color comes from the Surface's DefaultTextStyle.
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               if (replyChannelMessageChat != null)

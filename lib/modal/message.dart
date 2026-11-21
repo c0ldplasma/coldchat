@@ -8,6 +8,7 @@ import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
+import 'login_flow.dart';
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;
@@ -73,12 +74,13 @@ class MessageModal extends StatelessWidget {
           prefix: const Icon(Icons.delete_outline_outlined),
           onTap: () async {
             final messenger = ScaffoldMessenger.of(context);
+            final navigator = Navigator.of(context);
             final l10n = AppLocalizations.of(context);
-            Navigator.of(context).pop();
+            navigator.pop();
             final tokenData = message.channel!.client.transmitter.twitchAccount?.tokenData;
             // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
             if (tokenData == null || !tokenData.scopes.contains(Twitch.deleteChatMessageScope)) {
-              messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageNeedsScope)));
+              showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
               return;
             }
             try {
@@ -89,13 +91,11 @@ class MessageModal extends StatelessWidget {
                 messageId: message.id,
               );
             } on TwitchRequestException catch (e) {
-              messenger.showSnackBar(
-                SnackBar(
-                  content: Text(
-                    e.statusCode == 401 ? l10n.deleteMessageNeedsScope : l10n.deleteMessageFailed(e.message),
-                  ),
-                ),
-              );
+              if (e.statusCode == 401) {
+                showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
+              } else {
+                messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed(e.message))));
+              }
             } catch (e) {
               messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed('$e'))));
             }

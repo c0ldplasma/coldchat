@@ -17,6 +17,7 @@ import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
+import 'login_flow.dart';
 
 class UserModal extends StatefulWidget {
   final String login;
@@ -62,15 +63,16 @@ class _UserModalState extends State<UserModal> {
   ) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     final tokenData = _moderatorTokenData;
     final broadcasterId = channel?.id;
     final moderatorId = tokenData?.userId;
-    Navigator.of(context).pop();
+    navigator.pop();
     String? error;
     if (tokenData == null || broadcasterId == null || moderatorId == null) {
-      error = l10n.moderationNeedsLogin;
+      showSignInSnackBar(messenger, navigator, l10n.moderationNeedsLogin);
     } else if (!tokenData.scopes.contains(_moderationScope)) {
-      error = l10n.moderationNeedsScope;
+      showSignInSnackBar(messenger, navigator, l10n.moderationNeedsScope);
     } else {
       try {
         await action(tokenData, broadcasterId, moderatorId);
@@ -247,13 +249,13 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
   /// Opens the conversation with this user as a tab and switches to it.
   Future<void> whisper() async {
     final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     try {
       await widget.client.whispers.openAndFocus(widget.user.login);
       navigator.popUntil((route) => route.isFirst);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(ChannelViewState.whisperErrorText(context, e))));
+      ChannelViewState.showWhisperError(messenger, navigator, e);
     }
   }
 
