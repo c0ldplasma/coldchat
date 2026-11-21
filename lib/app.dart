@@ -26,17 +26,20 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver implements ClientListener {
+  /// Kept for [dispose], where looking up providers through the deactivated context throws.
+  late final Client _client;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((ts) => context.read<Client>().listeners.add(this));
+    _client = context.read<Client>()..listeners.add(this);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    context.read<Client>().listeners.remove(this);
+    _client.listeners.remove(this);
     super.dispose();
   }
 
@@ -47,7 +50,7 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
     // still alive, so a quick app-switch costs nothing. Don't gate on measured
     // background duration — iOS lifecycle events are unreliable for that.
     if (state == AppLifecycleState.resumed) {
-      unawaited(context.read<Client>().onAppResumed());
+      unawaited(_client.onAppResumed());
     }
   }
 

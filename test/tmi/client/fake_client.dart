@@ -11,6 +11,7 @@ import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/client/client_channels.dart';
+import 'package:coldchat/tmi/client/client_listener.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:coldchat/tmi/whispers/whispers.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,6 +43,9 @@ class FakeClient implements Client {
 
   @override
   late ClientChannels channels = FakeChannels();
+
+  @override
+  List<ClientListener> listeners = [];
 
   final StreamController<String> _focusRequests = StreamController.broadcast();
 
