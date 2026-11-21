@@ -49,7 +49,6 @@ class _AvatarButtonState extends State<AvatarButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationsCubit, NotificationsCubitState>(
-      bloc: BlocProvider.of<NotificationsCubit>(context),
       builder: (BuildContext context, state) => Stack(
         children: [
           // Swiping up or down anywhere on the pill switches to the next or previous saved account. A vertical drag

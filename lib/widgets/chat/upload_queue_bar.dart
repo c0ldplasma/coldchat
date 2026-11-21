@@ -26,7 +26,6 @@ class UploadQueueBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => BlocBuilder<UploadQueueCubit, List<UploadTask>>(
-    bloc: context.read<UploadQueueCubit>(),
     builder: (context, tasks) {
       final mine = tasks.where((task) => task.channelName == channelName).toList();
       if (mine.isEmpty) return const SizedBox.shrink();

@@ -27,6 +27,22 @@ nothing more. Requests, parsing, text transformations and decisions go into Cubi
 `package:http` itself: Helix lookups for the UI are in `lib/tmi/client/client_lookups.dart`, moderation in
 `lib/tmi/moderation.dart`. `test/architecture_test.dart` enforces the network part in CI; the rest is up to review.
 
+## One state-management style
+
+There are two ways to hold state, and widgets use only these:
+
+- **Runtime state** is a Cubit/Bloc in `lib/tmi/` or `lib/data/`, provided with `BlocProvider` (or owned by `Client`/
+  `Channel` and passed with `bloc:`), rendered with `BlocBuilder`/`BlocSelector`/`BlocListener` and read with
+  `context.read`. Cubits are never provided with plain `Provider`, which doesn't close them.
+- **Saved settings** are the repositories' `changes` Listenables (`lib/data/repositories/box_changes.dart`), rendered
+  with `ListenableBuilder`.
+
+A widget never reaches another widget's `State` (`findAncestorStateOfType`, a `GlobalKey` to call its methods): put
+what both need into a Cubit, like the composer's reply and mentions in `Channel.composerDraft`. Widgets don't
+`listen` to a state stream and call `setState`; build from it with a `BlocBuilder` instead. Event streams that trigger
+an action (an upload finished, a whisper to focus) are fine: subscribe in `initState`, cancel in `dispose`.
+`test/architecture_test.dart` fails on `findAncestorStateOfType` and on a Cubit or Bloc in a plain `Provider`.
+
 ## Localization
 
 `lib/l10n/app_localizations*.dart` is **generated but checked in**. After editing any `lib/l10n/*.arb`:

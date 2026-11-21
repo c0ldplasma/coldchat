@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/bottom_bar.dart';
@@ -20,7 +20,9 @@ import '../l10n/app_localizations.dart';
 import '../modal/login_flow.dart';
 import '../modal/whisper_errors.dart';
 import '../theme/coldchat_theme.dart';
+import '../tmi/channel/can_send.dart';
 import '../tmi/channel/channel.dart';
+import '../tmi/channel/composer_draft.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import 'chat/autocompletion_matcher.dart';
@@ -43,8 +45,6 @@ class ChannelView extends StatefulWidget {
 
   @override
   State<ChannelView> createState() => ChannelViewState();
-
-  static ChannelViewState? of(BuildContext context) => context.findAncestorStateOfType<ChannelViewState>();
 }
 
 enum AutocompletionType {
@@ -82,10 +82,8 @@ class ChannelViewState extends State<ChannelView> {
   bool pickingButtonIcon = false;
   // Keeps the autocompletion's emote and chatter lists between rebuilds, see [AutocompletionMatcher].
   final AutocompletionMatcher _autocompletion = AutocompletionMatcher();
-  ChannelMessageChat? replyChannelMessageChat;
   StreamSubscription<UploadTask>? _uploadSubscription;
-  // Rebuild the composer when the channel is joined or the sending connection drops, see [Channel.canSend].
-  final List<StreamSubscription<Object?>> _canSendSubscriptions = [];
+  StreamSubscription<String>? _mentionSubscription;
 
   /// The chat above the composer, created once. The composer calls setState on every keystroke; handing Flutter the
   /// same widget again makes it skip the chat instead of rebuilding the list and every visible message.
@@ -107,7 +105,10 @@ class ChannelViewState extends State<ChannelView> {
       text: draft.text,
       selection: TextSelection.collapsed(offset: draft.restoredCaret),
     );
-    replyChannelMessageChat = draft.reply;
+    // "Mention" in a message sheet while this view is shown.
+    _mentionSubscription = draft.mentions.listen((word) {
+      if (mounted) setState(() => textEditingController.value = appendWord(textEditingController.value, word));
+    });
 
     // Insert finished uploads into this channel's composer only; other tabs
     // ignore them. Uploads that finished while this view was gone wait in the
@@ -119,15 +120,6 @@ class ChannelViewState extends State<ChannelView> {
       setState(() {});
     });
     _insertUploadedUrls(queue.takeUploadedUrls(widget.channel.name));
-    void updateCanSend(Object? _) {
-      if (mounted) setState(() {});
-    }
-
-    _canSendSubscriptions.addAll([
-      widget.channel.stream.listen(updateCanSend),
-      widget.channel.client.transmitter.stream.listen(updateCanSend),
-      widget.channel.transmitterJoin.stream.listen(updateCanSend),
-    ]);
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;
       unawaited(recoverLostPhoto());
@@ -152,12 +144,6 @@ class ChannelViewState extends State<ChannelView> {
     );
   }
 
-  void setReplyChannelMessageChat(ChannelMessageChat? channelMessageChat) {
-    setState(() {
-      replyChannelMessageChat = channelMessageChat;
-    });
-  }
-
   Future<void> sendMessage() async {
     // TODO: Implement reactions here
 
@@ -177,8 +163,9 @@ class ChannelViewState extends State<ChannelView> {
       SendInWhisperChannel() => () => widget.channel.send(text),
       SendToChannel() || NotConnected() => null,
     };
+    final draft = widget.channel.composerDraft;
     if (sendWhisper != null) {
-      setReplyChannelMessageChat(null);
+      draft.replyTo(null);
       textEditingController.clear();
       unawaited(_sendWhisper(sendWhisper, original));
       return;
@@ -192,16 +179,17 @@ class ChannelViewState extends State<ChannelView> {
       return;
     }
 
+    final reply = draft.state;
     unawaited(
       widget.channel.send(
         text,
         tags: {
-          if (replyChannelMessageChat != null) 'reply-parent-msg-id': replyChannelMessageChat!.id,
+          if (reply != null) 'reply-parent-msg-id': reply.id,
         },
       ),
     );
 
-    setReplyChannelMessageChat(null);
+    draft.replyTo(null);
 
     textEditingController.clear();
   }
@@ -324,14 +312,11 @@ class ChannelViewState extends State<ChannelView> {
   @override
   void dispose() {
     unawaited(_uploadSubscription?.cancel());
-    for (final subscription in _canSendSubscriptions) {
-      unawaited(subscription.cancel());
-    }
+    unawaited(_mentionSubscription?.cancel());
     final selection = textEditingController.selection;
     widget.channel.composerDraft.save(
       text: textEditingController.text,
       caret: selection.isValid ? selection.end : -1,
-      reply: replyChannelMessageChat,
     );
     textEditingController.dispose();
     textFocusNode.dispose();
@@ -434,37 +419,7 @@ class ChannelViewState extends State<ChannelView> {
                     ),
                   ),
                 ),
-              if (replyChannelMessageChat != null)
-                Surface(
-                  type: SurfaceType.error,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                              child: Text(AppLocalizations.of(context).replyingTo),
-                            ),
-                            ChatMessage(message: replyChannelMessageChat!),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: Surface(
-                          onTap: () => setReplyChannelMessageChat(null),
-                          borderRadius: BorderRadius.circular(40.0),
-                          // type: SurfaceType.error,
-                          child: const Icon(Icons.close_outlined),
-                        ),
-                      ),
-                      const SizedBox(width: 12.0),
-                    ],
-                  ),
-                ),
+              _ReplyBar(draft: widget.channel.composerDraft),
               Surface(
                 type: SurfaceType.secondary,
                 child: ConstrainedBox(
@@ -563,26 +518,30 @@ class ChannelViewState extends State<ChannelView> {
                     ),
                     // const Separator(axis: Axis.vertical),
                     Expanded(
-                      child: TextField(
-                        controller: textEditingController,
-                        focusNode: textFocusNode,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          hintText: widget.channel is WhisperChannel
-                              ? AppLocalizations.of(context)
-                                    .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
-                              : widget.channel.canSend
-                              ? AppLocalizations.of(context).sendMessageIn(widget.channel.name)
-                              : AppLocalizations.of(context).channelConnecting(widget.channel.name),
-                          border: InputBorder.none,
+                      // The hint says "Connecting to …" until the channel can be written to.
+                      child: BlocBuilder<CanSend, bool>(
+                        bloc: widget.channel.canSendCubit,
+                        builder: (context, canSend) => TextField(
+                          controller: textEditingController,
+                          focusNode: textFocusNode,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            hintText: widget.channel is WhisperChannel
+                                ? AppLocalizations.of(context)
+                                      .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
+                                : canSend
+                                ? AppLocalizations.of(context).sendMessageIn(widget.channel.name)
+                                : AppLocalizations.of(context).channelConnecting(widget.channel.name),
+                            border: InputBorder.none,
+                          ),
+                          onSubmitted: (text) {
+                            unawaited(sendMessage());
+                            textFocusNode.requestFocus();
+                          },
+                          onChanged: (text) {
+                            setState(() {});
+                          },
                         ),
-                        onSubmitted: (text) {
-                          unawaited(sendMessage());
-                          textFocusNode.requestFocus();
-                        },
-                        onChanged: (text) {
-                          setState(() {});
-                        },
                       ),
                     ),
                     InkWell(
@@ -617,11 +576,14 @@ class ChannelViewState extends State<ChannelView> {
                       child: SizedBox(
                         width: 48.0,
                         height: 48.0,
-                        child: Icon(
-                          spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
-                          color: widget.channel.canSend
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.onSurfaceVariant,
+                        child: BlocBuilder<CanSend, bool>(
+                          bloc: widget.channel.canSendCubit,
+                          builder: (context, canSend) => Icon(
+                            spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
+                            color: canSend
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ),
                     ),
@@ -681,13 +643,50 @@ class ChannelViewState extends State<ChannelView> {
       ],
     );
   }
+}
 
-  void addSplit(String? text) {
-    if (text == null) return;
-    setState(() {
-      textEditingController.value = appendWord(textEditingController.value, text);
-    });
-  }
+/// The message the next one replies to, above the composer, with a button to cancel the reply.
+class _ReplyBar extends StatelessWidget {
+  final ComposerDraft draft;
+
+  const _ReplyBar({required this.draft});
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<ComposerDraft, ChannelMessageChat?>(
+    bloc: draft,
+    builder: (context, reply) {
+      if (reply == null) return const SizedBox.shrink();
+      return Surface(
+        type: SurfaceType.error,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                    child: Text(AppLocalizations.of(context).replyingTo),
+                  ),
+                  ChatMessage(message: reply),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 40.0,
+              height: 40.0,
+              child: Surface(
+                onTap: () => draft.replyTo(null),
+                borderRadius: BorderRadius.circular(40.0),
+                child: const Icon(Icons.close_outlined),
+              ),
+            ),
+            const SizedBox(width: 12.0),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 /// The chat of a [ChannelView]. Kept apart from the composer so typing doesn't rebuild it, and it reads only the view

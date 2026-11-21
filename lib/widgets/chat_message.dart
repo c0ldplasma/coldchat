@@ -27,7 +27,6 @@ import '../tmi/channel/messages/channel_message_event.dart';
 import '../tmi/channel/messages/channel_message_notice.dart';
 import '../tmi/channel/messages/channel_message_state_change.dart';
 import '../tmi/channel/messages/embeds/image_embed.dart';
-import 'channel_view.dart';
 import 'chat/chat_ban_chip.dart';
 import 'chat/chat_notice_chip.dart';
 import 'chat/reply_painter.dart';
@@ -217,10 +216,7 @@ class _ChatMessageState extends State<ChatMessage> {
                 onTap: () async {},
                 onLongPress: () => Modal.show(
                   context: context,
-                  child: MessageModal(
-                    message: chatMessage,
-                    channelViewState: ChannelView.of(context),
-                  ),
+                  child: MessageModal(message: chatMessage),
                 ),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -273,10 +269,7 @@ class _ChatMessageState extends State<ChatMessage> {
         onTap: () async {},
         onLongPress: () => Modal.show(
           context: context,
-          child: MessageModal(
-            message: chatMessage,
-            channelViewState: ChannelView.of(context),
-          ),
+          child: MessageModal(message: chatMessage),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 2.0 * (messageAppearance.compact ? 1.0 : 2.0)),

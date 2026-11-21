@@ -81,6 +81,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     _whisperSubs.addAll([
       whispers.focusRequests.listen((conversation) => _openChannel(conversation.name)),
       whispers.received.listen(_onWhisperReceived),
+      // Reply or Mention in a message sheet: show the composer it went to. A no-op for the tab already shown.
+      context.read<Client>().channelFocusRequests.listen(_openChannel),
     ]);
   }
 

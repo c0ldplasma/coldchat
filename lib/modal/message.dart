@@ -3,21 +3,18 @@ import 'package:flutter/services.dart';
 
 import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
+import '../tmi/channel/composer_draft.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
-import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
 import 'login_flow.dart';
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;
-  final ChannelViewState? channelViewState;
-
   const MessageModal({
     super.key,
     required this.message,
-    this.channelViewState,
   });
 
   // Whispers can't be replied to or deleted.
@@ -26,6 +23,16 @@ class MessageModal extends StatelessWidget {
   /// Only moderators and the broadcaster can delete messages on Twitch, not even their own, so the action is
   /// hidden for everyone else, like the ban and timeout row on the user card.
   bool get _canDelete => message.channel?.canModerateHere ?? false;
+
+  /// Closes every sheet, applies [change] to the composer draft of the message's channel and switches to that
+  /// channel's tab. From inside that channel's view, the tab stays and only the sheet closes.
+  void _toComposer(BuildContext context, void Function(ComposerDraft draft) change) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    final channel = message.channel;
+    if (channel == null) return;
+    change(channel.composerDraft);
+    channel.client.focusChannel(channel.name);
+  }
 
   @override
   Widget build(BuildContext context) => ListView(
@@ -39,10 +46,7 @@ class MessageModal extends StatelessWidget {
         Tile(
           title: AppLocalizations.of(context).reply,
           prefix: const Icon(Icons.reply_outlined),
-          onTap: () {
-            Navigator.of(context).pop();
-            channelViewState?.setReplyChannelMessageChat(message);
-          },
+          onTap: () => _toComposer(context, (draft) => draft.replyTo(message)),
         ),
       Tile(
         title: AppLocalizations.of(context).copyText,
@@ -84,10 +88,10 @@ class MessageModal extends StatelessWidget {
       Tile(
         title: AppLocalizations.of(context).mentionUser,
         prefix: const Icon(Icons.alternate_email_outlined),
-        onTap: () {
-          Navigator.of(context).pop();
-          channelViewState?.addSplit('@${message.user.login}');
-        },
+        onTap: () => _toComposer(context, (draft) {
+          final login = message.user.login;
+          if (login != null) draft.mention(login);
+        }),
       ),
       Tile(
         title: AppLocalizations.of(context).copyMessageId,
