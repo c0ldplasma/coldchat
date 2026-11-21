@@ -6,7 +6,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,11 +15,11 @@ import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
-import '../data/custom_command.dart';
 import '../data/emote.dart';
 import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
-import '../data/settings/chat_settings.dart';
+import '../data/repositories/custom_command_repository.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/login_flow.dart';
 import '../theme/coldchat_theme.dart';
@@ -116,6 +115,7 @@ class ChannelViewState extends State<ChannelView> {
     _canSendSubscriptions.addAll([
       widget.channel.stream.listen(updateCanSend),
       widget.channel.client.transmitter.stream.listen(updateCanSend),
+      widget.channel.transmitterJoin.stream.listen(updateCanSend),
     ]);
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;
@@ -154,10 +154,7 @@ class ChannelViewState extends State<ChannelView> {
 
     final textSplits = text.trim().split(' ');
     if (textSplits.isNotEmpty) {
-      final customCommands = Hive.box<dynamic>('CustomCommands').values.cast<CustomCommand>();
-      final customCommand = customCommands.firstWhereOrNull(
-        (element) => textSplits.first.toLowerCase() == element.trigger.toLowerCase(),
-      );
+      final customCommand = context.read<CustomCommandRepository>().commandFor(textSplits.first);
       if (customCommand != null) {
         text = customCommand.command;
         text = text.replaceAllMapped(
@@ -398,7 +395,7 @@ class ChannelViewState extends State<ChannelView> {
     if (textEditingController.text.split(' ').last.length < 2) return [];
     final currentSearch = textEditingController.text.split(' ').last.toLowerCase();
 
-    final chatSettings = Hive.box<dynamic>('Settings').get('chatSettings') as ChatSettings;
+    final chatSettings = context.read<SettingsRepository>().chatSettings;
 
     final matchingEmotes =
         (widget.channel.channelEmotes.state +
@@ -451,8 +448,8 @@ class ChannelViewState extends State<ChannelView> {
             setState(() {});
           },
         ),
-      for (final customCommand in Hive.box<dynamic>('CustomCommands').values.cast<CustomCommand>().where(
-        (element) => element.trigger.toLowerCase().startsWith(textEditingController.text.toLowerCase()),
+      for (final customCommand in context.read<CustomCommandRepository>().commandsStartingWith(
+        textEditingController.text,
       ))
         AutocompletionItem(
           type: AutocompletionType.customCommand,
@@ -838,9 +835,7 @@ class _WhisperHistoryHint extends StatefulWidget {
 }
 
 class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
-  static const String _dismissedKey = 'whisperHistoryHintDismissed';
-
-  bool dismissed = Hive.box<dynamic>('Settings').get(_dismissedKey) == true;
+  late bool dismissed = context.read<SettingsRepository>().whisperHistoryHintDismissed;
 
   @override
   Widget build(BuildContext context) {
@@ -862,7 +857,7 @@ class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
               children: [
                 TextButton(
                   onPressed: () {
-                    unawaited(Hive.box<dynamic>('Settings').put(_dismissedKey, true));
+                    unawaited(context.read<SettingsRepository>().dismissWhisperHistoryHint());
                     setState(() => dismissed = true);
                   },
                   child: Text(l10n.gotIt),

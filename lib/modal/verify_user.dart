@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../api/twitch/twitch.dart';
-import '../data/active_account.dart';
+import '../data/repositories/account_repository.dart';
 import '../data/twitch/token_data.dart';
 import '../data/twitch/user_data.dart';
 import '../data/twitch_account.dart';
@@ -32,6 +30,7 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
 
   @override
   void initState() {
+    final accounts = context.read<AccountRepository>();
     future = Twitch.userData(widget.tokenData);
     unawaited(
       future.then(
@@ -42,15 +41,12 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
             cookies: widget.cookies,
           );
 
-          final accountsBox = Hive.box<dynamic>('TwitchAccounts');
-          final replacedHashes = keysReplacedByLogin(accountsBox.toMap(), widget.tokenData);
-          await accountsBox.deleteAll(replacedHashes);
-          await accountsBox.put(widget.tokenData.hash, twitchAccount);
+          await accounts.saveLogin(twitchAccount);
 
           // The account just signed in to becomes the active one: adding an account, or signing in again as one, is
           // a deliberate choice to use it now. This also makes a fresh token take effect immediately instead of the
           // connection sitting in ConnectionInvalidCredentials with the old one.
-          if (mounted) await setActiveAccount(context.read<Client>(), twitchAccount);
+          if (mounted) await accounts.setActive(context.read<Client>(), twitchAccount);
 
           if (mounted) Navigator.of(context).pop();
         },

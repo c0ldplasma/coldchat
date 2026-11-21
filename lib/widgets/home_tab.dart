@@ -1,24 +1,20 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../api/twitch/twitch.dart';
-import '../components/boxlistener.dart';
 import '../components/separator.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
+import '../data/repositories/account_repository.dart';
 import '../data/twitch/channel_search.dart';
 import '../data/twitch/stream_data.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
-import '../tmi/channel/channel_event.dart';
 import '../tmi/client/client.dart';
 import '../tools/channel_ranking.dart';
 import 'avatar_button.dart';
@@ -30,10 +26,7 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
   final client = context.read<Client>();
   if (!client.channels.state.any((channel) => channel.name == channelName)) {
     client.channels.join(channelName);
-    unawaited(client.receiver.send('JOIN $channelName'));
-    client.channels.state
-        .firstWhereOrNull((channel) => channel.name == channelName)
-        ?.add(ChannelJoin(client.receiver, client.transmitter));
+    client.joinPending();
   }
   context.read<HomeTabSwitcher>().open(channelName);
 }
@@ -78,7 +71,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<List<StreamData>>? topStreams;
   Future<List<ChannelCandidate>>? searchResults;
   Timer? searchDebounce;
-  late final ValueListenable<Box<dynamic>> activeAccountListenable;
+  late final Listenable activeAccountListenable;
 
   // Starts loading the streams again. Without an account there is nothing to load.
   void refresh() {
@@ -106,12 +99,7 @@ class _HomeTabState extends State<HomeTab> {
     topStreams = Twitch.streams(account.tokenData);
   }
 
-  TwitchAccount? _activeAccount() {
-    final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
-    return Hive.box<dynamic>('TwitchAccounts').values.firstWhereOrNull(
-      (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
-    ) as TwitchAccount?;
-  }
+  TwitchAccount? _activeAccount() => context.read<AccountRepository>().active;
 
   void _onActiveAccountChanged() {
     if (!mounted) return;
@@ -171,8 +159,7 @@ class _HomeTabState extends State<HomeTab> {
     refresh();
 
     // Removed again in dispose: TabBarView disposes this page whenever another tab is shown.
-    activeAccountListenable = Hive.box<dynamic>('AccountSettings').listenable(keys: const ['activeTwitchAccount'])
-      ..addListener(_onActiveAccountChanged);
+    activeAccountListenable = context.read<AccountRepository>().activeChanges..addListener(_onActiveAccountChanged);
 
     searchRequest.addListener(_focusSearchIfRequested);
     // The request may have come while this tab wasn't built yet.
@@ -180,10 +167,9 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('AccountSettings'),
-    keys: const ['activeTwitchAccount'],
-    builder: (BuildContext context, Box<dynamic> box) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: activeAccountListenable,
+    builder: (BuildContext context, _) {
       if (account == null) return const LoggedOutStart();
 
       return RefreshIndicator(

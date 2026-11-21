@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../../data/badge_users.dart';
 import '../../../data/custom_badge.dart';
@@ -13,7 +12,6 @@ import '../../../data/message_trigger.dart';
 import '../../../data/user_trigger.dart';
 import '../../../irc/message.dart' as irc;
 import '../../../providers/twitch.dart';
-import '../../connection/connection_state.dart';
 import '../../user.dart';
 import '../channel_message.dart';
 import 'channel_message_embeds.dart';
@@ -227,13 +225,11 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     mentionned = false;
     blocked = false;
 
-    final receiver = channel?.client.receiver;
-    if (receiver != null) {
+    final client = channel?.client;
+    if (client != null) {
       // Check user triggers
-      final userTriggers = Hive.box<dynamic>('UserTriggers').values.cast<UserTrigger>();
-      final userTrigger = userTriggers.firstWhereOrNull(
-        (element) => element.login.toLowerCase() == user.login?.toLowerCase(),
-      );
+      final triggers = client.triggers;
+      final userTrigger = triggers?.userTriggerFor(user.login);
       if (userTrigger != null) {
         switch (UserTriggerType.values[userTrigger.type]) {
           case UserTriggerType.mention:
@@ -246,7 +242,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       }
 
       // Check message triggers
-      final messageTriggers = Hive.box<dynamic>('MessageTriggers').values.cast<MessageTrigger>();
+      final messageTriggers = triggers?.messageTriggers ?? const <MessageTrigger>[];
       final messageTrigger = messageTriggers.firstWhereOrNull((messageTrigger) {
         if (messageTrigger.enableRegex) {
           return messageTrigger.matchesRegex(body);
@@ -287,9 +283,11 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
         }
       }
 
-      if (receiver.state is ConnectionConnected) {
-        final connectedState = receiver.state as ConnectionConnected;
-        blocked = blocked || connectedState.blockedUserIds.contains(user.id);
+      // The own account is the transmitter's; the receiver reading the chat is anonymous.
+      final userId = user.id;
+      blocked = blocked || (userId != null && client.isBlocked(userId));
+      final ownLogin = client.ownLogin;
+      if (ownLogin != null) {
         mentionned =
             mentionned ||
             textSplits
@@ -297,10 +295,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
                 .map((e) => e.toLowerCase())
                 .any(
                   (split) =>
-                      split == connectedState.twitchAccount.tokenData.login ||
-                      split == '@${connectedState.twitchAccount.tokenData.login}' ||
-                      split == '${connectedState.twitchAccount.tokenData.login},' ||
-                      split == '@${connectedState.twitchAccount.tokenData.login},',
+                      split == ownLogin || split == '@$ownLogin' || split == '$ownLogin,' || split == '@$ownLogin,',
                 );
       }
     }

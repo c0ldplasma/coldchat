@@ -1,67 +1,17 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
-
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
+import '../data/repositories/emote_badge_cache_repository.dart';
 import '../providers/emote_provider.dart';
 import '../providers/provider.dart';
 
-/// Lightweight JSON cache for emotes and badges so first-paint after launch
+/// Turns the emotes and badges kept in [EmoteBadgeCacheRepository] back into objects, so first paint after launch
 /// or after opening a channel doesn't have to wait on provider HTTP requests.
 class EmoteBadgeCache {
-  static const String boxName = 'EmoteBadgeCache';
-
-  final Box<dynamic> box;
+  final EmoteBadgeCacheRepository repository;
   final List<Provider> providers;
 
-  // Cap the number of channels whose emotes/badges/history we retain on disk
-  // so the box doesn't grow without bound as more channels are opened.
-  static const int maxCachedChannels = 60;
-  static const String _lruKey = 'channelLru';
-
-  // Channel access order (most-recent last), held in memory so a save doesn't
-  // decode the stored list every time. Loaded once on construction.
-  late final List<String> _lru;
-
-  EmoteBadgeCache({required this.box, required this.providers}) {
-    _purgeLegacyKeys();
-    _lru = _decodeStringList(_lruKey) ?? [];
-  }
-
-  // Earlier versions keyed channel caches by room id (and an un-versioned
-  // login). Drop those orphaned entries — they are never read again.
-  void _purgeLegacyKeys() {
-    final stale = box.keys.where((k) {
-      if (k is! String) return false;
-      final isChannelScoped =
-          k.startsWith('channelEmotes:') || k.startsWith('channelBadges:') || k.startsWith('history:');
-      return isChannelScoped && !k.contains(':v2:');
-    }).toList();
-    if (stale.isNotEmpty) unawaited(box.deleteAll(stale));
-  }
-
-  // Move [login] to the most-recent position and evict the oldest channels'
-  // cached blobs once the cap is exceeded. No-op put when already most-recent.
-  void _touchChannel(String login) {
-    if (_lru.isNotEmpty && _lru.last == login) return;
-    _lru.remove(login);
-    _lru.add(login);
-    while (_lru.length > maxCachedChannels) {
-      final evict = _lru.removeAt(0);
-      unawaited(box.delete(channelEmotesKey(evict)));
-      unawaited(box.delete(channelBadgesKey(evict)));
-      unawaited(box.delete(_historyKey(evict)));
-    }
-    unawaited(box.put(_lruKey, json.encode(_lru)));
-  }
-
-  List<String>? _decodeStringList(String key) {
-    final decoded = _decode(key);
-    return decoded == null ? null : List<String>.from(decoded);
-  }
+  EmoteBadgeCache({required this.repository, required this.providers});
 
   Provider? _providerByName(String? name) {
     if (name == null) return null;
@@ -122,19 +72,9 @@ class EmoteBadgeCache {
     );
   }
 
-  List<dynamic>? _decode(String key) {
-    final raw = box.get(key);
-    if (raw is! String) return null;
-    try {
-      final decoded = json.decode(raw);
-      if (decoded is List) return decoded;
-    } catch (_) {}
-    return null;
-  }
+  List<dynamic>? _decode(String key) => repository.readList(key);
 
-  Future<void> _encode(String key, List<Map<String, dynamic>> data) async {
-    await box.put(key, json.encode(data));
-  }
+  Future<void> _encode(String key, List<Map<String, dynamic>> data) => repository.writeJson(key, data);
 
   List<Emote> loadEmotes(String key) {
     final list = _decode(key);
@@ -205,50 +145,35 @@ class EmoteBadgeCache {
     );
   }
 
-  String channelEmotesKey(String channelLogin) => 'channelEmotes:v2:$channelLogin';
-  String channelBadgesKey(String channelLogin) => 'channelBadges:v2:$channelLogin';
-  static const String globalEmotesKey = 'globalEmotes';
-  static const String globalBadgesKey = 'globalBadges';
-  static const String globalUserBadgesKey = 'globalUserBadges';
-  static String twitchUserEmotesKey(String userId) => 'twitchUserEmotes:$userId';
-  static const String _bttvProBadgesKey = 'bttvProBadges';
+  static const String globalEmotesKey = EmoteBadgeCacheRepository.globalEmotesKey;
+  static const String globalBadgesKey = EmoteBadgeCacheRepository.globalBadgesKey;
+  static const String globalUserBadgesKey = EmoteBadgeCacheRepository.globalUserBadgesKey;
+  static String twitchUserEmotesKey(String userId) => EmoteBadgeCacheRepository.twitchUserEmotesKey(userId);
 
   /// BetterTTV Pro badge urls by Twitch user id, oldest sighting first.
-  Map<String, String> loadBttvProBadges() {
-    final raw = box.get(_bttvProBadgesKey);
-    if (raw is! String) return {};
-    try {
-      return Map<String, String>.from(json.decode(raw) as Map);
-    } catch (_) {
-      return {};
-    }
-  }
+  Map<String, String> loadBttvProBadges() => repository.loadBttvProBadges();
 
-  Future<void> saveBttvProBadges(Map<String, String> badgeUrls) {
-    return box.put(_bttvProBadgesKey, json.encode(badgeUrls));
-  }
-
-  String _historyKey(String channelLogin) => 'history:v2:$channelLogin';
+  Future<void> saveBttvProBadges(Map<String, String> badgeUrls) => repository.saveBttvProBadges(badgeUrls);
 
   // Channel-scoped helpers that also maintain the LRU eviction index.
-  List<Emote> loadChannelEmotes(String channelLogin) => loadEmotes(channelEmotesKey(channelLogin));
+  List<Emote> loadChannelEmotes(String channelLogin) =>
+      loadEmotes(EmoteBadgeCacheRepository.channelEmotesKey(channelLogin));
 
   Future<void> saveChannelEmotes(String channelLogin, List<Emote> emotes) {
-    _touchChannel(channelLogin);
-    return saveEmotes(channelEmotesKey(channelLogin), emotes);
+    repository.touchChannel(channelLogin);
+    return saveEmotes(EmoteBadgeCacheRepository.channelEmotesKey(channelLogin), emotes);
   }
 
-  List<CustomBadge> loadChannelBadges(String channelLogin) => loadBadges(channelBadgesKey(channelLogin));
+  List<CustomBadge> loadChannelBadges(String channelLogin) =>
+      loadBadges(EmoteBadgeCacheRepository.channelBadgesKey(channelLogin));
 
   Future<void> saveChannelBadges(String channelLogin, List<CustomBadge> badges) {
-    _touchChannel(channelLogin);
-    return saveBadges(channelBadgesKey(channelLogin), badges);
+    repository.touchChannel(channelLogin);
+    return saveBadges(EmoteBadgeCacheRepository.channelBadgesKey(channelLogin), badges);
   }
 
-  List<String> loadHistory(String channelLogin) => _decodeStringList(_historyKey(channelLogin)) ?? const [];
+  List<String> loadHistory(String channelLogin) => repository.loadHistory(channelLogin);
 
-  Future<void> saveHistory(String channelLogin, List<String> messages) {
-    _touchChannel(channelLogin);
-    return box.put(_historyKey(channelLogin), json.encode(messages));
-  }
+  Future<void> saveHistory(String channelLogin, List<String> messages) =>
+      repository.saveHistory(channelLogin, messages);
 }

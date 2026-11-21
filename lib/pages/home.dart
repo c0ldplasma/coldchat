@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../components/bottom_bar.dart';
 import '../components/modal.dart';
+import '../data/repositories/channel_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/channel.dart';
 import '../modal/coldchat.dart';
@@ -61,8 +61,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  static const String _lastChannelKey = 'lastChannel';
-
   TabController? _tabController;
   int _lastLength = -1;
   // Always reflects the tab list (channels, then whisper conversations) from
@@ -111,8 +109,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   int _initialIndexFor(List<Channel> channels) {
-    final lastName = Hive.box<dynamic>('Settings').get(_lastChannelKey);
-    if (lastName is! String || lastName.isEmpty) return 0;
+    final lastName = context.read<ChannelRepository>().lastChannel;
+    if (lastName == null || lastName.isEmpty) return 0;
     final idx = channels.indexWhere((c) => c.name == lastName);
     return idx >= 0 ? idx + 1 : 0;
   }
@@ -131,7 +129,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   // recreated with initialIndex), the recreated controller already lands here;
   // for an already-joined channel the post-frame animateTo moves to it.
   void _openChannel(String channelName) {
-    unawaited(Hive.box<dynamic>('Settings').put(_lastChannelKey, channelName));
+    unawaited(context.read<ChannelRepository>().setLastChannel(channelName));
     WidgetsBinding.instance.scheduleFrameCallback((_) {
       WidgetsBinding.instance.scheduleFrameCallback((_) {
         if (!mounted) return;
@@ -150,7 +148,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     if (controller == null || controller.indexIsChanging) return;
     final index = controller.index;
     final name = index == 0 ? '' : (index - 1 < _channels.length ? _channels[index - 1].name : '');
-    unawaited(Hive.box<dynamic>('Settings').put(_lastChannelKey, name));
+    unawaited(context.read<ChannelRepository>().setLastChannel(name));
     _updateActiveWhisper();
   }
 
@@ -282,7 +280,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ),
             body: BlocBuilder<Connection, tmi.ConnectionState>(
-              bloc: context.read<Client>().receiver,
+              bloc: context.read<Client>().transmitter,
               builder: (context, connectionState) {
                 // The banner claims the status-bar inset itself, so drop the
                 // top inset for everything below it — otherwise the home
