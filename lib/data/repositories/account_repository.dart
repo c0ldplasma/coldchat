@@ -31,12 +31,45 @@ class AccountRepository {
   /// Takes the open `TwitchAccounts` and `AccountSettings` boxes; [open] opens them.
   AccountRepository(this._accounts, this._accountSettings);
 
-  static Future<AccountRepository> open() async {
-    final boxes = await Future.wait([
-      Hive.openBox<dynamic>(accountsBoxName),
+  /// The folder in the app's documents folder that holds the `TwitchAccounts` box on iOS. `ios/Runner/AppDelegate.swift`
+  /// creates it at launch and excludes it from iCloud and computer backups, which keeps the access tokens out of
+  /// them, like `android/app/src/main/res/xml/backup_rules.xml` does on Android. The flag is on the folder rather than
+  /// the box file because Hive replaces the file when it compacts it, and a new file wouldn't keep the flag.
+  static const String iosLoginsFolder = 'Logins';
+
+  /// Opens the boxes. [accountsPath] is the folder of the `TwitchAccounts` box, null for Hive's home folder; logins
+  /// that earlier versions stored in the home folder are moved there first (see [moveLogins]).
+  static Future<AccountRepository> open({String? accountsPath}) async {
+    if (accountsPath != null) await moveLogins(to: accountsPath);
+    final (accounts, accountSettings) = await (
+      Hive.openBox<dynamic>(accountsBoxName, path: accountsPath),
       Hive.openBox<dynamic>(accountSettingsBoxName),
-    ]);
-    return AccountRepository(boxes[0], boxes[1]);
+    ).wait;
+    return AccountRepository(accounts, accountSettings);
+  }
+
+  /// Moves the `TwitchAccounts` box from Hive's home folder to the folder [to], if the home folder has one. Neither
+  /// box may be open.
+  ///
+  /// The new box is written and closed before the old files are deleted, so an interrupted move is simply repeated at
+  /// the next start, and nobody is logged out. Only the current accounts are copied: Hive appends to its files, so the
+  /// old file can still hold the tokens of removed accounts. The `cookies` of an account (written by Chatsen's web-view
+  /// login and unused since) are dropped.
+  static Future<void> moveLogins({required String to}) async {
+    if (!await Hive.boxExists(accountsBoxName)) return;
+    final oldBox = await Hive.openBox<dynamic>(accountsBoxName);
+    final copies = {
+      for (final MapEntry(:key, :value) in oldBox.toMap().entries)
+        if (value is TwitchAccount)
+          key: TwitchAccount(tokenData: value.tokenData, userData: value.userData, cookies: null),
+    };
+    await oldBox.close();
+
+    final newBox = await Hive.openBox<dynamic>(accountsBoxName, path: to);
+    await newBox.putAll(copies);
+    await newBox.close();
+
+    await Hive.deleteBoxFromDisk(accountsBoxName);
   }
 
   /// Every saved account, in the order they were stored.
