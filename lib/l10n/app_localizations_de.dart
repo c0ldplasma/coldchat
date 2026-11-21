@@ -285,8 +285,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get deleteMessage => 'Nachricht löschen';
 
   @override
-  String get deleteMessageFailed =>
-      'Die Nachricht konnte nicht gelöscht werden. Dafür musst du Moderator in diesem Kanal sein.';
+  String deleteMessageFailed(String reason) {
+    return 'Nachricht nicht gelöscht: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Melde dich noch einmal an, um Nachrichten zu löschen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat das konnte.';
 
   @override
   String get mentionUser => 'Benutzer erwähnen';

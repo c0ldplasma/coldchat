@@ -283,7 +283,13 @@ class AppLocalizationsCa extends AppLocalizations {
   String get deleteMessage => 'Suprimeix el missatge';
 
   @override
-  String get deleteMessageFailed => 'No s\'ha pogut eliminar el missatge. Has de ser moderador d\'aquest canal.';
+  String deleteMessageFailed(String reason) {
+    return 'No s\'ha eliminat el missatge: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Torna a iniciar la sessió per eliminar missatges. La teva sessió és d\'abans que ColdChat ho pogués fer.';
 
   @override
   String get mentionUser => 'Esmenta l\'usuari';

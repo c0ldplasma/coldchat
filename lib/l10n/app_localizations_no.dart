@@ -283,7 +283,13 @@ class AppLocalizationsNo extends AppLocalizations {
   String get deleteMessage => 'Slett melding';
 
   @override
-  String get deleteMessageFailed => 'Meldingen kunne ikke slettes. Du må være moderator i denne kanalen.';
+  String deleteMessageFailed(String reason) {
+    return 'Meldingen ble ikke slettet: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Logg inn på nytt for å slette meldinger. Påloggingen din er fra før ColdChat kunne slette dem.';
 
   @override
   String get mentionUser => 'Nevn bruker';

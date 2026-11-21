@@ -283,7 +283,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get deleteMessage => 'संदेश मिटाएं';
 
   @override
-  String get deleteMessageFailed => 'संदेश हटाया नहीं जा सका। इसके लिए आपको इस चैनल का मॉडरेटर होना चाहिए।';
+  String deleteMessageFailed(String reason) {
+    return 'संदेश नहीं हटाया गया: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'संदेश हटाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat संदेश नहीं हटा सकता था।';
 
   @override
   String get mentionUser => 'उपयोगकर्ता को मेंशन करें';

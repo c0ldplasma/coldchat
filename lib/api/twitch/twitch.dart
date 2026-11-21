@@ -358,8 +358,11 @@ class Twitch {
     }
   }
 
-  /// Deletes the single message [messageId]. Helix deletes every message in the channel when `message_id` is
-  /// missing, so an empty id is rejected instead of being sent.
+  /// The scope [deleteChatMessage] needs. Logins from before it was requested lack it and must sign in again.
+  static const String deleteChatMessageScope = 'moderator:manage:chat_messages';
+
+  /// Deletes the single message [messageId] (needs [deleteChatMessageScope]). Helix deletes every message in the
+  /// channel when `message_id` is missing, so an empty id is rejected instead of being sent.
   static Future<void> deleteChatMessage(
     TokenData tokenData, {
     required String broadcasterId,
@@ -379,10 +382,7 @@ class Twitch {
       },
     );
 
-    if (response.statusCode != 204) {
-      final errorJson = json.decode(utf8.decode(response.bodyBytes)) as JsonMap;
-      throw Exception('${errorJson['error']}: ${errorJson['message']}');
-    }
+    if (response.statusCode != 204) throw _requestException(response);
   }
 
   static Future<void> addModerator(

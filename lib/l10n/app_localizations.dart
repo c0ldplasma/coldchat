@@ -626,8 +626,14 @@ abstract class AppLocalizations {
   /// No description provided for @deleteMessageFailed.
   ///
   /// In en, this message translates to:
-  /// **'The message couldn\'t be deleted. You need to be a moderator of this channel.'**
-  String get deleteMessageFailed;
+  /// **'Message not deleted: {reason}'**
+  String deleteMessageFailed(String reason);
+
+  /// No description provided for @deleteMessageNeedsScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to delete messages. Your login is from before ColdChat could delete them.'**
+  String get deleteMessageNeedsScope;
 
   /// No description provided for @mentionUser.
   ///

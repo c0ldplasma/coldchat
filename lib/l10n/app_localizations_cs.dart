@@ -283,7 +283,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get deleteMessage => 'Smazat zprávu';
 
   @override
-  String get deleteMessageFailed => 'Zprávu se nepodařilo smazat. Musíš být moderátorem tohoto kanálu.';
+  String deleteMessageFailed(String reason) {
+    return 'Zpráva nebyla smazána: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Pro mazání zpráv se přihlas znovu. Tvoje přihlášení je z doby, kdy to ColdChat ještě neuměl.';
 
   @override
   String get mentionUser => 'Zmínit uživatele';

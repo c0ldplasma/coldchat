@@ -283,7 +283,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteMessage => '메시지 삭제';
 
   @override
-  String get deleteMessageFailed => '메시지를 삭제할 수 없어요. 이 채널의 모더레이터여야 해요.';
+  String deleteMessageFailed(String reason) {
+    return '메시지를 삭제하지 못했어요: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope => '메시지를 삭제하려면 다시 로그인하세요. ColdChat이 삭제를 지원하기 전의 로그인이에요.';
 
   @override
   String get mentionUser => '사용자 멘션';

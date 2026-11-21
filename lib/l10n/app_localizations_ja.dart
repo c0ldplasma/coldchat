@@ -283,7 +283,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteMessage => 'メッセージを削除';
 
   @override
-  String get deleteMessageFailed => 'メッセージを削除できませんでした。このチャンネルのモデレーターである必要があります。';
+  String deleteMessageFailed(String reason) {
+    return 'メッセージを削除できませんでした: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope => 'メッセージを削除するには、もう一度サインインしてください。ColdChat が削除に対応する前のログインです。';
 
   @override
   String get mentionUser => 'ユーザーをメンション';
