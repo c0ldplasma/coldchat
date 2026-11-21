@@ -18,7 +18,8 @@ class ComposerDraft extends Cubit<ChannelMessageChat?> {
   /// Caret position in [text], or -1 for "at the end".
   int caret = -1;
 
-  final StreamController<String> _mentions = StreamController.broadcast();
+  // Synchronous, so a view that is disposed right after the tap can't miss a mention it was listening for.
+  final StreamController<String> _mentions = StreamController.broadcast(sync: true);
 
   /// Words to append to the composer's text, for the view that is shown. Without one, [mention] appends to [text].
   Stream<String> get mentions => _mentions.stream;

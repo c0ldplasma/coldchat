@@ -168,6 +168,17 @@ class Client implements AccountConnector {
 
   final List<Timer> _timers = [];
 
+  final StreamController<String> _channelFocusRequests = StreamController.broadcast();
+
+  /// Channels (by name) whose tab should be shown, e.g. after Reply or Mention in a message sheet. The home page
+  /// switches to them; the sheets are above it, out of reach of its `HomeTabSwitcher`.
+  Stream<String> get channelFocusRequests => _channelFocusRequests.stream;
+
+  /// Asks the home page to show the tab of the channel named [channelName], if it has one.
+  void focusChannel(String channelName) {
+    if (!_channelFocusRequests.isClosed) _channelFocusRequests.add(channelName);
+  }
+
   /// [receiver], [transmitter] and [providers] are replaceable for tests; by default they're the real connections and
   /// the emote and badge providers.
   Client({
@@ -266,6 +277,7 @@ class Client implements AccountConnector {
     for (final timer in _timers) {
       timer.cancel();
     }
+    await _channelFocusRequests.close();
     await Future.wait([receiver.close(), transmitter.close()]);
   }
 
