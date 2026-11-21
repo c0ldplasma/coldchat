@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "귓속말을 보내려면 Twitch로 로그인하세요.",
   "whisperNeedsScope": "귓속말을 주고받으려면 다시 로그인하세요. 현재 로그인은 ColdChat이 귓속말을 지원하기 전에 한 것이에요.",
   "whisperUserNotFound": "해당 이름의 Twitch 사용자가 없어요.",
+  "messageNotSentNotConnected": "아직 이 채널에 연결되지 않았습니다. 메시지가 전송되지 않았습니다.",
   "whisperFailed": "귓속말을 보내지 못했어요: {reason}",
   "@whisperFailed": {
     "placeholders": {

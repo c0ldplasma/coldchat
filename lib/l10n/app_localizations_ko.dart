@@ -542,6 +542,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get whisperUserNotFound => '해당 이름의 Twitch 사용자가 없어요.';
 
   @override
+  String get messageNotSentNotConnected => '아직 이 채널에 연결되지 않았습니다. 메시지가 전송되지 않았습니다.';
+
+  @override
   String whisperFailed(String reason) {
     return '귓속말을 보내지 못했어요: $reason';
   }

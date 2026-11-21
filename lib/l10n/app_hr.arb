@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Prijavi se na Twitch za slanje šapata.",
   "whisperNeedsScope": "Ponovno se prijavi za slanje i primanje šapata. Tvoja prijava potječe iz vremena prije nego što ih je ColdChat podržavao.",
   "whisperUserNotFound": "Ne postoji Twitch korisnik s tim imenom.",
+  "messageNotSentNotConnected": "Još nisi povezan s ovim kanalom. Tvoja poruka nije poslana.",
   "whisperFailed": "Šapat nije poslan: {reason}",
   "@whisperFailed": {
     "placeholders": {

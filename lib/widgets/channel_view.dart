@@ -84,6 +84,8 @@ class ChannelViewState extends State<ChannelView> {
   bool pickingButtonIcon = false;
   ChannelMessageChat? replyChannelMessageChat;
   StreamSubscription<UploadTask>? _uploadSubscription;
+  // Rebuild the composer when the channel is joined or the sending connection drops, see [Channel.canSend].
+  final List<StreamSubscription<Object?>> _canSendSubscriptions = [];
 
   @override
   void initState() {
@@ -107,6 +109,14 @@ class ChannelViewState extends State<ChannelView> {
       setState(() {});
     });
     _insertUploadedUrls(queue.takeUploadedUrls(widget.channel.name));
+    void updateCanSend(Object? _) {
+      if (mounted) setState(() {});
+    }
+
+    _canSendSubscriptions.addAll([
+      widget.channel.stream.listen(updateCanSend),
+      widget.channel.client.transmitter.stream.listen(updateCanSend),
+    ]);
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;
       unawaited(recoverLostPhoto());
@@ -195,6 +205,15 @@ class ChannelViewState extends State<ChannelView> {
           original,
         ),
       );
+      return;
+    }
+
+    // Not joined yet (e.g. the JOIN still waits for the rate limit after an account switch): Twitch would drop the
+    // message, so keep it in the composer and say so instead of clearing it.
+    if (!widget.channel.canSend) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).messageNotSentNotConnected)));
       return;
     }
 
@@ -361,6 +380,9 @@ class ChannelViewState extends State<ChannelView> {
   @override
   void dispose() {
     unawaited(_uploadSubscription?.cancel());
+    for (final subscription in _canSendSubscriptions) {
+      unawaited(subscription.cancel());
+    }
     final selection = textEditingController.selection;
     widget.channel.composerDraft.save(
       text: textEditingController.text,
@@ -664,7 +686,9 @@ class ChannelViewState extends State<ChannelView> {
                           hintText: widget.channel is WhisperChannel
                               ? AppLocalizations.of(context)
                                     .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
-                              : AppLocalizations.of(context).sendMessageIn(widget.channel.name),
+                              : widget.channel.canSend
+                              ? AppLocalizations.of(context).sendMessageIn(widget.channel.name)
+                              : AppLocalizations.of(context).channelConnecting(widget.channel.name),
                           border: InputBorder.none,
                         ),
                         onSubmitted: (text) {
@@ -710,7 +734,9 @@ class ChannelViewState extends State<ChannelView> {
                         height: 48.0,
                         child: Icon(
                           spamming ? Icons.send_and_archive_rounded : Icons.send_rounded,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: widget.channel.canSend
+                              ? Theme.of(context).colorScheme.primary
+                              : Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ),
