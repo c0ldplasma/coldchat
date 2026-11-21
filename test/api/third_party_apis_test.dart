@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:coldchat/api/api_client.dart';
 import 'package:coldchat/api/betterttv/betterttv.dart';
-import 'package:coldchat/api/chatterino/chatterino.dart';
 import 'package:coldchat/api/dankchat/dankchat.dart';
 import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/api/frankerfacez/frankerfacez.dart';
@@ -298,23 +297,6 @@ void main() {
     expectGet('https://flxrs.com/api/badges');
     expect(badges.single.type, 'DankChat Top Donator');
     expect(badges.single.users, ['1', '2']);
-  });
-
-  test('Chatterino badges', () async {
-    answerJson([
-      {
-        'tooltip': 'Chatterino Top Donator',
-        'image1': 'https://fourtf.com/img/top1.png',
-        'image2': 'https://fourtf.com/img/top2.png',
-        'image3': 'https://fourtf.com/img/top3.png',
-        'badges': ['1', '2'],
-      },
-    ]);
-
-    final badges = await ChatterinoApi(api).badges();
-
-    expectGet('https://api.chatterino.com/badges');
-    expect(badges.single.tooltip, 'Chatterino Top Donator');
   });
 
   test('emoji data', () async {

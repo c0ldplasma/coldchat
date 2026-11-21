@@ -39,11 +39,6 @@ class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
 
-enum PickerMode {
-  gif,
-  emote,
-}
-
 class EmotePicker extends StatefulWidget {
   final Client client;
   // Null outside of a chat (e.g. from settings): only global emotes then.
@@ -72,7 +67,6 @@ class EmotePicker extends StatefulWidget {
 }
 
 class _EmotePickerState extends State<EmotePicker> {
-  PickerMode mode = PickerMode.emote;
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
@@ -147,187 +141,186 @@ class _EmotePickerState extends State<EmotePicker> {
       type: SurfaceType.background,
       child: Column(
         children: [
-          if (mode == PickerMode.emote)
-            Expanded(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CustomScrollView(
-                      controller: scrollController,
-                      // padding: EdgeInsets.zero,
-                      slivers: [
-                        SliverList.list(
-                          children: [
-                            if (widget.onPickButtonIcon != null)
-                              Padding(
-                                padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 8.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(child: Text(AppLocalizations.of(context).chooseEmoteMenuButton)),
-                                    TextButton(
-                                      onPressed: () => widget.onPickButtonIcon!(null),
-                                      child: Text(AppLocalizations.of(context).resetToKappa),
-                                    ),
-                                  ],
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    // padding: EdgeInsets.zero,
+                    slivers: [
+                      SliverList.list(
+                        children: [
+                          if (widget.onPickButtonIcon != null)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0, right: 8.0, top: 8.0),
+                              child: Row(
+                                children: [
+                                  Expanded(child: Text(AppLocalizations.of(context).chooseEmoteMenuButton)),
+                                  TextButton(
+                                    onPressed: () => widget.onPickButtonIcon!(null),
+                                    child: Text(AppLocalizations.of(context).resetToKappa),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                            child: Surface(
+                              borderRadius: BorderRadius.circular(128.0),
+                              // color: Colors.white,
+                              type: SurfaceType.surfaceVariant,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                child: TextField(
+                                  controller: searchController,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: AppLocalizations.of(context).search,
+                                    isDense: true,
+                                  ),
+                                  onChanged: (text) => setState(() {}),
                                 ),
                               ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-                              child: Surface(
-                                borderRadius: BorderRadius.circular(128.0),
-                                // color: Colors.white,
-                                type: SurfaceType.surfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                      for (final section in matchingSections)
+                        MultiSliver(
+                          key: ValueKey(section.title),
+                          pushPinnedChildren: true,
+                          children: [
+                            SliverPinnedHeader(
+                              key: groupKeys[section.title],
+                              child: ColoredBox(
+                                color: Theme.of(context).colorScheme.surface,
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: TextField(
-                                    controller: searchController,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: AppLocalizations.of(context).search,
-                                      isDense: true,
+                                  padding: const EdgeInsets.only(top: 8.0, bottom: 4.0, left: 4.0, right: 4.0),
+                                  child: Text(section.title),
+                                ),
+                              ),
+                            ),
+                            if (section.emotes.isEmpty)
+                              const SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: SizedBox.square(
+                                      dimension: 24.0,
+                                      child: CircularProgressIndicator(strokeWidth: 2.0),
                                     ),
-                                    onChanged: (text) => setState(() {}),
+                                  ),
+                                ),
+                              ),
+                            // Built lazily: only the emotes on screen get a widget, not all
+                            // few thousand on every rebuild.
+                            SliverGrid.builder(
+                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 32.0 + 16.0,
+                              ),
+                              itemCount: section.emotes.length,
+                              itemBuilder: (context, index) {
+                                final emote = section.emotes[index];
+                                return Tooltip(
+                                  message: emote.name,
+                                  child: InkWell(
+                                    onTap: () async => widget.onPickButtonIcon != null
+                                        ? widget.onPickButtonIcon!(emote)
+                                        : widget.insertFieldInput(emote.code ?? emote.name),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: EmoteGlyph(
+                                        emote: emote,
+                                        size: 32.0,
+                                        image: () => CachedNetworkImage(
+                                          imageUrl: emote.mipmap.last,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+                Surface(
+                  type: SurfaceType.background,
+                  child: SizedBox(
+                    height: 48.0,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.zero,
+                      children: [
+                        for (final tab in sections)
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            // Thin outline so the circles stand out against the bar, which
+                            // now uses the same background as the rest of the picker.
+                            child: DecoratedBox(
+                              position: DecorationPosition.foreground,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                              ),
+                              child: Surface(
+                                type: SurfaceType.surface,
+                                onTap: () async {
+                                  // Null when search hides the section.
+                                  final context = groupKeys[tab.title]?.currentContext;
+                                  if (context == null) return;
+                                  // Scroll straight to where the section starts. The viewport lays
+                                  // out every section, so this is known even for sections far off
+                                  // screen; no need to detour via the bottom first. Read it from
+                                  // the section's top-level sliver rather than revealing its
+                                  // pinned header, whose reported position is wrong while it is
+                                  // pinned (tapping the current section scrolled to the end).
+                                  RenderObject? section = context.findRenderObject();
+                                  while (section != null && section.parent is! RenderViewportBase) {
+                                    section = section.parent;
+                                  }
+                                  if (section is! RenderSliver) return;
+                                  final position = scrollController.position;
+                                  final offset = section.constraints.precedingScrollExtent.clamp(
+                                    position.minScrollExtent,
+                                    position.maxScrollExtent,
+                                  );
+                                  await position.animateTo(
+                                    offset,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeOutCubic,
+                                  );
+                                },
+                                borderRadius: BorderRadius.circular(64.0),
+                                child: Tooltip(
+                                  message: tab.title,
+                                  child: AspectRatio(
+                                    aspectRatio: 1 / 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                        child:
+                                            icons[tab.title] ??
+                                            sourceLogo(context, tab.title) ??
+                                            firstEmoteIcon(tab.emotes),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        for (final section in matchingSections)
-                          MultiSliver(
-                            key: ValueKey(section.title),
-                            pushPinnedChildren: true,
-                            children: [
-                              SliverPinnedHeader(
-                                key: groupKeys[section.title],
-                                child: ColoredBox(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 8.0, bottom: 4.0, left: 4.0, right: 4.0),
-                                    child: Text(section.title),
-                                  ),
-                                ),
-                              ),
-                              if (section.emotes.isEmpty)
-                                const SliverToBoxAdapter(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Center(
-                                      child: SizedBox.square(
-                                        dimension: 24.0,
-                                        child: CircularProgressIndicator(strokeWidth: 2.0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              // Built lazily: only the emotes on screen get a widget, not all
-                              // few thousand on every rebuild.
-                              SliverGrid.builder(
-                                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 32.0 + 16.0,
-                                ),
-                                itemCount: section.emotes.length,
-                                itemBuilder: (context, index) {
-                                  final emote = section.emotes[index];
-                                  return Tooltip(
-                                    message: emote.name,
-                                    child: InkWell(
-                                      onTap: () async => widget.onPickButtonIcon != null
-                                          ? widget.onPickButtonIcon!(emote)
-                                          : widget.insertFieldInput(emote.code ?? emote.name),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: EmoteGlyph(
-                                          emote: emote,
-                                          size: 32.0,
-                                          image: () => CachedNetworkImage(
-                                            imageUrl: emote.mipmap.last,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
                           ),
                       ],
                     ),
                   ),
-                  Surface(
-                    type: SurfaceType.background,
-                    child: SizedBox(
-                      height: 48.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: EdgeInsets.zero,
-                        children: [
-                          for (final tab in sections)
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              // Thin outline so the circles stand out against the bar, which
-                              // now uses the same background as the rest of the picker.
-                              child: DecoratedBox(
-                                position: DecorationPosition.foreground,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-                                ),
-                                child: Surface(
-                                  type: SurfaceType.surface,
-                                  onTap: () async {
-                                    // Null when search hides the section.
-                                    final context = groupKeys[tab.title]?.currentContext;
-                                    if (context == null) return;
-                                    // Scroll straight to where the section starts. The viewport lays
-                                    // out every section, so this is known even for sections far off
-                                    // screen; no need to detour via the bottom first. Read it from
-                                    // the section's top-level sliver rather than revealing its
-                                    // pinned header, whose reported position is wrong while it is
-                                    // pinned (tapping the current section scrolled to the end).
-                                    RenderObject? section = context.findRenderObject();
-                                    while (section != null && section.parent is! RenderViewportBase) {
-                                      section = section.parent;
-                                    }
-                                    if (section is! RenderSliver) return;
-                                    final position = scrollController.position;
-                                    final offset = section.constraints.precedingScrollExtent.clamp(
-                                      position.minScrollExtent,
-                                      position.maxScrollExtent,
-                                    );
-                                    await position.animateTo(
-                                      offset,
-                                      duration: const Duration(milliseconds: 300),
-                                      curve: Curves.easeOutCubic,
-                                    );
-                                  },
-                                  borderRadius: BorderRadius.circular(64.0),
-                                  child: Tooltip(
-                                    message: tab.title,
-                                    child: AspectRatio(
-                                      aspectRatio: 1 / 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child:
-                                              icons[tab.title] ??
-                                              sourceLogo(context, tab.title) ??
-                                              firstEmoteIcon(tab.emotes),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
         ],
       ),
     );
@@ -357,144 +350,3 @@ class _EmotePickerState extends State<EmotePicker> {
     fit: BoxFit.contain,
   );
 }
-
-// const SizedBox(height: 4.0),
-// Surface(
-//   type: SurfaceType.transparent,
-//   child: Column(
-//     mainAxisSize: MainAxisSize.min,
-//     children: [
-//       // Padding(
-//       //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//       //   child: Row(
-//       //     children: [
-//       //       Surface(
-//       //         borderRadius: BorderRadius.circular(8.0),
-//       //         type: SurfaceType.background,
-//       //         child: const Padding(
-//       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-//       //           child: Text('GIFs'),
-//       //         ),
-//       //         onTap: () {},
-//       //       ),
-//       //       const SizedBox(width: 4.0),
-//       //       Surface(
-//       //         borderRadius: BorderRadius.circular(8.0),
-//       //         type: SurfaceType.background,
-//       //         child: const Padding(
-//       //           padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-//       //           child: Text('Emotes'),
-//       //         ),
-//       //         onTap: () {},
-//       //       ),
-//       //     ],
-//       //   ),
-//       // ),
-//       SegmentedButton<PickerMode>(
-//         segments: const [
-//           ButtonSegment<PickerMode>(
-//             value: PickerMode.gif,
-//             label: Text('GIFs'),
-//             icon: Icon(Icons.image_search_outlined),
-//           ),
-//           ButtonSegment<PickerMode>(
-//             value: PickerMode.emote,
-//             label: Text('Emote'),
-//             icon: Icon(Icons.emoji_emotions_outlined),
-//           ),
-//         ],
-//         selected: <PickerMode>{mode},
-//         onSelectionChanged: (selection) {
-//           setState(() {
-//             mode = selection.first;
-//           });
-//         },
-//       ),
-//       const SizedBox(height: 4.0),
-//       Padding(
-//         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//         child: Surface(
-//           borderRadius: BorderRadius.circular(8.0),
-//           // color: Colors.blue,
-//           type: SurfaceType.background,
-//           child: Row(
-//             children: [
-//               Expanded(
-//                 child: Padding(
-//                   padding: const EdgeInsets.only(left: 8.0),
-//                   child: TextField(
-//                     controller: searchController,
-//                     decoration: const InputDecoration(
-//                       isDense: true,
-//                       border: InputBorder.none,
-//                       hintText: 'Search',
-//                     ),
-//                     onChanged: (value) {
-//                       if (mode == PickerMode.gif) {
-//                         gifSearch = http.get(Uri.parse('https://g.tenor.com/v1/search?q=$value&key=LIVDSRZULELA&limit=50'));
-//                         setState(() {});
-//                       }
-//                     },
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(width: 2.0),
-//               const Icon(Icons.search_outlined),
-//               const SizedBox(width: 6.0),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ],
-//   ),
-// ),
-// const SizedBox(height: 4.0),
-
-/*
-
-SliverList.list(
-          children: [
-            for (final sourceGroup in groupBy(allEmotes, (emote) => emote.source).entries) ...[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  sourceGroup.key.name,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-              GridView.extent(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: MediaQuery.of(context).padding.copyWith(top: 0.0, bottom: 0.0),
-                maxCrossAxisExtent: 32.0 + 24.0,
-                children: [
-                  // Group emotes by source
-                  for (final emote in sourceGroup.value)
-                    Tooltip(
-                      message: emote.name,
-                      child: InkWell(
-                        onTap: () {
-                          // textEditingController.text = (textEditingController.text.split(' ') + [emote.code ?? emote.name]).where((element) => element.isNotEmpty).join(' ') + ' ';
-                          // textEditingController.selection = TextSelection.fromPosition(
-                          //   TextPosition(
-                          //     offset: textEditingController.text.length,
-                          //   ),
-                          // );
-                          // setState(() {});
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: CachedNetworkImage(
-                            emoteUrl: emote.mipmap.last,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ],
-          ],
-        ),
-
-*/
