@@ -2,27 +2,14 @@ import 'dart:convert';
 
 import 'package:coldchat/api/recentmessages/recentmessages.dart';
 import 'package:coldchat/irc/message.dart' as irc;
-import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
-import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/chat_history.dart';
-import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
 import '../../api/fake_api.dart';
-
-/// Just what a [Channel] reads from its client when it's created. The real [Client] opens connections and timers.
-class _FakeClient implements Client {
-  @override
-  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
-  @override
-  EmoteBadgeCache? cache;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+import 'fake_client.dart';
 
 /// Chat message number [i] in `#forsen`, with the id `id-[i]`.
 String _line(int i) => '@id=id-$i;tmi-sent-ts=${1000 + i} :a!a@a.tmi.twitch.tv PRIVMSG #forsen :message $i';
@@ -33,7 +20,7 @@ void main() {
   late List<String> received;
 
   setUp(() {
-    channel = Channel(client: _FakeClient(), name: '#forsen');
+    channel = Channel(client: FakeClient(), name: '#forsen');
     addTearDown(channel.close);
     receiver = Connection(name: 'receiver');
     addTearDown(receiver.close);

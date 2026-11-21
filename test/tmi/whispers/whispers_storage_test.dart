@@ -3,23 +3,11 @@ import 'dart:io';
 import 'package:coldchat/data/repositories/whisper_repository.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/data/twitch_account.dart';
-import 'package:coldchat/tmi/cache.dart';
-import 'package:coldchat/tmi/client/chat_globals.dart';
-import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/whispers/whispers.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
 
-/// Just what a whisper tab reads from its client when it's created.
-class _FakeClient implements Client {
-  @override
-  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
-  @override
-  EmoteBadgeCache? cache;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+import '../client/fake_client.dart';
 
 TwitchAccount _account(String userId) => TwitchAccount(
   tokenData: TokenData(
@@ -51,7 +39,7 @@ void main() {
   setUp(() async {
     tempDir = Directory.systemTemp.createTempSync('coldchat_whispers_storage_test');
     Hive.init(tempDir.path);
-    whispers = Whispers(_FakeClient(), storage: await WhisperRepository.open());
+    whispers = Whispers(FakeClient(), storage: await WhisperRepository.open());
     box = Hive.box<dynamic>('Whispers');
   });
 

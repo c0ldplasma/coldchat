@@ -1,29 +1,17 @@
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/irc/message.dart' as irc;
-import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_event.dart';
-import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/chat_history.dart';
-import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/moderation.dart';
 import 'package:coldchat/tmi/whispers/whisper_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Just what a [Channel] reads from its client when it's created. The real [Client] opens connections and timers.
-class _FakeClient implements Client {
-  @override
-  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
-  @override
-  EmoteBadgeCache? cache;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
-}
+import 'client/fake_client.dart';
 
 /// `#ronni`, whose room id is 12826.
 Channel _channel() {
-  final channel = Channel(client: _FakeClient(), name: '#ronni')..id = '12826';
+  final channel = Channel(client: FakeClient(), name: '#ronni')..id = '12826';
   addTearDown(channel.close);
   return channel;
 }
@@ -183,7 +171,7 @@ void main() {
 
     test('is hidden in a whisper conversation', () {
       final whisper =
-          WhisperChannel(client: _FakeClient(), partnerId: '42', partnerLogin: 'moddy', partnerDisplayName: 'Moddy')
+          WhisperChannel(client: FakeClient(), partnerId: '42', partnerLogin: 'moddy', partnerDisplayName: 'Moddy')
             ..id = '42'
             ..ownUserIsModerator = true;
       addTearDown(whisper.close);

@@ -141,7 +141,7 @@ void main() {
       if (request.url.path == '/oauth2/validate') {
         return validateStatus == 200
             ? http.Response(
-                '{"client_id":"coldchat","login":"x","scopes":[],"user_id":"1","expires_in":0}',
+                '{"client_id":"coldchat","login":"x","scopes":[],"user_id":"1","expires_in":3600}',
                 200,
               )
             : http.Response('{"status":401,"message":"invalid access token"}', validateStatus);
