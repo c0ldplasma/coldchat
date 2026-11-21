@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:math' show Random, min;
+import 'dart:math' show Random;
 
-import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 
 import '../../api/api_client.dart';
@@ -33,7 +32,6 @@ import '../../providers/provider.dart';
 import '../../providers/seventv.dart';
 import '../../providers/twitch.dart';
 import '../cache.dart';
-import '../channel/channel.dart';
 import '../channel/channel_event.dart';
 import '../channel/channel_message.dart';
 import '../channel/channel_state.dart';
@@ -45,11 +43,11 @@ import '../connection/connection_event.dart';
 import '../connection/connection_state.dart';
 import '../irc_log.dart';
 import '../whispers/whispers.dart';
+import 'channel_joiner.dart';
 import 'chat_globals.dart';
 import 'chat_history.dart';
 import 'client_channels.dart';
 import 'client_listener.dart';
-import 'join_scheduler.dart';
 
 /// The chat client. It has two IRC connections:
 ///
@@ -146,6 +144,9 @@ class Client implements AccountConnector {
   /// The chat history of the channels, from the recent-messages service and the cache.
   late final ChatHistory history;
 
+  /// Joins the channels on both connections.
+  late final ChannelJoiner joiner;
+
   final List<Timer> _timers = [];
 
   final StreamController<String> _channelFocusRequests = StreamController.broadcast();
@@ -213,11 +214,7 @@ class Client implements AccountConnector {
       channels.state.firstWhereOrNull((c) => c.name == lastChannel)?.joinPriority = true;
     }
 
-    // Drain the join queue on a timer as a steady-state fallback, but also
-    // trigger an immediate pass as soon as the connection is established
-    // (see the _joinPass call in stateChange) so we don't idle up to 2s
-    // waiting for the first tick.
-    _timers.add(Timer.periodic(const Duration(seconds: 2), (timer) => _joinPass()));
+    joiner = ChannelJoiner(receiver: this.receiver, transmitter: this.transmitter, channels: () => channels.state);
 
     // Twitch requires apps to validate a user token at startup and then hourly while running
     // (https://dev.twitch.tv/docs/authentication/validate-tokens/), so a login revoked on Twitch's side is noticed
@@ -231,8 +228,8 @@ class Client implements AccountConnector {
 
     this.receiver.onReceive = receive;
     this.transmitter.onReceive = receive;
-    this.receiver.onStateChange = stateChange;
-    this.transmitter.onStateChange = _transmitterStateChange;
+    this.receiver.onStateChange = (connection, change) => joiner.receiverStateChanged(change);
+    this.transmitter.onStateChange = (connection, change) => joiner.transmitterStateChanged(change);
     // The chat also arrives on the transmitter, as it's in every channel: drop it before it's logged or handled.
     this.transmitter.accepts = (message) => transmitterCommands.contains(message.command);
 
@@ -268,6 +265,7 @@ class Client implements AccountConnector {
       timer.cancel();
     }
     globals.close();
+    joiner.close();
     await _channelFocusRequests.close();
     await Future.wait([receiver.close(), transmitter.close()]);
   }
@@ -296,99 +294,6 @@ class Client implements AccountConnector {
       if (color != null && color.isNotEmpty) return color;
     }
     return null;
-  }
-
-  // Twitch IRC allows 20 JOINs per 10 seconds for normal users; _joins keeps every pass within that (with a margin)
-  // over a rolling window. The first pass after connecting may join a larger burst so the channels the user cares
-  // about come up quickly; steady-state ticks stay conservative. The receiver and the transmitter each have their
-  // own scheduler: the limit is per user, and the anonymous receiver isn't the account.
-  bool _firstJoinPass = true;
-  final JoinScheduler _joins = JoinScheduler();
-  bool _firstTransmitterJoinPass = true;
-  final JoinScheduler _transmitterJoins = JoinScheduler();
-
-  /// Sends the JOINs that are due now instead of waiting for the next tick, e.g. after adding a channel. They still
-  /// go through the rate limit.
-  void joinPending() => _joinPass();
-
-  // Channels the user has explicitly requested (active chat view) or last had
-  // open sort first, so the channel actually being looked at is handled first.
-  static int _byJoinPriority(Channel a, Channel b) => a.joinPriority == b.joinPriority ? 0 : (a.joinPriority ? -1 : 1);
-
-  void _joinPass() {
-    _receiverJoinPass();
-    _transmitterJoinPass();
-  }
-
-  void _receiverJoinPass() {
-    if (receiver.state is! ConnectionConnected) return;
-    // A JOIN that never got an echo (dropped by Twitch, or the channel doesn't exist) would leave the channel
-    // connecting forever: queue it again, a limited number of times.
-    for (final name in _joins.takeTimedOut()) {
-      final channel = channels.state.firstWhereOrNull((channel) => channel.name == name);
-      if (channel == null || channel.state is! ChannelConnecting) continue;
-      final retry = _joins.canRetry(name);
-      ircLog('receiver: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
-      if (retry) channel.add(ChannelPart());
-    }
-    final disconnected = channels.state.where((channel) => channel.state is ChannelDisconnected).toList();
-    if (disconnected.isEmpty) return;
-    final batchSize = min(_firstJoinPass ? 12 : 4, _joins.available);
-    if (batchSize <= 0) return;
-    disconnected.sort(_byJoinPriority);
-    _firstJoinPass = false;
-    final channelsToJoin = disconnected.take(batchSize).toList();
-    for (final channel in channelsToJoin) {
-      channel.add(ChannelJoin(receiver, transmitter));
-    }
-    _joins.sent(channelsToJoin.map((e) => e.name));
-    final names = channelsToJoin.map((e) => e.name).join(',');
-    ircLog('receiver: JOIN $names');
-    unawaited(receiver.send('JOIN $names'));
-  }
-
-  /// Joins the channels on the transmitter too, so it gets the account's USERSTATE there. Same rate limit and retries
-  /// as the receiver, with its own [JoinScheduler] because the limit is per account.
-  void _transmitterJoinPass() {
-    if (transmitter.state is! ConnectionConnected) return;
-    for (final name in _transmitterJoins.takeTimedOut()) {
-      final retry = _transmitterJoins.canRetry(name);
-      ircLog('transmitter: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
-    }
-    final unjoined = channels.state
-        .where(
-          (channel) =>
-              !channel.transmitterJoin.state &&
-              !_transmitterJoins.isPending(channel.name) &&
-              _transmitterJoins.canRetry(channel.name),
-        )
-        .toList();
-    if (unjoined.isEmpty) return;
-    final batchSize = min(_firstTransmitterJoinPass ? 12 : 4, _transmitterJoins.available);
-    if (batchSize <= 0) return;
-    unjoined.sort(_byJoinPriority);
-    _firstTransmitterJoinPass = false;
-    final channelsToJoin = unjoined.take(batchSize).map((e) => e.name).toList();
-    _transmitterJoins.sent(channelsToJoin);
-    final names = channelsToJoin.join(',');
-    ircLog('transmitter: JOIN $names');
-    unawaited(transmitter.send('JOIN $names'));
-  }
-
-  /// The transmitter left every channel: it reconnected, switched accounts or logged out. Forgets the own user's
-  /// state in each channel (e.g. moderator status of the previous account) until the next JOIN and USERSTATE.
-  void _transmitterLeftChannels() {
-    for (final channel in channels.state) {
-      channel.transmitterParted();
-    }
-    _firstTransmitterJoinPass = true;
-    _transmitterJoins.reset();
-  }
-
-  void _transmitterStateChange(Connection connection, Change<ConnectionState> change) {
-    _transmitterLeftChannels();
-    // Bloc calls onChange before it sets the new state, so the pass has to wait until the state is ConnectionConnected.
-    if (change.nextState is ConnectionConnected) scheduleMicrotask(_transmitterJoinPass);
   }
 
   /// Called every time the app returns to the foreground. Actively probes each
@@ -434,7 +339,8 @@ class Client implements AccountConnector {
     // Visible (active/last) channel first so the chat being looked at fills
     // first; insertHistoryMessages dedups by id, so the later rejoin backfill
     // is a no-op for anything we pull in here.
-    final viewed = channels.state.where((channel) => channel.recentMessagesEverFetched).toList()..sort(_byJoinPriority);
+    final viewed = channels.state.where((channel) => channel.recentMessagesEverFetched).toList()
+      ..sort(ChannelJoiner.byJoinPriority);
     await history.refetch(viewed);
   }
 
@@ -497,7 +403,7 @@ class Client implements AccountConnector {
     // handshake would fail with no feedback.
     if (twitchAccount.tokenData.accessToken != null && twitchAccount.tokenData.isExpired) {
       _apiAccount = twitchAccount;
-      _transmitterLeftChannels();
+      joiner.transmitterLeftChannels();
       _rejectCredentials(twitchAccount);
       return;
     }
@@ -520,7 +426,7 @@ class Client implements AccountConnector {
 
     // Only the transmitter changes account. The receiver keeps reading, so the chat stays live and nothing is parted,
     // rejoined or fetched again; the composer waits until the transmitter has joined the channel (Channel.canSend).
-    _transmitterLeftChannels();
+    joiner.transmitterLeftChannels();
     transmitter.add(ConnectionConnect(twitchAccount));
     // Confirm with Twitch in the background — the local expiry check only
     // catches tokens we know about; a manually revoked one still needs the API.
@@ -537,22 +443,8 @@ class Client implements AccountConnector {
     whispers.setAccount(null);
     ownColor = null;
     eventSub.connect(null);
-    _transmitterLeftChannels();
+    joiner.transmitterLeftChannels();
     transmitter.add(ConnectionDisconnect());
-  }
-
-  /// The receiver's state changed: every channel has to be joined again (with fresh history), see [ChannelPart].
-  Future<void> stateChange(Connection connection, Change<ConnectionState> change) async {
-    for (final channel in channels.state) {
-      channel.add(ChannelPart());
-    }
-    // On (re)connect, allow another larger join burst (still within the rate limit) and give every channel fresh
-    // JOIN attempts.
-    _firstJoinPass = true;
-    _joins.reset();
-    // Bloc calls onChange before it sets the new state, so the pass has to wait until the state is ConnectionConnected
-    // (it used to return right away and leave the first JOINs to the next 2 s tick).
-    if (change.nextState is ConnectionConnected) scheduleMicrotask(_receiverJoinPass);
   }
 
   /// The commands the transmitter handles: its own handshake, what Twitch tells the account about itself, the echo
@@ -592,7 +484,7 @@ class Client implements AccountConnector {
           // fetch the (paginated, slow) blocked-user list in the background and
           // fill it into the live state's mutable list.
           final connectedState = ConnectionConnected(stateTwitchAccount, nick: event.parameters.firstOrNull);
-          // Joining starts from stateChange once the state has switched.
+          // Joining starts from ChannelJoiner.receiverStateChanged once the state has switched.
           connection.add(ConnectionEstablished(connectedState));
           if (stateTwitchAccount.tokenData.accessToken != null) {
             unawaited(
@@ -646,14 +538,14 @@ class Client implements AccountConnector {
         if (connectionState is! ConnectionConnected || !isOwnJoin(event, connectionState.nick)) break;
 
         if (connection == transmitter) {
-          _transmitterJoins.acknowledged(channel.name);
+          joiner.transmitterJoined(channel.name);
           ircLog('transmitter: joined ${channel.name}');
           channel.transmitterJoin.joined();
           break;
         }
 
         if (channel.state is ChannelStateWithConnection) {
-          _joins.acknowledged(channel.name);
+          joiner.receiverJoined(channel.name);
           ircLog('receiver: joined ${channel.name}');
           channel.add(ChannelConnect());
           history.joined(channel);
