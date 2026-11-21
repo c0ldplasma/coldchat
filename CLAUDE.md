@@ -186,8 +186,9 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   after changing an annotated model, run `dart run build_runner build --delete-conflicting-outputs`.
 - Storage is **`hive_ce`**, the maintained continuation of hive 2 (which stopped at 2.2.3); it reads boxes written by
   hive 2 unchanged. Never change a `@HiveType` typeId or a `@HiveField` number of a stored model, or existing data
-  stops loading: add new fields with new numbers and a `defaultValue`. Adapters are registered by hand in `main.dart`;
-  the generated `lib/hive_registrar.g.dart` lists them all for comparison. All box access goes through the typed
+  stops loading: add new fields with new numbers and a `defaultValue`. `main.dart` registers the adapters with
+  `Hive.registerAdapters()` from the generated `lib/hive_registrar.g.dart`, which lists every `@HiveType`; never
+  register one by hand (`test/architecture_test.dart` checks). All box access goes through the typed
   repositories in `lib/data/repositories/` (opened together by `Repositories.open()` in `main.dart`, provided to
   widgets with `context.read<...Repository>()`, passed to `Client` in its constructor): don't call `Hive.box` or
   `box.listenable()` anywhere else, and keep box names and keys as constants on the repository that owns them.
