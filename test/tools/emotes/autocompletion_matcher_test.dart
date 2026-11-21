@@ -75,14 +75,14 @@ void main() {
         expect(_names(rank('kappa')), ['kappa', 'Kappa', 'KappaHD', 'KappaPride']);
       });
 
-      test('names starting with the search: matching its case first, then the shortest', () {
-        expect(_names(rank('Kap')), ['Kappa', 'KappaHD', 'KappaPride', 'kappa']);
+      test('names starting with the search are sorted alphabetically, ignoring case', () {
+        expect(_names(rank('Kap')), ['Kappa', 'kappa', 'KappaHD', 'KappaPride']);
         expect(_names(rank('kap')), ['kappa', 'Kappa', 'KappaHD', 'KappaPride']);
       });
 
-      test('names starting with the search and as long as each other are sorted alphabetically', () {
+      test('alphabetical, not by length: KappaHD comes before Kappu', () {
         final channelEmotes = [_emote('Kappu', _sevenTv), _emote('KappaHD', _sevenTv)];
-        expect(_names(rank('Kapp', channelEmotes: channelEmotes)), ['Kappa', 'Kappu', 'KappaHD']);
+        expect(_names(rank('Kapp', channelEmotes: channelEmotes)), ['Kappa', 'KappaHD', 'Kappu']);
       });
 
       test('names containing the search further in come last', () {

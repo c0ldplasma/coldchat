@@ -39,7 +39,7 @@ class AutocompletionMatcher {
   ///
   /// 1. the exact name, as typed (`Kappa` for "Kappa"),
   /// 2. the exact name in another case (`kappa` for "Kappa"),
-  /// 3. names starting with the search: those matching its case first, then the shortest, then alphabetically,
+  /// 3. names starting with the search, alphabetically (ignoring case, like Chatterino),
   /// 4. names containing it further in.
   ///
   /// Ties keep the order channel, global, user. With [needsColon] (Settings → autocomplete emotes only with `:`) a
@@ -81,18 +81,19 @@ class AutocompletionMatcher {
           : emote.name.toLowerCase() == nameLower
           ? 1
           : key.startsWith(prefix)
-          ? (emote.name.startsWith(name) ? 2 : 3)
-          : 4;
+          ? 2
+          : 3;
       matches.add((emote: emote, tier: tier, index: i));
     }
     matches.sort((a, b) {
       final byTier = a.tier.compareTo(b.tier);
       if (byTier != 0) return byTier;
-      if (a.tier == 2 || a.tier == 3) {
-        final byLength = a.emote.name.length.compareTo(b.emote.name.length);
-        if (byLength != 0) return byLength;
+      if (a.tier == 2) {
         final byName = a.emote.name.toLowerCase().compareTo(b.emote.name.toLowerCase());
         if (byName != 0) return byName;
+        // The same name in two cases: the one matching what was typed first.
+        final byCase = (b.emote.name.startsWith(name) ? 1 : 0).compareTo(a.emote.name.startsWith(name) ? 1 : 0);
+        if (byCase != 0) return byCase;
       }
       return a.index.compareTo(b.index);
     });
