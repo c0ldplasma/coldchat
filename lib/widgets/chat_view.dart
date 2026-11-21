@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../components/boxlistener.dart';
 import '../components/surface.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
@@ -77,10 +76,9 @@ class _ChatViewState extends State<ChatView> {
   }
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('Settings'),
-    keys: const ['messageAppearance'],
-    builder: (context, box) => BlocBuilder<ChannelMessages, List<ChannelMessage>>(
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<SettingsRepository>().messageAppearanceChanges,
+    builder: (context, _) => BlocBuilder<ChannelMessages, List<ChannelMessage>>(
       bloc: widget.channel.channelMessages,
       buildWhen: (state1, state2) => scrollMessages == null,
       builder: (context, state) {

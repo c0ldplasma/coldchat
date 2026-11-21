@@ -8,9 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import 'components/boxlistener.dart';
 import 'data/notifications_cubit.dart';
-import 'data/settings/application_appearance.dart';
+import 'data/repositories/settings_repository.dart';
 import 'l10n/app_localizations.dart';
 import 'pages/home.dart';
 import 'theme/coldchat_theme.dart';
@@ -86,22 +85,14 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
   }
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('Settings'),
-    // Only the keys read below. Other Settings writes (e.g. `lastChannel` on every tab swipe) must not rebuild the
-    // whole app and its theme.
-    keys: const [
-      'applicationAppearance',
-      'locale',
-      ColdChatTheme.accentKey,
-      ColdChatTheme.customHueKey,
-      ColdChatTheme.customChromaKey,
-    ],
-    builder: (context, box) {
-      final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
-      final accent = ColdChatTheme.current(box);
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<SettingsRepository>().appChanges,
+    builder: (context, _) {
+      final settings = context.read<SettingsRepository>();
+      final applicationAppearance = settings.applicationAppearance;
+      final accent = settings.accent;
       final matchingCustomLocale = AppLocalizations.supportedLocales.firstWhereOrNull(
-        (element) => element.toLanguageTag() == box.get('locale'),
+        (element) => element.toLanguageTag() == settings.locale,
       );
       return MaterialApp(
         localizationsDelegates: const [

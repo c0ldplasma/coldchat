@@ -15,6 +15,7 @@ import 'data/filesharing/uploaded_media.dart';
 import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
 import 'data/repositories/account_repository.dart';
+import 'data/repositories/settings_repository.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
 import 'data/settings/blocked_user.dart';
@@ -27,7 +28,6 @@ import 'data/twitch/user_data.dart';
 import 'data/twitch_account.dart';
 import 'data/user_trigger.dart';
 import 'data/webview/cookie_data.dart';
-import 'theme/coldchat_theme.dart';
 import 'tmi/client/client.dart';
 import 'tools/coldchat_binding.dart';
 
@@ -44,7 +44,6 @@ Future<void> main() async {
   unawaited(SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge));
 
   await Hive.initFlutter();
-  await EmoteButtonIcon.init();
 
   Hive.registerAdapter(TwitchAccountAdapter());
   Hive.registerAdapter(TokenDataAdapter());
@@ -65,7 +64,6 @@ Future<void> main() async {
   // Open all Hive boxes concurrently instead of serially to shave startup
   // time off the path before the first frame.
   final boxes = await Future.wait([
-    Hive.openBox<dynamic>('Settings'),
     Hive.openBox<dynamic>('Channels'),
     Hive.openBox<dynamic>('EmoteBadgeCache'),
     Hive.openBox<dynamic>('SeenMentions'),
@@ -75,31 +73,23 @@ Future<void> main() async {
     Hive.openBox<dynamic>('ChatSettings'),
     Hive.openBox<dynamic>('Whispers'),
   ]);
-  final settingsBox = boxes[0];
-  final channelsBox = boxes[1];
-  final emoteBadgeCacheBox = boxes[2];
-  final whispersBox = boxes[8];
+  final channelsBox = boxes[0];
+  final emoteBadgeCacheBox = boxes[1];
+  final whispersBox = boxes[7];
   final accounts = await AccountRepository.open();
+  final settings = await SettingsRepository.open();
+  final emoteButtonIcon = await EmoteButtonIcon.open(settings);
 
   // await settingsBox.clear();
 
   final activeTwitchAccount = accounts.active;
 
-  if (!settingsBox.containsKey('messageAppearance')) {
-    await settingsBox.put('messageAppearance', MessageAppearance());
-  }
-  if (!settingsBox.containsKey('applicationAppearance')) {
-    await settingsBox.put('applicationAppearance', ApplicationAppearance());
-  }
-  await ColdChatTheme.migrate(settingsBox);
-  if (!settingsBox.containsKey('chatSettings')) {
-    await settingsBox.put('chatSettings', ChatSettings());
-  }
-
   runApp(
     MultiProvider(
       providers: [
         Provider<AccountRepository>.value(value: accounts),
+        Provider<SettingsRepository>.value(value: settings),
+        Provider<EmoteButtonIcon>.value(value: emoteButtonIcon),
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,

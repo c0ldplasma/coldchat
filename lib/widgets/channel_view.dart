@@ -20,7 +20,7 @@ import '../data/custom_command.dart';
 import '../data/emote.dart';
 import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
-import '../data/settings/chat_settings.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/login_flow.dart';
 import '../theme/coldchat_theme.dart';
@@ -398,7 +398,7 @@ class ChannelViewState extends State<ChannelView> {
     if (textEditingController.text.split(' ').last.length < 2) return [];
     final currentSearch = textEditingController.text.split(' ').last.toLowerCase();
 
-    final chatSettings = Hive.box<dynamic>('Settings').get('chatSettings') as ChatSettings;
+    final chatSettings = context.read<SettingsRepository>().chatSettings;
 
     final matchingEmotes =
         (widget.channel.channelEmotes.state +
@@ -838,9 +838,7 @@ class _WhisperHistoryHint extends StatefulWidget {
 }
 
 class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
-  static const String _dismissedKey = 'whisperHistoryHintDismissed';
-
-  bool dismissed = Hive.box<dynamic>('Settings').get(_dismissedKey) == true;
+  late bool dismissed = context.read<SettingsRepository>().whisperHistoryHintDismissed;
 
   @override
   Widget build(BuildContext context) {
@@ -862,7 +860,7 @@ class _WhisperHistoryHintState extends State<_WhisperHistoryHint> {
               children: [
                 TextButton(
                   onPressed: () {
-                    unawaited(Hive.box<dynamic>('Settings').put(_dismissedKey, true));
+                    unawaited(context.read<SettingsRepository>().dismissWhisperHistoryHint());
                     setState(() => dismissed = true);
                   },
                   child: Text(l10n.gotIt),

@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
-import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
 import '../data/emote_button_icon.dart';
-import '../data/settings/chat_settings.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
 import '../widgets/chat/emote_picker.dart';
@@ -49,10 +48,12 @@ class ChatSettingsModal extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('Settings'),
-    builder: (context, box) {
-      final ChatSettings chatSettings = box.get('chatSettings') as ChatSettings;
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: context.read<SettingsRepository>().changes,
+    builder: (context, _) {
+      final settings = context.read<SettingsRepository>();
+      final emoteButtonIcon = context.read<EmoteButtonIcon>();
+      final chatSettings = settings.chatSettings;
       return ListView(
         shrinkWrap: true,
         children: [
@@ -64,12 +65,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.userAutocompletionWithAt,
               onChanged: (newValue) {
                 chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-                unawaited(chatSettings.save());
+                unawaited(settings.saveChatSettings(chatSettings));
               },
             ),
             onTap: () {
               chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-              unawaited(chatSettings.save());
+              unawaited(settings.saveChatSettings(chatSettings));
             },
           ),
           Tile(
@@ -79,17 +80,17 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.emoteAutocompletionWithColon,
               onChanged: (newValue) {
                 chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-                unawaited(chatSettings.save());
+                unawaited(settings.saveChatSettings(chatSettings));
               },
             ),
             onTap: () {
               chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-              unawaited(chatSettings.save());
+              unawaited(settings.saveChatSettings(chatSettings));
             },
           ),
           Tile(
             title: AppLocalizations.of(context).emoteMenuButton,
-            subtitle: EmoteButtonIcon.name ?? 'Kappa',
+            subtitle: emoteButtonIcon.name ?? 'Kappa',
             prefix: const SizedBox.square(dimension: 24.0, child: Center(child: EmoteButtonIconView())),
             suffix: const Icon(Icons.chevron_right),
             onTap: () => _pickButtonIcon(context),
@@ -98,10 +99,10 @@ class ChatSettingsModal extends StatelessWidget {
             title: AppLocalizations.of(context).emoteMenuButtonGrayscale,
             prefix: const Icon(Icons.filter_b_and_w_outlined),
             suffix: Toggle(
-              value: EmoteButtonIcon.grayscale,
-              onChanged: (newValue) => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
+              value: emoteButtonIcon.grayscale,
+              onChanged: (newValue) => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
             ),
-            onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
+            onTap: () => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
           ),
           Tile(
             title: AppLocalizations.of(context).showImagesFromLinks,
@@ -111,12 +112,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.showLinkImages,
               onChanged: (newValue) {
                 chatSettings.showLinkImages = !chatSettings.showLinkImages;
-                unawaited(chatSettings.save());
+                unawaited(settings.saveChatSettings(chatSettings));
               },
             ),
             onTap: () {
               chatSettings.showLinkImages = !chatSettings.showLinkImages;
-              unawaited(chatSettings.save());
+              unawaited(settings.saveChatSettings(chatSettings));
             },
           ),
         ],
