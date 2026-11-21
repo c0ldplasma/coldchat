@@ -13,7 +13,6 @@ import '../../api/recentmessages/recentmessages.dart';
 import '../../api/seventv/seventv.dart';
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/helix_api.dart';
-import '../../api/twitch/twitch.dart';
 import '../../api/twitch/twitch_auth_api.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
@@ -43,6 +42,7 @@ import '../connection/connection_event.dart';
 import '../connection/connection_state.dart';
 import '../irc_log.dart';
 import '../whispers/whispers.dart';
+import 'account_session.dart';
 import 'channel_joiner.dart';
 import 'chat_globals.dart';
 import 'chat_history.dart';
@@ -64,50 +64,16 @@ class Client implements AccountConnector {
   /// Sends as the active account; disconnected while logged out. See [Client].
   final Connection transmitter;
 
-  // The account whose token is used for Twitch API requests such as badges.
-  TwitchAccount? _apiAccount;
-
-  /// The token for Helix requests, or null while browsing anonymously.
-  TokenData? get apiTokenData => _apiAccount?.tokenData.accessToken == null ? null : _apiAccount!.tokenData;
-
   /// The app's HTTP client, shared by every API below.
   final ApiClient api;
 
-  /// Helix as the account in [apiTokenData]. [HelixApi.forToken] sends as another one.
-  late final HelixApi helix = HelixApi(api, () => apiTokenData);
+  /// Helix as the account in [AccountSession.apiTokenData]. [HelixApi.forToken] sends as another one.
+  late final HelixApi helix = HelixApi(api, () => session.apiTokenData);
 
   late final TwitchAuthApi twitchAuth = TwitchAuthApi(api);
 
-  /// The connected, logged-in account, which is the one whose Twitch block list hides messages.
-  ConnectionConnected? get _blockingState {
-    final state = transmitter.state;
-    return state is ConnectionConnected && state.twitchAccount.tokenData.accessToken != null ? state : null;
-  }
-
-  /// The id of the account that can block users, or null while anonymous or disconnected.
-  String? get blockingUserId => _blockingState?.twitchAccount.tokenData.userId;
-
-  bool isBlocked(String userId) => _blockingState?.blockedUserIds.contains(userId) ?? false;
-
-  /// Blocks or unblocks [userId] on Twitch and re-renders their messages in every channel.
-  Future<void> setBlocked(String userId, bool blocked) async {
-    final state = _blockingState;
-    if (state == null) throw Exception('Not logged in');
-    if (blocked) {
-      await helix.forToken(state.twitchAccount.tokenData).blockUser(userId);
-      if (!state.blockedUserIds.contains(userId)) state.blockedUserIds.add(userId);
-    } else {
-      await helix.forToken(state.twitchAccount.tokenData).unblockUser(userId);
-      state.blockedUserIds.remove(userId);
-    }
-    _rebuildMessagesFrom(userId);
-  }
-
-  /// The own login that mentions highlight, or null while logged out.
-  String? get ownLogin {
-    final account = transmitter.twitchAccount;
-    return account?.tokenData.accessToken == null ? null : account!.tokenData.login;
-  }
+  /// The logged-in account: logging in and out, validating the login, the block list and the own chat color.
+  late final AccountSession session;
 
   final List<Provider>? _customProviders;
 
@@ -126,17 +92,12 @@ class Client implements AccountConnector {
   late final Whispers whispers;
   late final EventSubSocket eventSub = EventSubSocket(helix: helix, onWhisper: (whisper) => whispers.receive(whisper));
 
-  /// The logged-in user's chat color, from GLOBALUSERSTATE, for the whispers they send.
-  String? ownColor;
   EmoteBadgeCache? cache;
 
   List<ClientListener> listeners = [];
 
   /// The global emotes and badges, the account's Twitch emotes and the BetterTTV Pro badges.
   late final ChatGlobals globals;
-
-  /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
-  final AccountRepository? accounts;
 
   /// The message and user triggers that highlight or block messages. Null in tests, then there are none.
   final TriggerRepository? triggers;
@@ -146,8 +107,6 @@ class Client implements AccountConnector {
 
   /// Joins the channels on both connections.
   late final ChannelJoiner joiner;
-
-  final List<Timer> _timers = [];
 
   final StreamController<String> _channelFocusRequests = StreamController.broadcast();
 
@@ -165,7 +124,7 @@ class Client implements AccountConnector {
   Client({
     required this.api,
     TwitchAccount? twitchAccount,
-    this.accounts,
+    AccountRepository? accounts,
     this.triggers,
     RecentMessages? recentMessages,
     required ChannelRepository channelRepository,
@@ -178,6 +137,17 @@ class Client implements AccountConnector {
        // The transmitter doesn't need to know who else joins, which in a big channel is a line every few seconds.
        transmitter = transmitter ?? Connection(name: 'transmitter', membership: false),
        _customProviders = providers {
+    session = AccountSession(
+      transmitter: this.transmitter,
+      helix: helix,
+      twitchAuth: twitchAuth,
+      accounts: accounts,
+      account: twitchAccount,
+      onApiAccessGained: () => unawaited(globals.refreshBadges()),
+      onAccountChanged: _accountChanged,
+      onTransmitterLeftChannels: () => joiner.transmitterLeftChannels(),
+      onBlockedChanged: _rebuildMessagesFrom,
+    );
     whispers = Whispers(this, storage: whisperRepository);
 
     // Set up the cache before constructing channels so each Channel can
@@ -216,16 +186,6 @@ class Client implements AccountConnector {
 
     joiner = ChannelJoiner(receiver: this.receiver, transmitter: this.transmitter, channels: () => channels.state);
 
-    // Twitch requires apps to validate a user token at startup and then hourly while running
-    // (https://dev.twitch.tv/docs/authentication/validate-tokens/), so a login revoked on Twitch's side is noticed
-    // even when the app stays open. Startup, every connect and every return to the foreground validate already.
-    _timers.add(
-      Timer.periodic(const Duration(hours: 1), (timer) {
-        final account = _apiAccount;
-        if (account != null) unawaited(validateCredentials(account));
-      }),
-    );
-
     this.receiver.onReceive = receive;
     this.transmitter.onReceive = receive;
     this.receiver.onStateChange = (connection, change) => joiner.receiverStateChanged(change);
@@ -236,7 +196,6 @@ class Client implements AccountConnector {
     // Reading needs no account: the receiver is anonymous from the start and stays so.
     this.receiver.add(ConnectionConnect(anonymousAccount()));
 
-    _apiAccount = twitchAccount;
     if (twitchAccount != null) unawaited(connectAs(twitchAccount));
 
     unawaited(globals.refreshEmotes());
@@ -261,9 +220,7 @@ class Client implements AccountConnector {
 
   /// Stops the timers and closes both connections. Only tests need this: the app's client lives as long as the app.
   Future<void> close() async {
-    for (final timer in _timers) {
-      timer.cancel();
-    }
+    session.close();
     globals.close();
     joiner.close();
     await _channelFocusRequests.close();
@@ -276,6 +233,22 @@ class Client implements AccountConnector {
     for (final channel in [...channels.state, ...whispers.state]) {
       unawaited(channel.rebuildMessages());
     }
+  }
+
+  @override
+  Future<void> connectAs(TwitchAccount twitchAccount) => session.connectAs(twitchAccount);
+
+  /// Logs out, see [AccountSession.disconnect]. The anonymous receiver keeps reading the chat.
+  @override
+  void disconnect() => session.disconnect();
+
+  // The active account changed (null: logged out). Shows this account's Twitch emotes from the last session right
+  // away; the fresh list only arrives with GLOBALUSERSTATE after connecting. Also clears the previous account's emotes
+  // when switching accounts.
+  void _accountChanged(TwitchAccount? account) {
+    globals.showCachedTwitchUserEmotes(account?.tokenData.userId);
+    whispers.setAccount(account);
+    eventSub.connect(account != null && whispers.hasScope ? account.tokenData : null);
   }
 
   void _rebuildMessagesFrom(String userId) {
@@ -304,20 +277,8 @@ class Client implements AccountConnector {
   /// up to ~70s for the steady-state watchdog. When anything was actually dead,
   /// gap-fill the messages missed while away (parallel, dedup-safe).
   Future<void> onAppResumed() async {
-    // A token can expire while the app sits in the background for days, so
-    // check before probing: reconnecting with it is pointless and the socket
-    // failure would be indistinguishable from a network hiccup.
     // Only the transmitter is logged in; the anonymous receiver is probed whatever happens to the login.
-    final account = transmitter.twitchAccount;
-    var checkTransmitter = false;
-    if (account != null && account.tokenData.accessToken != null) {
-      if (account.tokenData.isExpired) {
-        _rejectCredentials(account);
-      } else if (!transmitter.credentialsRejected) {
-        checkTransmitter = true;
-        unawaited(validateCredentials(account));
-      }
-    }
+    final checkTransmitter = session.checkLoginOnResume();
 
     final results = await Future.wait([
       receiver.probeAlive(),
@@ -342,109 +303,6 @@ class Client implements AccountConnector {
     final viewed = channels.state.where((channel) => channel.recentMessagesEverFetched).toList()
       ..sort(ChannelJoiner.byJoinPriority);
     await history.refetch(viewed);
-  }
-
-  /// Twitch refuses a bad token with an untagged NOTICE whose text we have to
-  /// match; there is no msg-id on these. Only ever sent with target `*` (i.e.
-  /// before we are authenticated), which keeps this from matching channel chat.
-  static bool _isAuthFailureNotice(irc.Message event) {
-    if (event.parameters.isEmpty || event.parameters.first != '*') return false;
-    final text = event.parameters.length > 1 ? event.parameters.last.toLowerCase() : '';
-    return text.contains('login authentication failed') ||
-        text.contains('login unsuccessful') ||
-        text.contains('improperly formatted auth');
-  }
-
-  /// Locks the transmitter until a new login, because Twitch refused [twitchAccount]'s token. The anonymous receiver
-  /// has no token and keeps reading. Ignored when [twitchAccount] isn't the active account anymore (e.g. a check
-  /// that was still running while switching accounts), so it can't lock out the account that is active now.
-  void _rejectCredentials(TwitchAccount twitchAccount) {
-    final active = _apiAccount;
-    if (active == null || active.tokenData.hash != twitchAccount.tokenData.hash) return;
-    ircLog('transmitter: login of ${twitchAccount.tokenData.login} rejected');
-    transmitter.add(ConnectionCredentialsRejected(twitchAccount));
-  }
-
-  /// Ask Twitch whether the stored token is still good, and keep [TokenData]
-  /// honest about it. On a 401 the login is dead — reject it so the UI can say
-  /// so instead of letting the reconnect loop churn silently. Network failures
-  /// are ignored: being offline is not proof the token expired.
-  Future<void> validateCredentials(TwitchAccount twitchAccount) async {
-    final accessToken = twitchAccount.tokenData.accessToken;
-    if (accessToken == null) return; // anonymous
-    if (twitchAccount.tokenData.isExpired) {
-      _rejectCredentials(twitchAccount);
-      return;
-    }
-
-    try {
-      final fresh = await twitchAuth.validateToken(accessToken);
-      // The stored expiresAt is a snapshot from login time and is never touched
-      // afterwards; refresh it so the account modal and the local expiry check
-      // reflect reality.
-      twitchAccount.tokenData.expiresAt = fresh.expiresAt;
-      twitchAccount.tokenData.scopes = fresh.scopes;
-      try {
-        await accounts?.update(twitchAccount);
-      } catch (_) {
-        // Not attached to a box (e.g. constructed in-memory) — nothing to persist.
-      }
-      if (twitchAccount.tokenData.isExpired) _rejectCredentials(twitchAccount);
-    } on TwitchTokenInvalidException {
-      _rejectCredentials(twitchAccount);
-    } catch (e) {
-      log('Couldn\'t validate the Twitch token: $e');
-    }
-  }
-
-  @override
-  Future<void> connectAs(TwitchAccount twitchAccount) async {
-    // Don't even open the socket with a token we already know is dead: the
-    // handshake would fail with no feedback.
-    if (twitchAccount.tokenData.accessToken != null && twitchAccount.tokenData.isExpired) {
-      _apiAccount = twitchAccount;
-      joiner.transmitterLeftChannels();
-      _rejectCredentials(twitchAccount);
-      return;
-    }
-
-    // Show this account's Twitch emotes from the last session right away; the
-    // fresh list only arrives with GLOBALUSERSTATE after connecting. Also
-    // clears the previous account's emotes when switching accounts.
-    // Twitch badges need a token, so a first login after browsing anonymously
-    // has to load them now.
-    final gainedApiAccess = _apiAccount?.tokenData.accessToken == null && twitchAccount.tokenData.accessToken != null;
-    _apiAccount = twitchAccount;
-    if (gainedApiAccess) unawaited(globals.refreshBadges());
-    ircLog('transmitter: switching to ${twitchAccount.tokenData.login}');
-
-    globals.showCachedTwitchUserEmotes(twitchAccount.tokenData.userId);
-
-    whispers.setAccount(twitchAccount);
-    ownColor = null;
-    eventSub.connect(whispers.hasScope ? twitchAccount.tokenData : null);
-
-    // Only the transmitter changes account. The receiver keeps reading, so the chat stays live and nothing is parted,
-    // rejoined or fetched again; the composer waits until the transmitter has joined the channel (Channel.canSend).
-    joiner.transmitterLeftChannels();
-    transmitter.add(ConnectionConnect(twitchAccount));
-    // Confirm with Twitch in the background — the local expiry check only
-    // catches tokens we know about; a manually revoked one still needs the API.
-    unawaited(validateCredentials(twitchAccount));
-  }
-
-  /// Logs out: closes the transmitter and stops whispers until [connectAs] is called again. The anonymous receiver
-  /// keeps reading the chat.
-  @override
-  void disconnect() {
-    ircLog('transmitter: logging out');
-    _apiAccount = null;
-    globals.showCachedTwitchUserEmotes(null);
-    whispers.setAccount(null);
-    ownColor = null;
-    eventSub.connect(null);
-    joiner.transmitterLeftChannels();
-    transmitter.add(ConnectionDisconnect());
   }
 
   /// The commands the transmitter handles: its own handshake, what Twitch tells the account about itself, the echo
@@ -486,15 +344,7 @@ class Client implements AccountConnector {
           final connectedState = ConnectionConnected(stateTwitchAccount, nick: event.parameters.firstOrNull);
           // Joining starts from ChannelJoiner.receiverStateChanged once the state has switched.
           connection.add(ConnectionEstablished(connectedState));
-          if (stateTwitchAccount.tokenData.accessToken != null) {
-            unawaited(
-              helix
-                  .forToken(stateTwitchAccount.tokenData)
-                  .blockedUsers()
-                  .then(connectedState.blockedUserIds.addAll)
-                  .catchError((Object e) => log('Couldn\'t get the blocked users: $e')),
-            );
-          }
+          session.loadBlockedUsers(connectedState);
         }
         break;
       case 'GLOBALUSERSTATE':
@@ -503,7 +353,7 @@ class Client implements AccountConnector {
         try {
           if (connection.state is ConnectionStateWithCredentials) {
             final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
-            ownColor = event.tags['color'];
+            session.ownColor = event.tags['color'];
             final emotes = await helix
                 .forToken(stateTwitchAccount.tokenData)
                 .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
@@ -622,12 +472,7 @@ class Client implements AccountConnector {
         // failed` — target `*`, so the channel lookup below finds nothing and
         // used to drop it on the floor while the socket closed and the backoff
         // retried the same dead token forever. Catch it here instead.
-        if (_isAuthFailureNotice(event)) {
-          // Only the transmitter logs in; the receiver has no token to refuse.
-          final account = connection.twitchAccount;
-          if (connection == transmitter && account != null) _rejectCredentials(account);
-          break;
-        }
+        if (session.handleAuthFailureNotice(connection, event)) break;
 
         final channelName = event.parameters[0];
         final channel = channels.state.firstWhereOrNull((channel) => channel.name == channelName);

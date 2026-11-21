@@ -355,7 +355,7 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   }
 
   Future<void> refreshChannelUser() async {
-    final tokenData = client.apiTokenData;
+    final tokenData = client.session.apiTokenData;
     if (tokenData == null) return;
     try {
       channelInfo.emit(await client.helix.forToken(tokenData).profile(name.replaceFirst('#', '')));

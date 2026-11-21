@@ -13,6 +13,7 @@ import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
+import 'package:coldchat/tmi/client/account_session.dart';
 import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
@@ -24,6 +25,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
+
+/// Anonymous, so the user card doesn't ask Helix for a profile.
+class _FakeSession implements AccountSession {
+  @override
+  TokenData? get apiTokenData => null;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 /// Fetches no history.
 class _FakeHistory implements ChatHistory {
@@ -44,9 +54,8 @@ class _FakeClient implements Client {
   @override
   final ChatHistory history = _FakeHistory();
 
-  /// Anonymous, so the user card doesn't ask Helix for a profile.
   @override
-  TokenData? get apiTokenData => null;
+  final AccountSession session = _FakeSession();
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

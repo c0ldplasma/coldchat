@@ -220,4 +220,4 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   work unchanged. `/w <user> [message]` is handled in `ChannelView.sendMessage`.
 - Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/login_flow.dart`),
   so there is no refresh token and an expired login can only be fixed by signing in again. See
-  `lib/widgets/login_expired_banner.dart` and `Client.validateCredentials`.
+  `lib/widgets/login_expired_banner.dart` and `AccountSession.validateCredentials` (`lib/tmi/client/account_session.dart`).

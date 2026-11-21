@@ -283,8 +283,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
 
       // The own account is the transmitter's; the receiver reading the chat is anonymous.
       final userId = user.id;
-      blocked = blocked || (userId != null && client.isBlocked(userId));
-      final ownLogin = client.ownLogin;
+      blocked = blocked || (userId != null && client.session.isBlocked(userId));
+      final ownLogin = client.session.ownLogin;
       if (ownLogin != null) {
         mentionned =
             mentionned ||

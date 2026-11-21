@@ -24,6 +24,7 @@ import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
+import 'package:coldchat/tmi/client/account_session.dart';
 import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
@@ -42,6 +43,18 @@ import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 
 import '../api/fake_api.dart';
+
+/// Logged out: no own login to highlight, nobody blocked.
+class _FakeSession implements AccountSession {
+  @override
+  String? get ownLogin => null;
+
+  @override
+  bool isBlocked(String userId) => false;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 /// Fetches no history.
 class _FakeHistory implements ChatHistory {
@@ -63,9 +76,7 @@ class _FakeClient implements Client {
   @override
   TriggerRepository? get triggers => null;
   @override
-  String? get ownLogin => null;
-  @override
-  bool isBlocked(String userId) => false;
+  final AccountSession session = _FakeSession();
 
   @override
   late final Whispers whispers = Whispers(this);

@@ -195,7 +195,7 @@ class Whispers extends Cubit<List<WhisperChannel>> {
       userId: tokenData.userId!,
       login: tokenData.login,
       displayName: account.userData?.displayName ?? tokenData.login,
-      color: client.ownColor,
+      color: client.session.ownColor,
       partnerLogin: conversation.partnerLogin,
       text: text,
     );
