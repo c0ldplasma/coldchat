@@ -3,16 +3,15 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../api/twitch/helix_api.dart';
 import '../components/separator.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
+import '../data/home/channel_search_cubit.dart';
+import '../data/home/home_streams_cubit.dart';
 import '../data/repositories/account_repository.dart';
-import '../data/twitch/channel_search.dart';
 import '../data/twitch/stream_data.dart';
-import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
 import '../tmi/client/client.dart';
@@ -55,66 +54,52 @@ class SliverSearchBar extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
-class HomeTab extends StatefulWidget {
+/// The home tab: channel search, recommended and top streams. The streams come from the [HomeStreamsCubit] the home
+/// page provides; the search lives (and resets) with this tab.
+class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
+  Widget build(BuildContext context) => BlocProvider<ChannelSearchCubit>(
+    create: (context) {
+      final accounts = context.read<AccountRepository>();
+      final client = context.read<Client>();
+      return ChannelSearchCubit(
+        helix: () {
+          final account = accounts.active;
+          return account == null ? null : client.helix.forToken(account.tokenData);
+        },
+      );
+    },
+    child: const _HomeTabView(),
+  );
 }
 
-class _HomeTabState extends State<HomeTab> {
-  TwitchAccount? account;
-  TextEditingController searchTextController = TextEditingController();
+class _HomeTabView extends StatefulWidget {
+  const _HomeTabView();
+
+  @override
+  State<_HomeTabView> createState() => _HomeTabViewState();
+}
+
+class _HomeTabViewState extends State<_HomeTabView> {
+  final TextEditingController searchTextController = TextEditingController();
   final FocusNode searchFocus = FocusNode();
   late final ChannelSearchRequest searchRequest = context.read<HomeTabSwitcher>().searchRequest;
-  Future<List<StreamData>>? recommendedStreams;
-  Future<List<StreamData>>? topStreams;
-  Future<List<ChannelCandidate>>? searchResults;
-  Timer? searchDebounce;
-  late final Listenable activeAccountListenable;
 
-  // Starts loading the streams again. Without an account there is nothing to load.
-  void refresh() {
-    final account = this.account;
-    if (account == null) {
-      recommendedStreams = null;
-      topStreams = null;
-      return;
-    }
-    recommendedStreams = _helix(account).streams(
-      userLogins: [
-        'forsen',
-        'btmc',
-        'nymn',
-        'vaxei_osu',
-        'mrekkosu',
-        'shigetora',
-        'kitboga',
-        'cdawgva',
-        'gigguk',
-        'vedal987',
-      ],
-    );
-    topStreams = _helix(account).streams();
-  }
+  @override
+  void initState() {
+    super.initState();
+    // TabBarView builds this tab anew whenever it is shown again: refresh lists that got old meanwhile.
+    context.read<HomeStreamsCubit>().homeShown();
 
-  /// Helix as [account].
-  HelixApi _helix(TwitchAccount account) => context.read<Client>().helix.forToken(account.tokenData);
-
-  TwitchAccount? _activeAccount() => context.read<AccountRepository>().active;
-
-  void _onActiveAccountChanged() {
-    if (!mounted) return;
-    setState(() {
-      account = _activeAccount();
-      refresh();
-    });
+    searchRequest.addListener(_focusSearchIfRequested);
+    // The request may have come while this tab wasn't built yet.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _focusSearchIfRequested());
   }
 
   @override
   void dispose() {
-    activeAccountListenable.removeListener(_onActiveAccountChanged);
-    searchDebounce?.cancel();
     searchRequest.removeListener(_focusSearchIfRequested);
     searchFocus.dispose();
     searchTextController.dispose();
@@ -123,7 +108,7 @@ class _HomeTabState extends State<HomeTab> {
 
   // The "+" in the tab bar: put the cursor in the channel search, with any old search selected so typing replaces it.
   void _focusSearchIfRequested() {
-    if (!mounted || !searchRequest.take() || account == null) return;
+    if (!mounted || !searchRequest.take() || !context.read<HomeStreamsCubit>().state.loggedIn) return;
     searchFocus.requestFocus();
     searchTextController.selection = TextSelection(baseOffset: 0, extentOffset: searchTextController.text.length);
     // Focus set from code, mid tab animation, doesn't bring up the keyboard on Android by itself.
@@ -132,53 +117,22 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
-  // Waits until typing pauses, so a fast typist doesn't send a search per letter.
-  void _onSearchChanged(String text) {
-    searchDebounce?.cancel();
-    if (normalizeChannelQuery(text).isEmpty) {
-      setState(() => searchResults = null);
-      return;
-    }
-    searchDebounce = Timer(const Duration(milliseconds: 250), () {
-      if (!mounted || account == null) return;
-      setState(() => searchResults = searchChannels(_helix(account!), text));
-    });
-  }
-
   // Join + switch to the channel, then reset and dismiss the search.
   void _openSearchResult(String channelName) {
-    searchDebounce?.cancel();
+    context.read<ChannelSearchCubit>().clear();
     joinAndOpenChannel(context, channelName);
     searchTextController.clear();
     FocusScope.of(context).unfocus();
-    setState(() => searchResults = null);
   }
 
   @override
-  void initState() {
-    super.initState();
-    account = _activeAccount();
-    refresh();
-
-    // Removed again in dispose: TabBarView disposes this page whenever another tab is shown.
-    activeAccountListenable = context.read<AccountRepository>().activeChanges..addListener(_onActiveAccountChanged);
-
-    searchRequest.addListener(_focusSearchIfRequested);
-    // The request may have come while this tab wasn't built yet.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _focusSearchIfRequested());
-  }
-
-  @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: activeAccountListenable,
-    builder: (BuildContext context, _) {
-      if (account == null) return const LoggedOutStart();
+  Widget build(BuildContext context) => BlocBuilder<HomeStreamsCubit, HomeStreamsState>(
+    buildWhen: (previous, current) => previous.loggedIn != current.loggedIn,
+    builder: (context, streamsState) {
+      if (!streamsState.loggedIn) return const LoggedOutStart();
 
       return RefreshIndicator(
-        onRefresh: () {
-          setState(refresh);
-          return Future.wait([?recommendedStreams, ?topStreams]);
-        },
+        onRefresh: context.read<HomeStreamsCubit>().refresh,
         child: CustomScrollView(
           slivers: [
             const SliverAppBar.large(
@@ -216,7 +170,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                             controller: searchTextController,
                             focusNode: searchFocus,
-                            onChanged: _onSearchChanged,
+                            onChanged: context.read<ChannelSearchCubit>().queryChanged,
                           ),
                         ),
                         const SizedBox(width: 16.0),
@@ -227,148 +181,127 @@ class _HomeTabState extends State<HomeTab> {
                 const SizedBox(height: 16.0),
               ],
             ),
-            if (searchResults != null)
-              FutureBuilder<List<ChannelCandidate>>(
-                future: searchResults,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return SliverList.list(children: [Text(AppLocalizations.of(context).channelSearchFailed)]);
-                  }
-                  if (!snapshot.hasData) {
-                    return SliverList.list(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                      ],
-                    );
-                  }
-                  final query = normalizeChannelQuery(searchTextController.text);
-                  final results = snapshot.data!;
-                  // The typed name as a channel to join, unless the results already show it as the exact match.
-                  final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
-                  final colors = Theme.of(context).colorScheme;
-                  return SliverList.list(
-                    children: [
-                      if (!hasExact && query.isNotEmpty) ...[
-                        Tile(
-                          onTap: () => _openSearchResult('#${query.toLowerCase()}'),
-                          prefix: ClipRRect(
-                            borderRadius: BorderRadius.circular(48.0),
-                            clipBehavior: Clip.antiAlias,
-                            child: Material(
-                              color: colors.onSurface.withValues(alpha: 0.1),
-                              child: const Icon(Icons.add_circle_outline),
-                            ),
-                          ),
-                          title: query,
-                        ),
-                        const Separator(),
-                      ],
-                      for (final result in results)
-                        Tile(
-                          onTap: () => _openSearchResult('#${result.login}'),
-                          prefix: ClipRRect(
-                            borderRadius: BorderRadius.circular(48.0),
-                            clipBehavior: Clip.antiAlias,
-                            child: Material(
-                              color: colors.onSurface.withValues(alpha: 0.1),
-                              child: Ink.image(image: NetworkImage(result.profileImageUrl)),
-                            ),
-                          ),
-                          title: result.displayName,
-                          subtitle: result.isLive ? result.gameName : null,
-                          suffix: result.isLive && result.viewerCount != null
-                              ? Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      width: 8.0,
-                                      height: 8.0,
-                                      decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                                    ),
-                                    const SizedBox(width: 4.0),
-                                    Text(
-                                      '${result.viewerCount}',
-                                      style: Theme.of(context).textTheme.bodyMedium
-                                          ?.copyWith(color: colors.onSurface.withValues(alpha: 0.9)),
-                                    ),
-                                  ],
-                                )
-                              : null,
-                        ),
-                    ],
-                  );
-                },
-              ),
-            if (searchResults == null)
-              FutureBuilder<List<StreamData>>(
-                future: recommendedStreams,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError || (snapshot.data?.isEmpty ?? false)) {
-                    return SliverList.list(children: const []);
-                  }
-                  if (!snapshot.hasData) {
-                    return SliverList.list(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                      ],
-                    );
-                  }
-                  return SliverList.list(
-                    children: [
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.222),
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                          ),
-                          items: [
-                            for (final stream in snapshot.data!)
-                              StreamPreviewLarge(
-                                stream: stream,
-                              ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16.0),
-                    ],
-                  );
-                },
-              ),
-            if (searchResults == null)
-              FutureBuilder<List<StreamData>>(
-                future: topStreams,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return SliverList.list(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Center(child: CircularProgressIndicator()),
-                        ),
-                      ],
-                    );
-                  }
-                  return SliverList.list(
-                    children: [
-                      for (final stream in snapshot.data!)
-                        //Padding(
-                        //  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                        //  child: StreamPreviewPill(stream: stream),
-                        //),
-                        StreamPreviewSmall(stream: stream),
-                    ],
-                  );
-                },
-              ),
+            BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
+              builder: (context, search) => switch (search) {
+                ChannelSearchIdle() => const _StreamLists(),
+                ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
+                ChannelSearchFailed() => SliverList.list(
+                  children: [Text(AppLocalizations.of(context).channelSearchFailed)],
+                ),
+                ChannelSearchLoaded(:final results) => _searchResults(context, results),
+              },
+            ),
           ],
         ),
+      );
+    },
+  );
+
+  Widget _searchResults(BuildContext context, List<ChannelCandidate> results) {
+    final query = normalizeChannelQuery(searchTextController.text);
+    // The typed name as a channel to join, unless the results already show it as the exact match.
+    final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
+    final colors = Theme.of(context).colorScheme;
+    return SliverList.list(
+      children: [
+        if (!hasExact && query.isNotEmpty) ...[
+          Tile(
+            onTap: () => _openSearchResult('#${query.toLowerCase()}'),
+            prefix: ClipRRect(
+              borderRadius: BorderRadius.circular(48.0),
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                color: colors.onSurface.withValues(alpha: 0.1),
+                child: const Icon(Icons.add_circle_outline),
+              ),
+            ),
+            title: query,
+          ),
+          const Separator(),
+        ],
+        for (final result in results)
+          Tile(
+            onTap: () => _openSearchResult('#${result.login}'),
+            prefix: ClipRRect(
+              borderRadius: BorderRadius.circular(48.0),
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                color: colors.onSurface.withValues(alpha: 0.1),
+                child: Ink.image(image: NetworkImage(result.profileImageUrl)),
+              ),
+            ),
+            title: result.displayName,
+            subtitle: result.isLive ? result.gameName : null,
+            suffix: result.isLive && result.viewerCount != null
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 8.0,
+                        height: 8.0,
+                        decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                      ),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '${result.viewerCount}',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(color: colors.onSurface.withValues(alpha: 0.9)),
+                      ),
+                    ],
+                  )
+                : null,
+          ),
+      ],
+    );
+  }
+}
+
+class _Spinner extends StatelessWidget {
+  const _Spinner();
+
+  @override
+  Widget build(BuildContext context) => const Padding(
+    padding: EdgeInsets.all(8.0),
+    child: Center(child: CircularProgressIndicator()),
+  );
+}
+
+/// The recommended streams as a carousel (hidden when none are live or they failed to load), then the top streams
+/// (nothing when they failed to load). Old lists stay up while newer ones load.
+class _StreamLists extends StatelessWidget {
+  const _StreamLists();
+
+  @override
+  Widget build(BuildContext context) => BlocBuilder<HomeStreamsCubit, HomeStreamsState>(
+    builder: (context, state) {
+      final recommended = state.recommended.streams;
+      final top = state.top.streams;
+      return SliverList.list(
+        children: [
+          if (state.recommended.isLoading) const _Spinner(),
+          if (recommended != null && recommended.isNotEmpty) ...[
+            ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.222),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                ),
+                items: [
+                  for (final stream in recommended)
+                    StreamPreviewLarge(
+                      stream: stream,
+                    ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16.0),
+          ],
+          if (state.top.isLoading) const _Spinner(),
+          if (top != null)
+            for (final stream in top) StreamPreviewSmall(stream: stream),
+        ],
       );
     },
   );

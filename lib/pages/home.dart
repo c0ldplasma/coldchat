@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../components/bottom_bar.dart';
 import '../components/modal.dart';
+import '../data/home/home_streams_cubit.dart';
+import '../data/repositories/account_repository.dart';
 import '../data/repositories/channel_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../modal/channel.dart';
@@ -181,8 +183,24 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
+  // Above the tab view, which disposes the home tab on every tab switch, so its stream lists survive switching.
   @override
-  Widget build(BuildContext context) => BlocBuilder<ClientChannels, List<Channel>>(
+  Widget build(BuildContext context) => BlocProvider<HomeStreamsCubit>(
+    create: (context) {
+      final accounts = context.read<AccountRepository>();
+      final client = context.read<Client>();
+      return HomeStreamsCubit(
+        helix: () {
+          final account = accounts.active;
+          return account == null ? null : client.helix.forToken(account.tokenData);
+        },
+        accountChanges: accounts.activeChanges,
+      );
+    },
+    child: _buildTabs(context),
+  );
+
+  Widget _buildTabs(BuildContext context) => BlocBuilder<ClientChannels, List<Channel>>(
     bloc: context.read<Client>().channels,
     builder: (context, channels) => BlocBuilder<Whispers, List<WhisperChannel>>(
       bloc: context.read<Client>().whispers,
