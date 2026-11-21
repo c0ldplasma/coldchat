@@ -42,18 +42,8 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
             cookies: widget.cookies,
           );
 
-          // Keyed by userId@clientId. Signing in again as the same user replaces
-          // the stale entry (and its dead expiresAt) — also one stored under a
-          // different client id, such as a login from before ColdChat had its
-          // own Twitch app.
           final accountsBox = Hive.box<dynamic>('TwitchAccounts');
-          final replacedHashes = [
-            for (final entry in accountsBox.toMap().entries)
-              if (entry.key != widget.tokenData.hash &&
-                  entry.value is TwitchAccount &&
-                  (entry.value as TwitchAccount).tokenData.userId == widget.tokenData.userId)
-                entry.key,
-          ];
+          final replacedHashes = keysReplacedByLogin(accountsBox.toMap(), widget.tokenData);
           await accountsBox.deleteAll(replacedHashes);
           await accountsBox.put(widget.tokenData.hash, twitchAccount);
 

@@ -10,6 +10,7 @@ import '../../api/betterttv/betterttv_socket.dart';
 import '../../api/recentmessages/recentmessages.dart';
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/twitch.dart';
+import '../../data/active_account.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/twitch/token_data.dart';
@@ -45,7 +46,7 @@ import 'client_channels.dart';
 import 'client_listener.dart';
 import 'join_scheduler.dart';
 
-class Client {
+class Client implements AccountConnector {
   Connection receiver = Connection();
   Connection transmitter = Connection();
   List<String> blockedUserIds = [];
@@ -338,6 +339,11 @@ class Client {
   static const int _historyFirstChunk = 30;
   static const int _historyLaterChunk = 40;
 
+  /// Whether [message] from the recent-messages history is left out when inserting it: see [insertHistoryMessages].
+  /// USERSTATE is about the own user at that time, so an old one would set [Channel.ownUserIsModerator] wrongly.
+  static bool skippedInHistory(irc.Message message) =>
+      const {'ROOMSTATE', 'NOTICE', 'USERSTATE'}.contains(message.command);
+
   Future<void> insertHistoryMessages(Connection connection, List<String> messages) async {
     // Parse once, preserving chronological (oldest->newest) order as delivered
     // by the recent-messages endpoint. Skip transient channel-state events:
@@ -355,7 +361,7 @@ class Client {
       } on irc.InvalidIrcMessageException {
         continue;
       }
-      if (const {'ROOMSTATE', 'NOTICE', 'USERSTATE'}.contains(ircMessage.command)) continue;
+      if (skippedInHistory(ircMessage)) continue;
       parsed.add(ircMessage);
     }
     if (parsed.isEmpty) return;
@@ -526,6 +532,7 @@ class Client {
     }
   }
 
+  @override
   Future<void> connectAs(TwitchAccount twitchAccount) async {
     // Don't even open the socket with a token we already know is dead: the
     // handshake would fail and every channel would be parted with no feedback.
@@ -558,6 +565,7 @@ class Client {
   }
 
   /// Logs out: closes both chat connections and stops whispers until [connectAs] is called again.
+  @override
   void disconnect() {
     _apiAccount = null;
     twitchUserEmotes.change([]);
@@ -686,10 +694,7 @@ class Client {
       case 'USERSTATE':
         final channel = channels.state.firstWhereOrNull((channel) => channel.name == event.parameters[0]);
         if (channel == null) break;
-        final badges = (event.tags['badges'] ?? '').split(',');
-        channel.ownUserIsModerator = badges.any(
-          (badge) => badge.startsWith('moderator/') || badge.startsWith('broadcaster/'),
-        );
+        channel.applyUserState(event);
         break;
       case 'ROOMSTATE':
         final channelName = event.parameters[0];
