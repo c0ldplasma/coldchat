@@ -262,6 +262,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get enableRegex => 'regex 사용';
 
   @override
+  String get invalidRegex => '유효하지 않은 regex입니다';
+
+  @override
   String get caseSensitive => '대소문자 구분';
 
   @override
@@ -281,6 +284,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get deleteMessage => '메시지 삭제';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return '메시지를 삭제하지 못했어요: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope => '메시지를 삭제하려면 다시 로그인하세요. ColdChat이 삭제를 지원하기 전의 로그인이에요.';
 
   @override
   String get mentionUser => '사용자 멘션';

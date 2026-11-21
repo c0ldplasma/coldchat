@@ -330,6 +330,22 @@ class ChatColors extends ThemeExtension<ChatColors> {
           muted: Color.lerp(muted, other.muted, t)!,
           brightness: t < 0.5 ? brightness : other.brightness,
         );
+
+  // Value equality, so a rebuilt but unchanged theme compares equal and doesn't rebuild every Theme.of dependent.
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatColors &&
+          other.bar == bar &&
+          other.onBar == onBar &&
+          other.sheet == sheet &&
+          other.raised == raised &&
+          other.link == link &&
+          other.muted == muted &&
+          other.brightness == brightness;
+
+  @override
+  int get hashCode => Object.hash(bar, onBar, sheet, raised, link, muted, brightness);
 }
 
 ColorScheme _toColorScheme(DynamicScheme s, Brightness brightness) {

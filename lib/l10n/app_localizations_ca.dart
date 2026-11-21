@@ -262,6 +262,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get enableRegex => 'Fes servir regex';
 
   @override
+  String get invalidRegex => 'No és un regex vàlid';
+
+  @override
   String get caseSensitive => 'Distingeix majúscules i minúscules';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Suprimeix el missatge';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'No s\'ha eliminat el missatge: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Torna a iniciar la sessió per eliminar missatges. La teva sessió és d\'abans que ColdChat ho pogués fer.';
 
   @override
   String get mentionUser => 'Esmenta l\'usuari';

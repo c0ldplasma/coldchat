@@ -88,6 +88,15 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
   @override
   Widget build(BuildContext context) => BoxListener(
     box: Hive.box<dynamic>('Settings'),
+    // Only the keys read below. Other Settings writes (e.g. `lastChannel` on every tab swipe) must not rebuild the
+    // whole app and its theme.
+    keys: const [
+      'applicationAppearance',
+      'locale',
+      ColdChatTheme.accentKey,
+      ColdChatTheme.customHueKey,
+      ColdChatTheme.customChromaKey,
+    ],
     builder: (context, box) {
       final ApplicationAppearance applicationAppearance = box.get('applicationAppearance') as ApplicationAppearance;
       final accent = ColdChatTheme.current(box);

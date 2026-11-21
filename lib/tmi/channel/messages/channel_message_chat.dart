@@ -248,7 +248,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       final messageTriggers = Hive.box<dynamic>('MessageTriggers').values.cast<MessageTrigger>();
       final messageTrigger = messageTriggers.firstWhereOrNull((messageTrigger) {
         if (messageTrigger.enableRegex) {
-          return RegExp(messageTrigger.pattern).hasMatch(body);
+          return messageTrigger.matchesRegex(body);
         } else {
           var pattern = messageTrigger.pattern;
           if (!messageTrigger.caseSensitive) {
