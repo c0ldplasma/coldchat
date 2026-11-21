@@ -154,6 +154,15 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
     // reconnecting; unhandled, `ready` would only add an uncaught exception.
     unawaited(socket.ready.catchError((Object error) => ircLog('$name: could not connect: $error')));
 
+    // A failing socket reports onError and then onDone; it counts as one failed attempt, so only the first of them
+    // schedules the reconnect. Otherwise each failure would step the backoff twice (first retry after 2s, not 1s).
+    var reconnectScheduled = false;
+    void socketEnded() {
+      if (reconnectScheduled || generation != _connectGeneration) return;
+      reconnectScheduled = true;
+      _scheduleReconnect();
+    }
+
     subscription = socket.stream.listen(
       (event) async {
         for (final singleEvent
@@ -170,12 +179,8 @@ class Connection extends Bloc<ConnectionEvent, ConnectionState> {
           unawaited(receive(message));
         }
       },
-      onDone: () {
-        if (generation == _connectGeneration) _scheduleReconnect();
-      },
-      onError: (Object error) {
-        if (generation == _connectGeneration) _scheduleReconnect();
-      },
+      onDone: socketEnded,
+      onError: (Object error) => socketEnded(),
       // cancelOnError: true,
     );
 
