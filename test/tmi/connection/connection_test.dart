@@ -26,6 +26,18 @@ class _FakeSocket implements WebSocketChannel {
     : _controller = StreamController<dynamic>(onCancel: () => Future<void>.delayed(cancelDelay));
 
   final StreamController<dynamic> _controller;
+  final Completer<void> _ready = Completer<void>();
+
+  @override
+  Future<void> get ready => _ready.future;
+
+  /// Fails like a real socket whose host lookup failed: `ready` completes with
+  /// the error, and the stream reports it and closes.
+  void failToConnect(Object error) {
+    _ready.completeError(error);
+    _controller.addError(error);
+    unawaited(_controller.close());
+  }
 
   @override
   // ignore: close_sinks, closing it is what Connection is tested for.
@@ -154,5 +166,29 @@ void main() {
       expect(sockets, hasLength(1));
       expect(connection.state, isA<tmi.ConnectionDisconnected>());
     });
+  });
+
+  test('a failed connect is handled and reconnects', () async {
+    final sockets = <_FakeSocket>[];
+    final connection = Connection(
+      openSocket: (_) {
+        final socket = _FakeSocket();
+        sockets.add(socket);
+        return socket;
+      },
+    );
+    addTearDown(connection.close);
+
+    connection.add(ConnectionConnect(_account()));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+    expect(sockets, hasLength(1));
+
+    // An unhandled `ready` error would fail this test as an uncaught async error.
+    sockets.first.failToConnect(Exception("Failed host lookup: 'irc-ws.chat.twitch.tv'"));
+    // onError and onDone both schedule the reconnect; the second one sets the 2s backoff.
+    await Future<void>.delayed(const Duration(milliseconds: 2300));
+
+    expect(sockets, hasLength(2));
+    expect(connection.channel, same(sockets.last));
   });
 }

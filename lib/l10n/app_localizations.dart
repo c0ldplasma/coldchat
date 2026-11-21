@@ -1103,6 +1103,12 @@ abstract class AppLocalizations {
   /// **'There is no Twitch user with that name.'**
   String get whisperUserNotFound;
 
+  /// SnackBar when a chat message is sent before the channel is joined; the typed text stays in the composer
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected to this channel yet. Your message wasn\'t sent.'**
+  String get messageNotSentNotConnected;
+
   /// No description provided for @whisperFailed.
   ///
   /// In en, this message translates to:

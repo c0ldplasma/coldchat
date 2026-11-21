@@ -546,6 +546,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get whisperUserNotFound => 'Na Twitchi není žádný uživatel s tímto jménem.';
 
   @override
+  String get messageNotSentNotConnected => 'K tomuto kanálu ještě nejsi připojen. Tvoje zpráva nebyla odeslána.';
+
+  @override
   String whisperFailed(String reason) {
     return 'Šepot nebyl odeslán: $reason';
   }

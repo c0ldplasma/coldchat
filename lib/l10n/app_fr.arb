@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Connecte-toi avec Twitch pour envoyer des chuchotements.",
   "whisperNeedsScope": "Reconnecte-toi pour envoyer et recevoir des chuchotements. Ta connexion date d'avant leur prise en charge par ColdChat.",
   "whisperUserNotFound": "Aucun utilisateur Twitch ne porte ce nom.",
+  "messageNotSentNotConnected": "Pas encore connecté à cette chaîne. Ton message n'a pas été envoyé.",
   "whisperFailed": "Chuchotement non envoyé : {reason}",
   "@whisperFailed": {
     "placeholders": {

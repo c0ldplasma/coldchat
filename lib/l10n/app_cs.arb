@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Pro posílání šepotů se přihlas přes Twitch.",
   "whisperNeedsScope": "Pro posílání a příjem šepotů se přihlas znovu. Tvoje přihlášení je z doby, kdy je ColdChat ještě nepodporoval.",
   "whisperUserNotFound": "Na Twitchi není žádný uživatel s tímto jménem.",
+  "messageNotSentNotConnected": "K tomuto kanálu ještě nejsi připojen. Tvoje zpráva nebyla odeslána.",
   "whisperFailed": "Šepot nebyl odeslán: {reason}",
   "@whisperFailed": {
     "placeholders": {

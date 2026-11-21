@@ -55,6 +55,8 @@ class BetterTTVSocket {
     _reconnectTimer = null;
     final channel = IOWebSocketChannel.connect(Uri.parse('wss://sockets.betterttv.net/ws'));
     _channel = channel;
+    // A failed connect completes `ready` with the error the stream also reports (and reconnects on).
+    unawaited(channel.ready.catchError((Object e) => log('BetterTTV socket connection failed: $e')));
     _subscription = channel.stream.listen(
       _receive,
       onDone: _scheduleReconnect,

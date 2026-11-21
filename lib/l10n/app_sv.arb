@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "Logga in med Twitch för att skicka viskningar.",
   "whisperNeedsScope": "Logga in igen för att skicka och ta emot viskningar. Din inloggning är från innan ColdChat hade stöd för dem.",
   "whisperUserNotFound": "Det finns ingen Twitch-användare med det namnet.",
+  "messageNotSentNotConnected": "Inte ansluten till den här kanalen än. Ditt meddelande skickades inte.",
   "whisperFailed": "Viskningen skickades inte: {reason}",
   "@whisperFailed": {
     "placeholders": {

@@ -320,6 +320,7 @@
   "whisperNeedsLogin": "व्हिस्पर भेजने के लिए Twitch से साइन इन करें।",
   "whisperNeedsScope": "व्हिस्पर भेजने और पाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat इन्हें सपोर्ट नहीं करता था।",
   "whisperUserNotFound": "इस नाम का कोई Twitch उपयोगकर्ता नहीं है।",
+  "messageNotSentNotConnected": "अभी इस चैनल से कनेक्ट नहीं है। आपका संदेश नहीं भेजा गया।",
   "whisperFailed": "व्हिस्पर नहीं भेजा गया: {reason}",
   "@whisperFailed": {
     "placeholders": {
