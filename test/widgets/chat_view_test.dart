@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:coldchat/data/notifications_cubit.dart';
-import 'package:coldchat/data/repositories/account_repository.dart';
-import 'package:coldchat/data/repositories/settings_repository.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
@@ -20,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
-import 'package:provider/provider.dart';
 
 /// Just what a [Channel] and its [ChatView] read from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
@@ -92,14 +89,8 @@ void main() {
       messages.forEach(channel.channelMessages.add);
 
       await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            Provider<SettingsRepository>.value(value: SettingsRepository(Hive.box<dynamic>('Settings'))),
-            Provider<AccountRepository>.value(
-              value: AccountRepository(Hive.box<dynamic>('TwitchAccounts'), Hive.box<dynamic>('AccountSettings')),
-            ),
-            BlocProvider<NotificationsCubit>.value(value: notifications),
-          ],
+        BlocProvider<NotificationsCubit>.value(
+          value: notifications,
           child: MaterialApp(
             theme: ColdChatTheme.build(ColdChatTheme.defaultAccent, Brightness.dark),
             localizationsDelegates: AppLocalizations.localizationsDelegates,

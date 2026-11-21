@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
 import '../data/emote_button_icon.dart';
-import '../data/repositories/channel_repository.dart';
-import '../data/repositories/settings_repository.dart';
+import '../data/settings/chat_settings.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
 import '../widgets/chat/emote_picker.dart';
@@ -22,7 +23,7 @@ class ChatSettingsModal extends StatelessWidget {
   // Offer the last opened channel's emotes too, not just global ones.
   Future<void> _pickButtonIcon(BuildContext context) {
     final client = context.read<Client>();
-    final lastChannel = context.read<ChannelRepository>().lastChannel;
+    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
     final channel =
         client.channels.state.firstWhereOrNull((c) => c.name == lastChannel) ?? client.channels.state.firstOrNull;
     return Modal.show(
@@ -48,12 +49,10 @@ class ChatSettingsModal extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: context.read<SettingsRepository>().changes,
-    builder: (context, _) {
-      final settings = context.read<SettingsRepository>();
-      final emoteButtonIcon = context.read<EmoteButtonIcon>();
-      final chatSettings = settings.chatSettings;
+  Widget build(BuildContext context) => BoxListener(
+    box: Hive.box<dynamic>('Settings'),
+    builder: (context, box) {
+      final ChatSettings chatSettings = box.get('chatSettings') as ChatSettings;
       return ListView(
         shrinkWrap: true,
         children: [
@@ -65,12 +64,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.userAutocompletionWithAt,
               onChanged: (newValue) {
                 chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-                unawaited(settings.saveChatSettings(chatSettings));
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.userAutocompletionWithAt = !chatSettings.userAutocompletionWithAt;
-              unawaited(settings.saveChatSettings(chatSettings));
+              unawaited(chatSettings.save());
             },
           ),
           Tile(
@@ -80,17 +79,17 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.emoteAutocompletionWithColon,
               onChanged: (newValue) {
                 chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-                unawaited(settings.saveChatSettings(chatSettings));
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.emoteAutocompletionWithColon = !chatSettings.emoteAutocompletionWithColon;
-              unawaited(settings.saveChatSettings(chatSettings));
+              unawaited(chatSettings.save());
             },
           ),
           Tile(
             title: AppLocalizations.of(context).emoteMenuButton,
-            subtitle: emoteButtonIcon.name ?? 'Kappa',
+            subtitle: EmoteButtonIcon.name ?? 'Kappa',
             prefix: const SizedBox.square(dimension: 24.0, child: Center(child: EmoteButtonIconView())),
             suffix: const Icon(Icons.chevron_right),
             onTap: () => _pickButtonIcon(context),
@@ -99,10 +98,10 @@ class ChatSettingsModal extends StatelessWidget {
             title: AppLocalizations.of(context).emoteMenuButtonGrayscale,
             prefix: const Icon(Icons.filter_b_and_w_outlined),
             suffix: Toggle(
-              value: emoteButtonIcon.grayscale,
-              onChanged: (newValue) => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
+              value: EmoteButtonIcon.grayscale,
+              onChanged: (newValue) => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
             ),
-            onTap: () => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
+            onTap: () => EmoteButtonIcon.setGrayscale(!EmoteButtonIcon.grayscale),
           ),
           Tile(
             title: AppLocalizations.of(context).showImagesFromLinks,
@@ -112,12 +111,12 @@ class ChatSettingsModal extends StatelessWidget {
               value: chatSettings.showLinkImages,
               onChanged: (newValue) {
                 chatSettings.showLinkImages = !chatSettings.showLinkImages;
-                unawaited(settings.saveChatSettings(chatSettings));
+                unawaited(chatSettings.save());
               },
             ),
             onTap: () {
               chatSettings.showLinkImages = !chatSettings.showLinkImages;
-              unawaited(settings.saveChatSettings(chatSettings));
+              unawaited(chatSettings.save());
             },
           ),
         ],

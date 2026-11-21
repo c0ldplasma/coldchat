@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce/hive_ce.dart';
 
 import '../components/separator.dart';
 import '../data/custom_command.dart';
-import '../data/repositories/custom_command_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 
@@ -101,9 +100,9 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
                       triggerController.text = triggerController.text.trim();
                       commandController.text = commandController.text.trim();
 
-                      final customCommands = context.read<CustomCommandRepository>();
+                      final customCommandsBox = Hive.box<dynamic>('CustomCommands');
                       if (widget.customCommand == null) {
-                        await customCommands.add(
+                        await customCommandsBox.add(
                           CustomCommand(
                             trigger: triggerController.text,
                             command: commandController.text,
@@ -112,7 +111,7 @@ class _CustomCommandModalState extends State<CustomCommandModal> {
                       } else {
                         widget.customCommand!.trigger = triggerController.text;
                         widget.customCommand!.command = commandController.text;
-                        await customCommands.save(widget.customCommand!);
+                        await widget.customCommand!.save();
                       }
                     },
               child: Padding(

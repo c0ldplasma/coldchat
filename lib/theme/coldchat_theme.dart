@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_color_utilities/material_color_utilities.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+import 'package:material_color_utilities/material_color_utilities.dart' hide Box;
 
 import '../l10n/app_localizations.dart';
 
@@ -13,7 +14,7 @@ import '../l10n/app_localizations.dart';
 /// An accent is a hue and a chroma (colorfulness) in HCT, Material's perceptual color space, rather than a seed
 /// color, so each one keeps its saturation: [ColorScheme.fromSeed] fixes chroma at 36, which made pink look dusty.
 ///
-/// Stored by [id] (see `SettingsRepository.accent`), which never changes; the order and names may.
+/// Stored in the Settings box under [ColdChatTheme.accentKey] by [id], which never changes; the order and names may.
 class AccentColor {
   final String id;
   final double hue;
@@ -88,8 +89,13 @@ class AccentColor {
   }
 }
 
-/// The single place ColdChat's colors come from: the accents and the [ThemeData] built from them.
+/// The single place ColdChat's colors come from: the accents, the stored choice, and the [ThemeData] built from them.
 abstract final class ColdChatTheme {
+  static const String accentKey = 'accentColor';
+
+  /// The color picked by the old 34-swatch list, as an ARGB int. Read once, to carry the choice over to an accent.
+  static const String legacyColorKey = 'themeColor';
+
   /// The palette all backgrounds come from, whatever the accent.
   static const AccentColor base = AccentColor('indigo', 279.0, 36.0);
 
@@ -115,14 +121,43 @@ abstract final class ColdChatTheme {
 
   static AccentColor accentById(String? id) => accents.firstWhere((a) => a.id == id, orElse: () => defaultAccent);
 
-  /// A color the user mixed from a hue and a saturation (chroma). Only those two are stored: the lightness of every
-  /// accent comes from the mode, which is what keeps any choice readable.
+  /// A color the user mixed from a hue and a saturation (chroma), stored next to [accentKey]. Only those two are
+  /// stored: the lightness of every accent comes from the mode, which is what keeps any choice readable.
   static const String customId = 'custom';
+  static const String customHueKey = 'accentHue';
+  static const String customChromaKey = 'accentChroma';
 
   /// Chroma beyond this is out of gamut for most hues at the tones the scheme uses, so the slider stops here.
   static const double maxChroma = 80.0;
 
   static AccentColor custom(double hue, double chroma) => AccentColor(customId, hue, chroma);
+
+  /// The accent in [settings], or the default.
+  static AccentColor current(Box<dynamic> settings) {
+    final id = settings.get(accentKey) as String?;
+    if (id == customId) {
+      final hue = settings.get(customHueKey);
+      final chroma = settings.get(customChromaKey);
+      if (hue is double && chroma is double) return custom(hue, chroma);
+    }
+    return accentById(id);
+  }
+
+  /// Picks a custom color, as hue (0–360) and chroma (0–[maxChroma]).
+  static Future<void> setCustom(Box<dynamic> settings, double hue, double chroma) => settings.putAll({
+    accentKey: customId,
+    customHueKey: hue,
+    customChromaKey: chroma,
+  });
+
+  /// Moves a color picked in the old list over to the closest accent, so an update changes as little as possible.
+  /// New installs get no entry and so the default.
+  static Future<void> migrate(Box<dynamic> settings) async {
+    if (settings.containsKey(accentKey)) return;
+    final legacy = settings.get(legacyColorKey);
+    if (legacy is! int) return;
+    await settings.put(accentKey, closestAccent(Color(legacy)).id);
+  }
 
   /// The accent whose hue is closest to [color]'s. Greys and brown-greys (Blue Grey, Brown) get the default.
   static AccentColor closestAccent(Color color) {

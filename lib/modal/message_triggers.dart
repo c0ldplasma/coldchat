@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../data/message_trigger.dart';
-import '../data/repositories/trigger_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
 import 'message_trigger.dart';
@@ -13,15 +13,14 @@ class MessageTriggersModal extends StatelessWidget {
   const MessageTriggersModal({super.key});
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: context.read<TriggerRepository>().messageTriggerChanges,
-    builder: (context, _) {
-      final repository = context.read<TriggerRepository>();
+  Widget build(BuildContext context) => BoxListener(
+    box: Hive.box<dynamic>('MessageTriggers'),
+    builder: (context, box) {
       return ListView(
         shrinkWrap: true,
         children: [
           ModalHeader(title: AppLocalizations.of(context).messageTriggers),
-          for (final messageTrigger in repository.messageTriggers) ...[
+          for (final messageTrigger in box.values.cast<MessageTrigger>()) ...[
             Tile(
               onTap: () => Modal.show(
                 context: context,
@@ -34,7 +33,7 @@ class MessageTriggersModal extends StatelessWidget {
               ),
               suffix: InkWell(
                 borderRadius: BorderRadius.circular(24.0),
-                onTap: () => repository.deleteMessageTrigger(messageTrigger),
+                onTap: messageTrigger.delete,
                 child: const Icon(Icons.delete_forever_rounded),
               ),
               title: messageTrigger.pattern,

@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../../data/repositories/channel_repository.dart';
 import '../channel/channel.dart';
 import '../channel/channel_state.dart';
 import 'client.dart';
 
 class ClientChannels extends Cubit<List<Channel>> {
   Client client;
-  final ChannelRepository repository;
+  Box<dynamic> channelsBox;
 
   ClientChannels(
     this.client, {
-    required this.repository,
+    required this.channelsBox,
   }) : super([]) {
-    joinAll(repository.channels, save: false);
+    joinAll(List<String>.from(channelsBox.values), save: false);
   }
 
   void join(String channelName) {
-    unawaited(repository.add(channelName));
+    unawaited(channelsBox.add(channelName));
 
     emit([
       ...state,
@@ -32,10 +32,12 @@ class ClientChannels extends Cubit<List<Channel>> {
 
   void part(Channel channel) {
     if (channel.id != null) client.bttvSocket.part(channel.id!);
-    unawaited(repository.remove(channel.name));
+    final x = List<String>.from(channelsBox.values).indexWhere((element) => element == channel.name);
+    unawaited(channelsBox.deleteAt(x));
 
-    if (channel.state is ChannelStateWithConnection) unawaited(client.receiver.send('PART ${channel.name}'));
-    if (channel.transmitterJoin.state) unawaited(client.transmitter.send('PART ${channel.name}'));
+    if (channel.state is ChannelStateWithConnection) {
+      unawaited((channel.state as ChannelStateWithConnection).receiver.send('PART ${channel.name}'));
+    }
 
     emit([
       ...state.where((element) => element != channel),
@@ -46,7 +48,7 @@ class ClientChannels extends Cubit<List<Channel>> {
 
   void joinAll(List<String> channelNames, {bool save = true}) {
     if (save) {
-      unawaited(repository.addAll(channelNames.where((name) => !state.any((channel) => channel.name == name))));
+      unawaited(channelsBox.addAll(channelNames.where((name) => !state.any((channel) => channel.name == name))));
     }
 
     emit([

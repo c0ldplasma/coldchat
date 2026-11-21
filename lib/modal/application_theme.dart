@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:material_color_utilities/material_color_utilities.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
+import 'package:material_color_utilities/material_color_utilities.dart' hide Box;
 
-import '../data/repositories/settings_repository.dart';
+import '../components/boxlistener.dart';
+import '../data/settings/application_appearance.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/coldchat_theme.dart';
 import 'components/modal_header.dart';
@@ -17,12 +18,11 @@ class ApplicationThemeModal extends StatelessWidget {
   const ApplicationThemeModal({super.key});
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: context.read<SettingsRepository>().changes,
-    builder: (context, _) {
-      final settings = context.read<SettingsRepository>();
-      final current = settings.accent;
-      final appearance = settings.applicationAppearance;
+  Widget build(BuildContext context) => BoxListener(
+    box: Hive.box<dynamic>('Settings'),
+    builder: (context, box) {
+      final current = ColdChatTheme.current(box);
+      final appearance = box.get('applicationAppearance') as ApplicationAppearance;
       final brightness = Theme.of(context).brightness;
       final isCustom = current.id == ColdChatTheme.customId;
       return ListView(
@@ -42,7 +42,7 @@ class ApplicationThemeModal extends StatelessWidget {
                     name: accent.name(AppLocalizations.of(context)),
                     color: accent.colorScheme(brightness, highContrast: appearance.highContrast).primary,
                     selected: accent.id == current.id,
-                    onTap: () => settings.setAccent(accent),
+                    onTap: () => box.put(ColdChatTheme.accentKey, accent.id),
                   ),
                 _Swatch(
                   name: AppLocalizations.of(context).customColor,
@@ -51,15 +51,16 @@ class ApplicationThemeModal extends StatelessWidget {
                   // Brings back the last custom color, or starts from the accent picked so far.
                   onTap: isCustom
                       ? null
-                      : () => settings.setCustomAccent(
-                          settings.customHue ?? current.hue,
-                          settings.customChroma ?? current.chroma,
+                      : () => ColdChatTheme.setCustom(
+                          box,
+                          box.get(ColdChatTheme.customHueKey) as double? ?? current.hue,
+                          box.get(ColdChatTheme.customChromaKey) as double? ?? current.chroma,
                         ),
                 ),
               ],
             ),
           ),
-          if (isCustom) _CustomColorEditor(settings: settings, hue: current.hue, chroma: current.chroma),
+          if (isCustom) _CustomColorEditor(box: box, hue: current.hue, chroma: current.chroma),
         ],
       );
     },
@@ -145,11 +146,11 @@ class _Swatch extends StatelessWidget {
 /// Hue and saturation sliders for the custom accent, with a preview of it in both modes. There's deliberately no
 /// lightness: every accent's lightness comes from the mode, which keeps any choice readable on its background.
 class _CustomColorEditor extends StatelessWidget {
-  final SettingsRepository settings;
+  final Box<dynamic> box;
   final double hue;
   final double chroma;
 
-  const _CustomColorEditor({required this.settings, required this.hue, required this.chroma});
+  const _CustomColorEditor({required this.box, required this.hue, required this.chroma});
 
   /// A mid-tone, so the slider tracks show the colors clearly in both modes.
   static Color _sample(double hue, double chroma) => Color(Hct.from(hue, chroma, 65.0).toInt());
@@ -169,7 +170,7 @@ class _CustomColorEditor extends StatelessWidget {
             max: 360.0,
             colors: [for (var h = 0.0; h <= 360.0; h += 30.0) _sample(h, 48.0)],
             thumbColor: _sample(hue, 48.0),
-            onChanged: (value) => settings.setCustomAccent(value, chroma),
+            onChanged: (value) => ColdChatTheme.setCustom(box, value, chroma),
           ),
           const SizedBox(height: 16.0),
           _GradientSlider(
@@ -178,7 +179,7 @@ class _CustomColorEditor extends StatelessWidget {
             max: ColdChatTheme.maxChroma,
             colors: [_sample(hue, 0.0), _sample(hue, ColdChatTheme.maxChroma)],
             thumbColor: _sample(hue, chroma),
-            onChanged: (value) => settings.setCustomAccent(hue, value),
+            onChanged: (value) => ColdChatTheme.setCustom(box, hue, value),
           ),
           const SizedBox(height: 20.0),
           Row(

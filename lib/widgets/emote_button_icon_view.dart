@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../data/emote.dart';
 import '../data/emote_button_icon.dart';
@@ -20,12 +20,12 @@ class EmoteButtonIconView extends StatelessWidget {
   ]);
 
   @override
-  Widget build(BuildContext context) => ListenableBuilder(
-    listenable: context.read<EmoteButtonIcon>().changes,
-    builder: (context, _) {
-      final emoteButtonIcon = context.read<EmoteButtonIcon>();
-      final file = emoteButtonIcon.file;
-      final emoji = emoteButtonIcon.emoji;
+  Widget build(BuildContext context) => ValueListenableBuilder(
+    valueListenable: Hive.box<dynamic>('Settings')
+        .listenable(keys: [EmoteButtonIcon.iconKey, EmoteButtonIcon.grayscaleKey]),
+    builder: (context, box, _) {
+      final file = EmoteButtonIcon.file;
+      final emoji = EmoteButtonIcon.emoji;
       final Widget icon = file != null
           ? Image.file(file, height: size, filterQuality: FilterQuality.medium)
           : emoji != null
@@ -36,7 +36,7 @@ class EmoteButtonIconView extends StatelessWidget {
               ),
             )
           : Image.asset('assets/emote_providers/kappa.png', height: size, filterQuality: FilterQuality.medium);
-      return emoteButtonIcon.grayscale ? ColorFiltered(colorFilter: _grayscale, child: icon) : icon;
+      return EmoteButtonIcon.grayscale ? ColorFiltered(colorFilter: _grayscale, child: icon) : icon;
     },
   );
 }
@@ -46,12 +46,11 @@ class EmoteButtonIconView extends StatelessWidget {
 Future<bool> chooseEmoteButtonIcon(BuildContext context, Emote? emote) async {
   final messenger = ScaffoldMessenger.maybeOf(context);
   final failedMessage = AppLocalizations.of(context).emoteMenuButtonDownloadFailed;
-  final emoteButtonIcon = context.read<EmoteButtonIcon>();
   try {
     if (emote == null) {
-      await emoteButtonIcon.reset();
+      await EmoteButtonIcon.reset();
     } else {
-      await emoteButtonIcon.set(emote);
+      await EmoteButtonIcon.set(emote);
     }
     return true;
   } catch (e) {
