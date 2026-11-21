@@ -262,6 +262,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enableRegex => 'Использовать regex';
 
   @override
+  String get invalidRegex => 'Недопустимый regex';
+
+  @override
   String get caseSensitive => 'Учитывать регистр';
 
   @override
@@ -281,6 +284,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get deleteMessage => 'Удалить сообщение';
+
+  @override
+  String deleteMessageFailed(String reason) {
+    return 'Сообщение не удалено: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Войди снова, чтобы удалять сообщения. Твой вход был выполнен до того, как ColdChat научился это делать.';
 
   @override
   String get mentionUser => 'Упомянуть пользователя';
