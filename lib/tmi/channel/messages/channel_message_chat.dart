@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/badge_users.dart';
 import '../../../data/custom_badge.dart';
 import '../../../data/emote.dart';
 import '../../../data/inline_url.dart';
@@ -180,9 +179,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
       if (badge != null) badges.add(badge);
     }
 
-    for (final badgeUsers in (channel?.client.globalUserBadges.state ?? const <BadgeUsers>[])) {
-      if (badgeUsers.users.contains(user.id)) badges.add(badgeUsers.badge);
-    }
+    final userId = user.id;
+    if (userId != null) badges.addAll(channel?.client.globalUserBadges.badgesOf(userId) ?? const []);
 
     final bttvProBadge = channel?.client.bttvProBadges[user.id];
     if (bttvProBadge != null) badges.add(bttvProBadge);

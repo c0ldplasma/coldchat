@@ -313,10 +313,7 @@ class Client implements AccountConnector {
       }),
     );
     final merged = [for (final list in results) ...list];
-    final changed = !_sameIds(
-      globalUserBadges.state.map((b) => '${b.badge.id}:${b.users.length}'),
-      merged.map((b) => '${b.badge.id}:${b.users.length}'),
-    );
+    final changed = !UserBadges.sameHolders(globalUserBadges.state, merged);
     globalUserBadges.change(merged);
     unawaited(cache?.saveUserBadges(EmoteBadgeCache.globalUserBadgesKey, merged));
     if (changed) _rebuildChannelMessages();
