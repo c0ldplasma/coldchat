@@ -47,6 +47,14 @@ fails, a typeId or field number changed, so revert that rather than regenerating
 once. Dependabot (`.github/dependabot.yml`) opens monthly PRs for actions and pub
 packages: minor and patch updates grouped, each major update on its own.
 
+**Every change to logic comes with tests** in the same PR: new or changed parsing, state handling, decisions (who
+may do what, when to retry, what to send), and every bug fix (add a test that fails without the fix). When code
+is hard to test, make it testable instead of skipping the test: move the decision into a small pure function
+(like `lib/tools/account_swipe.dart`), or pass in what it depends on (an `http.Client`, a socket factory like
+`Connection(openSocket:)`, a clock, a byte reader like `UploadQueueCubit(readBytes:)`). Widget tests are welcome
+for UI behavior that broke before. Pure layout and styling changes
+don't need tests. If a test really isn't practical, say why in the PR description.
+
 ## Pull requests
 
 Work on a branch and open a PR against `main`; `main` is protected. PRs are **squash-merged**, need the required checks
