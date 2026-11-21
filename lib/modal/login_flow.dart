@@ -107,8 +107,13 @@ Future<void> showTwitchLogin(BuildContext context) async {
 ///
 /// [navigator] must outlive the snack bar: these errors usually show after a sheet was closed, so pass a navigator
 /// captured before closing it, never the closed sheet's context. The new login becomes the active account
-/// (`VerifyTokenModal`), so nothing else has to happen afterwards.
-void showSignInSnackBar(ScaffoldMessengerState messenger, NavigatorState navigator, String message) {
+/// (`VerifyTokenModal`), so nothing else has to happen afterwards. [onSignIn] is only replaced in tests.
+void showSignInSnackBar(
+  ScaffoldMessengerState messenger,
+  NavigatorState navigator,
+  String message, {
+  Future<void> Function(BuildContext context) onSignIn = showTwitchLogin,
+}) {
   messenger.showSnackBar(
     SnackBar(
       content: Text(message),
@@ -118,7 +123,7 @@ void showSignInSnackBar(ScaffoldMessengerState messenger, NavigatorState navigat
       action: SnackBarAction(
         label: AppLocalizations.of(messenger.context).signInAgain,
         onPressed: () {
-          if (navigator.mounted) unawaited(showTwitchLogin(navigator.context));
+          if (navigator.mounted) unawaited(onSignIn(navigator.context));
         },
       ),
     ),

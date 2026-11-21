@@ -3,12 +3,21 @@ import 'package:flutter/services.dart';
 
 import '../api/twitch/twitch.dart';
 import '../components/tile.dart';
+import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
 import 'login_flow.dart';
+
+/// Whether [tokenData] may delete messages. Logins from before ColdChat requested the scope can't until they sign
+/// in again.
+bool canDeleteMessagesWith(TokenData? tokenData) =>
+    tokenData != null && tokenData.scopes.contains(Twitch.deleteChatMessageScope);
+
+/// Whether signing in again fixes a failed delete: Twitch answers 401 when the token lacks the scope.
+bool deleteFailureNeedsSignIn(Object error) => error is TwitchRequestException && error.statusCode == 401;
 
 class MessageModal extends StatelessWidget {
   final ChannelMessageChat message;
@@ -79,7 +88,7 @@ class MessageModal extends StatelessWidget {
             navigator.pop();
             final tokenData = message.channel!.client.transmitter.twitchAccount?.tokenData;
             // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
-            if (tokenData == null || !tokenData.scopes.contains(Twitch.deleteChatMessageScope)) {
+            if (tokenData == null || !canDeleteMessagesWith(tokenData)) {
               showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
               return;
             }
@@ -91,7 +100,7 @@ class MessageModal extends StatelessWidget {
                 messageId: message.id,
               );
             } on TwitchRequestException catch (e) {
-              if (e.statusCode == 401) {
+              if (deleteFailureNeedsSignIn(e)) {
                 showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
               } else {
                 messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed(e.message))));

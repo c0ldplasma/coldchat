@@ -233,12 +233,15 @@ class ChannelViewState extends State<ChannelView> {
   /// Shows why a whisper couldn't be sent or opened, with a "Sign in" action when a new login fixes it.
   static void showWhisperError(ScaffoldMessengerState messenger, NavigatorState navigator, Object error) {
     final text = whisperErrorText(messenger.context, error);
-    if (error is WhisperUnavailableException) {
+    if (whisperErrorNeedsSignIn(error)) {
       showSignInSnackBar(messenger, navigator, text);
     } else {
       messenger.showSnackBar(SnackBar(content: Text(text)));
     }
   }
+
+  /// Whether signing in (again) fixes [error]: no login, or one from before ColdChat supported whispers.
+  static bool whisperErrorNeedsSignIn(Object error) => error is WhisperUnavailableException;
 
   static String whisperErrorText(BuildContext context, Object error) {
     final l10n = AppLocalizations.of(context);
