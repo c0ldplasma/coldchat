@@ -20,6 +20,7 @@ import 'channel_info.dart';
 import 'channel_message.dart';
 import 'channel_messages.dart';
 import 'channel_state.dart';
+import 'composer_draft.dart';
 import 'messages/channel_message_chat.dart';
 import 'messages/channel_message_state_change.dart';
 
@@ -37,6 +38,10 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   Emotes channelEmotes = Emotes();
   Badges channelBadges = Badges();
   ChannelInfo channelInfo = ChannelInfo();
+
+  /// The unsent composer text and reply target, kept here because the channel's view is disposed when its tab is
+  /// off screen.
+  final ComposerDraft composerDraft = ComposerDraft();
 
   // O(1) lookup maps for message building, rebuilt lazily and invalidated when
   // the underlying emote/badge sets change. Avoids concatenating the channel +

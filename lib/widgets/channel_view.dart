@@ -87,13 +87,25 @@ class ChannelViewState extends State<ChannelView> {
   @override
   void initState() {
     super.initState();
+    // This view is disposed while its tab is off screen; pick up where the
+    // composer was left.
+    final draft = widget.channel.composerDraft;
+    textEditingController.value = TextEditingValue(
+      text: draft.text,
+      selection: TextSelection.collapsed(offset: draft.restoredCaret),
+    );
+    replyChannelMessageChat = draft.reply;
+
     // Insert finished uploads into this channel's composer only; other tabs
-    // ignore them.
-    _uploadSubscription = context.read<UploadQueueCubit>().completed.listen((task) {
+    // ignore them. Uploads that finished while this view was gone wait in the
+    // queue and are inserted now.
+    final queue = context.read<UploadQueueCubit>();
+    _uploadSubscription = queue.completed.listen((task) {
       if (!mounted || task.channelName != widget.channel.name) return;
-      final url = task.url;
-      if (url != null) insertUploadedUrl(url);
+      _insertUploadedUrls(queue.takeUploadedUrls(widget.channel.name));
+      setState(() {});
     });
+    _insertUploadedUrls(queue.takeUploadedUrls(widget.channel.name));
     if (Platform.isAndroid && !_lostPhotoChecked) {
       _lostPhotoChecked = true;
       unawaited(recoverLostPhoto());
@@ -309,9 +321,15 @@ class ChannelViewState extends State<ChannelView> {
     }
   }
 
+  void _insertUploadedUrls(List<String> urls) {
+    for (final url in urls) {
+      _insertUploadedUrl(url);
+    }
+  }
+
   /// Drop [url] where the caret is, preserving whatever has been typed since
   /// the upload started, and leave the caret after it ready for more text.
-  void insertUploadedUrl(String url) {
+  void _insertUploadedUrl(String url) {
     final text = textEditingController.text;
     final selection = textEditingController.selection;
     final at = selection.isValid ? selection.end : text.length;
@@ -324,12 +342,17 @@ class ChannelViewState extends State<ChannelView> {
       text: updated,
       selection: TextSelection.collapsed(offset: (selection.isValid ? selection.start : at) + insertion.length),
     );
-    setState(() {});
   }
 
   @override
   void dispose() {
     unawaited(_uploadSubscription?.cancel());
+    final selection = textEditingController.selection;
+    widget.channel.composerDraft.save(
+      text: textEditingController.text,
+      caret: selection.isValid ? selection.end : -1,
+      reply: replyChannelMessageChat,
+    );
     textEditingController.dispose();
     textFocusNode.dispose();
     super.dispose();
