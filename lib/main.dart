@@ -15,7 +15,9 @@ import 'data/filesharing/uploaded_media.dart';
 import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
 import 'data/repositories/account_repository.dart';
+import 'data/repositories/channel_repository.dart';
 import 'data/repositories/settings_repository.dart';
+import 'data/repositories/whisper_repository.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
 import 'data/settings/blocked_user.dart';
@@ -64,21 +66,19 @@ Future<void> main() async {
   // Open all Hive boxes concurrently instead of serially to shave startup
   // time off the path before the first frame.
   final boxes = await Future.wait([
-    Hive.openBox<dynamic>('Channels'),
     Hive.openBox<dynamic>('EmoteBadgeCache'),
     Hive.openBox<dynamic>('SeenMentions'),
     Hive.openBox<dynamic>('MessageTriggers'),
     Hive.openBox<dynamic>('UserTriggers'),
     Hive.openBox<dynamic>('CustomCommands'),
     Hive.openBox<dynamic>('ChatSettings'),
-    Hive.openBox<dynamic>('Whispers'),
   ]);
-  final channelsBox = boxes[0];
-  final emoteBadgeCacheBox = boxes[1];
-  final whispersBox = boxes[7];
+  final emoteBadgeCacheBox = boxes[0];
   final accounts = await AccountRepository.open();
   final settings = await SettingsRepository.open();
   final emoteButtonIcon = await EmoteButtonIcon.open(settings);
+  final channels = await ChannelRepository.open();
+  final whispers = await WhisperRepository.open();
 
   // await settingsBox.clear();
 
@@ -90,13 +90,14 @@ Future<void> main() async {
         Provider<AccountRepository>.value(value: accounts),
         Provider<SettingsRepository>.value(value: settings),
         Provider<EmoteButtonIcon>.value(value: emoteButtonIcon),
+        Provider<ChannelRepository>.value(value: channels),
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
             accounts: accounts,
-            channelsBox: channelsBox,
+            channelRepository: channels,
             cacheBox: emoteBadgeCacheBox,
-            whispersBox: whispersBox,
+            whisperRepository: whispers,
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),

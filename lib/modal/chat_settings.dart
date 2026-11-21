@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
 import '../data/emote_button_icon.dart';
+import '../data/repositories/channel_repository.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
@@ -22,7 +22,7 @@ class ChatSettingsModal extends StatelessWidget {
   // Offer the last opened channel's emotes too, not just global ones.
   Future<void> _pickButtonIcon(BuildContext context) {
     final client = context.read<Client>();
-    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
+    final lastChannel = context.read<ChannelRepository>().lastChannel;
     final channel =
         client.channels.state.firstWhereOrNull((c) => c.name == lastChannel) ?? client.channels.state.firstOrNull;
     return Modal.show(

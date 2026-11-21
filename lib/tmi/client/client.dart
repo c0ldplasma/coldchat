@@ -13,6 +13,8 @@ import '../../api/twitch/twitch.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
+import '../../data/repositories/channel_repository.dart';
+import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
@@ -123,11 +125,11 @@ class Client implements AccountConnector {
   Client({
     TwitchAccount? twitchAccount,
     this.accounts,
-    required Box<dynamic> channelsBox,
+    required ChannelRepository channelRepository,
     Box<dynamic>? cacheBox,
-    Box<dynamic>? whispersBox,
+    WhisperRepository? whisperRepository,
   }) {
-    whispers = Whispers(this, box: whispersBox);
+    whispers = Whispers(this, storage: whisperRepository);
 
     // Set up the cache before constructing channels so each Channel can
     // hydrate its emotes/badges from disk in its constructor (channels are
@@ -142,13 +144,13 @@ class Client implements AccountConnector {
 
     channels = ClientChannels(
       this,
-      channelsBox: channelsBox,
+      repository: channelRepository,
     );
 
     // Prioritize the channel the user last had open so it lands in the first
     // (larger) JOIN burst and comes up before the rest of the list.
-    final lastChannel = Hive.box<dynamic>('Settings').get('lastChannel');
-    if (lastChannel is String && lastChannel.isNotEmpty) {
+    final lastChannel = channelRepository.lastChannel;
+    if (lastChannel != null && lastChannel.isNotEmpty) {
       channels.state.firstWhereOrNull((c) => c.name == lastChannel)?.joinPriority = true;
     }
 

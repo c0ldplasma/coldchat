@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/twitch.dart';
+import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
 import '../channel/messages/channel_message_chat.dart';
@@ -25,14 +25,14 @@ class WhisperUserNotFoundException implements Exception {}
 /// The whisper conversations shown as tabs, for the active account.
 ///
 /// Twitch keeps no whisper history that an app can read, so every whisper sent or received here is stored on
-/// the device (box `Whispers`, key `<account id>/<partner id>`), as IRC lines in the same shape as chat
+/// the device ([WhisperRepository]), as IRC lines in the same shape as chat
 /// messages. Closing a tab keeps the conversation; it comes back when the next whisper arrives.
 class Whispers extends Cubit<List<WhisperChannel>> {
   static const String scope = 'user:manage:whispers';
   static const int _maxStoredMessages = 200;
 
   final Client client;
-  final Box<dynamic>? box;
+  final WhisperRepository? storage;
 
   WhisperChannel? active;
 
@@ -47,7 +47,7 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   TwitchAccount? _account;
 
-  Whispers(this.client, {this.box}) : super([]);
+  Whispers(this.client, {this.storage}) : super([]);
 
   String? get _accountId => _account?.tokenData.accessToken == null ? null : _account!.tokenData.userId;
 
@@ -65,14 +65,16 @@ class Whispers extends Cubit<List<WhisperChannel>> {
     final previous = state;
     final accountId = _accountId;
     final conversations = <WhisperChannel>[];
-    if (accountId != null && box != null) {
-      for (final key in box!.keys.whereType<String>().where((key) => key.startsWith('$accountId/'))) {
-        final stored = box!.get(key);
-        if (stored is! Map || stored['open'] != true) continue;
-        final conversation = _fromStorage(key.substring(accountId.length + 1), stored);
+    final store = storage;
+    if (accountId != null && store != null) {
+      final openedAt = <WhisperChannel, int>{};
+      for (final MapEntry(key: partnerId, value: stored) in store.conversationsOf(accountId).entries) {
+        if (!stored.open) continue;
+        final conversation = _fromStorage(partnerId, stored);
         conversations.add(conversation);
+        openedAt[conversation] = stored.openedAt ?? 0;
       }
-      conversations.sortBy<num>((c) => (box!.get(_key(c)) as Map)['openedAt'] as int? ?? 0);
+      conversations.sortBy<num>((c) => openedAt[c]!);
     }
     emit(conversations);
     for (final conversation in previous) {
@@ -80,17 +82,15 @@ class Whispers extends Cubit<List<WhisperChannel>> {
     }
   }
 
-  String _key(WhisperChannel conversation) => '$_accountId/${conversation.partnerId}';
-
-  WhisperChannel _fromStorage(String partnerId, Map<dynamic, dynamic> stored) {
+  WhisperChannel _fromStorage(String partnerId, StoredWhisperConversation stored) {
     final conversation = WhisperChannel(
       client: client,
       partnerId: partnerId,
-      partnerLogin: stored['login'] as String,
-      partnerDisplayName: stored['name'] as String,
-    )..unread = stored['unread'] == true;
+      partnerLogin: stored.login,
+      partnerDisplayName: stored.name,
+    )..unread = stored.unread;
     conversation.channelMessages.beginBulk();
-    for (final line in (stored['lines'] as List? ?? const []).cast<String>()) {
+    for (final line in stored.lines) {
       _addLine(conversation, line);
     }
     conversation.channelMessages.endBulk();
@@ -115,22 +115,26 @@ class Whispers extends Cubit<List<WhisperChannel>> {
   }
 
   void _save(WhisperChannel conversation, {required bool open, String? addLine}) {
-    final store = box;
-    if (store == null || _accountId == null) return;
-    final key = _key(conversation);
-    final stored = store.get(key);
-    final lines = [...(stored is Map ? (stored['lines'] as List? ?? const []).cast<String>() : const <String>[])];
+    final store = storage;
+    final accountId = _accountId;
+    if (store == null || accountId == null) return;
+    final stored = store.conversation(accountId, conversation.partnerId);
+    final lines = [...?stored?.lines];
     if (addLine != null) lines.add(addLine);
-    final wasOpen = stored is Map && stored['open'] == true;
+    final wasOpen = stored?.open ?? false;
     unawaited(
-      store.put(key, {
-        'login': conversation.partnerLogin,
-        'name': conversation.partnerDisplayName,
-        'open': open,
-        'unread': conversation.unread,
-        'openedAt': wasOpen && open ? stored['openedAt'] : DateTime.now().millisecondsSinceEpoch,
-        'lines': lines.length > _maxStoredMessages ? lines.sublist(lines.length - _maxStoredMessages) : lines,
-      }),
+      store.save(
+        accountId,
+        conversation.partnerId,
+        StoredWhisperConversation(
+          login: conversation.partnerLogin,
+          name: conversation.partnerDisplayName,
+          open: open,
+          unread: conversation.unread,
+          openedAt: wasOpen && open ? stored!.openedAt : DateTime.now().millisecondsSinceEpoch,
+          lines: lines.length > _maxStoredMessages ? lines.sublist(lines.length - _maxStoredMessages) : lines,
+        ),
+      ),
     );
   }
 
@@ -142,8 +146,9 @@ class Whispers extends Cubit<List<WhisperChannel>> {
       existing.partnerDisplayName = displayName;
       return existing;
     }
-    final stored = box?.get('$_accountId/$partnerId');
-    final conversation = stored is Map
+    final accountId = _accountId;
+    final stored = accountId == null ? null : storage?.conversation(accountId, partnerId);
+    final conversation = stored != null
         ? _fromStorage(partnerId, stored)
         : WhisperChannel(client: client, partnerId: partnerId, partnerLogin: login, partnerDisplayName: displayName);
     conversation.partnerLogin = login;
@@ -244,7 +249,8 @@ class Whispers extends Cubit<List<WhisperChannel>> {
 
   /// Closes the tab and deletes the stored messages.
   void deleteConversation(WhisperChannel conversation) {
-    if (_accountId != null) unawaited(box?.delete(_key(conversation)));
+    final accountId = _accountId;
+    if (accountId != null) unawaited(storage?.delete(accountId, conversation.partnerId));
     _remove(conversation);
   }
 
