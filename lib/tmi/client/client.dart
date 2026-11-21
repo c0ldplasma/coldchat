@@ -93,7 +93,9 @@ class Client implements AccountConnector {
   late final Whispers whispers;
   late final EventSubSocket eventSub = EventSubSocket(helix: helix, onWhisper: (whisper) => whispers.receive(whisper));
 
-  EmoteBadgeCache? cache;
+  /// Where emotes, badges and history are kept between launches; null without a cache repository (tests). Set once in
+  /// the constructor and shared with [globals] and [history], so it can't be replaced behind their backs.
+  late final EmoteBadgeCache? cache;
 
   List<ClientListener> listeners = [];
 
@@ -156,9 +158,7 @@ class Client implements AccountConnector {
     // created inside ClientChannels). Otherwise the cache is still null when
     // they hydrate and third-party emotes won't resolve until the network
     // refresh lands.
-    if (cacheRepository != null) {
-      cache = EmoteBadgeCache(repository: cacheRepository, providers: this.providers);
-    }
+    cache = cacheRepository == null ? null : EmoteBadgeCache(repository: cacheRepository, providers: this.providers);
     globals = ChatGlobals(
       providers: this.providers,
       cache: cache,
@@ -459,6 +459,9 @@ class Client implements AccountConnector {
       if (connection.state is ConnectionStateWithCredentials) {
         final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
         session.ownColor = event.tags['color'];
+        // Without a Twitch provider (tests) the emotes would have no provider to belong to: don't ask for them.
+        final twitch = providers.firstWhereOrNull((provider) => provider.name == 'Twitch');
+        if (twitch == null) return;
         final emotes = await helix
             .forToken(stateTwitchAccount.tokenData)
             .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
@@ -471,14 +474,14 @@ class Client implements AccountConnector {
                 id: emote.id,
                 mipmap: emote.images.values.toList(),
                 name: emote.name,
-                provider: providers.firstWhere((element) => element.name == 'Twitch'),
+                provider: twitch,
               ),
           ];
           globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);
         }
       }
     } catch (e) {
-      log('Couldn\'t get twitch user emotes');
+      log('Couldn\'t get twitch user emotes: $e');
     }
   }
 }

@@ -413,6 +413,24 @@ void main() {
       await _settle();
       expect(setup.client.session.ownLogin, isNull);
     });
+
+    test('GLOBALUSERSTATE takes the color, and asks for no emotes without a Twitch provider', () async {
+      final setup = await joined(account: _account('moddy'));
+      final requested = <Uri>[];
+      final answer = twitchAnswer;
+      twitchAnswer = (request) {
+        requested.add(request.url);
+        return answer(request);
+      };
+
+      await setup.transmitter.receive(
+        '@color=#1E90FF;display-name=Moddy;emote-sets=0,300374282;user-id=1;user-type= :tmi.twitch.tv GLOBALUSERSTATE',
+      );
+
+      expect(setup.client.session.ownColor, '#1E90FF');
+      expect(requested.where((url) => url.path.contains('emotes')), isEmpty);
+      expect(setup.client.globals.twitchUserEmotes.state, isEmpty);
+    });
   });
 
   group('logging out', () {
