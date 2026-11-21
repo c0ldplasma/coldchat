@@ -286,6 +286,15 @@ class AppLocalizationsDa extends AppLocalizations {
   String get deleteMessage => 'Slet besked';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Beskeden blev ikke slettet: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Log ind igen for at slette beskeder. Dit login er fra før ColdChat kunne slette dem.';
+
+  @override
   String get mentionUser => 'Omtal bruger';
 
   @override

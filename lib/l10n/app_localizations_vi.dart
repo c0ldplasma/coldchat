@@ -286,6 +286,15 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteMessage => 'Xóa tin nhắn';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Chưa xóa tin nhắn: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Hãy đăng nhập lại để xóa tin nhắn. Lần đăng nhập của bạn có từ trước khi ColdChat hỗ trợ việc này.';
+
+  @override
   String get mentionUser => 'Nhắc đến người dùng';
 
   @override

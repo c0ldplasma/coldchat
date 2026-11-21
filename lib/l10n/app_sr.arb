@@ -192,6 +192,8 @@
   "copyText": "Копирај текст",
   "copyTextSubtitle": "Задржи за копирање текста са корисничким именом",
   "deleteMessage": "Избриши поруку",
+  "deleteMessageFailed": "Порука није обрисана: {reason}",
+  "deleteMessageNeedsScope": "Пријави се поново да би брисао поруке. Твоја пријава је из времена пре него што је ColdChat то могао.",
   "mentionUser": "Помени корисника",
   "copyMessageId": "Копирај ID поруке",
   "theme": "Тема",

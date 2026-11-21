@@ -286,6 +286,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteMessage => 'Delete message';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Message not deleted: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Sign in again to delete messages. Your login is from before ColdChat could delete them.';
+
+  @override
   String get mentionUser => 'Mention user';
 
   @override

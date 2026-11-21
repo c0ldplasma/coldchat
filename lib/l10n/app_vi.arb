@@ -192,6 +192,8 @@
   "copyText": "Sao chép văn bản",
   "copyTextSubtitle": "Nhấn giữ để sao chép kèm tên người dùng",
   "deleteMessage": "Xóa tin nhắn",
+  "deleteMessageFailed": "Chưa xóa tin nhắn: {reason}",
+  "deleteMessageNeedsScope": "Hãy đăng nhập lại để xóa tin nhắn. Lần đăng nhập của bạn có từ trước khi ColdChat hỗ trợ việc này.",
   "mentionUser": "Nhắc đến người dùng",
   "copyMessageId": "Sao chép ID tin nhắn",
   "theme": "Chủ đề",

@@ -192,6 +192,8 @@
   "copyText": "टेक्स्ट कॉपी करें",
   "copyTextSubtitle": "उपयोगकर्ता नाम के साथ कॉपी करने के लिए दबाकर रखें",
   "deleteMessage": "संदेश मिटाएं",
+  "deleteMessageFailed": "संदेश नहीं हटाया गया: {reason}",
+  "deleteMessageNeedsScope": "संदेश हटाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat संदेश नहीं हटा सकता था।",
   "mentionUser": "उपयोगकर्ता को मेंशन करें",
   "copyMessageId": "संदेश ID कॉपी करें",
   "theme": "थीम",

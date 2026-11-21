@@ -192,6 +192,8 @@
   "copyText": "Tekst kopiëren",
   "copyTextSubtitle": "Houd vast om de tekst met gebruikersnaam te kopiëren",
   "deleteMessage": "Bericht verwijderen",
+  "deleteMessageFailed": "Bericht niet verwijderd: {reason}",
+  "deleteMessageNeedsScope": "Log opnieuw in om berichten te verwijderen. Je login is van voordat ColdChat dat kon.",
   "mentionUser": "Gebruiker vermelden",
   "copyMessageId": "Bericht-ID kopiëren",
   "theme": "Thema",
