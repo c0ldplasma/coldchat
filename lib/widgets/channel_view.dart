@@ -288,7 +288,7 @@ class ChannelViewState extends State<ChannelView> {
   /// Drop [url] where the caret is, preserving whatever has been typed since
   /// the upload started, and leave the caret after it ready for more text.
   void _insertUploadedUrl(String url) {
-    textEditingController.value = insertUploadedUrl(textEditingController.value, url);
+    textEditingController.value = insertWord(textEditingController.value, url);
   }
 
   /// Puts [word] in place of the word being typed, for a tapped autocompletion.
@@ -535,7 +535,7 @@ class ChannelViewState extends State<ChannelView> {
                           },
                           insertFieldInput: (text) async {
                             setState(() {
-                              textEditingController.value = insertAtCaret(textEditingController.value, text);
+                              textEditingController.value = insertWord(textEditingController.value, text);
                             });
                           },
                         ),
