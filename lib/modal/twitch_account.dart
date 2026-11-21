@@ -101,9 +101,12 @@ class TwitchAccountModal extends StatelessWidget {
         onTap: () async {
           final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
           if (accountSettingsBox.get('activeTwitchAccount') == twitchAccount.tokenData.hash) {
-            // Log out rather than silently chatting as another account; the
-            // others stay one tap away in the account sheet.
-            await setActiveAccount(context.read<Client>(), null);
+            // Switch to another saved account, or log out when this was the last one. The avatar shows which
+            // account is active, so the switch is visible.
+            final remaining = Hive.box<dynamic>('TwitchAccounts').values.cast<TwitchAccount>().where(
+              (account) => account.tokenData.hash != twitchAccount.tokenData.hash,
+            );
+            await setActiveAccount(context.read<Client>(), remaining.firstOrNull);
           }
           await twitchAccount.delete();
           if (!context.mounted) return;
