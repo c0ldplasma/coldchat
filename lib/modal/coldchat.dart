@@ -2,15 +2,13 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/separator.dart';
 import '../components/tile.dart';
-import '../data/active_account.dart';
+import '../data/repositories/account_repository.dart';
 import '../data/twitch_account.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/client/client.dart';
@@ -26,119 +24,109 @@ class ColdChatModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BoxListener(
-      box: Hive.box<dynamic>('AccountSettings'),
-      builder: (context, accountSettingsBox) {
-        return BoxListener(
-          box: Hive.box<dynamic>('TwitchAccounts'),
-          builder: (BuildContext context, Box<dynamic> twitchAccountsBox) {
-            final activeTwitchAccount = twitchAccountsBox.values.firstWhere(
-              (element) => accountSettingsBox.get('activeTwitchAccount') == (element as TwitchAccount).tokenData.hash,
-              orElse: () => null,
-            ) as TwitchAccount?;
-            return ListView(
-              shrinkWrap: true,
-              children: [
-                ModalHeader(
-                  title: AppLocalizations.of(context).appName,
-                  trailing: Tooltip(
-                    message: AppLocalizations.of(context).settings,
-                    child: InkWell(
-                      onTap: () async {
-                        Navigator.of(context).pop();
-                        await Modal.show(
-                          context: context,
-                          child: const SettingsModal(),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(24.0),
-                      child: const SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: Icon(Icons.settings_outlined),
+    final accounts = context.read<AccountRepository>();
+    return ListenableBuilder(
+      listenable: accounts.changes,
+      builder: (context, _) {
+        final activeTwitchAccount = accounts.active;
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            ModalHeader(
+              title: AppLocalizations.of(context).appName,
+              trailing: Tooltip(
+                message: AppLocalizations.of(context).settings,
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    await Modal.show(
+                      context: context,
+                      child: const SettingsModal(),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(24.0),
+                  child: const SizedBox(
+                    width: 40.0,
+                    height: 40.0,
+                    child: Icon(Icons.settings_outlined),
+                  ),
+                ),
+              ),
+            ),
+            if (activeTwitchAccount != null) ...[
+              TwitchAccountButton(
+                active: true,
+                // key: ObjectKey(twitchAccount),
+                twitchAccount: activeTwitchAccount,
+              ),
+              const Separator(),
+            ],
+            for (final twitchAccount in accounts.inactive)
+              TwitchAccountButton(
+                // key: ObjectKey(twitchAccount),
+                twitchAccount: twitchAccount,
+              ),
+            Tile(
+              onTap: () => showTwitchLogin(context),
+              onLongPress: () {
+                unawaited(
+                  Modal.show(
+                    context: context,
+                    child: const TwitchTokenInputModal(),
+                  ),
+                );
+              },
+              prefix: const Icon(Icons.person_add_alt),
+              title: AppLocalizations.of(context).addAnotherAccount,
+            ),
+            const Separator(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  const Spacer(),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(4.0),
+                    onTap: () => launchUrl(Uri.parse(privacyPolicyUrl), mode: LaunchMode.externalApplication),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).privacyPolicy,
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                if (activeTwitchAccount != null) ...[
-                  TwitchAccountButton(
-                    active: true,
-                    // key: ObjectKey(twitchAccount),
-                    twitchAccount: activeTwitchAccount,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: const SizedBox(
+                        height: 4.0,
+                        width: 4.0,
+                      ),
+                    ),
                   ),
-                  const Separator(),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(4.0),
+                    onTap: () => launchUrl(Uri.parse(termsOfServiceUrl), mode: LaunchMode.externalApplication),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        AppLocalizations.of(context).termsOfService,
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
                 ],
-                for (var twitchAccount in twitchAccountsBox.values.where(
-                  (element) =>
-                      accountSettingsBox.get('activeTwitchAccount') != (element as TwitchAccount).tokenData.hash,
-                ))
-                  TwitchAccountButton(
-                    // key: ObjectKey(twitchAccount),
-                    twitchAccount: twitchAccount as TwitchAccount,
-                  ),
-                Tile(
-                  onTap: () => showTwitchLogin(context),
-                  onLongPress: () {
-                    unawaited(
-                      Modal.show(
-                        context: context,
-                        child: const TwitchTokenInputModal(),
-                      ),
-                    );
-                  },
-                  prefix: const Icon(Icons.person_add_alt),
-                  title: AppLocalizations.of(context).addAnotherAccount,
-                ),
-                const Separator(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      const Spacer(),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(4.0),
-                        onTap: () => launchUrl(Uri.parse(privacyPolicyUrl), mode: LaunchMode.externalApplication),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            AppLocalizations.of(context).privacyPolicy,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Material(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          borderRadius: BorderRadius.circular(4.0),
-                          child: const SizedBox(
-                            height: 4.0,
-                            width: 4.0,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(4.0),
-                        onTap: () => launchUrl(Uri.parse(termsOfServiceUrl), mode: LaunchMode.externalApplication),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            AppLocalizations.of(context).termsOfService,
-                            style: const TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         );
       },
     );
@@ -159,7 +147,7 @@ class TwitchAccountButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await setActiveAccount(context.read<Client>(), twitchAccount);
+        await context.read<AccountRepository>().setActive(context.read<Client>(), twitchAccount);
       },
       onLongPress: () {
         unawaited(

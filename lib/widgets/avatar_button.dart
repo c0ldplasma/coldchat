@@ -5,14 +5,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
-import '../components/boxlistener.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
-import '../data/active_account.dart';
 import '../data/notifications_cubit.dart';
-import '../data/twitch_account.dart';
+import '../data/repositories/account_repository.dart';
 import '../modal/coldchat.dart';
 import '../modal/notifications.dart';
 import '../theme/coldchat_theme.dart';
@@ -39,20 +36,13 @@ class _AvatarButtonState extends State<AvatarButton> {
     _dragDy = 0.0;
     if (swipe == null) return;
 
-    final twitchAccountsBox = Hive.box<dynamic>('TwitchAccounts');
-    final activeAccountHash = Hive.box<dynamic>('AccountSettings').get('activeTwitchAccount');
-    final index = swipedAccountIndex(
-      current: twitchAccountsBox.keys.toList().indexOf(activeAccountHash),
-      count: twitchAccountsBox.length,
-      swipe: swipe,
-    );
-    if (index == null) return;
-    final nextAccount = twitchAccountsBox.getAt(index) as TwitchAccount;
-    if (nextAccount.tokenData.hash == activeAccountHash) return;
+    final accounts = context.read<AccountRepository>();
+    final nextAccount = accounts.swipeTarget(swipe);
+    if (nextAccount == null) return;
 
     // Nothing else on screen confirms the switch except the avatar changing.
     unawaited(HapticFeedback.selectionClick());
-    unawaited(setActiveAccount(context.read<Client>(), nextAccount));
+    unawaited(accounts.setActive(context.read<Client>(), nextAccount));
   }
 
   @override
@@ -97,51 +87,41 @@ class _AvatarButtonState extends State<AvatarButton> {
                         borderRadius: BorderRadius.circular(128.0),
                         // The pill is one color; the avatar sits directly on it.
                         type: SurfaceType.transparent,
-                        child: BoxListener(
-                          box: Hive.box<dynamic>('AccountSettings'),
-                          builder: (context, accountSettingsBox) {
-                            return BoxListener(
-                              box: Hive.box<dynamic>('TwitchAccounts'),
-                              builder: (BuildContext context, Box<dynamic> twitchAccountsBox) {
-                                final twitchAccount = twitchAccountsBox.values.firstWhere(
-                                  (element) =>
-                                      accountSettingsBox.get('activeTwitchAccount') ==
-                                      (element as TwitchAccount).tokenData.hash,
-                                  orElse: () => null,
-                                ) as TwitchAccount?;
-                                return Material(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(24.0),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: InkWell(
-                                    onTap: () async {
-                                      unawaited(
-                                        Modal.show(
-                                          context: context,
-                                          child: const ColdChatModal(),
-                                        ),
-                                      );
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Material(
-                                        borderRadius: BorderRadius.circular(24.0),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: SizedBox(
-                                          width: 32.0,
-                                          height: 32.0,
-                                          child: twitchAccount?.userData == null
-                                              ? const Icon(Icons.person_outline_rounded)
-                                              : Ink.image(
-                                                  image: CachedNetworkImageProvider(twitchAccount!.userData!.avatarUrl),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                        ),
-                                      ),
+                        child: ListenableBuilder(
+                          listenable: context.read<AccountRepository>().changes,
+                          builder: (context, _) {
+                            final twitchAccount = context.read<AccountRepository>().active;
+                            return Material(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(24.0),
+                              clipBehavior: Clip.antiAlias,
+                              child: InkWell(
+                                onTap: () async {
+                                  unawaited(
+                                    Modal.show(
+                                      context: context,
+                                      child: const ColdChatModal(),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(24.0),
+                                    clipBehavior: Clip.antiAlias,
+                                    child: SizedBox(
+                                      width: 32.0,
+                                      height: 32.0,
+                                      child: twitchAccount?.userData == null
+                                          ? const Icon(Icons.person_outline_rounded)
+                                          : Ink.image(
+                                              image: CachedNetworkImageProvider(twitchAccount!.userData!.avatarUrl),
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                             );
                           },
                         ),

@@ -14,6 +14,7 @@ import 'data/filesharing/upload_queue_cubit.dart';
 import 'data/filesharing/uploaded_media.dart';
 import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
+import 'data/repositories/account_repository.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
 import 'data/settings/blocked_user.dart';
@@ -64,8 +65,6 @@ Future<void> main() async {
   // Open all Hive boxes concurrently instead of serially to shave startup
   // time off the path before the first frame.
   final boxes = await Future.wait([
-    Hive.openBox<dynamic>('TwitchAccounts'),
-    Hive.openBox<dynamic>('AccountSettings'),
     Hive.openBox<dynamic>('Settings'),
     Hive.openBox<dynamic>('Channels'),
     Hive.openBox<dynamic>('EmoteBadgeCache'),
@@ -76,19 +75,15 @@ Future<void> main() async {
     Hive.openBox<dynamic>('ChatSettings'),
     Hive.openBox<dynamic>('Whispers'),
   ]);
-  final twitchAccountsBox = boxes[0];
-  final accountSettingsBox = boxes[1];
-  final settingsBox = boxes[2];
-  final channelsBox = boxes[3];
-  final emoteBadgeCacheBox = boxes[4];
-  final whispersBox = boxes[10];
+  final settingsBox = boxes[0];
+  final channelsBox = boxes[1];
+  final emoteBadgeCacheBox = boxes[2];
+  final whispersBox = boxes[8];
+  final accounts = await AccountRepository.open();
 
   // await settingsBox.clear();
 
-  final activeTwitchAccount = twitchAccountsBox.values.firstWhere(
-    (element) => accountSettingsBox.get('activeTwitchAccount') == (element as TwitchAccount).tokenData.hash,
-    orElse: () => null,
-  ) as TwitchAccount?;
+  final activeTwitchAccount = accounts.active;
 
   if (!settingsBox.containsKey('messageAppearance')) {
     await settingsBox.put('messageAppearance', MessageAppearance());
@@ -104,9 +99,11 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<AccountRepository>.value(value: accounts),
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
+            accounts: accounts,
             channelsBox: channelsBox,
             cacheBox: emoteBadgeCacheBox,
             whispersBox: whispersBox,

@@ -2,17 +2,15 @@ import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../api/twitch/twitch.dart';
-import '../components/boxlistener.dart';
 import '../components/separator.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
+import '../data/repositories/account_repository.dart';
 import '../data/twitch/channel_search.dart';
 import '../data/twitch/stream_data.dart';
 import '../data/twitch_account.dart';
@@ -78,7 +76,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<List<StreamData>>? topStreams;
   Future<List<ChannelCandidate>>? searchResults;
   Timer? searchDebounce;
-  late final ValueListenable<Box<dynamic>> activeAccountListenable;
+  late final Listenable activeAccountListenable;
 
   // Starts loading the streams again. Without an account there is nothing to load.
   void refresh() {
@@ -106,12 +104,7 @@ class _HomeTabState extends State<HomeTab> {
     topStreams = Twitch.streams(account.tokenData);
   }
 
-  TwitchAccount? _activeAccount() {
-    final accountSettingsBox = Hive.box<dynamic>('AccountSettings');
-    return Hive.box<dynamic>('TwitchAccounts').values.firstWhereOrNull(
-      (element) => (element as TwitchAccount).tokenData.hash == accountSettingsBox.get('activeTwitchAccount'),
-    ) as TwitchAccount?;
-  }
+  TwitchAccount? _activeAccount() => context.read<AccountRepository>().active;
 
   void _onActiveAccountChanged() {
     if (!mounted) return;
@@ -171,8 +164,7 @@ class _HomeTabState extends State<HomeTab> {
     refresh();
 
     // Removed again in dispose: TabBarView disposes this page whenever another tab is shown.
-    activeAccountListenable = Hive.box<dynamic>('AccountSettings').listenable(keys: const ['activeTwitchAccount'])
-      ..addListener(_onActiveAccountChanged);
+    activeAccountListenable = context.read<AccountRepository>().activeChanges..addListener(_onActiveAccountChanged);
 
     searchRequest.addListener(_focusSearchIfRequested);
     // The request may have come while this tab wasn't built yet.
@@ -180,10 +172,9 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   @override
-  Widget build(BuildContext context) => BoxListener(
-    box: Hive.box<dynamic>('AccountSettings'),
-    keys: const ['activeTwitchAccount'],
-    builder: (BuildContext context, Box<dynamic> box) {
+  Widget build(BuildContext context) => ListenableBuilder(
+    listenable: activeAccountListenable,
+    builder: (BuildContext context, _) {
       if (account == null) return const LoggedOutStart();
 
       return RefreshIndicator(

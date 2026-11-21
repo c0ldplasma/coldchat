@@ -10,9 +10,9 @@ import '../../api/betterttv/betterttv_socket.dart';
 import '../../api/recentmessages/recentmessages.dart';
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/twitch.dart';
-import '../../data/active_account.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
+import '../../data/repositories/account_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
@@ -117,8 +117,12 @@ class Client implements AccountConnector {
   Timer? _saveBttvProBadgesTimer;
   static const int _maxBttvProBadges = 5000;
 
+  /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
+  final AccountRepository? accounts;
+
   Client({
     TwitchAccount? twitchAccount,
+    this.accounts,
     required Box<dynamic> channelsBox,
     Box<dynamic>? cacheBox,
     Box<dynamic>? whispersBox,
@@ -520,7 +524,7 @@ class Client implements AccountConnector {
       twitchAccount.tokenData.expiresAt = fresh.expiresAt;
       twitchAccount.tokenData.scopes = fresh.scopes;
       try {
-        await twitchAccount.save();
+        await accounts?.update(twitchAccount);
       } catch (_) {
         // Not attached to a box (e.g. constructed in-memory) — nothing to persist.
       }
