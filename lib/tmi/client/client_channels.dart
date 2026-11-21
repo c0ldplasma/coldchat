@@ -34,9 +34,8 @@ class ClientChannels extends Cubit<List<Channel>> {
     if (channel.id != null) client.bttvSocket.part(channel.id!);
     unawaited(repository.remove(channel.name));
 
-    if (channel.state is ChannelStateWithConnection) {
-      unawaited((channel.state as ChannelStateWithConnection).receiver.send('PART ${channel.name}'));
-    }
+    if (channel.state is ChannelStateWithConnection) unawaited(client.receiver.send('PART ${channel.name}'));
+    if (channel.transmitterJoin.state) unawaited(client.transmitter.send('PART ${channel.name}'));
 
     emit([
       ...state.where((element) => element != channel),

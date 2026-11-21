@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:math' show min;
+import 'dart:math' show Random, min;
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -42,6 +42,7 @@ import '../connection/connection.dart';
 import '../connection/connection_event.dart';
 import '../connection/connection_state.dart';
 import '../emotes.dart';
+import '../irc_log.dart';
 import '../user_badges.dart';
 import '../whispers/whisper_channel.dart';
 import '../whispers/whispers.dart';
@@ -49,10 +50,20 @@ import 'client_channels.dart';
 import 'client_listener.dart';
 import 'join_scheduler.dart';
 
+/// The chat client. It has two IRC connections:
+///
+/// - The [receiver] reads the chat. It is always anonymous (Twitch's `justinfan` nick, no token), connects at startup
+///   whether or not there is an account, and is never reconnected by logging in, switching accounts or logging out,
+///   so the chat stays live through all of them.
+/// - The [transmitter] is logged in as the active account and sends messages. It joins the channels too, but only
+///   for what Twitch tells the account there: USERSTATE (moderator status) and the NOTICEs answering its messages.
+///   Chat traffic arriving on it is ignored, the receiver already shows it.
 class Client implements AccountConnector {
-  Connection receiver = Connection();
-  Connection transmitter = Connection();
-  List<String> blockedUserIds = [];
+  /// Reads the chat, anonymously. See [Client].
+  final Connection receiver;
+
+  /// Sends as the active account; disconnected while logged out. See [Client].
+  final Connection transmitter;
 
   // The account whose token is used for Twitch API requests such as badges.
   TwitchAccount? _apiAccount;
@@ -62,7 +73,7 @@ class Client implements AccountConnector {
 
   /// The connected, logged-in account, which is the one whose Twitch block list hides messages.
   ConnectionConnected? get _blockingState {
-    final state = receiver.state;
+    final state = transmitter.state;
     return state is ConnectionConnected && state.twitchAccount.tokenData.accessToken != null ? state : null;
   }
 
@@ -87,14 +98,24 @@ class Client implements AccountConnector {
     }
   }
 
-  late final List<Provider> providers = [
-    SevenTVProvider(),
-    BetterTTVProvider(),
-    FrankerFaceZProvider(),
-    DankChatProvider(),
-    TwitchProvider(tokenData: () => _apiAccount?.tokenData),
-    EmojiProvider(),
-  ];
+  /// The own login that mentions highlight, or null while logged out.
+  String? get ownLogin {
+    final account = transmitter.twitchAccount;
+    return account?.tokenData.accessToken == null ? null : account!.tokenData.login;
+  }
+
+  final List<Provider>? _customProviders;
+
+  late final List<Provider> providers =
+      _customProviders ??
+      [
+        SevenTVProvider(),
+        BetterTTVProvider(),
+        FrankerFaceZProvider(),
+        DankChatProvider(),
+        TwitchProvider(tokenData: () => _apiAccount?.tokenData),
+        EmojiProvider(),
+      ];
 
   late ClientChannels channels;
   late final Whispers whispers;
@@ -129,6 +150,10 @@ class Client implements AccountConnector {
   /// Where chat history comes from. Asks Settings → Chat history before each request.
   final RecentMessages recentMessages;
 
+  final List<Timer> _timers = [];
+
+  /// [receiver], [transmitter] and [providers] are replaceable for tests; by default they're the real connections and
+  /// the emote and badge providers.
   Client({
     TwitchAccount? twitchAccount,
     this.accounts,
@@ -137,7 +162,14 @@ class Client implements AccountConnector {
     required ChannelRepository channelRepository,
     EmoteBadgeCacheRepository? cacheRepository,
     WhisperRepository? whisperRepository,
-  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true) {
+    Connection? receiver,
+    Connection? transmitter,
+    List<Provider>? providers,
+  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true),
+       receiver = receiver ?? Connection(name: 'receiver'),
+       // The transmitter doesn't need to know who else joins, which in a big channel is a line every few seconds.
+       transmitter = transmitter ?? Connection(name: 'transmitter', membership: false),
+       _customProviders = providers {
     whispers = Whispers(this, storage: whisperRepository);
 
     // Set up the cache before constructing channels so each Channel can
@@ -146,7 +178,7 @@ class Client implements AccountConnector {
     // they hydrate and third-party emotes won't resolve until the network
     // refresh lands.
     if (cacheRepository != null) {
-      cache = EmoteBadgeCache(repository: cacheRepository, providers: providers);
+      cache = EmoteBadgeCache(repository: cacheRepository, providers: this.providers);
       _hydrateGlobalsFromCache();
       cache!.loadBttvProBadges().forEach((userId, url) => bttvProBadges[userId] = _bttvProBadge(url));
     }
@@ -167,19 +199,27 @@ class Client implements AccountConnector {
     // trigger an immediate pass as soon as the connection is established
     // (see the _joinPass call in stateChange) so we don't idle up to 2s
     // waiting for the first tick.
-    Timer.periodic(const Duration(seconds: 2), (timer) => _joinPass());
+    _timers.add(Timer.periodic(const Duration(seconds: 2), (timer) => _joinPass()));
 
     // Twitch requires apps to validate a user token at startup and then hourly while running
     // (https://dev.twitch.tv/docs/authentication/validate-tokens/), so a login revoked on Twitch's side is noticed
     // even when the app stays open. Startup, every connect and every return to the foreground validate already.
-    Timer.periodic(const Duration(hours: 1), (timer) {
-      final account = _apiAccount;
-      if (account != null) unawaited(validateCredentials(account));
-    });
+    _timers.add(
+      Timer.periodic(const Duration(hours: 1), (timer) {
+        final account = _apiAccount;
+        if (account != null) unawaited(validateCredentials(account));
+      }),
+    );
 
-    receiver.onReceive = receive;
-    transmitter.onReceive = receive;
-    receiver.onStateChange = stateChange;
+    this.receiver.onReceive = receive;
+    this.transmitter.onReceive = receive;
+    this.receiver.onStateChange = stateChange;
+    this.transmitter.onStateChange = _transmitterStateChange;
+    // The chat also arrives on the transmitter, as it's in every channel: drop it before it's logged or handled.
+    this.transmitter.accepts = (message) => transmitterCommands.contains(message.command);
+
+    // Reading needs no account: the receiver is anonymous from the start and stays so.
+    this.receiver.add(ConnectionConnect(anonymousAccount()));
 
     _apiAccount = twitchAccount;
     if (twitchAccount != null) unawaited(connectAs(twitchAccount));
@@ -187,6 +227,29 @@ class Client implements AccountConnector {
     unawaited(refreshGlobalEmotes());
     unawaited(refreshGlobalBadges());
     unawaited(refreshGlobalUserBadges());
+  }
+
+  /// An account-less login: Twitch's anonymous `justinfan` nick with a random number and no token. Twitch lets it
+  /// read any chat but not write.
+  static TwitchAccount anonymousAccount([Random? random]) => TwitchAccount(
+    tokenData: TokenData(
+      clientId: null,
+      login: 'justinfan${10000 + (random ?? Random()).nextInt(90000)}',
+      scopes: const [],
+      userId: null,
+      expiresAt: null,
+      accessToken: null,
+    ),
+    userData: null,
+    cookies: null,
+  );
+
+  /// Stops the timers and closes both connections. Only tests need this: the app's client lives as long as the app.
+  Future<void> close() async {
+    for (final timer in _timers) {
+      timer.cancel();
+    }
+    await Future.wait([receiver.close(), transmitter.close()]);
   }
 
   void _hydrateGlobalsFromCache() {
@@ -314,21 +377,36 @@ class Client implements AccountConnector {
 
   // Twitch IRC allows 20 JOINs per 10 seconds for normal users; _joins keeps every pass within that (with a margin)
   // over a rolling window. The first pass after connecting may join a larger burst so the channels the user cares
-  // about come up quickly; steady-state ticks stay conservative.
+  // about come up quickly; steady-state ticks stay conservative. The receiver and the transmitter each have their
+  // own scheduler: the limit is per user, and the anonymous receiver isn't the account.
   bool _firstJoinPass = true;
   final JoinScheduler _joins = JoinScheduler();
+  bool _firstTransmitterJoinPass = true;
+  final JoinScheduler _transmitterJoins = JoinScheduler();
+
+  /// Sends the JOINs that are due now instead of waiting for the next tick, e.g. after adding a channel. They still
+  /// go through the rate limit.
+  void joinPending() => _joinPass();
 
   // Channels the user has explicitly requested (active chat view) or last had
   // open sort first, so the channel actually being looked at is handled first.
   static int _byJoinPriority(Channel a, Channel b) => a.joinPriority == b.joinPriority ? 0 : (a.joinPriority ? -1 : 1);
 
   void _joinPass() {
+    _receiverJoinPass();
+    _transmitterJoinPass();
+  }
+
+  void _receiverJoinPass() {
     if (receiver.state is! ConnectionConnected) return;
     // A JOIN that never got an echo (dropped by Twitch, or the channel doesn't exist) would leave the channel
     // connecting forever: queue it again, a limited number of times.
     for (final name in _joins.takeTimedOut()) {
       final channel = channels.state.firstWhereOrNull((channel) => channel.name == name);
-      if (channel != null && channel.state is ChannelConnecting && _joins.canRetry(name)) channel.add(ChannelPart());
+      if (channel == null || channel.state is! ChannelConnecting) continue;
+      final retry = _joins.canRetry(name);
+      ircLog('receiver: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
+      if (retry) channel.add(ChannelPart());
     }
     final disconnected = channels.state.where((channel) => channel.state is ChannelDisconnected).toList();
     if (disconnected.isEmpty) return;
@@ -341,7 +419,53 @@ class Client implements AccountConnector {
       channel.add(ChannelJoin(receiver, transmitter));
     }
     _joins.sent(channelsToJoin.map((e) => e.name));
-    unawaited(receiver.send('JOIN ${channelsToJoin.map((e) => e.name).join(',')}'));
+    final names = channelsToJoin.map((e) => e.name).join(',');
+    ircLog('receiver: JOIN $names');
+    unawaited(receiver.send('JOIN $names'));
+  }
+
+  /// Joins the channels on the transmitter too, so it gets the account's USERSTATE there. Same rate limit and retries
+  /// as the receiver, with its own [JoinScheduler] because the limit is per account.
+  void _transmitterJoinPass() {
+    if (transmitter.state is! ConnectionConnected) return;
+    for (final name in _transmitterJoins.takeTimedOut()) {
+      final retry = _transmitterJoins.canRetry(name);
+      ircLog('transmitter: JOIN $name timed out, ${retry ? 'retrying' : 'giving up until the next reconnect'}');
+    }
+    final unjoined = channels.state
+        .where(
+          (channel) =>
+              !channel.transmitterJoin.state &&
+              !_transmitterJoins.isPending(channel.name) &&
+              _transmitterJoins.canRetry(channel.name),
+        )
+        .toList();
+    if (unjoined.isEmpty) return;
+    final batchSize = min(_firstTransmitterJoinPass ? 12 : 4, _transmitterJoins.available);
+    if (batchSize <= 0) return;
+    unjoined.sort(_byJoinPriority);
+    _firstTransmitterJoinPass = false;
+    final channelsToJoin = unjoined.take(batchSize).map((e) => e.name).toList();
+    _transmitterJoins.sent(channelsToJoin);
+    final names = channelsToJoin.join(',');
+    ircLog('transmitter: JOIN $names');
+    unawaited(transmitter.send('JOIN $names'));
+  }
+
+  /// The transmitter left every channel: it reconnected, switched accounts or logged out. Forgets the own user's
+  /// state in each channel (e.g. moderator status of the previous account) until the next JOIN and USERSTATE.
+  void _transmitterLeftChannels() {
+    for (final channel in channels.state) {
+      channel.transmitterParted();
+    }
+    _firstTransmitterJoinPass = true;
+    _transmitterJoins.reset();
+  }
+
+  void _transmitterStateChange(Connection connection, Change<ConnectionState> change) {
+    _transmitterLeftChannels();
+    // Bloc calls onChange before it sets the new state, so the pass has to wait until the state is ConnectionConnected.
+    if (change.nextState is ConnectionConnected) scheduleMicrotask(_transmitterJoinPass);
   }
 
   // Building a ChannelMessageChat is expensive (emote parsing, regex, Hive
@@ -472,23 +596,34 @@ class Client implements AccountConnector {
     // A token can expire while the app sits in the background for days, so
     // check before probing: reconnecting with it is pointless and the socket
     // failure would be indistinguishable from a network hiccup.
-    final account = receiver.twitchAccount ?? transmitter.twitchAccount;
-    if (account != null && account.tokenData.accessToken != null && account.tokenData.isExpired) {
-      _rejectCredentials(account);
-      return;
+    // Only the transmitter is logged in; the anonymous receiver is probed whatever happens to the login.
+    final account = transmitter.twitchAccount;
+    var checkTransmitter = false;
+    if (account != null && account.tokenData.accessToken != null) {
+      if (account.tokenData.isExpired) {
+        _rejectCredentials(account);
+      } else if (!transmitter.credentialsRejected) {
+        checkTransmitter = true;
+        unawaited(validateCredentials(account));
+      }
     }
-    if (receiver.credentialsRejected || transmitter.credentialsRejected) return;
-    if (account != null) unawaited(validateCredentials(account));
 
-    final results = await Future.wait([receiver.probeAlive(), transmitter.probeAlive()]);
+    final results = await Future.wait([
+      receiver.probeAlive(),
+      if (checkTransmitter) transmitter.probeAlive(),
+    ]);
     final receiverAlive = results[0];
-    final transmitterAlive = results[1];
+    final transmitterAlive = !checkTransmitter || results[1];
     bttvSocket.reconnect();
     eventSub.reconnect();
-    if (receiverAlive && transmitterAlive) return; // connection still live — nothing to do
-
-    if (!receiverAlive) receiver.forceReconnect();
-    if (!transmitterAlive) transmitter.forceReconnect();
+    if (!transmitterAlive) {
+      ircLog('transmitter: no answer after resuming');
+      transmitter.forceReconnect();
+    }
+    // Only the receiver carries the chat, so only a dead receiver missed messages.
+    if (receiverAlive) return;
+    ircLog('receiver: no answer after resuming');
+    receiver.forceReconnect();
 
     // Visible (active/last) channel first so the chat being looked at fills
     // first; insertHistoryMessages dedups by id, so the later rejoin backfill
@@ -513,8 +648,13 @@ class Client implements AccountConnector {
         text.contains('improperly formatted auth');
   }
 
+  /// Locks the transmitter until a new login, because Twitch refused [twitchAccount]'s token. The anonymous receiver
+  /// has no token and keeps reading. Ignored when [twitchAccount] isn't the active account anymore (e.g. a check
+  /// that was still running while switching accounts), so it can't lock out the account that is active now.
   void _rejectCredentials(TwitchAccount twitchAccount) {
-    receiver.add(ConnectionCredentialsRejected(twitchAccount));
+    final active = _apiAccount;
+    if (active == null || active.tokenData.hash != twitchAccount.tokenData.hash) return;
+    ircLog('transmitter: login of ${twitchAccount.tokenData.login} rejected');
     transmitter.add(ConnectionCredentialsRejected(twitchAccount));
   }
 
@@ -553,8 +693,10 @@ class Client implements AccountConnector {
   @override
   Future<void> connectAs(TwitchAccount twitchAccount) async {
     // Don't even open the socket with a token we already know is dead: the
-    // handshake would fail and every channel would be parted with no feedback.
+    // handshake would fail with no feedback.
     if (twitchAccount.tokenData.accessToken != null && twitchAccount.tokenData.isExpired) {
+      _apiAccount = twitchAccount;
+      _transmitterLeftChannels();
       _rejectCredentials(twitchAccount);
       return;
     }
@@ -567,6 +709,7 @@ class Client implements AccountConnector {
     final gainedApiAccess = _apiAccount?.tokenData.accessToken == null && twitchAccount.tokenData.accessToken != null;
     _apiAccount = twitchAccount;
     if (gainedApiAccess) unawaited(refreshGlobalBadges());
+    ircLog('transmitter: switching to ${twitchAccount.tokenData.login}');
 
     final userId = twitchAccount.tokenData.userId;
     twitchUserEmotes.change(userId != null ? cache?.loadEmotes(EmoteBadgeCache.twitchUserEmotesKey(userId)) ?? [] : []);
@@ -575,27 +718,31 @@ class Client implements AccountConnector {
     ownColor = null;
     eventSub.connect(whispers.hasScope ? twitchAccount.tokenData : null);
 
-    receiver.add(ConnectionConnect(twitchAccount));
+    // Only the transmitter changes account. The receiver keeps reading, so the chat stays live and nothing is parted,
+    // rejoined or fetched again; the composer waits until the transmitter has joined the channel (Channel.canSend).
+    _transmitterLeftChannels();
     transmitter.add(ConnectionConnect(twitchAccount));
     // Confirm with Twitch in the background — the local expiry check only
     // catches tokens we know about; a manually revoked one still needs the API.
     unawaited(validateCredentials(twitchAccount));
   }
 
-  /// Logs out: closes both chat connections and stops whispers until [connectAs] is called again.
+  /// Logs out: closes the transmitter and stops whispers until [connectAs] is called again. The anonymous receiver
+  /// keeps reading the chat.
   @override
   void disconnect() {
+    ircLog('transmitter: logging out');
     _apiAccount = null;
     twitchUserEmotes.change([]);
     whispers.setAccount(null);
     ownColor = null;
     eventSub.connect(null);
-    receiver.add(ConnectionDisconnect());
+    _transmitterLeftChannels();
     transmitter.add(ConnectionDisconnect());
   }
 
+  /// The receiver's state changed: every channel has to be joined again (with fresh history), see [ChannelPart].
   Future<void> stateChange(Connection connection, Change<ConnectionState> change) async {
-    // final matchingChannels = channels.state.where((channel) => channel.state is ChannelStateWithConnection && (channel.state as ChannelStateWithConnection).receiver == this);
     for (final channel in channels.state) {
       channel.add(ChannelPart());
     }
@@ -603,10 +750,40 @@ class Client implements AccountConnector {
     // JOIN attempts.
     _firstJoinPass = true;
     _joins.reset();
-    if (connection == receiver && change.nextState is ConnectionConnected) _joinPass();
+    // Bloc calls onChange before it sets the new state, so the pass has to wait until the state is ConnectionConnected
+    // (it used to return right away and leave the first JOINs to the next 2 s tick).
+    if (change.nextState is ConnectionConnected) scheduleMicrotask(_receiverJoinPass);
+  }
+
+  /// The commands the transmitter handles: its own handshake, what Twitch tells the account about itself, the echo
+  /// of its own JOINs and the NOTICEs answering what it sent. Chat traffic (PRIVMSG, USERNOTICE, CLEARCHAT, CLEARMSG,
+  /// ROOMSTATE, other users' JOIN and PART, …) also arrives on it but is ignored: the receiver shows it already.
+  static const Set<String> transmitterCommands = {'001', 'GLOBALUSERSTATE', 'USERSTATE', 'JOIN', 'NOTICE'};
+
+  /// Whether a JOIN [event] is the echo of the connection's own JOIN, the one registered as [nick].
+  static bool isOwnJoin(irc.Message event, String nick) =>
+      event.prefix?.split('!').first.toLowerCase() == nick.toLowerCase();
+
+  /// How long two NOTICEs with the same text count as the same one, see [isDuplicateNotice].
+  static const Duration noticeDuplicateWindow = Duration(seconds: 10);
+
+  /// Whether [notice] was shown already among the [recent] messages of its channel, within [noticeDuplicateWindow]
+  /// of [now]. Both connections are in every channel, so a NOTICE about the channel itself (e.g. slow mode turned on)
+  /// can arrive on both; whichever comes first is shown.
+  static bool isDuplicateNotice(List<ChannelMessage> recent, irc.Message notice, DateTime now) {
+    final msgId = notice.tags['msg-id'];
+    final text = notice.parameters.skip(1).join(':');
+    for (var i = recent.length - 1; i >= 0 && i >= recent.length - 50; i--) {
+      final message = recent[i];
+      if (message is! ChannelMessageNotice) continue;
+      if (now.difference(message.dateTime).abs() > noticeDuplicateWindow) continue;
+      if (message.message.tags['msg-id'] == msgId && message.text == text) return true;
+    }
+    return false;
   }
 
   Future<void> receive(Connection connection, irc.Message event) async {
+    if (connection == transmitter && !transmitterCommands.contains(event.command)) return;
     switch (event.command) {
       case '001':
         if (connection.state is ConnectionConnecting) {
@@ -614,7 +791,7 @@ class Client implements AccountConnector {
           // Switch to connected immediately so channel joins can start, then
           // fetch the (paginated, slow) blocked-user list in the background and
           // fill it into the live state's mutable list.
-          final connectedState = ConnectionConnected(stateTwitchAccount);
+          final connectedState = ConnectionConnected(stateTwitchAccount, nick: event.parameters.firstOrNull);
           // Joining starts from stateChange once the state has switched.
           connection.add(ConnectionEstablished(connectedState));
           if (stateTwitchAccount.tokenData.accessToken != null) {
@@ -627,10 +804,12 @@ class Client implements AccountConnector {
         }
         break;
       case 'GLOBALUSERSTATE':
+        // Only the logged-in transmitter gets one; the account's color and emotes are its business.
+        if (connection != transmitter) break;
         try {
           if (connection.state is ConnectionStateWithCredentials) {
             final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
-            if (connection == receiver) ownColor = event.tags['color'];
+            ownColor = event.tags['color'];
             final emotes = await Twitch.emoteSets(
               stateTwitchAccount.tokenData,
               event.tags['emote-sets']?.split(',') ?? [],
@@ -663,16 +842,20 @@ class Client implements AccountConnector {
           break;
         }
 
-        final credentials = channel.state is ChannelStateWithConnection
-            ? (channel.state as ChannelStateWithConnection).receiver.twitchAccount
-            : null;
-        if (credentials == null) {
+        // Twitch echoes the JOIN with the nick the connection registered with, e.g. the receiver's justinfan nick.
+        final connectionState = connection.state;
+        if (connectionState is! ConnectionConnected || !isOwnJoin(event, connectionState.nick)) break;
+
+        if (connection == transmitter) {
+          _transmitterJoins.acknowledged(channel.name);
+          ircLog('transmitter: joined ${channel.name}');
+          channel.transmitterJoin.joined();
           break;
         }
 
-        final loginSource = event.prefix?.split('!').first;
-        if (loginSource == credentials.tokenData.login) {
+        if (channel.state is ChannelStateWithConnection) {
           _joins.acknowledged(channel.name);
+          ircLog('receiver: joined ${channel.name}');
           channel.add(ChannelConnect());
           final channelLogin = channel.name.substring(1);
           // History cached on an earlier launch is only shown while chat history is on.
@@ -713,6 +896,8 @@ class Client implements AccountConnector {
         channel.channelMessages.add(message);
         break;
       case 'USERSTATE':
+        // About the account in the channel, so only the transmitter's counts (the anonymous receiver isn't anyone).
+        if (connection != transmitter) break;
         final channel = channels.state.firstWhereOrNull((channel) => channel.name == event.parameters[0]);
         if (channel == null) break;
         channel.applyUserState(event);
@@ -762,8 +947,9 @@ class Client implements AccountConnector {
         // used to drop it on the floor while the socket closed and the backoff
         // retried the same dead token forever. Catch it here instead.
         if (_isAuthFailureNotice(event)) {
+          // Only the transmitter logs in; the receiver has no token to refuse.
           final account = connection.twitchAccount;
-          if (account != null) _rejectCredentials(account);
+          if (connection == transmitter && account != null) _rejectCredentials(account);
           break;
         }
 
@@ -773,9 +959,16 @@ class Client implements AccountConnector {
           break;
         }
 
+        // Both connections join the channel, so both are told it's suspended; the receiver's channel state shows it.
         if (event.tags['msg-id'] == 'msg_channel_suspended') {
+          if (connection == transmitter) break;
           channel.add(ChannelSuspend());
         }
+
+        // NOTICEs answering a message (rate limit, banned, slow mode, …) only reach the transmitter. One about the
+        // channel can reach both connections: show it once.
+        final now = DateTime.now();
+        if (isDuplicateNotice(channel.channelMessages.state, event, now)) break;
 
         channel.channelMessages.add(
           ChannelMessageNotice(

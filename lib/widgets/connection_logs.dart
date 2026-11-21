@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -76,11 +75,10 @@ class ConnectionLogsDisplay extends StatelessWidget {
                           bloc: channel,
                           builder: (context, channelState) => InkWell(
                             onTap: () {
-                              final client = context.read<Client>();
-                              unawaited(client.receiver.send('JOIN ${channel.name}'));
-                              client.channels.state
-                                  .firstWhereOrNull((channelSelect) => channelSelect.name == channel.name)
-                                  ?.add(ChannelJoin(client.receiver, client.transmitter));
+                              // Joins the channel again on both connections, through the rate limit.
+                              channel.add(ChannelPart());
+                              channel.transmitterParted();
+                              context.read<Client>().joinPending();
                             },
                             child: Center(
                               child: Padding(
