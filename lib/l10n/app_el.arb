@@ -368,5 +368,10 @@
   "channelBanned": "Έχεις αποκλειστεί από το {channel}",
   "durationDays": "{count, plural, =1{1 ημέρα} other{{count} ημέρες}}",
   "durationHours": "{count, plural, =1{1 ώρα} other{{count} ώρες}}",
-  "durationMinutes": "{count, plural, =1{1 λεπτό} other{{count} λεπτά}}"
+  "durationMinutes": "{count, plural, =1{1 λεπτό} other{{count} λεπτά}}",
+  "durationDaysShort": "{count} ημ.",
+  "durationHoursShort": "{count} ώ.",
+  "durationMinutesShort": "{count} λ.",
+  "durationSecondsShort": "{count} δ.",
+  "durationPair": "{larger} {smaller}"
 }

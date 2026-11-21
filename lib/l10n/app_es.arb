@@ -368,5 +368,10 @@
   "channelBanned": "Estás baneado de {channel}",
   "durationDays": "{count, plural, =1{1 día} other{{count} días}}",
   "durationHours": "{count, plural, =1{1 hora} other{{count} horas}}",
-  "durationMinutes": "{count, plural, =1{1 minuto} other{{count} minutos}}"
+  "durationMinutes": "{count, plural, =1{1 minuto} other{{count} minutos}}",
+  "durationDaysShort": "{count} d",
+  "durationHoursShort": "{count} h",
+  "durationMinutesShort": "{count} min",
+  "durationSecondsShort": "{count} s",
+  "durationPair": "{larger} {smaller}"
 }

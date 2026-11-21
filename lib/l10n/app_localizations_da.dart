@@ -688,4 +688,35 @@ class AppLocalizationsDa extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dage',
+      one: '1 dag',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count t.';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count min.';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count sek.';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }

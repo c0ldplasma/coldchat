@@ -687,4 +687,29 @@ class AppLocalizationsVi extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count ngày';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count giờ';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count phút';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count giây';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }

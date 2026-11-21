@@ -681,4 +681,29 @@ class AppLocalizationsKo extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count일';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count시간';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count분';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count초';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }

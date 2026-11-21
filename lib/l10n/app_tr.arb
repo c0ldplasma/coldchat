@@ -368,5 +368,10 @@
   "channelBanned": "{channel} kanalından banlandın",
   "durationDays": "{count, plural, other{{count} gün}}",
   "durationHours": "{count, plural, other{{count} saat}}",
-  "durationMinutes": "{count, plural, other{{count} dakika}}"
+  "durationMinutes": "{count, plural, other{{count} dakika}}",
+  "durationDaysShort": "{count} gün",
+  "durationHoursShort": "{count} sa.",
+  "durationMinutesShort": "{count} dk.",
+  "durationSecondsShort": "{count} sn.",
+  "durationPair": "{larger} {smaller}"
 }

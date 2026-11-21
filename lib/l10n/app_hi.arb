@@ -368,5 +368,10 @@
   "channelBanned": "तुम {channel} में बैन हो",
   "durationDays": "{count, plural, =1{1 दिन} other{{count} दिन}}",
   "durationHours": "{count, plural, =1{1 घंटे} other{{count} घंटे}}",
-  "durationMinutes": "{count, plural, =1{1 मिनट} other{{count} मिनट}}"
+  "durationMinutes": "{count, plural, =1{1 मिनट} other{{count} मिनट}}",
+  "durationDaysShort": "{count} दिन",
+  "durationHoursShort": "{count} घं॰",
+  "durationMinutesShort": "{count} मि॰",
+  "durationSecondsShort": "{count} से॰",
+  "durationPair": "{larger} {smaller}"
 }

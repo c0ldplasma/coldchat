@@ -399,5 +399,53 @@
         "type": "int"
       }
     }
+  },
+  "durationDaysShort": "{count} d",
+  "@durationDaysShort": {
+    "description": "A number of days, abbreviated, as it reads inside \"banned for {duration}\" or \"Timeout user for {duration}\"",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHoursShort": "{count} h",
+  "@durationHoursShort": {
+    "description": "A number of hours, abbreviated, as it reads inside \"banned for {duration}\" or \"Timeout user for {duration}\"",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationMinutesShort": "{count} min",
+  "@durationMinutesShort": {
+    "description": "A number of minutes, abbreviated, as it reads inside \"banned for {duration}\" or \"Timeout user for {duration}\"",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationSecondsShort": "{count} s",
+  "@durationSecondsShort": {
+    "description": "A number of seconds, abbreviated, as it reads inside \"banned for {duration}\" or \"Timeout user for {duration}\"",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationPair": "{larger} {smaller}",
+  "@durationPair": {
+    "description": "Two abbreviated units of a duration, larger first, like \"1 h 30 min\"",
+    "placeholders": {
+      "larger": {
+        "type": "String"
+      },
+      "smaller": {
+        "type": "String"
+      }
+    }
   }
 }

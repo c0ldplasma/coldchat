@@ -368,5 +368,10 @@
   "channelBanned": "Na kanálu {channel} máš ban",
   "durationDays": "{count, plural, one{{count} den} few{{count} dny} other{{count} dní}}",
   "durationHours": "{count, plural, one{{count} hodinu} few{{count} hodiny} other{{count} hodin}}",
-  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minuty} other{{count} minut}}"
+  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minuty} other{{count} minut}}",
+  "durationDaysShort": "{count} d",
+  "durationHoursShort": "{count} h",
+  "durationMinutesShort": "{count} min",
+  "durationSecondsShort": "{count} s",
+  "durationPair": "{larger} {smaller}"
 }
