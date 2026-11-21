@@ -191,8 +191,9 @@ class Client implements AccountConnector {
     this.transmitter.onReceive = receive;
     this.receiver.onStateChange = (connection, change) => joiner.receiverStateChanged(change);
     this.transmitter.onStateChange = (connection, change) => joiner.transmitterStateChanged(change);
-    // The chat also arrives on the transmitter, as it's in every channel: drop it before it's logged or handled.
-    this.transmitter.accepts = (message) => transmitterCommands.contains(message.command);
+    // The chat also arrives on the transmitter, as it's in every channel: drop it unparsed, before it's logged or
+    // handled.
+    this.transmitter.acceptedCommands = transmitterCommands;
 
     // Reading needs no account: the receiver is anonymous from the start and stays so.
     this.receiver.add(ConnectionConnect(anonymousAccount()));

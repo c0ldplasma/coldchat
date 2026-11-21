@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/data/twitch_account.dart';
+import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:coldchat/tmi/connection/connection_event.dart';
 import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
@@ -10,9 +11,10 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 class _FakeSink implements WebSocketSink {
   bool closed = false;
+  final List<String> sent = [];
 
   @override
-  void add(dynamic data) {}
+  void add(dynamic data) => sent.add(data as String);
 
   @override
   Future<void> close([int? closeCode, String? closeReason]) async => closed = true;
@@ -46,11 +48,27 @@ class _FakeSocket implements WebSocketChannel {
   @override
   Stream<dynamic> get stream => _controller.stream;
 
+  /// Twitch sending [data], one or more lines separated by CRLF.
+  void receive(String data) => _controller.add(data);
+
   /// Twitch closing the socket, which makes [Connection] schedule a reconnect.
   Future<void> closeFromServer() => _controller.close();
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+/// A [Connection] that records the parsed lines it gets, before its filter decides whether to handle them.
+class _RecordingConnection extends Connection {
+  _RecordingConnection({super.openSocket});
+
+  final List<String> parsed = [];
+
+  @override
+  Future<void> receive(irc.Message event) {
+    parsed.add(event.command);
+    return super.receive(event);
+  }
 }
 
 TwitchAccount _account([String login = 'justinfan123']) => TwitchAccount(
@@ -190,5 +208,66 @@ void main() {
 
     expect(sockets, hasLength(2));
     expect(connection.channel, same(sockets.last));
+  });
+
+  group('acceptedCommands', () {
+    Future<(_RecordingConnection, _FakeSocket)> connected({Set<String>? acceptedCommands}) async {
+      final sockets = <_FakeSocket>[];
+      final connection = _RecordingConnection(
+        openSocket: (_) {
+          final socket = _FakeSocket();
+          sockets.add(socket);
+          return socket;
+        },
+      )..acceptedCommands = acceptedCommands;
+      addTearDown(connection.close);
+      connection.add(ConnectionConnect(_account()));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+      return (connection, sockets.single);
+    }
+
+    const accepted = {'001', 'GLOBALUSERSTATE', 'USERSTATE', 'JOIN', 'NOTICE'};
+
+    test('drops the other lines before parsing them, handles the accepted ones and always answers PING', () async {
+      final (connection, socket) = await connected(acceptedCommands: accepted);
+      final handled = <String>[];
+      connection.onReceive = (_, message) => handled.add(message.command);
+
+      socket.receive(
+        [
+          '@id=1;user-id=2 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :hi',
+          '@msg-id=sub :tmi.twitch.tv USERNOTICE #ronni :sub',
+          '@room-id=1 :tmi.twitch.tv CLEARCHAT #ronni :someone',
+          '@room-id=1 :tmi.twitch.tv ROOMSTATE #ronni',
+          ':tmi.twitch.tv 001 justinfan123 :Welcome, GLHF!',
+          '@color=#FF0000 :tmi.twitch.tv GLOBALUSERSTATE',
+          '@badges=moderator/1 :tmi.twitch.tv USERSTATE #ronni',
+          ':justinfan123!justinfan123@justinfan123.tmi.twitch.tv JOIN #ronni',
+          '@msg-id=slow_on :tmi.twitch.tv NOTICE #ronni :This room is now in slow mode.',
+          'PING :tmi.twitch.tv',
+        ].join('\r\n'),
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      const expected = ['001', 'GLOBALUSERSTATE', 'USERSTATE', 'JOIN', 'NOTICE', 'PING'];
+      expect(connection.parsed, expected);
+      expect(handled, expected);
+      expect(socket.sink.sent.last, 'PONG :tmi.twitch.tv');
+    });
+
+    test('without it, every line is parsed and handled', () async {
+      final (connection, socket) = await connected();
+      final handled = <String>[];
+      connection.onReceive = (_, message) => handled.add(message.command);
+
+      socket.receive(
+        '@id=1 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :hi\r\n'
+        '@room-id=1 :tmi.twitch.tv ROOMSTATE #ronni',
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      expect(connection.parsed, ['PRIVMSG', 'ROOMSTATE']);
+      expect(handled, ['PRIVMSG', 'ROOMSTATE']);
+    });
   });
 }

@@ -37,6 +37,25 @@ class Message {
     return out.toString();
   }
 
+  /// The command of [line] without parsing the rest, e.g. its tags: the same one [Message.fromEvent] would find. Null
+  /// when [Message.fromEvent] would find none and throw.
+  static String? commandOf(String line) {
+    var start = 0;
+    if (line.startsWith('@')) {
+      final space = line.indexOf(' ');
+      if (space < 0) return null;
+      start = space + 1;
+    }
+    if (line.startsWith(':', start)) {
+      final space = line.indexOf(' ', start);
+      if (space < 0) return null;
+      start = space + 1;
+    }
+    final end = line.indexOf(' ', start);
+    final command = line.substring(start, end < 0 ? line.length : end);
+    return command.isEmpty ? null : command;
+  }
+
   factory Message.fromEvent(String event) {
     final parts = event.split(' ');
     // if (parts.length < 2) {
