@@ -6,10 +6,10 @@ import 'package:coldchat/data/badge_users.dart';
 import 'package:coldchat/data/custom_badge.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/data/repositories/emote_badge_cache_repository.dart';
-import 'package:coldchat/providers/badge_provider.dart';
-import 'package:coldchat/providers/betterttv.dart';
-import 'package:coldchat/providers/emote_provider.dart';
-import 'package:coldchat/providers/provider.dart';
+import 'package:coldchat/sources/badge_source.dart';
+import 'package:coldchat/sources/bttv_source.dart';
+import 'package:coldchat/sources/chat_source.dart';
+import 'package:coldchat/sources/emote_source.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/client/chat_globals.dart';
 import 'package:fake_async/fake_async.dart';
@@ -18,12 +18,12 @@ import 'package:hive_ce/hive_ce.dart';
 
 import '../../api/fake_api.dart';
 
-/// A provider whose global emotes, badges and user badges are whatever the test sets, or an error when [fails].
-class _FakeProvider extends Provider with EmoteProvider, BadgeProvider {
+/// A source whose global emotes, badges and user badges are whatever the test sets, or an error when [fails].
+class _FakeSource extends ChatSource with EmoteSource, BadgeSource {
   @override
   final String name;
 
-  _FakeProvider(this.name);
+  _FakeSource(this.name);
 
   @override
   String? get description => null;
@@ -44,10 +44,9 @@ class _FakeProvider extends Provider with EmoteProvider, BadgeProvider {
   @override
   Future<List<BadgeUsers>> globalUserBadges() => _answer(badgeHolders);
 
-  Emote emote(String emoteName) =>
-      Emote(id: '$name-$emoteName', name: emoteName, mipmap: const ['url'], provider: this);
+  Emote emote(String emoteName) => Emote(id: '$name-$emoteName', name: emoteName, mipmap: const ['url'], source: this);
 
-  CustomBadge badge(String id) => CustomBadge(id: id, name: id, mipmap: const ['url'], provider: this);
+  CustomBadge badge(String id) => CustomBadge(id: id, name: id, mipmap: const ['url'], source: this);
 }
 
 /// A cache that only records the BetterTTV Pro badges saved to it.
@@ -73,20 +72,20 @@ class _RecordingCache implements EmoteBadgeCache {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-final _bttv = BetterTTVProvider(BttvApi(offlineApi()));
+final _bttv = BttvSource(BttvApi(offlineApi()));
 
 void main() {
   late Directory tempDir;
-  late _FakeProvider seventv;
-  late _FakeProvider ffz;
+  late _FakeSource seventv;
+  late _FakeSource ffz;
   late int badgeRebuilds;
   late List<String> userRebuilds;
 
   setUp(() {
     tempDir = Directory.systemTemp.createTempSync('coldchat_chat_globals_test');
     Hive.init(tempDir.path);
-    seventv = _FakeProvider('7TV');
-    ffz = _FakeProvider('FrankerFaceZ');
+    seventv = _FakeSource('7TV');
+    ffz = _FakeSource('FrankerFaceZ');
     badgeRebuilds = 0;
     userRebuilds = [];
   });
@@ -97,11 +96,11 @@ void main() {
   });
 
   Future<EmoteBadgeCache> openCache() async =>
-      EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), providers: [seventv, ffz, _bttv]);
+      EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: [seventv, ffz, _bttv]);
 
   ChatGlobals globals({EmoteBadgeCache? cache}) {
     final globals = ChatGlobals(
-      providers: [seventv, ffz, _bttv],
+      sources: [seventv, ffz, _bttv],
       cache: cache,
       onBadgesChanged: () => badgeRebuilds++,
       onUserBadgeChanged: userRebuilds.add,
@@ -111,7 +110,7 @@ void main() {
   }
 
   group('refreshing', () {
-    test('merges the global emotes of every provider', () async {
+    test('merges the global emotes of every source', () async {
       seventv.emotes = [seventv.emote('Clap')];
       ffz.emotes = [ffz.emote('LuL'), ffz.emote('OMEGALUL')];
       final g = globals();
@@ -121,7 +120,7 @@ void main() {
       expect(g.emotes.state.map((e) => e.name), ['Clap', 'LuL', 'OMEGALUL']);
     });
 
-    test('a failing provider keeps its earlier emotes and does not drop the others', () async {
+    test('a failing source keeps its earlier emotes and does not drop the others', () async {
       seventv.emotes = [seventv.emote('Clap')];
       ffz.emotes = [ffz.emote('LuL')];
       final g = globals();
@@ -199,7 +198,7 @@ void main() {
       final g = globals(cache: cache);
 
       expect(g.bttvProBadges['1']?.mipmap, ['https://cdn.betterttv.net/badge.png']);
-      expect(g.bttvProBadges['1']?.provider, same(_bttv));
+      expect(g.bttvProBadges['1']?.source, same(_bttv));
     });
   });
 
@@ -243,7 +242,7 @@ void main() {
     test('are saved 5 seconds after the last lookup', () {
       fakeAsync((async) {
         final cache = _RecordingCache();
-        final g = ChatGlobals(providers: [_bttv], cache: cache, onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
+        final g = ChatGlobals(sources: [_bttv], cache: cache, onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
         g.onBttvLookupUser(BetterTTVProBadge(userId: '1', url: 'a.png'));
         async.elapse(const Duration(seconds: 4));
         g.onBttvLookupUser(BetterTTVProBadge(userId: '2', url: 'b.png'));

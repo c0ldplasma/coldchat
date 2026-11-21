@@ -7,14 +7,14 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 import '../api/api_client.dart';
-import '../providers/emojis.dart';
+import '../sources/emoji_source.dart';
 import 'emote.dart';
 import 'repositories/settings_repository.dart';
 
 /// The emote shown on the button that opens the emote menu. Defaults to Kappa.
 ///
 /// Image emotes are downloaded once and kept in the app's support directory,
-/// so the button survives the emote being removed from its provider, the
+/// so the button survives the emote being removed from its source, the
 /// image cache being cleared, and being offline. Emojis are stored as text.
 class EmoteButtonIcon {
   final SettingsRepository settings;
@@ -63,7 +63,7 @@ class EmoteButtonIcon {
   /// Downloads [emote] and makes it the button. Throws if it can't be
   /// downloaded or isn't a decodable image; the current button is kept then.
   Future<void> set(Emote emote) async {
-    if (emote.provider is EmojiProvider && emote.code != null) {
+    if (emote.source is EmojiSource && emote.code != null) {
       final previous = file;
       await settings.setEmoteButtonIcon({'name': emote.name, 'emoji': emote.code});
       _deleteQuietly(previous);

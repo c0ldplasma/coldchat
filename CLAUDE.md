@@ -20,7 +20,7 @@ Android trusts compromised eMudhra intermediate CAs, which allows TLS MitM of e.
 
 ## Widgets only render state
 
-Widgets (`lib/widgets/`, `lib/pages/`, `lib/components/`, `lib/modal/`) render state and forward user actions,
+Widgets (`lib/widgets/`, `lib/pages/`, `lib/components/`, `lib/sheets/`) render state and forward user actions,
 nothing more. Requests, parsing, text transformations and decisions go into Cubits, repositories or plain functions in
 `lib/data/`, `lib/tmi/` or `lib/tools/`, with unit tests there; the widget calls them and shows the result (texts from
 `AppLocalizations` are picked in the widget, from a typed result). A widget never calls Helix, the `ApiClient` or
@@ -191,7 +191,7 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   repositories in `lib/data/repositories/` (opened together by `Repositories.open()` in `main.dart`, provided to
   widgets with `context.read<...Repository>()`, passed to `Client` in its constructor): don't call `Hive.box` or
   `box.listenable()` anywhere else, and keep box names and keys as constants on the repository that owns them.
-- Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/modal/login_flow.dart`) in the
+- Twitch login uses ColdChat's own **public** Twitch app (`twitchClientId` in `lib/api/twitch/twitch_oauth.dart`) in the
   system's login sheet (ASWebAuthenticationSession / Android Custom Tab, via `flutter_web_auth_2`), not a web
   view. Twitch only redirects to web addresses, so the redirect is `docs/auth.html` on GitHub Pages
   (`https://c0ldplasma.github.io/coldchat/auth.html`, registered exactly like that in the dev.twitch.tv console),
@@ -218,6 +218,6 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   whisper history API, so conversations are stored on the device in the `Whispers` Hive box as IRC-shaped lines,
   and each conversation is a `WhisperChannel` (a `Channel` that is never joined) so the chat view and composer
   work unchanged. `/w <user> [message]` is handled in `ChannelView.sendMessage`.
-- Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/modal/login_flow.dart`),
+- Twitch login uses the OAuth **implicit grant** (`response_type=token` in `lib/api/twitch/twitch_oauth.dart`),
   so there is no refresh token and an expired login can only be fixed by signing in again. See
   `lib/widgets/login_expired_banner.dart` and `AccountSession.validateCredentials` (`lib/tmi/client/account_session.dart`).

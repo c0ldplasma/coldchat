@@ -6,7 +6,7 @@ import '../data/custom_badge.dart';
 
 /// The global third-party badges (7TV, BTTV, FFZ, DankChat) and the users who have them.
 ///
-/// The providers list users per badge; [badgesOf] answers the other way round, which is what every chat message
+/// The sources list users per badge; [badgesOf] answers the other way round, which is what every chat message
 /// asks. The index is rebuilt on every new state, so a user who gains or loses a badge gets the new set on their
 /// next message.
 class UserBadges extends Cubit<List<BadgeUsers>> {
@@ -32,7 +32,7 @@ class UserBadges extends Cubit<List<BadgeUsers>> {
   static bool sameHolders(List<BadgeUsers> a, List<BadgeUsers> b) {
     if (a.length != b.length) return false;
     for (var i = 0; i < a.length; i++) {
-      if (a[i].badge.id != b[i].badge.id || a[i].badge.provider.name != b[i].badge.provider.name) return false;
+      if (a[i].badge.id != b[i].badge.id || a[i].badge.source.name != b[i].badge.source.name) return false;
       if (!const SetEquality<String>().equals(a[i].users.toSet(), b[i].users.toSet())) return false;
     }
     return true;

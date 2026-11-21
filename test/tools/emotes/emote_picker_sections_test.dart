@@ -1,29 +1,29 @@
 import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
-import 'package:coldchat/providers/emojis.dart';
-import 'package:coldchat/providers/provider.dart';
-import 'package:coldchat/widgets/chat/emote_picker_sections.dart';
+import 'package:coldchat/sources/chat_source.dart';
+import 'package:coldchat/sources/emoji_source.dart';
+import 'package:coldchat/tools/emotes/emote_picker_sections.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../api/fake_api.dart';
 
-class _Provider extends Provider {
+class _Source extends ChatSource {
   @override
   final String name;
 
-  _Provider(this.name);
+  _Source(this.name);
 
   @override
   String? get description => null;
 }
 
-final _twitch = _Provider('Twitch');
-final _sevenTv = _Provider('7TV');
-final _bttv = _Provider('BetterTTV');
-final _emoji = EmojiProvider(EmojiDataApi(offlineApi()));
+final _twitch = _Source('Twitch');
+final _sevenTv = _Source('7TV');
+final _bttv = _Source('BetterTTV');
+final _emoji = EmojiSource(EmojiDataApi(offlineApi()));
 
-Emote _emote(String name, Provider provider, {String? category}) =>
-    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], provider: provider, category: category);
+Emote _emote(String name, ChatSource source, {String? category}) =>
+    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], source: source, category: category);
 
 /// The titles of [sections] with the names of their emotes.
 Map<String, List<String>> _titles(List<EmoteSection> sections) => {

@@ -23,13 +23,13 @@ import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
 import '../../irc/message.dart' as irc;
-import '../../providers/betterttv.dart';
-import '../../providers/dankchat.dart';
-import '../../providers/emojis.dart';
-import '../../providers/frankerfacez.dart';
-import '../../providers/provider.dart';
-import '../../providers/seventv.dart';
-import '../../providers/twitch.dart';
+import '../../sources/bttv_source.dart';
+import '../../sources/chat_source.dart';
+import '../../sources/dankchat_source.dart';
+import '../../sources/emoji_source.dart';
+import '../../sources/ffz_source.dart';
+import '../../sources/seventv_source.dart';
+import '../../sources/twitch_source.dart';
 import '../cache.dart';
 import '../channel/channel.dart';
 import '../channel/channel_event.dart';
@@ -76,17 +76,17 @@ class Client implements AccountConnector {
   /// The logged-in account: logging in and out, validating the login, the block list and the own chat color.
   late final AccountSession session;
 
-  final List<Provider>? _customProviders;
+  final List<ChatSource>? _customSources;
 
-  late final List<Provider> providers =
-      _customProviders ??
+  late final List<ChatSource> sources =
+      _customSources ??
       [
-        SevenTVProvider(SevenTvApi(api)),
-        BetterTTVProvider(BttvApi(api)),
-        FrankerFaceZProvider(FfzApi(api)),
-        DankChatProvider(DankChatApi(api)),
-        TwitchProvider(helix: helix),
-        EmojiProvider(EmojiDataApi(api)),
+        SevenTvSource(SevenTvApi(api)),
+        BttvSource(BttvApi(api)),
+        FfzSource(FfzApi(api)),
+        DankChatSource(DankChatApi(api)),
+        TwitchSource(helix: helix),
+        EmojiSource(EmojiDataApi(api)),
       ];
 
   late ClientChannels channels;
@@ -122,8 +122,8 @@ class Client implements AccountConnector {
     if (!_channelFocusRequests.isClosed) _channelFocusRequests.add(channelName);
   }
 
-  /// [receiver], [transmitter] and [providers] are replaceable for tests; by default they're the real connections and
-  /// the emote and badge providers.
+  /// [receiver], [transmitter] and [sources] are replaceable for tests; by default they're the real connections and
+  /// the emote and badge sources.
   Client({
     required this.api,
     TwitchAccount? twitchAccount,
@@ -135,11 +135,11 @@ class Client implements AccountConnector {
     WhisperRepository? whisperRepository,
     Connection? receiver,
     Connection? transmitter,
-    List<Provider>? providers,
+    List<ChatSource>? sources,
   }) : receiver = receiver ?? Connection(name: 'receiver'),
        // The transmitter doesn't need to know who else joins, which in a big channel is a line every few seconds.
        transmitter = transmitter ?? Connection(name: 'transmitter', membership: false),
-       _customProviders = providers {
+       _customSources = sources {
     session = AccountSession(
       transmitter: this.transmitter,
       helix: helix,
@@ -158,9 +158,9 @@ class Client implements AccountConnector {
     // created inside ClientChannels). Otherwise the cache is still null when
     // they hydrate and third-party emotes won't resolve until the network
     // refresh lands.
-    cache = cacheRepository == null ? null : EmoteBadgeCache(repository: cacheRepository, providers: this.providers);
+    cache = cacheRepository == null ? null : EmoteBadgeCache(repository: cacheRepository, sources: this.sources);
     globals = ChatGlobals(
-      providers: this.providers,
+      sources: this.sources,
       cache: cache,
       onBadgesChanged: _rebuildChannelMessages,
       onUserBadgeChanged: _rebuildMessagesFrom,
@@ -459,8 +459,8 @@ class Client implements AccountConnector {
       if (connection.state is ConnectionStateWithCredentials) {
         final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
         session.ownColor = event.tags['color'];
-        // Without a Twitch provider (tests) the emotes would have no provider to belong to: don't ask for them.
-        final twitch = providers.firstWhereOrNull((provider) => provider.name == 'Twitch');
+        // Without a Twitch source (tests) the emotes would have no source to belong to: don't ask for them.
+        final twitch = sources.firstWhereOrNull((source) => source.name == 'Twitch');
         if (twitch == null) return;
         final emotes = await helix
             .forToken(stateTwitchAccount.tokenData)
@@ -474,7 +474,7 @@ class Client implements AccountConnector {
                 id: emote.id,
                 mipmap: emote.images.values.toList(),
                 name: emote.name,
-                provider: twitch,
+                source: twitch,
               ),
           ];
           globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);

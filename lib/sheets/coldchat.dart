@@ -15,7 +15,7 @@ import '../tmi/client/client.dart';
 import '../tools/browser_warmup.dart';
 import 'about.dart';
 import 'components/modal_header.dart';
-import 'login_flow.dart';
+import 'login.dart';
 import 'settings.dart';
 import 'twitch_account.dart';
 import 'twitch_token_input.dart';

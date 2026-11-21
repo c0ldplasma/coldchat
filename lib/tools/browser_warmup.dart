@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import '../api/twitch/twitch_oauth.dart';
+
 /// Gives the browser a head start before a login opens in it.
 ///
 /// On Android the login opens in a Custom Tab of the default browser. Starting that browser from cold took
@@ -17,7 +19,7 @@ class BrowserWarmup {
 
   /// Where every Twitch login starts. The browser only needs the host to connect early; the full URL with its random
   /// `state` is made when the login starts.
-  static final Uri twitchLogin = Uri.https('id.twitch.tv', '/oauth2/authorize');
+  static final Uri twitchLogin = twitchAuthorizeEndpoint;
 
   /// Asks the default browser to start up and to expect [url]. Never throws: without a warm-up the login still works,
   /// just a little slower.

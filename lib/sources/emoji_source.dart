@@ -3,13 +3,13 @@ import 'dart:io';
 import '../api/emojis/emoji_data.dart';
 import '../api/json_isolate.dart';
 import '../data/emote.dart';
-import 'emote_provider.dart';
-import 'provider.dart';
+import 'chat_source.dart';
+import 'emote_source.dart';
 
-class EmojiProvider extends Provider with EmoteProvider {
+class EmojiSource extends ChatSource with EmoteSource {
   final EmojiDataApi api;
 
-  EmojiProvider(this.api);
+  EmojiSource(this.api);
 
   @override
   String get name => 'Emoji';
@@ -38,7 +38,7 @@ class EmojiProvider extends Provider with EmoteProvider {
               .join(),
           name: emojiData['short_name'] as String,
           mipmap: [EmojiDataApi.imageUrl('${emojiData['image']}')],
-          provider: this,
+          source: this,
           category: emojiData['category'] as String?,
         ),
     ];

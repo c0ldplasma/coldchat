@@ -17,17 +17,17 @@ import '../data/filesharing/upload_task.dart';
 import '../data/repositories/custom_command_repository.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
-import '../modal/login_flow.dart';
-import '../modal/whisper_errors.dart';
+import '../sheets/login.dart';
+import '../sheets/whisper_errors.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/can_send.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/composer_draft.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
-import 'chat/autocompletion_matcher.dart';
-import 'chat/composer_send.dart';
-import 'chat/composer_text.dart';
+import '../tools/composer/composer_send.dart';
+import '../tools/composer/composer_text.dart';
+import '../tools/emotes/autocompletion_matcher.dart';
 import 'chat/emote_picker.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_message.dart';
@@ -383,7 +383,7 @@ class ChannelViewState extends State<ChannelView> {
             image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
           ),
           title: emote.name,
-          subtitle: emote.provider.name,
+          subtitle: emote.source.name,
           onTap: () => _complete(emote.code ?? emote.name),
         ),
     ];

@@ -16,7 +16,7 @@ import '../tmi/moderation.dart';
 import '../tools/duration_text.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
-import 'login_flow.dart';
+import 'login.dart';
 import 'whisper_errors.dart';
 
 class UserModal extends StatefulWidget {

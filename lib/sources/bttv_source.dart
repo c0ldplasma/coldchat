@@ -2,14 +2,14 @@ import '../api/betterttv/betterttv.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
-import 'badge_provider.dart';
-import 'emote_provider.dart';
-import 'provider.dart';
+import 'badge_source.dart';
+import 'chat_source.dart';
+import 'emote_source.dart';
 
-class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
+class BttvSource extends ChatSource with EmoteSource, BadgeSource {
   final BttvApi api;
 
-  BetterTTVProvider(this.api);
+  BttvSource(this.api);
 
   static const zeroWidthEmotes = <String>[
     'SoSnowy',
@@ -41,7 +41,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
             'https://cdn.betterttv.net/emote/${emote.id}/2x',
             'https://cdn.betterttv.net/emote/${emote.id}/3x',
           ],
-          provider: this,
+          source: this,
           flags: zeroWidthEmotes.contains(emote.code) ? EmoteFlags.overlay : 0,
         ),
     ];
@@ -61,7 +61,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
             'https://cdn.betterttv.net/emote/${emote.id}/2x',
             'https://cdn.betterttv.net/emote/${emote.id}/3x',
           ],
-          provider: this,
+          source: this,
         ),
     ];
   }
@@ -87,7 +87,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
             mipmap: [
               badge.badge.svg,
             ],
-            provider: this,
+            source: this,
           ),
           users: [
             badge.providerId,

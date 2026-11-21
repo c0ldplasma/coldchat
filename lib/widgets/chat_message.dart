@@ -14,9 +14,9 @@ import '../data/inline_url.dart';
 import '../data/repositories/settings_repository.dart';
 import '../data/settings/message_appearance.dart';
 import '../l10n/app_localizations.dart';
-import '../modal/emote.dart';
-import '../modal/message.dart';
-import '../modal/user.dart';
+import '../sheets/emote.dart';
+import '../sheets/message.dart';
+import '../sheets/user.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel_message.dart';
 import '../tmi/channel/channel_state.dart';
@@ -302,8 +302,8 @@ class _ChatMessageState extends State<ChatMessage> {
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
     image: CachedNetworkImageProvider(emote.mipmap.last),
     height:
-        (emote.provider.name == 'Emoji' ||
-                (emote.provider.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
+        (emote.source.name == 'Emoji' ||
+                (emote.source.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
             ? 24.0
             : 32.0) *
         (1.0 / messageAppearance.scale),

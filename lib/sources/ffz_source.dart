@@ -3,14 +3,14 @@ import '../api/frankerfacez/frankerfacez_emote.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
-import 'badge_provider.dart';
-import 'emote_provider.dart';
-import 'provider.dart';
+import 'badge_source.dart';
+import 'chat_source.dart';
+import 'emote_source.dart';
 
-class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
+class FfzSource extends ChatSource with EmoteSource, BadgeSource {
   final FfzApi api;
 
-  FrankerFaceZProvider(this.api);
+  FfzSource(this.api);
 
   @override
   String get name => 'FrankerFaceZ';
@@ -30,7 +30,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
             mipmap: [
               for (final url in emote.urls.values) url,
             ],
-            provider: this,
+            source: this,
             flags: _flags(emote),
           ),
     ];
@@ -48,7 +48,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
             mipmap: [
               for (final url in emote.urls.values) url,
             ],
-            provider: this,
+            source: this,
             flags: _flags(emote),
           ),
     ];
@@ -98,7 +98,7 @@ class FrankerFaceZProvider extends Provider with EmoteProvider, BadgeProvider {
             mipmap: [
               for (final url in badge.urls.values) url,
             ],
-            provider: this,
+            source: this,
           ),
           users: badges.users['${badge.id}']?.map((e) => '$e').toList() ?? [],
         ),

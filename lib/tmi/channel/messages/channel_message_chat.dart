@@ -10,7 +10,7 @@ import '../../../data/inline_url.dart';
 import '../../../data/message_trigger.dart';
 import '../../../data/user_trigger.dart';
 import '../../../irc/message.dart' as irc;
-import '../../../providers/twitch.dart';
+import '../../../sources/twitch_source.dart';
 import '../../user.dart';
 import '../channel_message.dart';
 import 'channel_message_embeds.dart';
@@ -61,7 +61,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
   // message (or, for the url regexes, per word) during history deserialization.
   static final RegExp _actionRegex = RegExp('ACTION .*');
   static final RegExp _imageRegex = RegExp(r'\.(png|apng|gif|webp|jpg|jpeg)$');
-  static final TwitchProvider _twitchProvider = TwitchProvider();
+  static final TwitchSource _twitchSource = TwitchSource();
 
   irc.Message message;
   bool action = false;
@@ -201,7 +201,7 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
             'https://static-cdn.jtvnw.net/emoticons/v2/${emoteData.first}/default/dark/3.0',
           ],
           name: emoteData.last,
-          provider: _twitchProvider,
+          source: _twitchSource,
         );
       }
 

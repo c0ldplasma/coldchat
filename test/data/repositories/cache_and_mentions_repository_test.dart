@@ -4,7 +4,7 @@ import 'package:coldchat/api/seventv/seventv.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/data/repositories/emote_badge_cache_repository.dart';
 import 'package:coldchat/data/repositories/seen_mentions_repository.dart';
-import 'package:coldchat/providers/seventv.dart';
+import 'package:coldchat/sources/seventv_source.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
@@ -110,21 +110,21 @@ void main() {
       expect(repository.loadHistory('new'), ['line']);
     });
 
-    test('EmoteBadgeCache turns cached emotes back into emotes of known providers', () async {
-      final provider = SevenTVProvider(SevenTvApi(offlineApi()));
-      final cache = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), providers: [provider]);
-      final emote = Emote(id: 'e1', name: 'Pog', mipmap: const ['https://example.com/1x'], provider: provider);
+    test('EmoteBadgeCache turns cached emotes back into emotes of known sources', () async {
+      final source = SevenTvSource(SevenTvApi(offlineApi()));
+      final cache = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: [source]);
+      final emote = Emote(id: 'e1', name: 'Pog', mipmap: const ['https://example.com/1x'], source: source);
 
       await cache.saveChannelEmotes('forsen', [emote]);
       await reopen();
-      final reloaded = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), providers: [provider]);
+      final reloaded = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: [source]);
 
       final [loaded] = reloaded.loadChannelEmotes('forsen');
-      expect((loaded.id, loaded.name, loaded.provider), ('e1', 'Pog', provider));
+      expect((loaded.id, loaded.name, loaded.source), ('e1', 'Pog', source));
       expect(loaded.mipmap, ['https://example.com/1x']);
-      // An emote of a provider that isn't there anymore is dropped.
-      final withoutProvider = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), providers: []);
-      expect(withoutProvider.loadChannelEmotes('forsen'), isEmpty);
+      // An emote of a source that isn't there anymore is dropped.
+      final withoutSource = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: []);
+      expect(withoutSource.loadChannelEmotes('forsen'), isEmpty);
     });
   });
 

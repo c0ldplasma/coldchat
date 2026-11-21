@@ -1,4 +1,4 @@
-import 'package:coldchat/widgets/chat/composer_text.dart';
+import 'package:coldchat/tools/composer/composer_text.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 

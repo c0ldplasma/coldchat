@@ -1,28 +1,28 @@
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/irc/message.dart' as irc;
-import 'package:coldchat/providers/provider.dart';
+import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_message.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/user.dart';
-import 'package:coldchat/widgets/chat/autocompletion_matcher.dart';
+import 'package:coldchat/tools/emotes/autocompletion_matcher.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class _Provider extends Provider {
+class _Source extends ChatSource {
   @override
   final String name;
 
-  _Provider(this.name);
+  _Source(this.name);
 
   @override
   String? get description => null;
 }
 
-final _twitch = _Provider('Twitch');
-final _sevenTv = _Provider('7TV');
+final _twitch = _Source('Twitch');
+final _sevenTv = _Source('7TV');
 
-Emote _emote(String name, Provider provider) =>
-    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], provider: provider);
+Emote _emote(String name, ChatSource source) =>
+    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], source: source);
 
 /// A chat message from [login] (shown as [displayName]), sent [minute] minutes after the first.
 ChannelMessageChat _chat(String login, int minute, {String? displayName}) => ChannelMessageChat(

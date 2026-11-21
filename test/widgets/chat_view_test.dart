@@ -7,7 +7,7 @@ import 'package:coldchat/data/settings/message_appearance.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
-import 'package:coldchat/modal/user.dart';
+import 'package:coldchat/sheets/user.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';

@@ -2,25 +2,27 @@ import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
 import '../data/repositories/emote_badge_cache_repository.dart';
-import '../providers/emote_provider.dart';
-import '../providers/provider.dart';
+import '../sources/chat_source.dart';
+import '../sources/emote_source.dart';
 
 /// Turns the emotes and badges kept in [EmoteBadgeCacheRepository] back into objects, so first paint after launch
-/// or after opening a channel doesn't have to wait on provider HTTP requests.
+/// or after opening a channel doesn't have to wait on source HTTP requests.
 class EmoteBadgeCache {
   final EmoteBadgeCacheRepository repository;
-  final List<Provider> providers;
+  final List<ChatSource> sources;
 
-  EmoteBadgeCache({required this.repository, required this.providers});
+  EmoteBadgeCache({required this.repository, required this.sources});
 
-  Provider? _providerByName(String? name) {
+  ChatSource? _sourceByName(String? name) {
     if (name == null) return null;
-    for (final p in providers) {
+    for (final p in sources) {
       if (p.name == name) return p;
     }
     return null;
   }
 
+  // The cached JSON keeps the key 'provider' (and the source names, e.g. '7TV') from before the rename to "sources",
+  // so caches written by earlier versions still load.
   Map<String, dynamic> _emoteToJson(Emote e) => {
     'id': e.id,
     'name': e.name,
@@ -28,16 +30,16 @@ class EmoteBadgeCache {
     'description': e.description,
     'mipmap': e.mipmap,
     'flags': e.flags,
-    'provider': e.provider.name,
+    'provider': e.source.name,
     'category': e.category,
   };
 
   Emote? _emoteFromJson(Map<String, dynamic> m) {
-    final provider = _providerByName(m['provider'] as String?);
-    // Also drops emotes cached from a provider that no longer serves emotes,
+    final source = _sourceByName(m['provider'] as String?);
+    // Also drops emotes cached from a source that no longer serves emotes,
     // or no longer exists, instead of showing them until the next refresh
     // overwrites the cache.
-    if (provider is! EmoteProvider) return null;
+    if (source is! EmoteSource) return null;
     return Emote(
       id: m['id'] as String,
       name: m['name'] as String,
@@ -45,7 +47,7 @@ class EmoteBadgeCache {
       description: m['description'] as String?,
       mipmap: List<String>.from(m['mipmap'] as List),
       flags: (m['flags'] as int?) ?? 0,
-      provider: provider,
+      source: source,
       category: m['category'] as String?,
     );
   }
@@ -56,19 +58,19 @@ class EmoteBadgeCache {
     'description': b.description,
     'mipmap': b.mipmap,
     'flags': b.flags,
-    'provider': b.provider.name,
+    'provider': b.source.name,
   };
 
   CustomBadge? _badgeFromJson(Map<String, dynamic> m) {
-    final provider = _providerByName(m['provider'] as String?);
-    if (provider == null) return null;
+    final source = _sourceByName(m['provider'] as String?);
+    if (source == null) return null;
     return CustomBadge(
       id: m['id'] as String,
       name: m['name'] as String,
       description: m['description'] as String?,
       mipmap: List<String>.from(m['mipmap'] as List),
       flags: (m['flags'] as int?) ?? 0,
-      provider: provider,
+      source: source,
     );
   }
 

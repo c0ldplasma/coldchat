@@ -1,4 +1,4 @@
-import '../providers/provider.dart';
+import '../sources/chat_source.dart';
 
 class CustomBadge {
   String id;
@@ -6,7 +6,7 @@ class CustomBadge {
   String? description;
   List<String> mipmap;
   int flags;
-  Provider provider;
+  ChatSource source;
 
   CustomBadge({
     required this.id,
@@ -14,6 +14,6 @@ class CustomBadge {
     this.description,
     required this.mipmap,
     this.flags = 0,
-    required this.provider,
+    required this.source,
   });
 }

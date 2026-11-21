@@ -178,7 +178,7 @@ void main() {
       recentMessages: RecentMessages(enabled: () => false, api: api),
       receiver: receiver.connection,
       transmitter: transmitter.connection,
-      providers: const [],
+      sources: const [],
     );
     addTearDown(client.close);
     await _settle();
@@ -414,7 +414,7 @@ void main() {
       expect(setup.client.session.ownLogin, isNull);
     });
 
-    test('GLOBALUSERSTATE takes the color, and asks for no emotes without a Twitch provider', () async {
+    test('GLOBALUSERSTATE takes the color, and asks for no emotes without a Twitch source', () async {
       final setup = await joined(account: _account('moddy'));
       final requested = <Uri>[];
       final answer = twitchAnswer;

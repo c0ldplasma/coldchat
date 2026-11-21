@@ -6,20 +6,20 @@ import 'package:collection/collection.dart';
 import '../../api/betterttv/betterttv_socket.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
-import '../../providers/badge_provider.dart';
-import '../../providers/betterttv.dart';
-import '../../providers/emote_provider.dart';
-import '../../providers/provider.dart';
+import '../../sources/badge_source.dart';
+import '../../sources/bttv_source.dart';
+import '../../sources/chat_source.dart';
+import '../../sources/emote_source.dart';
 import '../badges.dart';
 import '../cache.dart';
 import '../emotes.dart';
 import '../user_badges.dart';
 
-/// What the chat shows in every channel: the global emotes, badges and user badges of all providers, the active
+/// What the chat shows in every channel: the global emotes, badges and user badges of all sources, the active
 /// account's Twitch emotes and the BetterTTV Pro badges. Each list is loaded from the [cache] first, so it shows right
-/// away, and then refreshed from the providers.
+/// away, and then refreshed from the sources.
 class ChatGlobals {
-  final List<Provider> providers;
+  final List<ChatSource> sources;
 
   /// Where the lists are kept between launches. Null in tests, then nothing is loaded or saved.
   final EmoteBadgeCache? cache;
@@ -49,7 +49,7 @@ class ChatGlobals {
 
   /// Loads what the [cache] has. Nothing is requested until a refresh is called.
   ChatGlobals({
-    required this.providers,
+    required this.sources,
     this.cache,
     required this.onBadgesChanged,
     required this.onUserBadgeChanged,
@@ -73,15 +73,15 @@ class ChatGlobals {
   }
 
   Future<void> refreshEmotes() async {
-    final emoteProviders = providers.whereType<EmoteProvider>();
+    final emoteSources = sources.whereType<EmoteSource>();
     final results = await Future.wait(
-      emoteProviders.map((emoteProvider) async {
+      emoteSources.map((emoteSource) async {
         try {
-          return await emoteProvider.globalEmotes().timeout(Provider.timeout);
+          return await emoteSource.globalEmotes().timeout(ChatSource.timeout);
         } catch (e) {
-          log('Couldn\'t get ${emoteProvider.name} global emotes: $e');
-          // A provider that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
-          return [...emotes.state.where((emote) => emote.provider.name == emoteProvider.name)];
+          log('Couldn\'t get ${emoteSource.name} global emotes: $e');
+          // A source that's down keeps what it gave last time, instead of its emotes disappearing until it's back.
+          return [...emotes.state.where((emote) => emote.source.name == emoteSource.name)];
         }
       }),
     );
@@ -91,14 +91,14 @@ class ChatGlobals {
   }
 
   Future<void> refreshBadges() async {
-    final badgeProviders = providers.whereType<BadgeProvider>();
+    final badgeSources = sources.whereType<BadgeSource>();
     final results = await Future.wait(
-      badgeProviders.map((badgeProvider) async {
+      badgeSources.map((badgeSource) async {
         try {
-          return await badgeProvider.globalBadges().timeout(Provider.timeout);
+          return await badgeSource.globalBadges().timeout(ChatSource.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global badges: $e');
-          return [...badges.state.where((badge) => badge.provider.name == badgeProvider.name)];
+          log('Couldn\'t get ${badgeSource.name} global badges: $e');
+          return [...badges.state.where((badge) => badge.source.name == badgeSource.name)];
         }
       }),
     );
@@ -110,14 +110,14 @@ class ChatGlobals {
   }
 
   Future<void> refreshUserBadges() async {
-    final badgeProviders = providers.whereType<BadgeProvider>();
+    final badgeSources = sources.whereType<BadgeSource>();
     final results = await Future.wait(
-      badgeProviders.map((badgeProvider) async {
+      badgeSources.map((badgeSource) async {
         try {
-          return await badgeProvider.globalUserBadges().timeout(Provider.timeout);
+          return await badgeSource.globalUserBadges().timeout(ChatSource.timeout);
         } catch (e) {
-          log('Couldn\'t get ${badgeProvider.name} global user badges: $e');
-          return [...userBadges.state.where((users) => users.badge.provider.name == badgeProvider.name)];
+          log('Couldn\'t get ${badgeSource.name} global user badges: $e');
+          return [...userBadges.state.where((users) => users.badge.source.name == badgeSource.name)];
         }
       }),
     );
@@ -144,7 +144,7 @@ class ChatGlobals {
     id: 'bttv-pro',
     name: 'BetterTTV Pro',
     mipmap: [url],
-    provider: providers.whereType<BetterTTVProvider>().first,
+    source: sources.whereType<BttvSource>().first,
   );
 
   /// BetterTTV told us whether the user in [lookup] has a Pro badge, and which.
