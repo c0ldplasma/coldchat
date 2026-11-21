@@ -25,6 +25,7 @@ import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/client/chat_globals.dart';
+import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/client/client_channels.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
@@ -41,6 +42,15 @@ import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 
 import '../api/fake_api.dart';
+
+/// Fetches no history.
+class _FakeHistory implements ChatHistory {
+  @override
+  Future<void> ensureRecentMessages(Channel channel) async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
 
 /// Just what a [Channel] and its [ChannelView] read from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
@@ -71,7 +81,7 @@ class _FakeClient implements Client {
   _FakeClient(this.transmitter);
 
   @override
-  Future<void> ensureRecentMessages(Channel channel) async {}
+  final ChatHistory history = _FakeHistory();
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

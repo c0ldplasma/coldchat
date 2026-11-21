@@ -4,6 +4,7 @@ import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_event.dart';
 import 'package:coldchat/tmi/client/chat_globals.dart';
+import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
 import 'package:coldchat/tmi/moderation.dart';
 import 'package:coldchat/tmi/whispers/whisper_channel.dart';
@@ -110,7 +111,7 @@ void main() {
   });
 
   test('USERSTATE, ROOMSTATE and NOTICE lines from the history are skipped, chat lines are kept', () {
-    bool skipped(String line) => Client.skippedInHistory(irc.Message.fromEvent(line));
+    bool skipped(String line) => ChatHistory.skippedInHistory(irc.Message.fromEvent(line));
 
     expect(skipped('@badges=moderator/1 :tmi.twitch.tv USERSTATE #ronni'), isTrue);
     expect(skipped('@emote-only=0;room-id=12826;slow=0 :tmi.twitch.tv ROOMSTATE #ronni'), isTrue);

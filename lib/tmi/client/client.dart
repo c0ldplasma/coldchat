@@ -39,15 +39,14 @@ import '../channel/channel_message.dart';
 import '../channel/channel_state.dart';
 import '../channel/messages/channel_message_ban.dart';
 import '../channel/messages/channel_message_chat.dart';
-import '../channel/messages/channel_message_id.dart';
 import '../channel/messages/channel_message_notice.dart';
 import '../connection/connection.dart';
 import '../connection/connection_event.dart';
 import '../connection/connection_state.dart';
 import '../irc_log.dart';
-import '../whispers/whisper_channel.dart';
 import '../whispers/whispers.dart';
 import 'chat_globals.dart';
+import 'chat_history.dart';
 import 'client_channels.dart';
 import 'client_listener.dart';
 import 'join_scheduler.dart';
@@ -144,8 +143,8 @@ class Client implements AccountConnector {
   /// The message and user triggers that highlight or block messages. Null in tests, then there are none.
   final TriggerRepository? triggers;
 
-  /// Where chat history comes from. Asks Settings → Chat history before each request.
-  final RecentMessages recentMessages;
+  /// The chat history of the channels, from the recent-messages service and the cache.
+  late final ChatHistory history;
 
   final List<Timer> _timers = [];
 
@@ -174,8 +173,7 @@ class Client implements AccountConnector {
     Connection? receiver,
     Connection? transmitter,
     List<Provider>? providers,
-  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true, api: api),
-       receiver = receiver ?? Connection(name: 'receiver'),
+  }) : receiver = receiver ?? Connection(name: 'receiver'),
        // The transmitter doesn't need to know who else joins, which in a big channel is a line every few seconds.
        transmitter = transmitter ?? Connection(name: 'transmitter', membership: false),
        _customProviders = providers {
@@ -194,6 +192,13 @@ class Client implements AccountConnector {
       cache: cache,
       onBadgesChanged: _rebuildChannelMessages,
       onUserBadgeChanged: _rebuildMessagesFrom,
+    );
+    history = ChatHistory(
+      recentMessages: recentMessages ?? RecentMessages(enabled: () => true, api: api),
+      receiver: this.receiver,
+      cache: cache,
+      channels: () => channels.state,
+      receive: receive,
     );
 
     channels = ClientChannels(
@@ -386,123 +391,6 @@ class Client implements AccountConnector {
     if (change.nextState is ConnectionConnected) scheduleMicrotask(_transmitterJoinPass);
   }
 
-  // Building a ChannelMessageChat is expensive (emote parsing, regex, Hive
-  // lookups). Deserialize history newest-first in chunks: the first (smaller)
-  // chunk is the newest messages — the ones actually visible at the bottom of
-  // the reverse chat list — so they appear almost immediately. Older chunks
-  // are added above the viewport afterwards; with reverse:true the bottom
-  // anchor doesn't move, so the chat doesn't jump. Yields between chunks keep
-  // the UI responsive.
-  static const int _historyFirstChunk = 30;
-  static const int _historyLaterChunk = 40;
-
-  /// Whether [message] from the recent-messages history is left out when inserting it: see [insertHistoryMessages].
-  /// USERSTATE is about the own user at that time, so an old one would set [Channel.ownUserIsModerator] wrongly.
-  static bool skippedInHistory(irc.Message message) =>
-      const {'ROOMSTATE', 'NOTICE', 'USERSTATE'}.contains(message.command);
-
-  Future<void> insertHistoryMessages(Connection connection, List<String> messages) async {
-    // Parse once, preserving chronological (oldest->newest) order as delivered
-    // by the recent-messages endpoint. Skip transient channel-state events:
-    // ROOMSTATE, and NOTICE (slow/emote/follower-mode toggles etc.). These
-    // describe past room state — replaying them is noise, and because NOTICEs
-    // carry no `id` tag they also bypass the id-based dedup below, so each of
-    // the three history passes (cached paint, lazy fetch, post-JOIN backfill)
-    // would re-add them, producing the duplicate "now in slow mode / no longer
-    // in slow mode" spam. USERNOTICE (subs/raids) is intentionally kept.
-    final parsed = <irc.Message>[];
-    for (final message in messages) {
-      final irc.Message ircMessage;
-      try {
-        ircMessage = irc.Message.fromEvent(message);
-      } on irc.InvalidIrcMessageException {
-        continue;
-      }
-      if (skippedInHistory(ircMessage)) continue;
-      parsed.add(ircMessage);
-    }
-    if (parsed.isEmpty) return;
-
-    // History payloads are single-channel; find it from any chat message.
-    final firstChatMessage = parsed.firstWhereOrNull(
-      (m) => (m.command == 'PRIVMSG' || m.command == 'USERNOTICE') && m.parameters.isNotEmpty,
-    );
-    final bulkChannel = firstChatMessage == null
-        ? null
-        : channels.state.firstWhereOrNull((c) => c.name == firstChatMessage.parameters[0]);
-
-    // Snapshot existing ids so we drop duplicates BEFORE building them (the
-    // post-JOIN backfill mostly re-sends messages we already have).
-    final existingIds =
-        bulkChannel?.channelMessages.state.whereType<ChannelMessageId>().map((e) => e.id).toSet() ?? <String>{};
-
-    // Walk from the end (newest) towards the start (oldest), one chunk per
-    // iteration, emitting after each so the newest render first.
-    var end = parsed.length;
-    var first = true;
-    while (end > 0) {
-      final size = first ? _historyFirstChunk : _historyLaterChunk;
-      first = false;
-      final start = (end - size).clamp(0, end);
-      final chunk = parsed.sublist(start, end);
-      end = start;
-
-      bulkChannel?.channelMessages.beginBulk();
-      for (final ircMessage in chunk) {
-        final id = ircMessageId(ircMessage);
-        if (id != null && existingIds.contains(id)) continue;
-        if (id != null) existingIds.add(id);
-        unawaited(receive(connection, ircMessage));
-      }
-      bulkChannel?.channelMessages.endBulk();
-      await Future<void>.delayed(Duration.zero);
-    }
-  }
-
-  /// Lazily fetch recent-messages for [channel] (e.g. when its chat view is
-  /// first opened). De-duplication in ChannelMessages.add drops anything
-  /// already inserted from the cache.
-  Future<void> ensureRecentMessages(Channel channel) async {
-    // User is actively looking at this channel — make sure the throttled
-    // JOIN scheduler picks it before any other queued channel.
-    if (channel is WhisperChannel) return;
-    channel.joinPriority = true;
-    if (channel.recentMessagesFetched) return;
-    channel.recentMessagesFetched = true;
-    channel.recentMessagesEverFetched = true;
-    if (!await _fetchAndInsertHistory(channel)) {
-      channel.recentMessagesFetched = false;
-    }
-  }
-
-  /// Pull recent-messages again right after a successful JOIN to backfill
-  /// anything that was sent while we were waiting for the JOIN ack — those
-  /// PRIVMSGs are not delivered to us by Twitch until we are subscribed.
-  Future<void> _backfillAfterJoin(Channel channel) async {
-    if (channel.joinBackfillDone) return;
-    channel.joinBackfillDone = true;
-    if (!await _fetchAndInsertHistory(channel)) {
-      channel.joinBackfillDone = false;
-    }
-  }
-
-  // Fetch recent-messages for [channel], persist them, and insert into the
-  // chat. Returns false on failure so callers can reset their latch.
-  Future<bool> _fetchAndInsertHistory(Channel channel) async {
-    final channelLogin = channel.name.substring(1);
-    try {
-      final list = await recentMessages.channel(channelLogin);
-      // Chat history is turned off: nothing was requested. Report it like a failure, so the next fetch (opening the
-      // chat, joining, reconnecting) tries again and picks the setting up if it was turned back on.
-      if (list == null) return false;
-      unawaited(cache?.saveHistory(channelLogin, list));
-      await insertHistoryMessages(receiver, list);
-      return true;
-    } catch (_) {
-      return false;
-    }
-  }
-
   /// Called every time the app returns to the foreground. Actively probes each
   /// socket (PING -> expect a fast reply); only the ones that don't answer are
   /// reconnected. A quick app-switch over a live connection answers instantly
@@ -547,12 +435,7 @@ class Client implements AccountConnector {
     // first; insertHistoryMessages dedups by id, so the later rejoin backfill
     // is a no-op for anything we pull in here.
     final viewed = channels.state.where((channel) => channel.recentMessagesEverFetched).toList()..sort(_byJoinPriority);
-    await Future.wait(
-      viewed.map((channel) {
-        channel.joinBackfillDone = false;
-        return _fetchAndInsertHistory(channel);
-      }),
-    );
+    await history.refetch(viewed);
   }
 
   /// Twitch refuses a bad token with an untagged NOTICE whose text we have to
@@ -773,18 +656,7 @@ class Client implements AccountConnector {
           _joins.acknowledged(channel.name);
           ircLog('receiver: joined ${channel.name}');
           channel.add(ChannelConnect());
-          final channelLogin = channel.name.substring(1);
-          // History cached on an earlier launch is only shown while chat history is on.
-          channel.pendingHistoryCached = recentMessages.enabled()
-              ? cache?.loadHistory(channelLogin) ?? const <String>[]
-              : const <String>[];
-          // If the user opened this channel before we managed to JOIN, pull
-          // recent-messages again now that we are actually subscribed — that
-          // closes the gap between our pre-JOIN snapshot and live PRIVMSGs.
-          if (channel.recentMessagesEverFetched) {
-            channel.recentMessagesFetched = true;
-            unawaited(_backfillAfterJoin(channel));
-          }
+          history.joined(channel);
         }
         break;
       case 'USERNOTICE':
@@ -832,11 +704,7 @@ class Client implements AccountConnector {
         // disk at channel construction, so it shows immediately instead of
         // waiting on the network emote/badge refresh. refresh() then rebuilds
         // only if the network actually changes the emote/badge set.
-        final cachedHistory = channel.pendingHistoryCached;
-        if (cachedHistory.isNotEmpty) {
-          channel.pendingHistoryCached = const [];
-          await insertHistoryMessages(connection, cachedHistory);
-        }
+        await history.insertCached(connection, channel);
 
         await channel.refresh();
         break;

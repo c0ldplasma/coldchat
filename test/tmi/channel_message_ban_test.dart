@@ -43,7 +43,7 @@ ChannelMessages _messages() {
   return messages;
 }
 
-/// One pass of `Client.insertHistoryMessages`: lines whose id the chat already shows are skipped before they're
+/// One pass of `ChatHistory.insertHistoryMessages`: lines whose id the chat already shows are skipped before they're
 /// built, the rest is added in bulk.
 void _insertHistory(ChannelMessages messages, List<String> lines) {
   final existingIds = messages.state.whereType<ChannelMessageId>().map((e) => e.id).toSet();
