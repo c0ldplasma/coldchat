@@ -72,8 +72,15 @@ class ChannelMessages extends Cubit<List<ChannelMessage>> {
     _insert([...state]..remove(previous), next);
   }
 
+  /// Counts the [refresh]es: messages in [state] changed in place, so a widget built for one of them is out of date.
+  int get revision => _revision;
+  int _revision = 0;
+
   /// Emits the same messages again, e.g. after they were rebuilt with new emotes or badges.
-  void refresh() => emit([...state]);
+  void refresh() {
+    _revision++;
+    emit([...state]);
+  }
 
   /// Emits [messages] with [message] at its place by time (after those with the same time), dropping the oldest of
   /// [messages] first if they're already at the [limit].
