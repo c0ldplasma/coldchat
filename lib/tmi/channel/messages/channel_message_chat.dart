@@ -131,7 +131,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     if (messageText.contains(_actionRegex)) action = true;
     if (action) messageText = messageText.substring('ACTION '.length, messageText.length - 1);
 
-    // replace U+200D (ZERO WIDTH JOINER) with U+E0002
+    // Some clients (Chatterino style) escape U+200D (ZERO WIDTH JOINER) as U+E0002; turn it back into a ZWJ so
+    // emoji ZWJ sequences render. ColdChat itself sends ZWJ unchanged (see Channel.send).
     // alternative regex for replacement: (?<!\U000E0002)\U000E0002
     final replacement = String.fromCharCodes(Runes('\u{e0002}'));
     final zeroWidthJoiner = String.fromCharCodes(Runes('\u{200d}'));
