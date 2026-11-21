@@ -103,10 +103,8 @@ class TwitchAccountModal extends StatelessWidget {
           if (accountSettingsBox.get('activeTwitchAccount') == twitchAccount.tokenData.hash) {
             // Switch to another saved account, or log out when this was the last one. The avatar shows which
             // account is active, so the switch is visible.
-            final remaining = Hive.box<dynamic>('TwitchAccounts').values.cast<TwitchAccount>().where(
-              (account) => account.tokenData.hash != twitchAccount.tokenData.hash,
-            );
-            await setActiveAccount(context.read<Client>(), remaining.firstOrNull);
+            final accounts = Hive.box<dynamic>('TwitchAccounts').values.cast<TwitchAccount>();
+            await setActiveAccount(context.read<Client>(), accountAfterRemoving(accounts, twitchAccount));
           }
           await twitchAccount.delete();
           if (!context.mounted) return;

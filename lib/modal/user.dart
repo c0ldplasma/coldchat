@@ -13,7 +13,7 @@ import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/client/client.dart';
-import '../tmi/whispers/whisper_channel.dart';
+import '../tmi/moderation.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_view.dart';
 import 'components/user_modal_header.dart';
@@ -107,10 +107,7 @@ class _UserModalState extends State<UserModal> {
     future: future,
     builder: (BuildContext context, AsyncSnapshot<TwitchProfile?> snapshot) {
       final shownChannel = channel;
-      final canModerate =
-          shownChannel != null &&
-          shownChannel is! WhisperChannel &&
-          shownChannel.canModerate(_moderatorTokenData?.userId);
+      final canModerate = canModerateAs(shownChannel, _moderatorTokenData);
       final loading = snapshot.connectionState != ConnectionState.done;
       final profile = snapshot.data;
       return ListView(

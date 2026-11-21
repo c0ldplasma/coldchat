@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 import '../api/twitch/twitch.dart';
 import '../components/tile.dart';
 import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
+import '../tmi/moderation.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/chat_message.dart';
@@ -36,10 +38,7 @@ class MessageModal extends StatelessWidget {
   /// hidden for everyone else, like the ban and timeout row on the user card.
   bool get _canDelete {
     final channel = message.channel;
-    if (channel == null || _whisper) return false;
-    final tokenData = channel.client.transmitter.twitchAccount?.tokenData;
-    if (tokenData?.accessToken == null) return false;
-    return channel.canModerate(tokenData!.userId);
+    return canModerateAs(channel, channel?.client.transmitter.twitchAccount?.tokenData);
   }
 
   @override
@@ -86,27 +85,17 @@ class MessageModal extends StatelessWidget {
             final navigator = Navigator.of(context);
             final l10n = AppLocalizations.of(context);
             navigator.pop();
-            final tokenData = message.channel!.client.transmitter.twitchAccount?.tokenData;
-            // Logins from before ColdChat requested the scope can't delete messages until they sign in again.
-            if (tokenData == null || !canDeleteMessagesWith(tokenData)) {
-              showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
-              return;
-            }
-            try {
-              await Twitch.deleteChatMessage(
-                tokenData,
-                broadcasterId: message.channel!.id!,
-                moderatorId: tokenData.userId!,
-                messageId: message.id,
-              );
-            } on TwitchRequestException catch (e) {
-              if (deleteFailureNeedsSignIn(e)) {
-                showSignInSnackBar(messenger, navigator, l10n.deleteMessageNeedsScope);
-              } else {
-                messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed(e.message))));
-              }
-            } catch (e) {
-              messenger.showSnackBar(SnackBar(content: Text(l10n.deleteMessageFailed('$e'))));
+            final failure = await deleteMessageAs(
+              message.channel!.client.transmitter.twitchAccount?.tokenData,
+              l10n,
+              broadcasterId: message.channel!.id,
+              messageId: message.id,
+            );
+            if (failure == null) return;
+            if (failure.needsSignIn) {
+              showSignInSnackBar(messenger, navigator, failure.text);
+            } else {
+              messenger.showSnackBar(SnackBar(content: Text(failure.text)));
             }
           },
         ),
@@ -128,4 +117,37 @@ class MessageModal extends StatelessWidget {
       ),
     ],
   );
+}
+
+/// Why deleting a message didn't work: the [text] to show, and whether signing in again fixes it.
+typedef DeleteMessageFailure = ({String text, bool needsSignIn});
+
+/// Deletes the message [messageId] in the channel [broadcasterId] as the account of [tokenData]. Returns null once
+/// it's deleted, otherwise what to tell the user. [client] is for tests.
+Future<DeleteMessageFailure?> deleteMessageAs(
+  TokenData? tokenData,
+  AppLocalizations l10n, {
+  required String? broadcasterId,
+  required String messageId,
+  http.Client? client,
+}) async {
+  if (tokenData == null || !canDeleteMessagesWith(tokenData)) {
+    return (text: l10n.deleteMessageNeedsScope, needsSignIn: true);
+  }
+  try {
+    await Twitch.deleteChatMessage(
+      tokenData,
+      broadcasterId: broadcasterId!,
+      moderatorId: tokenData.userId!,
+      messageId: messageId,
+      client: client,
+    );
+    return null;
+  } on TwitchRequestException catch (e) {
+    return deleteFailureNeedsSignIn(e)
+        ? (text: l10n.deleteMessageNeedsScope, needsSignIn: true)
+        : (text: l10n.deleteMessageFailed(e.message), needsSignIn: false);
+  } catch (e) {
+    return (text: l10n.deleteMessageFailed('$e'), needsSignIn: false);
+  }
 }
