@@ -91,9 +91,9 @@ class _EmotePickerState extends State<EmotePicker> {
   // when any list changes.
   @override
   Widget build(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
-    bloc: widget.client.globalEmotes,
+    bloc: widget.client.globals.emotes,
     builder: (context, globalEmotes) => BlocBuilder<Emotes, List<Emote>>(
-      bloc: widget.client.twitchUserEmotes,
+      bloc: widget.client.globals.twitchUserEmotes,
       builder: (context, userEmotes) {
         final channelEmotes = widget.channel?.channelEmotes;
         if (channelEmotes == null) {

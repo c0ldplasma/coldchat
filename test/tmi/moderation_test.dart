@@ -1,11 +1,11 @@
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/irc/message.dart' as irc;
-import 'package:coldchat/tmi/badges.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_event.dart';
+import 'package:coldchat/tmi/client/chat_globals.dart';
+import 'package:coldchat/tmi/client/chat_history.dart';
 import 'package:coldchat/tmi/client/client.dart';
-import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/tmi/moderation.dart';
 import 'package:coldchat/tmi/whispers/whisper_channel.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,11 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// Just what a [Channel] reads from its client when it's created. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
   @override
-  Emotes globalEmotes = Emotes();
-  @override
-  Badges globalBadges = Badges();
-  @override
-  Emotes twitchUserEmotes = Emotes();
+  late final ChatGlobals globals = ChatGlobals(providers: const [], onBadgesChanged: () {}, onUserBadgeChanged: (_) {});
   @override
   EmoteBadgeCache? cache;
 
@@ -115,7 +111,7 @@ void main() {
   });
 
   test('USERSTATE, ROOMSTATE and NOTICE lines from the history are skipped, chat lines are kept', () {
-    bool skipped(String line) => Client.skippedInHistory(irc.Message.fromEvent(line));
+    bool skipped(String line) => ChatHistory.skippedInHistory(irc.Message.fromEvent(line));
 
     expect(skipped('@badges=moderator/1 :tmi.twitch.tv USERSTATE #ronni'), isTrue);
     expect(skipped('@emote-only=0;room-id=12826;slow=0 :tmi.twitch.tv ROOMSTATE #ronni'), isTrue);

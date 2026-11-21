@@ -24,8 +24,8 @@ class WhisperChannel extends Channel {
     required this.partnerDisplayName,
   }) : super(name: '@$partnerLogin') {
     _whisperSubs.addAll([
-      client.globalEmotes.stream.listen((_) => _whisperEmoteLookup = null),
-      client.twitchUserEmotes.stream.listen((_) => _whisperEmoteLookup = null),
+      client.globals.emotes.stream.listen((_) => _whisperEmoteLookup = null),
+      client.globals.twitchUserEmotes.stream.listen((_) => _whisperEmoteLookup = null),
     ]);
   }
 
@@ -36,11 +36,11 @@ class WhisperChannel extends Channel {
     final cached = _whisperEmoteLookup;
     if (cached != null) return cached;
     final map = <String, Emote>{};
-    for (final e in client.globalEmotes.state) {
+    for (final e in client.globals.emotes.state) {
       if (e.provider is EmojiProvider) continue;
       map[e.code ?? e.name] = e;
     }
-    for (final e in client.twitchUserEmotes.state) {
+    for (final e in client.globals.twitchUserEmotes.state) {
       map[e.code ?? e.name] = e;
     }
     return _whisperEmoteLookup = map;

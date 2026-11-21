@@ -180,9 +180,9 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
     }
 
     final userId = user.id;
-    if (userId != null) badges.addAll(channel?.client.globalUserBadges.badgesOf(userId) ?? const []);
+    if (userId != null) badges.addAll(channel?.client.globals.userBadges.badgesOf(userId) ?? const []);
 
-    final bttvProBadge = channel?.client.bttvProBadges[user.id];
+    final bttvProBadge = channel?.client.globals.bttvProBadges[user.id];
     if (bttvProBadge != null) badges.add(bttvProBadge);
 
     final emoteLookup = channel?.emoteLookup ?? const <String, Emote>{};
@@ -283,8 +283,8 @@ class ChannelMessageChat extends ChannelMessage with ChannelMessageUser, Channel
 
       // The own account is the transmitter's; the receiver reading the chat is anonymous.
       final userId = user.id;
-      blocked = blocked || (userId != null && client.isBlocked(userId));
-      final ownLogin = client.ownLogin;
+      blocked = blocked || (userId != null && client.session.isBlocked(userId));
+      final ownLogin = client.session.ownLogin;
       if (ownLogin != null) {
         mentionned =
             mentionned ||

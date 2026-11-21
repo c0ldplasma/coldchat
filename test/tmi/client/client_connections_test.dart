@@ -404,14 +404,32 @@ void main() {
 
     test('mentions follow the account that is logged in', () async {
       final setup = await joined(account: _account('moddy'));
-      expect(setup.client.ownLogin, 'moddy');
+      expect(setup.client.session.ownLogin, 'moddy');
 
       await setup.client.connectAs(_account('other'));
-      expect(setup.client.ownLogin, 'other');
+      expect(setup.client.session.ownLogin, 'other');
 
       setup.client.disconnect();
       await _settle();
-      expect(setup.client.ownLogin, isNull);
+      expect(setup.client.session.ownLogin, isNull);
+    });
+
+    test('GLOBALUSERSTATE takes the color, and asks for no emotes without a Twitch provider', () async {
+      final setup = await joined(account: _account('moddy'));
+      final requested = <Uri>[];
+      final answer = twitchAnswer;
+      twitchAnswer = (request) {
+        requested.add(request.url);
+        return answer(request);
+      };
+
+      await setup.transmitter.receive(
+        '@color=#1E90FF;display-name=Moddy;emote-sets=0,300374282;user-id=1;user-type= :tmi.twitch.tv GLOBALUSERSTATE',
+      );
+
+      expect(setup.client.session.ownColor, '#1E90FF');
+      expect(requested.where((url) => url.path.contains('emotes')), isEmpty);
+      expect(setup.client.globals.twitchUserEmotes.state, isEmpty);
     });
   });
 
@@ -450,7 +468,7 @@ void main() {
     test('locks only the transmitter when the token turns out to be invalid', () async {
       final setup = await joined(account: _account('moddy'));
       answerTwitchApi(validateStatus: 401);
-      await setup.client.validateCredentials(setup.client.transmitter.twitchAccount!);
+      await setup.client.session.validateCredentials(setup.client.transmitter.twitchAccount!);
       await _settle();
 
       expect(setup.transmitter.connection.state, isA<tmi.ConnectionInvalidCredentials>());
@@ -466,7 +484,7 @@ void main() {
       await setup.transmitter.welcome();
 
       answerTwitchApi(validateStatus: 401);
-      await setup.client.validateCredentials(previous);
+      await setup.client.session.validateCredentials(previous);
       await _settle();
 
       expect(setup.transmitter.connection.state, isA<tmi.ConnectionConnected>());

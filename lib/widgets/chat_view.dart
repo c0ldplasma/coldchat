@@ -89,7 +89,7 @@ class _ChatViewState extends State<ChatView> {
   @override
   void initState() {
     super.initState();
-    unawaited(widget.channel.client.ensureRecentMessages(widget.channel));
+    unawaited(widget.channel.client.history.ensureRecentMessages(widget.channel));
     // Show the chrome a bit longer right after the view appears.
     WidgetsBinding.instance.addPostFrameCallback((_) => _showChrome(linger: _chromeStartupLinger));
     searchFocusNode.addListener(() => setState(() {}));

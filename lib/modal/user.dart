@@ -183,7 +183,7 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
   Future<void> toggleBlock() async {
     setState(() => busy = true);
     try {
-      await widget.client.setBlocked(widget.user.id, !widget.client.isBlocked(widget.user.id));
+      await widget.client.session.setBlocked(widget.user.id, !widget.client.session.isBlocked(widget.user.id));
     } catch (e) {
       log('$e');
       if (mounted) {
@@ -239,9 +239,9 @@ class _UserSafetyActionsState extends State<_UserSafetyActions> {
 
   @override
   Widget build(BuildContext context) {
-    final ownUserId = widget.client.blockingUserId;
+    final ownUserId = widget.client.session.blockingUserId;
     final canBlock = ownUserId != null && ownUserId != widget.user.id;
-    final blocked = widget.client.isBlocked(widget.user.id);
+    final blocked = widget.client.session.isBlocked(widget.user.id);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

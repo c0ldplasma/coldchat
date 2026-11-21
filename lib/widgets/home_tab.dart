@@ -26,7 +26,7 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
   final client = context.read<Client>();
   if (!client.channels.state.any((channel) => channel.name == channelName)) {
     client.channels.join(channelName);
-    client.joinPending();
+    client.joiner.joinPending();
   }
   context.read<HomeTabSwitcher>().open(channelName);
 }
