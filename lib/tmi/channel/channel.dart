@@ -193,10 +193,6 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
       ircMessageToSend = '@${tags.entries.map((entry) => '${entry.key}=${entry.value}').join(';')} $ircMessageToSend';
     }
 
-    final replacement = String.fromCharCodes(Runes('\u{e0002}'));
-    final zeroWidthJoiner = String.fromCharCodes(Runes('\u{200d}'));
-    message = message.replaceAll(replacement, zeroWidthJoiner);
-
     final realState = state as ChannelStateWithConnection;
     unawaited(realState.transmitter.send(ircMessageToSend));
   }
