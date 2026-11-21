@@ -6,6 +6,7 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../api/twitch/twitch.dart';
+import '../data/active_account.dart';
 import '../data/twitch/token_data.dart';
 import '../data/twitch/user_data.dart';
 import '../data/twitch_account.dart';
@@ -65,8 +66,7 @@ class _VerifyUserModalState extends State<VerifyUserModal> {
           final activeIsGone =
               activeHash == null || !accountsBox.containsKey(activeHash) || replacedHashes.contains(activeHash);
           if (activeIsGone || activeHash == widget.tokenData.hash) {
-            await accountSettingsBox.put('activeTwitchAccount', widget.tokenData.hash);
-            if (mounted) await context.read<Client>().connectAs(twitchAccount);
+            if (mounted) await setActiveAccount(context.read<Client>(), twitchAccount);
           }
 
           if (mounted) Navigator.of(context).pop();
