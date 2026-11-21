@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:collection/collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,7 +14,6 @@ import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
-import '../data/emote.dart';
 import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
 import '../data/repositories/custom_command_repository.dart';
@@ -27,6 +25,7 @@ import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/whispers/whisper_channel.dart';
 import '../tmi/whispers/whispers.dart';
+import 'chat/autocompletion_matcher.dart';
 import 'chat/emote_picker.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_message.dart';
@@ -81,6 +80,8 @@ class ChannelViewState extends State<ChannelView> {
   bool emoteKeyboard = false;
   // The emote menu is open to choose the button's emote (long-press on it).
   bool pickingButtonIcon = false;
+  // Keeps the autocompletion's emote and chatter lists between rebuilds, see [AutocompletionMatcher].
+  final AutocompletionMatcher _autocompletion = AutocompletionMatcher();
   ChannelMessageChat? replyChannelMessageChat;
   StreamSubscription<UploadTask>? _uploadSubscription;
   // Rebuild the composer when the channel is joined or the sending connection drops, see [Channel.canSend].
@@ -397,29 +398,18 @@ class ChannelViewState extends State<ChannelView> {
 
     final chatSettings = context.read<SettingsRepository>().chatSettings;
 
-    final matchingEmotes =
-        (widget.channel.channelEmotes.state +
-                widget.channel.client.globalEmotes.state +
-                widget.channel.client.twitchUserEmotes.state)
-            .where((emote) {
-              return (chatSettings.emoteAutocompletionWithColon ? currentSearch.startsWith(':') : true) &&
-                  ':${emote.name}:'.toLowerCase().contains(currentSearch);
-            })
-            .toList();
-    // Emotes whose name starts with the search go first, then the ones that
-    // only match further into the name. Stable, so each group keeps its order.
-    final emotePrefix = currentSearch.startsWith(':') ? currentSearch : ':$currentSearch';
-    bool startsWithSearch(Emote emote) => ':${emote.name}:'.toLowerCase().startsWith(emotePrefix);
-    final sortedEmotes = [
-      ...matchingEmotes.where(startsWithSearch),
-      ...matchingEmotes.whereNot(startsWithSearch),
-    ];
-
-    final chatters = widget.channel.recentChatters;
-    final matchingChatters = chatters.where((chatter) {
-      return (chatSettings.userAutocompletionWithAt ? currentSearch.startsWith('@') : true) &&
-          '@${chatter.login}'.toLowerCase().contains(currentSearch);
-    });
+    final sortedEmotes = _autocompletion.emotes(
+      channelEmotes: widget.channel.channelEmotes.state,
+      globalEmotes: widget.channel.client.globalEmotes.state,
+      userEmotes: widget.channel.client.twitchUserEmotes.state,
+      search: currentSearch,
+      needsColon: chatSettings.emoteAutocompletionWithColon,
+    );
+    final matchingChatters = _autocompletion.chatters(
+      messages: widget.channel.channelMessages.state,
+      search: currentSearch,
+      needsAt: chatSettings.userAutocompletionWithAt,
+    );
 
     return [
       for (final user in matchingChatters)
