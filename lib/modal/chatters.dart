@@ -7,6 +7,7 @@ import '../components/modal.dart';
 import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
+import '../tmi/client/client_lookups.dart';
 import '../tmi/user.dart';
 import 'components/modal_header.dart';
 import 'user.dart';
@@ -37,17 +38,10 @@ class _ChattersModalState extends State<ChattersModal> {
   /// Profile pictures for the list in one batched Helix request per 100
   /// chatters. Without a login the list shows initials instead.
   Future<void> loadAvatars() async {
-    final tokenData = widget.channel.client.apiTokenData;
-    if (tokenData == null) return;
-    try {
-      final users = await widget.channel.client.helix.forToken(tokenData).usersByLogin([
-        for (final chatter in chatters) chatter.login!,
-      ]);
-      if (!mounted) return;
-      setState(() => avatarUrls = {for (final user in users) user.login: user.profileImageUrl});
-    } catch (_) {
-      // Initials are fine when the pictures can't be loaded.
-    }
+    // Initials are fine when the pictures can't be loaded.
+    final urls = await widget.channel.client.profileImageUrls([for (final chatter in chatters) chatter.login!]);
+    if (!mounted || urls.isEmpty) return;
+    setState(() => avatarUrls = urls);
   }
 
   @override
