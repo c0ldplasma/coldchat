@@ -1,0 +1,148 @@
+# Store lanes used by the release workflows (.github/workflows/store-*.yml). They expect the secrets described in
+# those workflows as environment variables.
+
+require 'tmpdir'
+
+APP_ID = 'com.plasmari.coldchat'
+
+# Release notes, one file per language and build: metadata/android/<language>/changelogs/<build>.txt. That's supply's
+# own layout; the iOS lane reads the same files. tool/check_release_notes.dart (CI) checks them. Lanes run inside the
+# fastlane folder, so the path is taken from git to work from anywhere.
+NOTES_PATH = File.join(`git rev-parse --show-toplevel`.strip, 'fastlane', 'metadata', 'android')
+
+# Play and App Store Connect name most languages the same (en-US, de-DE), but not all: add a mapping here for a new
+# language that differs (e.g. Hebrew is iw-IL on Play and he on App Store Connect).
+APP_STORE_LOCALES = {}
+
+# The release notes of a build, by Play language. Fails if a language has none.
+def store_release_notes(build)
+  Dir.children(NOTES_PATH).select { |name| File.directory?(File.join(NOTES_PATH, name)) }.sort.to_h do |language|
+    path = File.join(NOTES_PATH, language, 'changelogs', "#{build}.txt")
+    UI.user_error!("No release notes for build #{build} in #{language}: #{path}") unless File.file?(path)
+    [language, File.read(path, encoding: 'UTF-8').strip]
+  end
+end
+
+def app_store_connect_key
+  app_store_connect_api_key(
+    key_id: ENV.fetch('APP_STORE_CONNECT_API_KEY_ID'),
+    issuer_id: ENV.fetch('APP_STORE_CONNECT_ISSUER_ID'),
+    key_content: ENV.fetch('APP_STORE_CONNECT_API_KEY'),
+  )
+end
+
+platform :ios do
+  desc 'Upload an IPA to TestFlight'
+  lane :testflight_upload do |options|
+    upload_to_testflight(
+      api_key: app_store_connect_key,
+      ipa: options.fetch(:ipa),
+      # Processing takes a while; the build shows up in TestFlight on its own.
+      skip_waiting_for_build_processing: true,
+    )
+  end
+
+  desc 'Submit an uploaded build for App Store review. After approval it waits for the release lane.'
+  lane :submit_for_review do |options|
+    api_key = app_store_connect_key
+    # Only the languages the App Store listing has: for any other, deliver would create a localization without a
+    # name and description, and the submission would fail.
+    listed = Spaceship::ConnectAPI::App.find(APP_ID).get_latest_app_store_version
+                                       .get_app_store_version_localizations.map(&:locale)
+    notes = store_release_notes(options.fetch(:build))
+            .transform_keys { |language| APP_STORE_LOCALES.fetch(language, language) }
+            .slice(*listed)
+    UI.user_error!("No release notes for the App Store's languages (#{listed.join(', ')})") if notes.empty?
+    deliver(
+      api_key: api_key,
+      app_identifier: APP_ID,
+      app_version: options.fetch(:version),
+      build_number: options.fetch(:build),
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      # Only "What's New"; the rest of the listing is kept in App Store Connect. An empty metadata folder, because
+      # deliver would otherwise read fastlane/metadata and reject the android folder in it.
+      metadata_path: Dir.mktmpdir,
+      release_notes: notes,
+      submit_for_review: true,
+      automatic_release: false,
+      phased_release: options[:phased_release] == 'true',
+      submission_information: { add_id_info_uses_idfa: false },
+      # Precheck can't look at in-app purchases with an API key, and there are none.
+      run_precheck_before_submit: false,
+      force: true,
+    )
+  end
+
+  desc 'Release the approved version that is waiting for the developer (Pending Developer Release)'
+  lane :release do |options|
+    app_store_connect_key
+    app = Spaceship::ConnectAPI::App.find(APP_ID)
+    version = app.get_pending_release_app_store_version
+    UI.user_error!('No version is waiting to be released (Pending Developer Release).') if version.nil?
+    if version.version_string != options.fetch(:version)
+      UI.user_error!("#{version.version_string} is waiting to be released, not #{options[:version]}.")
+    end
+    version.create_app_store_version_release_request
+    UI.success("Released #{version.version_string} on the App Store.")
+  end
+end
+
+platform :android do
+  def play_options
+    {
+      json_key_data: ENV.fetch('PLAY_SERVICE_ACCOUNT_JSON'),
+      package_name: APP_ID,
+      # Only the release notes; the rest of the listing is kept in the Play Console.
+      metadata_path: NOTES_PATH,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    }
+  end
+
+  # A fraction like '0.2' rolls out to 20% of users; '1' to everyone.
+  def rollout_options(rollout)
+    rollout.to_f >= 1 ? { release_status: 'completed' } : { release_status: 'inProgress', rollout: rollout }
+  end
+
+  desc 'Upload an app bundle to the internal testing track'
+  lane :internal_upload do |options|
+    store_release_notes(options.fetch(:build))
+    supply(
+      **play_options,
+      aab: options.fetch(:aab),
+      track: 'internal',
+      # Play only accepts drafts until the app has been published once.
+      release_status: options.fetch(:status),
+    )
+  end
+
+  desc "Promote the internal testing release to production. Sending it is what submits it for Google's review."
+  lane :submit_to_production do |options|
+    store_release_notes(options.fetch(:build))
+    supply(
+      **play_options,
+      **rollout_options(options.fetch(:rollout)),
+      version_code: options.fetch(:build).to_i,
+      track: 'internal',
+      track_promote_to: 'production',
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+    )
+  end
+
+  desc 'Change how many users get the production release'
+  lane :rollout do |options|
+    supply(
+      **play_options,
+      **rollout_options(options.fetch(:rollout)),
+      version_code: options.fetch(:build).to_i,
+      track: 'production',
+      # The notes went up with the submission; edits made in the Play Console since then stay.
+      skip_upload_changelogs: true,
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+    )
+  end
+end

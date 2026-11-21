@@ -36,6 +36,13 @@
 !/pubspec.lock
 !/l10n.yaml
 
+# Store automation (fastlane)
+!/Gemfile
+!/Gemfile.lock
+!/fastlane/Fastfile
+!/fastlane/metadata/android/*/changelogs/*.txt
+!/tool/*.dart
+
 # Website (GitHub Pages: support page, privacy policy, terms)
 !/docs/**
 

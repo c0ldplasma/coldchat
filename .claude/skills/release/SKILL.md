@@ -9,11 +9,27 @@ Read "Versioning" in CLAUDE.md first: semver version name, one global build numb
 above every earlier upload **and** every test build installed on devices. Uploads are irreversible: a build number is
 spent once App Store Connect accepts it. Confirm the version and build number with the user before starting.
 
-## 1. Release commit, tag and GitHub release
+## 1. Release notes
+
+Write the store release notes ("What's New") for the new build, in every language of the Play listing:
+
+```
+fastlane/metadata/android/en-US/changelogs/157.txt
+fastlane/metadata/android/de-DE/changelogs/157.txt
+```
+
+They're for users, not developers: a few short bullet points (`• `) about what changed for them, from the PRs merged
+since the last tag (`git log --oneline <last tag>..origin/main`), leaving out CI, tests and refactorings. Translate
+them yourself, addressing users informally ("du") in German like the app does. At most 500 characters per file
+(Play's limit). Show both texts to the user before committing. The store workflows upload them to Play (all languages)
+and App Store Connect (the languages its listing has, today only English). `dart run tool/check_release_notes.dart`
+checks them, and CI fails if `pubspec.yaml`'s build has no notes.
+
+## 2. Release commit, tag and GitHub release
 
 ```bash
 # pubspec.yaml:  version: 2.6.0+157
-git commit -m "Release 2.6.0 (157)" pubspec.yaml
+git commit -m "Release 2.6.0 (157)" pubspec.yaml fastlane/metadata/android/*/changelogs/157.txt
 git tag v2.6.0+157 && git push origin main v2.6.0+157
 gh release create v2.6.0+157 --repo c0ldplasma/coldchat --generate-notes --title "2.6.0 (157)"
 ```
@@ -22,7 +38,7 @@ gh release create v2.6.0+157 --repo c0ldplasma/coldchat --generate-notes --title
 the merged commit then. `--generate-notes` builds the changelog from the PR titles since the previous tag. Build
 everything below from the tagged commit, after `dart run build_runner build --delete-conflicting-outputs`.
 
-## 2. iOS: TestFlight
+## 3. iOS: TestFlight
 
 One-time prerequisite: an app-specific password (appleid.apple.com → Sign-In and Security → App-Specific Passwords;
 the regular Apple ID password doesn't work), stored in the keychain. `altool --help` omits the required `--item`:
@@ -59,7 +75,7 @@ After `UPLOAD SUCCEEDED`, Apple takes a few minutes before the build shows up in
 
 For App Store review, the review note must say that long-pressing "Log in with Twitch" opens the access-token input.
 
-## 3. Android: Play bundle
+## 4. Android: Play bundle
 
 Needs `android/key.properties` with the upload key (CLAUDE.md, "Android signing"); without it the build is signed
 with the debug key and Play rejects it.
@@ -69,7 +85,7 @@ flutter build appbundle --release   # -> build/app/outputs/bundle/release/app-re
 flutter build apk --release         # -> build/app/outputs/flutter-apk/app-release.apk, for sideloading
 ```
 
-## 4. Report
+## 5. Report
 
 List what was created and uploaded (tag, GitHub release URL, TestFlight build, AAB path) and what the user still has
 to do by hand (Play Console upload, review submission).
