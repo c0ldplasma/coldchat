@@ -16,7 +16,9 @@ import 'data/message_trigger.dart';
 import 'data/notifications_cubit.dart';
 import 'data/repositories/account_repository.dart';
 import 'data/repositories/channel_repository.dart';
+import 'data/repositories/custom_command_repository.dart';
 import 'data/repositories/settings_repository.dart';
+import 'data/repositories/trigger_repository.dart';
 import 'data/repositories/whisper_repository.dart';
 import 'data/settings/application_appearance.dart';
 import 'data/settings/blocked_message.dart';
@@ -68,9 +70,6 @@ Future<void> main() async {
   final boxes = await Future.wait([
     Hive.openBox<dynamic>('EmoteBadgeCache'),
     Hive.openBox<dynamic>('SeenMentions'),
-    Hive.openBox<dynamic>('MessageTriggers'),
-    Hive.openBox<dynamic>('UserTriggers'),
-    Hive.openBox<dynamic>('CustomCommands'),
     Hive.openBox<dynamic>('ChatSettings'),
   ]);
   final emoteBadgeCacheBox = boxes[0];
@@ -79,6 +78,8 @@ Future<void> main() async {
   final emoteButtonIcon = await EmoteButtonIcon.open(settings);
   final channels = await ChannelRepository.open();
   final whispers = await WhisperRepository.open();
+  final triggers = await TriggerRepository.open();
+  final customCommands = await CustomCommandRepository.open();
 
   // await settingsBox.clear();
 
@@ -91,10 +92,13 @@ Future<void> main() async {
         Provider<SettingsRepository>.value(value: settings),
         Provider<EmoteButtonIcon>.value(value: emoteButtonIcon),
         Provider<ChannelRepository>.value(value: channels),
+        Provider<TriggerRepository>.value(value: triggers),
+        Provider<CustomCommandRepository>.value(value: customCommands),
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
             accounts: accounts,
+            triggers: triggers,
             channelRepository: channels,
             cacheBox: emoteBadgeCacheBox,
             whisperRepository: whispers,

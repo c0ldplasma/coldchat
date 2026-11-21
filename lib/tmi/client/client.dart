@@ -14,6 +14,7 @@ import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
 import '../../data/repositories/channel_repository.dart';
+import '../../data/repositories/trigger_repository.dart';
 import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
 import '../../data/twitch_account.dart';
@@ -122,9 +123,13 @@ class Client implements AccountConnector {
   /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
   final AccountRepository? accounts;
 
+  /// The message and user triggers that highlight or block messages. Null in tests, then there are none.
+  final TriggerRepository? triggers;
+
   Client({
     TwitchAccount? twitchAccount,
     this.accounts,
+    this.triggers,
     required ChannelRepository channelRepository,
     Box<dynamic>? cacheBox,
     WhisperRepository? whisperRepository,
