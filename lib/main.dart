@@ -17,6 +17,8 @@ import 'data/notifications_cubit.dart';
 import 'data/repositories/account_repository.dart';
 import 'data/repositories/channel_repository.dart';
 import 'data/repositories/custom_command_repository.dart';
+import 'data/repositories/emote_badge_cache_repository.dart';
+import 'data/repositories/seen_mentions_repository.dart';
 import 'data/repositories/settings_repository.dart';
 import 'data/repositories/trigger_repository.dart';
 import 'data/repositories/whisper_repository.dart';
@@ -65,14 +67,6 @@ Future<void> main() async {
   Hive.registerAdapter(UserTriggerAdapter());
   Hive.registerAdapter(ChatSettingsAdapter());
 
-  // Open all Hive boxes concurrently instead of serially to shave startup
-  // time off the path before the first frame.
-  final boxes = await Future.wait([
-    Hive.openBox<dynamic>('EmoteBadgeCache'),
-    Hive.openBox<dynamic>('SeenMentions'),
-    Hive.openBox<dynamic>('ChatSettings'),
-  ]);
-  final emoteBadgeCacheBox = boxes[0];
   final accounts = await AccountRepository.open();
   final settings = await SettingsRepository.open();
   final emoteButtonIcon = await EmoteButtonIcon.open(settings);
@@ -80,6 +74,8 @@ Future<void> main() async {
   final whispers = await WhisperRepository.open();
   final triggers = await TriggerRepository.open();
   final customCommands = await CustomCommandRepository.open();
+  final emoteBadgeCache = await EmoteBadgeCacheRepository.open();
+  final seenMentions = await SeenMentionsRepository.open();
 
   // await settingsBox.clear();
 
@@ -94,13 +90,14 @@ Future<void> main() async {
         Provider<ChannelRepository>.value(value: channels),
         Provider<TriggerRepository>.value(value: triggers),
         Provider<CustomCommandRepository>.value(value: customCommands),
+        Provider<SeenMentionsRepository>.value(value: seenMentions),
         Provider<Client>(
           create: (context) => Client(
             twitchAccount: activeTwitchAccount,
             accounts: accounts,
             triggers: triggers,
             channelRepository: channels,
-            cacheBox: emoteBadgeCacheBox,
+            cacheRepository: emoteBadgeCache,
             whisperRepository: whispers,
           ),
         ),

@@ -4,7 +4,6 @@ import 'dart:math' show min;
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
 import '../../api/betterttv/betterttv_socket.dart';
 import '../../api/recentmessages/recentmessages.dart';
@@ -14,6 +13,7 @@ import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
 import '../../data/repositories/channel_repository.dart';
+import '../../data/repositories/emote_badge_cache_repository.dart';
 import '../../data/repositories/trigger_repository.dart';
 import '../../data/repositories/whisper_repository.dart';
 import '../../data/twitch/token_data.dart';
@@ -131,7 +131,7 @@ class Client implements AccountConnector {
     this.accounts,
     this.triggers,
     required ChannelRepository channelRepository,
-    Box<dynamic>? cacheBox,
+    EmoteBadgeCacheRepository? cacheRepository,
     WhisperRepository? whisperRepository,
   }) {
     whispers = Whispers(this, storage: whisperRepository);
@@ -141,8 +141,8 @@ class Client implements AccountConnector {
     // created inside ClientChannels). Otherwise the cache is still null when
     // they hydrate and third-party emotes won't resolve until the network
     // refresh lands.
-    if (cacheBox != null) {
-      cache = EmoteBadgeCache(box: cacheBox, providers: providers);
+    if (cacheRepository != null) {
+      cache = EmoteBadgeCache(repository: cacheRepository, providers: providers);
       _hydrateGlobalsFromCache();
       cache!.loadBttvProBadges().forEach((userId, url) => bttvProBadges[userId] = _bttvProBadge(url));
     }
