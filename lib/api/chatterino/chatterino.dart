@@ -1,17 +1,15 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
+import '../api_client.dart';
 import '../json_isolate.dart';
-
 import 'chatterino_badge.dart';
 
-class Chatterino {
-  static Future<List<ChatterinoBadge>> badges() async {
-    final response = await http.get(Uri.parse('https://api.chatterino.com/badges'));
-    final responseJson = json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
-    return [
-      for (final badge in responseJson) ChatterinoBadge.fromJson(badge as JsonMap),
-    ];
-  }
+/// Chatterino's badges. No login.
+class ChatterinoApi {
+  final ApiClient _api;
+
+  ChatterinoApi(this._api);
+
+  Future<List<ChatterinoBadge>> badges() => _api.getJson(
+    Uri.parse('https://api.chatterino.com/badges'),
+    (json) => [for (final badge in json as List<dynamic>) ChatterinoBadge.fromJson(badge as JsonMap)],
+  );
 }

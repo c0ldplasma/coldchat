@@ -1,15 +1,16 @@
-import 'package:coldchat/api/twitch/twitch.dart';
+import 'package:coldchat/api/twitch/helix_api.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/modal/message.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
+
+import '../api/fake_api.dart';
 
 final l10n = lookupAppLocalizations(const Locale('en'));
 
-TokenData _tokenData({List<String> scopes = const [Twitch.deleteChatMessageScope]}) => TokenData(
+TokenData _tokenData({List<String> scopes = const [HelixApi.deleteChatMessageScope]}) => TokenData(
   clientId: 'client-id-1',
   login: 'ronni',
   scopes: scopes,
@@ -30,11 +31,13 @@ Future<DeleteMessageFailure?> _delete(
   l10n,
   broadcasterId: '12826',
   messageId: 'b34ccfc7-4977-403a-8a94-33c6bac34fb8',
-  client: MockClient((request) async {
-    requests?.add(request);
-    if (error != null) throw error;
-    return response ?? http.Response('', 204);
-  }),
+  helix: HelixApi(
+    fakeApi(requests: requests, (request) async {
+      if (error != null) throw error;
+      return response ?? http.Response('', 204);
+    }),
+    () => null,
+  ),
 );
 
 void main() {

@@ -165,7 +165,7 @@ class Whispers extends Cubit<List<WhisperChannel>> {
     login = login.replaceFirst('@', '').toLowerCase();
     final existing = state.firstWhereOrNull((c) => c.partnerLogin == login);
     if (existing != null) return existing;
-    final users = await Twitch.usersByLogin(tokenData, [login]);
+    final users = await client.helix.forToken(tokenData).usersByLogin([login]);
     final user = users.firstOrNull;
     if (user == null) throw WhisperUserNotFoundException();
     return _conversation(partnerId: user.id, login: user.login, displayName: user.displayName);
@@ -189,7 +189,7 @@ class Whispers extends Cubit<List<WhisperChannel>> {
       throw WhisperUnavailableException(missingScope: false);
     }
     if (!hasScope) throw WhisperUnavailableException(missingScope: true);
-    await Twitch.sendWhisper(tokenData, toUserId: conversation.partnerId, message: text);
+    await client.helix.forToken(tokenData).sendWhisper(toUserId: conversation.partnerId, message: text);
     final line = _line(
       id: 'sent-${DateTime.now().microsecondsSinceEpoch}',
       userId: tokenData.userId!,

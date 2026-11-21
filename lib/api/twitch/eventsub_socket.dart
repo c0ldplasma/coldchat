@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:web_socket_channel/io.dart';
 
 import '../../data/twitch/token_data.dart';
+import 'helix_api.dart';
 import 'twitch.dart';
 
 /// A whisper the logged-in account received (EventSub `user.whisper.message`).
@@ -33,7 +34,10 @@ class EventSubSocket {
   /// Called when Twitch refuses the subscription, e.g. because the token lacks `user:manage:whispers`.
   final void Function(TwitchRequestException error)? onSubscribeFailed;
 
-  EventSubSocket({required this.onWhisper, this.onSubscribeFailed});
+  /// Where the subscription is created, as the account of the token passed to [connect].
+  final HelixApi helix;
+
+  EventSubSocket({required this.helix, required this.onWhisper, this.onSubscribeFailed});
 
   static const String _url = 'wss://eventsub.wss.twitch.tv/ws?keepalive_timeout_seconds=30';
 
@@ -181,13 +185,14 @@ class EventSubSocket {
     final tokenData = _tokenData;
     if (tokenData == null) return;
     try {
-      await Twitch.createEventSubSubscription(
-        tokenData,
-        type: 'user.whisper.message',
-        version: '1',
-        condition: {'user_id': tokenData.userId!},
-        sessionId: sessionId,
-      );
+      await helix
+          .forToken(tokenData)
+          .createEventSubSubscription(
+            type: 'user.whisper.message',
+            version: '1',
+            condition: {'user_id': tokenData.userId!},
+            sessionId: sessionId,
+          );
     } on TwitchRequestException catch (e) {
       log('Couldn\'t subscribe to whispers: $e');
       // Without a subscription Twitch closes the socket after 10 seconds, and retrying with the same token

@@ -7,6 +7,10 @@ import 'emote_provider.dart';
 import 'provider.dart';
 
 class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
+  final BttvApi api;
+
+  BetterTTVProvider(this.api);
+
   static const zeroWidthEmotes = <String>[
     'SoSnowy',
     'IceCold',
@@ -26,7 +30,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> globalEmotes() async {
-    final globalEmotes = await BetterTTV.globalEmotes();
+    final globalEmotes = await api.globalEmotes();
     return [
       for (final emote in globalEmotes)
         Emote(
@@ -45,7 +49,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> channelEmotes(String uid) async {
-    final user = await BetterTTV.user(uid);
+    final user = await api.user(uid);
     if (user == null) return [];
     return [
       for (final emote in [...user.channelEmotes, ...user.sharedEmotes])
@@ -73,7 +77,7 @@ class BetterTTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<BadgeUsers>> globalUserBadges() async {
-    final badges = await BetterTTV.badges();
+    final badges = await api.badges();
     return [
       for (final badge in badges)
         BadgeUsers(

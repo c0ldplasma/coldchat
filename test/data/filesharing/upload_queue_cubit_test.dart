@@ -1,15 +1,21 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:coldchat/api/api_client.dart';
 import 'package:coldchat/api/filesharing/upload_host.dart';
 import 'package:coldchat/data/filesharing/upload_queue_cubit.dart';
 import 'package:coldchat/data/filesharing/upload_task.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
+import '../../api/fake_api.dart';
+
 /// A host whose answers the test hands out one by one.
 class FakeHost extends UploadHost {
   final List<Completer<String>> calls = [];
+
+  /// The client each call was given.
+  final List<http.Client> clients = [];
 
   @override
   String get name => 'Fake';
@@ -33,6 +39,7 @@ class FakeHost extends UploadHost {
   }) {
     final call = Completer<String>();
     calls.add(call);
+    clients.add(client);
     return call.future;
   }
 }
@@ -48,6 +55,7 @@ void main() {
     host = FakeHost();
     reads = [];
     queue = UploadQueueCubit(
+      api: offlineApi(),
       hosts: [host],
       readBytes: (path) {
         final read = Completer<Uint8List>();
@@ -76,6 +84,36 @@ void main() {
     expect(task.status, UploadStatus.failed);
     return task;
   }
+
+  test('every attempt gets a client of its own from the ApiClient, and cancelling closes it', () async {
+    final opened = <_ClosableClient>[];
+    final shared = _ClosableClient();
+    final uploads = UploadQueueCubit(
+      api: ApiClient(
+        client: shared,
+        newClient: () {
+          final client = _ClosableClient();
+          opened.add(client);
+          return client;
+        },
+      ),
+      hosts: [host],
+      readBytes: (path) async => Uint8List(3),
+    );
+    addTearDown(uploads.close);
+
+    unawaited(uploads.uploadFile(path: '/a.png', filename: 'a.png', channelName: 'chan'));
+    await settle();
+    final task = uploads.state.single;
+
+    expect(host.clients, [same(opened.single)]);
+    expect(opened.single.closed, isFalse);
+
+    uploads.cancel(task);
+
+    expect(opened.single.closed, isTrue);
+    expect(shared.closed, isFalse);
+  });
 
   test('cancelling while the file is read stops the upload', () async {
     final upload = queue.uploadFile(path: '/a.mp4', filename: 'a.mp4', channelName: 'chan');
@@ -136,4 +174,15 @@ void main() {
     expect(host.calls, isEmpty);
     expect(completed, isEmpty);
   });
+}
+
+/// A client that only records whether it was closed.
+class _ClosableClient extends http.BaseClient {
+  bool closed = false;
+
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) => throw UnimplementedError();
+
+  @override
+  void close() => closed = true;
 }

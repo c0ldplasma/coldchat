@@ -7,6 +7,10 @@ import 'badge_provider.dart';
 import 'provider.dart';
 
 class DankChatProvider extends Provider with BadgeProvider {
+  final DankChatApi api;
+
+  DankChatProvider(this.api);
+
   @override
   String get name => 'DankChat';
 
@@ -24,7 +28,7 @@ class DankChatProvider extends Provider with BadgeProvider {
 
   @override
   Future<List<BadgeUsers>> globalUserBadges() async {
-    final badges = await DankChat.badges();
+    final badges = await api.badges();
     return [
       for (final badge in badges)
         BadgeUsers(

@@ -8,6 +8,10 @@ import 'emote_provider.dart';
 import 'provider.dart';
 
 class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
+  final SevenTvApi api;
+
+  SevenTVProvider(this.api);
+
   @override
   String get name => '7TV';
 
@@ -16,7 +20,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> globalEmotes() async {
-    final globalEmotes = await SevenTV.globalEmotes();
+    final globalEmotes = await api.globalEmotes();
     return [
       for (final emote in globalEmotes.where((emote) => emote.data.host.files.isNotEmpty))
         Emote(
@@ -34,7 +38,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<Emote>> channelEmotes(String uid) async {
-    final channelEmotes = await SevenTV.channelEmotes(uid);
+    final channelEmotes = await api.channelEmotes(uid);
     return [
       for (final emote in channelEmotes.where((emote) => emote.data.host.files.isNotEmpty))
         Emote(
@@ -64,7 +68,7 @@ class SevenTVProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<BadgeUsers>> globalUserBadges() async {
-    final cosmetics = await SevenTV.cosmetics();
+    final cosmetics = await api.cosmetics();
     return [
       for (final badge in cosmetics.badges)
         BadgeUsers(

@@ -7,6 +7,7 @@ import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'api/api_client.dart';
 import 'api/recentmessages/recentmessages.dart';
 import 'app.dart';
 import 'data/custom_command.dart';
@@ -60,28 +61,32 @@ Future<void> main() async {
   Hive.registerAdapter(UserTriggerAdapter());
   Hive.registerAdapter(ChatSettingsAdapter());
 
-  final repositories = await Repositories.open();
+  // The one HTTP client: every request to Twitch and the other services goes through it.
+  final api = ApiClient();
+  final repositories = await Repositories.open(api);
   final activeTwitchAccount = repositories.accounts.active;
 
   runApp(
     MultiProvider(
       providers: [
         ...repositories.providers,
+        Provider<ApiClient>.value(value: api),
         Provider<Client>(
           create: (context) => Client(
+            api: api,
             twitchAccount: activeTwitchAccount,
             accounts: repositories.accounts,
             triggers: repositories.triggers,
             channelRepository: repositories.channels,
             cacheRepository: repositories.emoteBadgeCache,
             whisperRepository: repositories.whispers,
-            recentMessages: RecentMessages(enabled: () => repositories.settings.chatHistory),
+            recentMessages: RecentMessages(enabled: () => repositories.settings.chatHistory, api: api),
           ),
         ),
         Provider<NotificationsCubit>(create: (context) => NotificationsCubit()),
         // Above the channel views on purpose: an upload must survive switching
         // tabs and must never be awaited by the composer.
-        Provider<UploadQueueCubit>(create: (context) => UploadQueueCubit()),
+        Provider<UploadQueueCubit>(create: (context) => UploadQueueCubit(api: api)),
       ],
       child: const App(),
     ),

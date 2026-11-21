@@ -1,23 +1,22 @@
-import '../api/twitch/twitch.dart';
+import '../api/twitch/helix_api.dart';
 import '../data/badge_users.dart';
 import '../data/custom_badge.dart';
 import '../data/emote.dart';
-import '../data/twitch/token_data.dart';
 import 'badge_provider.dart';
 import 'emote_provider.dart';
 import 'provider.dart';
 
 class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
-  /// The token for Helix requests. Badges can't be loaded without one, e.g.
-  /// while browsing anonymously.
-  final TokenData? Function() tokenData;
+  /// Helix as the account whose token badges are loaded with. Badges can't be loaded without one, e.g. while
+  /// browsing anonymously or without [helix].
+  final HelixApi? helix;
 
-  TwitchProvider({TokenData? Function()? tokenData}) : tokenData = tokenData ?? (() => null);
+  TwitchProvider({this.helix});
 
-  TokenData get _requireTokenData {
-    final data = tokenData();
-    if (data?.accessToken == null) throw Exception('No Twitch login to load badges with');
-    return data!;
+  HelixApi get _requireHelix {
+    final helix = this.helix;
+    if (helix == null || !helix.hasToken) throw Exception('No Twitch login to load badges with');
+    return helix;
   }
 
   @override
@@ -28,7 +27,7 @@ class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<CustomBadge>> globalBadges() async {
-    final twitchBadges = await Twitch.globalBadges(_requireTokenData);
+    final twitchBadges = await _requireHelix.globalBadges();
     return [
       for (final twitchBadgeData in twitchBadges.entries)
         for (final twitchBadgeVersion in twitchBadgeData.value.entries)
@@ -48,7 +47,7 @@ class TwitchProvider extends Provider with EmoteProvider, BadgeProvider {
 
   @override
   Future<List<CustomBadge>> channelBadges(String uid) async {
-    final twitchBadges = await Twitch.channelBadges(_requireTokenData, uid);
+    final twitchBadges = await _requireHelix.channelBadges(uid);
     return [
       for (final twitchBadgeData in twitchBadges.entries)
         for (final twitchBadgeVersion in twitchBadgeData.value.entries)

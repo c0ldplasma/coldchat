@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 
+import '../api/twitch/helix_api.dart';
 import '../api/twitch/twitch.dart';
 import '../components/tile.dart';
 import '../data/twitch/token_data.dart';
@@ -16,7 +16,7 @@ import 'login_flow.dart';
 /// Whether [tokenData] may delete messages. Logins from before ColdChat requested the scope can't until they sign
 /// in again.
 bool canDeleteMessagesWith(TokenData? tokenData) =>
-    tokenData != null && tokenData.scopes.contains(Twitch.deleteChatMessageScope);
+    tokenData != null && tokenData.scopes.contains(HelixApi.deleteChatMessageScope);
 
 /// Whether signing in again fixes a failed delete: Twitch answers 401 when the token lacks the scope.
 bool deleteFailureNeedsSignIn(Object error) => error is TwitchRequestException && error.statusCode == 401;
@@ -90,6 +90,7 @@ class MessageModal extends StatelessWidget {
               l10n,
               broadcasterId: message.channel!.id,
               messageId: message.id,
+              helix: message.channel!.client.helix,
             );
             if (failure == null) return;
             if (failure.needsSignIn) {
@@ -123,25 +124,21 @@ class MessageModal extends StatelessWidget {
 typedef DeleteMessageFailure = ({String text, bool needsSignIn});
 
 /// Deletes the message [messageId] in the channel [broadcasterId] as the account of [tokenData]. Returns null once
-/// it's deleted, otherwise what to tell the user. [client] is for tests.
+/// it's deleted, otherwise what to tell the user. [helix] is sent the request as [tokenData].
 Future<DeleteMessageFailure?> deleteMessageAs(
   TokenData? tokenData,
   AppLocalizations l10n, {
   required String? broadcasterId,
   required String messageId,
-  http.Client? client,
+  required HelixApi helix,
 }) async {
   if (tokenData == null || !canDeleteMessagesWith(tokenData)) {
     return (text: l10n.deleteMessageNeedsScope, needsSignIn: true);
   }
   try {
-    await Twitch.deleteChatMessage(
-      tokenData,
-      broadcasterId: broadcasterId!,
-      moderatorId: tokenData.userId!,
-      messageId: messageId,
-      client: client,
-    );
+    await helix
+        .forToken(tokenData)
+        .deleteChatMessage(broadcasterId: broadcasterId!, moderatorId: tokenData.userId!, messageId: messageId);
     return null;
   } on TwitchRequestException catch (e) {
     return deleteFailureNeedsSignIn(e)

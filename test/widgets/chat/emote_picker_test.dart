@@ -1,3 +1,4 @@
+import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/providers/emojis.dart';
@@ -7,6 +8,8 @@ import 'package:coldchat/tmi/emotes.dart';
 import 'package:coldchat/widgets/chat/emote_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../api/fake_api.dart';
 
 /// Just the emote lists the picker reads from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
@@ -19,7 +22,7 @@ class _FakeClient implements Client {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-final _emoji = EmojiProvider();
+final _emoji = EmojiProvider(EmojiDataApi(offlineApi()));
 
 /// An emoji, drawn as text so the test loads no images.
 Emote _emojiEmote(String name, String code, String category) =>

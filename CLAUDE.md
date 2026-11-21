@@ -149,6 +149,10 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
 
 - `origin` is `c0ldplasma/coldchat` (push here, open PRs against its `main`). It is public — keep Apple IDs,
   device UDIDs, passwords and API keys out of committed files.
+- Every HTTP request goes through the one `ApiClient` (`lib/api/api_client.dart`, created in `main.dart`): shared
+  connections, a default timeout, `ApiException` for non-2xx. Each service is a thin class on top of it (`HelixApi`,
+  `TwitchAuthApi`, `SevenTvApi`, …); `Client` holds `helix` and `twitchAuth`, `HelixApi.forToken` sends as a specific
+  account. Don't call `http.get` & co. directly. Tests inject a `MockClient` via `test/api/fake_api.dart`.
 - ColdChat talks only to Twitch and the emote/badge/upload services it names in `lib/api/`. User cards and the
   channel header come from Helix (`Twitch.profile`, needs a login); the chatter list and `@` autocomplete use
   `Channel.recentChatters`, the people who wrote in the loaded chat, because Twitch only gives the full viewer

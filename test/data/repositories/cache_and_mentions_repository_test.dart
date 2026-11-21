@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coldchat/api/seventv/seventv.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/data/repositories/emote_badge_cache_repository.dart';
 import 'package:coldchat/data/repositories/seen_mentions_repository.dart';
@@ -7,6 +8,8 @@ import 'package:coldchat/providers/seventv.dart';
 import 'package:coldchat/tmi/cache.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
+
+import '../../api/fake_api.dart';
 
 void main() {
   late Directory tempDir;
@@ -108,7 +111,7 @@ void main() {
     });
 
     test('EmoteBadgeCache turns cached emotes back into emotes of known providers', () async {
-      final provider = SevenTVProvider();
+      final provider = SevenTVProvider(SevenTvApi(offlineApi()));
       final cache = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), providers: [provider]);
       final emote = Emote(id: 'e1', name: 'Pog', mipmap: const ['https://example.com/1x'], provider: provider);
 

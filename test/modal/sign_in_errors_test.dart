@@ -1,3 +1,4 @@
+import 'package:coldchat/api/twitch/helix_api.dart';
 import 'package:coldchat/api/twitch/twitch.dart';
 import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/modal/message.dart';
@@ -20,7 +21,7 @@ void main() {
     test('needs a login with the delete scope', () {
       expect(canDeleteMessagesWith(null), isFalse);
       expect(canDeleteMessagesWith(_token(['chat:read', 'chat:edit'])), isFalse);
-      expect(canDeleteMessagesWith(_token(['chat:read', Twitch.deleteChatMessageScope])), isTrue);
+      expect(canDeleteMessagesWith(_token(['chat:read', HelixApi.deleteChatMessageScope])), isTrue);
     });
 
     test('offers to sign in again only on a 401', () {

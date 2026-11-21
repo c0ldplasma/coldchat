@@ -29,6 +29,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:provider/provider.dart';
 
+import '../api/fake_api.dart';
+
 /// Just what a [Channel] and its [ChannelView] read from the client. The real [Client] opens connections and timers.
 class _FakeClient implements Client {
   @override
@@ -95,7 +97,7 @@ void main() {
     addTearDown(channel.close);
     final notifications = NotificationsCubit();
     addTearDown(notifications.close);
-    final uploads = UploadQueueCubit();
+    final uploads = UploadQueueCubit(api: offlineApi());
     addTearDown(uploads.close);
     for (var i = 0; i < 20; i++) {
       channel.channelMessages.add(_message(i));
@@ -114,7 +116,7 @@ void main() {
           Provider<CustomCommandRepository>.value(
             value: CustomCommandRepository(Hive.box<dynamic>(CustomCommandRepository.boxName)),
           ),
-          Provider<EmoteButtonIcon>.value(value: EmoteButtonIcon(settings)),
+          Provider<EmoteButtonIcon>.value(value: EmoteButtonIcon(settings, api: offlineApi())),
           BlocProvider<NotificationsCubit>.value(value: notifications),
           BlocProvider<UploadQueueCubit>.value(value: uploads),
         ],

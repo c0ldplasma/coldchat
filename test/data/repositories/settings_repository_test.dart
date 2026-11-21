@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:ui' show Color;
 
+import 'package:coldchat/api/emojis/emoji_data.dart';
+import 'package:coldchat/api/seventv/seventv.dart';
 import 'package:coldchat/data/emote.dart';
 import 'package:coldchat/data/emote_button_icon.dart';
 import 'package:coldchat/data/repositories/settings_repository.dart';
@@ -9,9 +11,13 @@ import 'package:coldchat/data/settings/chat_settings.dart';
 import 'package:coldchat/data/settings/message_appearance.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/providers/emojis.dart';
+import 'package:coldchat/providers/seventv.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce/hive_ce.dart';
+import 'package:http/http.dart' as http;
+
+import '../../api/fake_api.dart';
 
 void main() {
   late Directory tempDir;
@@ -210,7 +216,7 @@ void main() {
 
   group('EmoteButtonIcon', () {
     test('is Kappa by default', () async {
-      final icon = EmoteButtonIcon(await SettingsRepository.open(), directory: tempDir);
+      final icon = EmoteButtonIcon(await SettingsRepository.open(), api: offlineApi(), directory: tempDir);
 
       expect(icon.name, isNull);
       expect(icon.emoji, isNull);
@@ -219,8 +225,14 @@ void main() {
     });
 
     test('an emoji is stored as text, the way earlier versions stored it', () async {
-      final icon = EmoteButtonIcon(await SettingsRepository.open(), directory: tempDir);
-      final emoji = Emote(id: 'fire', name: 'fire', code: '🔥', mipmap: const [], provider: EmojiProvider());
+      final icon = EmoteButtonIcon(await SettingsRepository.open(), api: offlineApi(), directory: tempDir);
+      final emoji = Emote(
+        id: 'fire',
+        name: 'fire',
+        code: '🔥',
+        mipmap: const [],
+        provider: EmojiProvider(EmojiDataApi(offlineApi())),
+      );
 
       await icon.set(emoji);
 
@@ -233,12 +245,33 @@ void main() {
       expect(icon.name, isNull);
     });
 
+    test('an image emote that fails to download keeps the current button', () async {
+      final requests = <http.Request>[];
+      final icon = EmoteButtonIcon(
+        await SettingsRepository.open(),
+        api: fakeApi(requests: requests, (request) async => http.Response('gone', 404)),
+        directory: tempDir,
+      );
+      final pog = Emote(
+        id: 'p',
+        name: 'Pog',
+        mipmap: const ['https://cdn.7tv.app/emote/p/1x.webp', 'https://cdn.7tv.app/emote/p/4x.webp'],
+        provider: SevenTVProvider(SevenTvApi(offlineApi())),
+      );
+
+      await expectLater(icon.set(pog), throwsA(isA<HttpException>()));
+
+      expect(requests.single.url, Uri.parse('https://cdn.7tv.app/emote/p/4x.webp'));
+      expect(icon.name, isNull);
+      expect(Hive.box<dynamic>('Settings').containsKey('emoteButtonIcon'), isFalse);
+    });
+
     test('a stored image file is found in the directory', () async {
       File('${tempDir.path}/123.png').writeAsBytesSync([0]);
       await stored({
         'emoteButtonIcon': {'name': 'Pog', 'file': '123.png'},
       });
-      final icon = EmoteButtonIcon(await SettingsRepository.open(), directory: tempDir);
+      final icon = EmoteButtonIcon(await SettingsRepository.open(), api: offlineApi(), directory: tempDir);
 
       expect(icon.name, 'Pog');
       expect(icon.file?.path, '${tempDir.path}/123.png');
@@ -246,7 +279,7 @@ void main() {
     });
 
     test('grayscale is stored', () async {
-      final icon = EmoteButtonIcon(await SettingsRepository.open(), directory: tempDir);
+      final icon = EmoteButtonIcon(await SettingsRepository.open(), api: offlineApi(), directory: tempDir);
 
       await icon.setGrayscale(true);
 

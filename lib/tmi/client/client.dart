@@ -5,10 +5,18 @@ import 'dart:math' show Random, min;
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 
+import '../../api/api_client.dart';
+import '../../api/betterttv/betterttv.dart';
 import '../../api/betterttv/betterttv_socket.dart';
+import '../../api/dankchat/dankchat.dart';
+import '../../api/emojis/emoji_data.dart';
+import '../../api/frankerfacez/frankerfacez.dart';
 import '../../api/recentmessages/recentmessages.dart';
+import '../../api/seventv/seventv.dart';
 import '../../api/twitch/eventsub_socket.dart';
+import '../../api/twitch/helix_api.dart';
 import '../../api/twitch/twitch.dart';
+import '../../api/twitch/twitch_auth_api.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
@@ -71,6 +79,14 @@ class Client implements AccountConnector {
   /// The token for Helix requests, or null while browsing anonymously.
   TokenData? get apiTokenData => _apiAccount?.tokenData.accessToken == null ? null : _apiAccount!.tokenData;
 
+  /// The app's HTTP client, shared by every API below.
+  final ApiClient api;
+
+  /// Helix as the account in [apiTokenData]. [HelixApi.forToken] sends as another one.
+  late final HelixApi helix = HelixApi(api, () => apiTokenData);
+
+  late final TwitchAuthApi twitchAuth = TwitchAuthApi(api);
+
   /// The connected, logged-in account, which is the one whose Twitch block list hides messages.
   ConnectionConnected? get _blockingState {
     final state = transmitter.state;
@@ -87,10 +103,10 @@ class Client implements AccountConnector {
     final state = _blockingState;
     if (state == null) throw Exception('Not logged in');
     if (blocked) {
-      await Twitch.blockUser(state.twitchAccount.tokenData, userId);
+      await helix.forToken(state.twitchAccount.tokenData).blockUser(userId);
       if (!state.blockedUserIds.contains(userId)) state.blockedUserIds.add(userId);
     } else {
-      await Twitch.unblockUser(state.twitchAccount.tokenData, userId);
+      await helix.forToken(state.twitchAccount.tokenData).unblockUser(userId);
       state.blockedUserIds.remove(userId);
     }
     for (final channel in channels.state) {
@@ -109,17 +125,17 @@ class Client implements AccountConnector {
   late final List<Provider> providers =
       _customProviders ??
       [
-        SevenTVProvider(),
-        BetterTTVProvider(),
-        FrankerFaceZProvider(),
-        DankChatProvider(),
-        TwitchProvider(tokenData: () => _apiAccount?.tokenData),
-        EmojiProvider(),
+        SevenTVProvider(SevenTvApi(api)),
+        BetterTTVProvider(BttvApi(api)),
+        FrankerFaceZProvider(FfzApi(api)),
+        DankChatProvider(DankChatApi(api)),
+        TwitchProvider(helix: helix),
+        EmojiProvider(EmojiDataApi(api)),
       ];
 
   late ClientChannels channels;
   late final Whispers whispers;
-  late final EventSubSocket eventSub = EventSubSocket(onWhisper: (whisper) => whispers.receive(whisper));
+  late final EventSubSocket eventSub = EventSubSocket(helix: helix, onWhisper: (whisper) => whispers.receive(whisper));
 
   /// The logged-in user's chat color, from GLOBALUSERSTATE, for the whispers they send.
   String? ownColor;
@@ -155,6 +171,7 @@ class Client implements AccountConnector {
   /// [receiver], [transmitter] and [providers] are replaceable for tests; by default they're the real connections and
   /// the emote and badge providers.
   Client({
+    required this.api,
     TwitchAccount? twitchAccount,
     this.accounts,
     this.triggers,
@@ -165,7 +182,7 @@ class Client implements AccountConnector {
     Connection? receiver,
     Connection? transmitter,
     List<Provider>? providers,
-  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true),
+  }) : recentMessages = recentMessages ?? RecentMessages(enabled: () => true, api: api),
        receiver = receiver ?? Connection(name: 'receiver'),
        // The transmitter doesn't need to know who else joins, which in a big channel is a line every few seconds.
        transmitter = transmitter ?? Connection(name: 'transmitter', membership: false),
@@ -668,7 +685,7 @@ class Client implements AccountConnector {
     }
 
     try {
-      final fresh = await Twitch.validateToken(accessToken);
+      final fresh = await twitchAuth.validateToken(accessToken);
       // The stored expiresAt is a snapshot from login time and is never touched
       // afterwards; refresh it so the account modal and the local expiry check
       // reflect reality.
@@ -793,9 +810,11 @@ class Client implements AccountConnector {
           connection.add(ConnectionEstablished(connectedState));
           if (stateTwitchAccount.tokenData.accessToken != null) {
             unawaited(
-              Twitch.blockedUsers(stateTwitchAccount.tokenData)
+              helix
+                  .forToken(stateTwitchAccount.tokenData)
+                  .blockedUsers()
                   .then(connectedState.blockedUserIds.addAll)
-                  .catchError((_) {}),
+                  .catchError((Object e) => log('Couldn\'t get the blocked users: $e')),
             );
           }
         }
@@ -807,10 +826,9 @@ class Client implements AccountConnector {
           if (connection.state is ConnectionStateWithCredentials) {
             final stateTwitchAccount = (connection.state as ConnectionStateWithCredentials).twitchAccount;
             ownColor = event.tags['color'];
-            final emotes = await Twitch.emoteSets(
-              stateTwitchAccount.tokenData,
-              event.tags['emote-sets']?.split(',') ?? [],
-            );
+            final emotes = await helix
+                .forToken(stateTwitchAccount.tokenData)
+                .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
             // Every account has at least the global Twitch emotes, so an empty
             // result means the request failed: keep the cached list instead.
             if (emotes.isNotEmpty) {
