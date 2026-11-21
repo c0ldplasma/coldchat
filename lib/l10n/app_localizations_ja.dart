@@ -681,4 +681,29 @@ class AppLocalizationsJa extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count日';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count時間';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count分';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count秒';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger$smaller';
+  }
 }

@@ -407,7 +407,7 @@ class Client implements AccountConnector {
 
       bulkChannel?.channelMessages.beginBulk();
       for (final ircMessage in chunk) {
-        final id = ircMessage.tags['id'];
+        final id = ircMessageId(ircMessage);
         if (id != null && existingIds.contains(id)) continue;
         if (id != null) existingIds.add(id);
         unawaited(receive(connection, ircMessage));

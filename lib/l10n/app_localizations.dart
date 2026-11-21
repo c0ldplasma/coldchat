@@ -1312,6 +1312,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 minute} other{{count} minutes}}'**
   String durationMinutes(int count);
+
+  /// A number of days, abbreviated, as it reads inside "banned for {duration}" or "Timeout user for {duration}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count} d'**
+  String durationDaysShort(int count);
+
+  /// A number of hours, abbreviated, as it reads inside "banned for {duration}" or "Timeout user for {duration}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count} h'**
+  String durationHoursShort(int count);
+
+  /// A number of minutes, abbreviated, as it reads inside "banned for {duration}" or "Timeout user for {duration}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min'**
+  String durationMinutesShort(int count);
+
+  /// A number of seconds, abbreviated, as it reads inside "banned for {duration}" or "Timeout user for {duration}"
+  ///
+  /// In en, this message translates to:
+  /// **'{count} s'**
+  String durationSecondsShort(int count);
+
+  /// Two abbreviated units of a duration, larger first, like "1 h 30 min"
+  ///
+  /// In en, this message translates to:
+  /// **'{larger} {smaller}'**
+  String durationPair(String larger, String smaller);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

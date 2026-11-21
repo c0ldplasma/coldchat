@@ -368,5 +368,10 @@
   "channelBanned": "Имаш бан на {channel}",
   "durationDays": "{count, plural, one{{count} дан} other{{count} дана}}",
   "durationHours": "{count, plural, one{{count} сат} few{{count} сата} other{{count} сати}}",
-  "durationMinutes": "{count, plural, one{{count} минут} few{{count} минута} other{{count} минута}}"
+  "durationMinutes": "{count, plural, one{{count} минут} few{{count} минута} other{{count} минута}}",
+  "durationDaysShort": "{count} д",
+  "durationHoursShort": "{count} ч",
+  "durationMinutesShort": "{count} мин",
+  "durationSecondsShort": "{count} с",
+  "durationPair": "{larger} {smaller}"
 }

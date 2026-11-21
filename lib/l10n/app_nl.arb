@@ -368,5 +368,10 @@
   "channelBanned": "Je bent verbannen uit {channel}",
   "durationDays": "{count, plural, =1{1 dag} other{{count} dagen}}",
   "durationHours": "{count, plural, =1{1 uur} other{{count} uur}}",
-  "durationMinutes": "{count, plural, =1{1 minuut} other{{count} minuten}}"
+  "durationMinutes": "{count, plural, =1{1 minuut} other{{count} minuten}}",
+  "durationDaysShort": "{count} d",
+  "durationHoursShort": "{count} u",
+  "durationMinutesShort": "{count} min",
+  "durationSecondsShort": "{count} s",
+  "durationPair": "{larger} {smaller}"
 }

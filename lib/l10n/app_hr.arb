@@ -368,5 +368,10 @@
   "channelBanned": "Imaš ban na {channel}",
   "durationDays": "{count, plural, one{{count} dan} other{{count} dana}}",
   "durationHours": "{count, plural, one{{count} sat} few{{count} sata} other{{count} sati}}",
-  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minute} other{{count} minuta}}"
+  "durationMinutes": "{count, plural, one{{count} minutu} few{{count} minute} other{{count} minuta}}",
+  "durationDaysShort": "{count} d",
+  "durationHoursShort": "{count} h",
+  "durationMinutesShort": "{count} min",
+  "durationSecondsShort": "{count} s",
+  "durationPair": "{larger} {smaller}"
 }

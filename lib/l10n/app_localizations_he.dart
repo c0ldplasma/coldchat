@@ -690,4 +690,29 @@ class AppLocalizationsHe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String durationDaysShort(int count) {
+    return '$count ימ׳';
+  }
+
+  @override
+  String durationHoursShort(int count) {
+    return '$count שע׳';
+  }
+
+  @override
+  String durationMinutesShort(int count) {
+    return '$count דק׳';
+  }
+
+  @override
+  String durationSecondsShort(int count) {
+    return '$count שנ׳';
+  }
+
+  @override
+  String durationPair(String larger, String smaller) {
+    return '$larger $smaller';
+  }
 }
