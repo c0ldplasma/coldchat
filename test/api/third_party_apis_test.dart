@@ -301,20 +301,29 @@ void main() {
   });
 
   test('Chatterino badges', () async {
-    answerJson([
-      {
-        'tooltip': 'Chatterino Top Donator',
-        'image1': 'https://fourtf.com/img/top1.png',
-        'image2': 'https://fourtf.com/img/top2.png',
-        'image3': 'https://fourtf.com/img/top3.png',
-        'badges': ['1', '2'],
-      },
-    ]);
+    // The shape api.chatterino.com/badges answers with.
+    answerJson({
+      'badges': [
+        {
+          'tooltip': 'Chatterino Top Donator',
+          'image1': 'https://fourtf.com/chatterino/badges/topd.png',
+          'image2': 'https://fourtf.com/chatterino/badges/topd2x.png',
+          'image3': 'https://fourtf.com/chatterino/badges/topd3x.png',
+          'users': ['1', '2'],
+        },
+        // Missing fields don't fail the list.
+        {'tooltip': 'Chatterino Supporter'},
+      ],
+    });
 
     final badges = await ChatterinoApi(api).badges();
 
     expectGet('https://api.chatterino.com/badges');
-    expect(badges.single.tooltip, 'Chatterino Top Donator');
+    expect(badges.map((badge) => badge.tooltip), ['Chatterino Top Donator', 'Chatterino Supporter']);
+    expect(badges.first.users, ['1', '2']);
+    expect(badges.first.image3, 'https://fourtf.com/chatterino/badges/topd3x.png');
+    expect(badges.last.users, isEmpty);
+    expect(badges.last.image1, isNull);
   });
 
   test('emoji data', () async {
