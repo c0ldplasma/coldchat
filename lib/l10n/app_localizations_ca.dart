@@ -477,6 +477,18 @@ class AppLocalizationsCa extends AppLocalizations {
   String get blockFailed => 'No s\'ha pogut canviar la llista de bloquejos. Comprova la connexió i torna-ho a provar.';
 
   @override
+  String get moderationNeedsLogin => 'Inicia sessió amb Twitch per moderar aquest canal.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Torna a iniciar sessió per bandejar i expulsar temporalment usuaris. El teu inici de sessió és d\'abans que ColdChat ho permetés.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'No ha funcionat: $reason';
+  }
+
+  @override
   String get contact => 'Contacte i comentaris';
 
   @override

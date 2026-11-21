@@ -481,6 +481,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'De blokkeerlijst kan niet worden gewijzigd. Controleer je verbinding en probeer het opnieuw.';
 
   @override
+  String get moderationNeedsLogin => 'Log in met Twitch om dit kanaal te modereren.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Log opnieuw in om gebruikers te bannen en een time-out te geven. Je login is van voordat ColdChat dat kon.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Dat is niet gelukt: $reason';
+  }
+
+  @override
   String get contact => 'Contact & feedback';
 
   @override

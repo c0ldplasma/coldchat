@@ -477,6 +477,18 @@ class AppLocalizationsHi extends AppLocalizations {
   String get blockFailed => 'ब्लॉक सूची नहीं बदली जा सकी। अपना कनेक्शन जांचें और फिर से कोशिश करें।';
 
   @override
+  String get moderationNeedsLogin => 'इस चैनल को मॉडरेट करने के लिए Twitch से लॉग इन करें।';
+
+  @override
+  String get moderationNeedsScope =>
+      'यूज़र्स को बैन और टाइमआउट करने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat यह नहीं कर सकता था।';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'यह नहीं हो सका: $reason';
+  }
+
+  @override
   String get contact => 'संपर्क और फ़ीडबैक';
 
   @override

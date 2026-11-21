@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../api/twitch/twitch.dart';
 import '../api/twitch/twitch_profile.dart';
+import '../data/twitch/token_data.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
@@ -31,6 +32,9 @@ class UserModal extends StatefulWidget {
   State<UserModal> createState() => _UserModalState();
 }
 
+/// The scope Helix needs to ban, time out and unban. Logins from before the user card used it lack it.
+const String _moderationScope = 'moderator:manage:banned_users';
+
 class _UserModalState extends State<UserModal> {
   late final Future<TwitchProfile?> future;
 
@@ -45,10 +49,51 @@ class _UserModalState extends State<UserModal> {
     future = tokenData == null ? Future.value(null) : Twitch.profile(tokenData, widget.login).catchError((_) => null);
   }
 
+  /// The token of the account that sends to [channel], or null while anonymous or disconnected.
+  TokenData? get _moderatorTokenData {
+    final tokenData = channel?.client.transmitter.twitchAccount?.tokenData;
+    return tokenData?.accessToken == null ? null : tokenData;
+  }
+
+  /// Bans, times out or unbans through [action] and closes the card. A failure shows in a SnackBar, which is only
+  /// visible once the sheet is gone.
+  Future<void> _moderate(
+    Future<void> Function(TokenData tokenData, String broadcasterId, String moderatorId) action,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final tokenData = _moderatorTokenData;
+    final broadcasterId = channel?.id;
+    final moderatorId = tokenData?.userId;
+    Navigator.of(context).pop();
+    String? error;
+    if (tokenData == null || broadcasterId == null || moderatorId == null) {
+      error = l10n.moderationNeedsLogin;
+    } else if (!tokenData.scopes.contains(_moderationScope)) {
+      error = l10n.moderationNeedsScope;
+    } else {
+      try {
+        await action(tokenData, broadcasterId, moderatorId);
+      } on TwitchRequestException catch (e) {
+        log('$e');
+        error = l10n.moderationFailed(e.message);
+      } catch (e) {
+        log('$e');
+        error = l10n.moderationFailed('$e');
+      }
+    }
+    if (error != null) messenger.showSnackBar(SnackBar(content: Text(error)));
+  }
+
   @override
   Widget build(BuildContext context) => FutureBuilder<TwitchProfile?>(
     future: future,
     builder: (BuildContext context, AsyncSnapshot<TwitchProfile?> snapshot) {
+      final shownChannel = channel;
+      final canModerate =
+          shownChannel != null &&
+          shownChannel is! WhisperChannel &&
+          shownChannel.canModerate(_moderatorTokenData?.userId);
       final loading = snapshot.connectionState != ConnectionState.done;
       final profile = snapshot.data;
       return ListView(
@@ -57,8 +102,9 @@ class _UserModalState extends State<UserModal> {
           if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
           if (profile != null)
             _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
-          // Moderation acts on a channel; a whisper conversation has none.
-          if (channel != null && channel is! WhisperChannel && profile != null)
+          // Moderation acts on a channel; a whisper conversation has none. Only the broadcaster and moderators can
+          // ban, so the row is hidden for everyone else.
+          if (canModerate && profile != null)
             Material(
               color: Theme.of(context).colorScheme.secondaryContainer,
               child: Row(
@@ -70,20 +116,14 @@ class _UserModalState extends State<UserModal> {
                         Icons.block_rounded,
                         color: Colors.red,
                       ),
-                      onPressed: () async {
-                        try {
-                          await Twitch.ban(
-                            channel!.client.transmitter.twitchAccount!.tokenData,
-                            broadcasterId: channel!.id!,
-                            moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                            userId: profile.user.id,
-                          );
-                        } catch (e) {
-                          log('$e');
-                          // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                        }
-                        // channel?.send('/ban ${snapshot.data!.login}'),
-                      },
+                      onPressed: () => _moderate(
+                        (tokenData, broadcasterId, moderatorId) => Twitch.ban(
+                          tokenData,
+                          broadcasterId: broadcasterId,
+                          moderatorId: moderatorId,
+                          userId: profile.user.id,
+                        ),
+                      ),
                     ),
                   ),
                   Expanded(
@@ -109,21 +149,15 @@ class _UserModalState extends State<UserModal> {
                                     .timeoutUserForDuration(time.value.toString().split('.').first),
                                 child: TextButton(
                                   child: Text(time.key),
-                                  onPressed: () async {
-                                    try {
-                                      await Twitch.ban(
-                                        channel!.client.transmitter.twitchAccount!.tokenData,
-                                        broadcasterId: channel!.id!,
-                                        moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                                        userId: profile.user.id,
-                                        duration: time.value.inSeconds,
-                                      );
-                                    } catch (e) {
-                                      log('$e');
-                                      // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                                    }
-                                    // channel?.send('/timeout ${snapshot.data!.login} ${time.value.inSeconds}'),
-                                  },
+                                  onPressed: () => _moderate(
+                                    (tokenData, broadcasterId, moderatorId) => Twitch.ban(
+                                      tokenData,
+                                      broadcasterId: broadcasterId,
+                                      moderatorId: moderatorId,
+                                      userId: profile.user.id,
+                                      duration: time.value.inSeconds,
+                                    ),
+                                  ),
                                 ),
                               ),
                           ],
@@ -138,20 +172,14 @@ class _UserModalState extends State<UserModal> {
                         Icons.block_rounded,
                         color: Colors.green,
                       ),
-                      onPressed: () async {
-                        try {
-                          await Twitch.unban(
-                            channel!.client.transmitter.twitchAccount!.tokenData,
-                            broadcasterId: channel!.id!,
-                            moderatorId: channel!.client.transmitter.twitchAccount!.tokenData.userId!,
-                            userId: profile.user.id,
-                          );
-                        } catch (e) {
-                          log('$e');
-                          // channel.channelMessages.add(ChannelMessageNotice(message: message, dateTime: dateTime))
-                        }
-                        // channel?.send('/unban ${snapshot.data!.login}');
-                      },
+                      onPressed: () => _moderate(
+                        (tokenData, broadcasterId, moderatorId) => Twitch.unban(
+                          tokenData,
+                          broadcasterId: broadcasterId,
+                          moderatorId: moderatorId,
+                          userId: profile.user.id,
+                        ),
+                      ),
                     ),
                   ),
                 ],

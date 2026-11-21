@@ -477,6 +477,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get blockFailed => 'Engellenenler listesi değiştirilemedi. Bağlantını kontrol et ve tekrar dene.';
 
   @override
+  String get moderationNeedsLogin => 'Bu kanalı yönetmek için Twitch ile giriş yap.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Kullanıcıları yasaklamak ve zaman aşımı vermek için tekrar giriş yap. Girişin, ColdChat bunu yapabilmeden önceye ait.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Olmadı: $reason';
+  }
+
+  @override
   String get contact => 'İletişim ve geri bildirim';
 
   @override

@@ -478,6 +478,18 @@ class AppLocalizationsEl extends AppLocalizations {
   String get blockFailed => 'Δεν ήταν δυνατή η αλλαγή της λίστας φραγής. Έλεγξε τη σύνδεσή σου και δοκίμασε ξανά.';
 
   @override
+  String get moderationNeedsLogin => 'Συνδέσου με το Twitch για να κάνεις συντονισμό σε αυτό το κανάλι.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Συνδέσου ξανά για να αποκλείεις χρήστες και να τους βάζεις timeout. Η σύνδεσή σου είναι από πριν το ColdChat υποστηρίξει αυτή τη λειτουργία.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Δεν λειτούργησε: $reason';
+  }
+
+  @override
   String get contact => 'Επικοινωνία & σχόλια';
 
   @override

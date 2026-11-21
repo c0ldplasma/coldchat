@@ -477,6 +477,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get blockFailed => 'The block list couldn\'t be changed. Check your connection and try again.';
 
   @override
+  String get moderationNeedsLogin => 'Log in with Twitch to moderate this channel.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Sign in again to ban and time out users. Your login is from before ColdChat could do that.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'That didn\'t work: $reason';
+  }
+
+  @override
   String get contact => 'Contact & feedback';
 
   @override

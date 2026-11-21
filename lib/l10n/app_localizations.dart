@@ -989,6 +989,24 @@ abstract class AppLocalizations {
   /// **'The block list couldn\'t be changed. Check your connection and try again.'**
   String get blockFailed;
 
+  /// No description provided for @moderationNeedsLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in with Twitch to moderate this channel.'**
+  String get moderationNeedsLogin;
+
+  /// No description provided for @moderationNeedsScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to ban and time out users. Your login is from before ColdChat could do that.'**
+  String get moderationNeedsScope;
+
+  /// No description provided for @moderationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'That didn\'t work: {reason}'**
+  String moderationFailed(String reason);
+
   /// No description provided for @contact.
   ///
   /// In en, this message translates to:

@@ -28,6 +28,8 @@ const List<String> _scopes = [
   'channel:moderate',
   'channel:read:redemptions',
   'moderator:manage:automod',
+  // Ban, time out and unban from the user card
+  'moderator:manage:banned_users',
   'channel:manage:broadcast',
   // Whispers
   'whispers:read',

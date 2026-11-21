@@ -477,6 +477,18 @@ class AppLocalizationsHr extends AppLocalizations {
   String get blockFailed => 'Popis blokiranih nije moguće promijeniti. Provjeri vezu i pokušaj ponovno.';
 
   @override
+  String get moderationNeedsLogin => 'Prijavi se putem Twitcha za moderiranje ovog kanala.';
+
+  @override
+  String get moderationNeedsScope =>
+      'Prijavi se ponovno za banove i timeoute korisnika. Tvoja prijava je starija od te mogućnosti u ColdChatu.';
+
+  @override
+  String moderationFailed(String reason) {
+    return 'Nije uspjelo: $reason';
+  }
+
+  @override
   String get contact => 'Kontakt i povratne informacije';
 
   @override
