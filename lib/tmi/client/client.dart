@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math' show min;
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -42,6 +43,7 @@ import '../whispers/whisper_channel.dart';
 import '../whispers/whispers.dart';
 import 'client_channels.dart';
 import 'client_listener.dart';
+import 'join_scheduler.dart';
 
 class Client {
   Connection receiver = Connection();
@@ -294,10 +296,11 @@ class Client {
     return null;
   }
 
-  // Twitch IRC allows ~20 JOIN commands per 10 seconds for normal users. The
-  // first pass after connecting joins a larger burst so the channels the user
-  // cares about come up quickly; steady-state ticks stay conservative.
+  // Twitch IRC allows 20 JOINs per 10 seconds for normal users; _joins keeps every pass within that (with a margin)
+  // over a rolling window. The first pass after connecting may join a larger burst so the channels the user cares
+  // about come up quickly; steady-state ticks stay conservative.
   bool _firstJoinPass = true;
+  final JoinScheduler _joins = JoinScheduler();
 
   // Channels the user has explicitly requested (active chat view) or last had
   // open sort first, so the channel actually being looked at is handled first.
@@ -305,15 +308,23 @@ class Client {
 
   void _joinPass() {
     if (receiver.state is! ConnectionConnected) return;
+    // A JOIN that never got an echo (dropped by Twitch, or the channel doesn't exist) would leave the channel
+    // connecting forever: queue it again, a limited number of times.
+    for (final name in _joins.takeTimedOut()) {
+      final channel = channels.state.firstWhereOrNull((channel) => channel.name == name);
+      if (channel != null && channel.state is ChannelConnecting && _joins.canRetry(name)) channel.add(ChannelPart());
+    }
     final disconnected = channels.state.where((channel) => channel.state is ChannelDisconnected).toList();
     if (disconnected.isEmpty) return;
+    final batchSize = min(_firstJoinPass ? 12 : 4, _joins.available);
+    if (batchSize <= 0) return;
     disconnected.sort(_byJoinPriority);
-    final batchSize = _firstJoinPass ? 12 : 4;
     _firstJoinPass = false;
     final channelsToJoin = disconnected.take(batchSize).toList();
     for (final channel in channelsToJoin) {
       channel.add(ChannelJoin(receiver, transmitter));
     }
+    _joins.sent(channelsToJoin.map((e) => e.name));
     unawaited(receiver.send('JOIN ${channelsToJoin.map((e) => e.name).join(',')}'));
   }
 
@@ -551,8 +562,10 @@ class Client {
     for (final channel in channels.state) {
       channel.add(ChannelPart());
     }
-    // On (re)connect, allow another larger join burst.
+    // On (re)connect, allow another larger join burst (still within the rate limit) and give every channel fresh
+    // JOIN attempts.
     _firstJoinPass = true;
+    _joins.reset();
     if (connection == receiver && change.nextState is ConnectionConnected) _joinPass();
   }
 
@@ -622,6 +635,7 @@ class Client {
 
         final loginSource = event.prefix?.split('!').first;
         if (loginSource == credentials.tokenData.login) {
+          _joins.acknowledged(channel.name);
           channel.add(ChannelConnect());
           final channelLogin = channel.name.substring(1);
           channel.pendingHistoryCached = cache?.loadHistory(channelLogin) ?? const <String>[];
