@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import '../../api/twitch/twitch.dart';
 import '../../data/custom_badge.dart';
 import '../../data/emote.dart';
+import '../../irc/message.dart' as irc;
 import '../../providers/badge_provider.dart';
 import '../../providers/emojis.dart';
 import '../../providers/emote_provider.dart';
@@ -13,6 +14,7 @@ import '../../providers/provider.dart';
 import '../badges.dart';
 import '../client/client.dart';
 import '../emotes.dart';
+import '../moderation.dart';
 import '../tmi_exception.dart';
 import '../user.dart';
 import 'channel_event.dart';
@@ -45,6 +47,9 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
 
   /// Whether the account with [userId] can ban and time out users here: it's the broadcaster or a moderator.
   bool canModerate(String? userId) => userId != null && id != null && (id == userId || ownUserIsModerator);
+
+  /// Takes [ownUserIsModerator] from the `badges` of [userState], a USERSTATE for this channel.
+  void applyUserState(irc.Message userState) => ownUserIsModerator = hasModeratorBadge(userState.tags['badges']);
 
   /// The unsent composer text and reply target, kept here because the channel's view is disposed when its tab is
   /// off screen.
