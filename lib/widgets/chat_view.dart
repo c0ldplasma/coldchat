@@ -239,15 +239,25 @@ class _ChatViewState extends State<ChatView> {
                     ),
                   ),
                   if (widget.filter == null)
-                    AnimatedOpacity(
-                      duration: const Duration(milliseconds: 200),
-                      opacity: (chromeShown || BlocProvider.of<NotificationsCubit>(context).state.unread > 0)
-                          ? 1.0
-                          : 0.0,
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                        child: AvatarButton(floating: true),
-                      ),
+                    // Unread notifications keep the avatar visible (and tappable) even while the rest fades out. The
+                    // selector rebuilds it when notifications arrive or are read.
+                    BlocSelector<NotificationsCubit, NotificationsCubitState, bool>(
+                      selector: (state) => state.unread > 0,
+                      builder: (context, hasUnread) {
+                        final visible = chromeShown || hasUnread;
+                        return AnimatedOpacity(
+                          duration: const Duration(milliseconds: 200),
+                          opacity: visible ? 1.0 : 0.0,
+                          // An invisible avatar must not react to taps or account-switching swipes.
+                          child: IgnorePointer(
+                            ignoring: !visible,
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                              child: AvatarButton(floating: true),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                 ],
               ),
