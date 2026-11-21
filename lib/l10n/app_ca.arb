@@ -191,6 +191,8 @@
   "copyText": "Copia el text",
   "copyTextSubtitle": "Mantén premut per copiar amb el nom d'usuari",
   "deleteMessage": "Suprimeix el missatge",
+  "deleteMessageFailed": "No s'ha eliminat el missatge: {reason}",
+  "deleteMessageNeedsScope": "Torna a iniciar la sessió per eliminar missatges. La teva sessió és d'abans que ColdChat ho pogués fer.",
   "mentionUser": "Esmenta l'usuari",
   "copyMessageId": "Copia l'ID del missatge",
   "theme": "Tema",

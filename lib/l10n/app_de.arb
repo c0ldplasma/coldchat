@@ -135,6 +135,8 @@
   "copyText": "Kopieren",
   "copyTextSubtitle": "Halten, um mit Benutzernamen zu kopieren",
   "deleteMessage": "Nachricht löschen",
+  "deleteMessageFailed": "Nachricht nicht gelöscht: {reason}",
+  "deleteMessageNeedsScope": "Melde dich noch einmal an, um Nachrichten zu löschen. Deine Anmeldung stammt aus der Zeit, bevor ColdChat das konnte.",
   "mentionUser": "Benutzer erwähnen",
   "copyMessageId": "Nachrichten-ID kopieren",
   "theme": "Farben",

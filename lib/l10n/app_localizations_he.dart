@@ -283,6 +283,15 @@ class AppLocalizationsHe extends AppLocalizations {
   String get deleteMessage => 'מחיקת ההודעה';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'ההודעה לא נמחקה: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'יש להתחבר מחדש כדי למחוק הודעות. ההתחברות שלך היא מלפני ש-ColdChat יכלה למחוק אותן.';
+
+  @override
   String get mentionUser => 'אזכור המשתמש';
 
   @override

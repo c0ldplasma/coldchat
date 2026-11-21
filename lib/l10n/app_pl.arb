@@ -191,6 +191,8 @@
   "copyText": "Kopiuj tekst",
   "copyTextSubtitle": "Przytrzymaj, aby skopiować z nazwą użytkownika",
   "deleteMessage": "Usuń wiadomość",
+  "deleteMessageFailed": "Wiadomość nie została usunięta: {reason}",
+  "deleteMessageNeedsScope": "Zaloguj się ponownie, aby usuwać wiadomości. Twoje logowanie pochodzi sprzed czasu, gdy ColdChat to obsługiwał.",
   "mentionUser": "Oznacz użytkownika",
   "copyMessageId": "Kopiuj ID wiadomości",
   "theme": "Motyw",

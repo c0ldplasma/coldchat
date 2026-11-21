@@ -623,6 +623,18 @@ abstract class AppLocalizations {
   /// **'Delete message'**
   String get deleteMessage;
 
+  /// No description provided for @deleteMessageFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Message not deleted: {reason}'**
+  String deleteMessageFailed(String reason);
+
+  /// No description provided for @deleteMessageNeedsScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to delete messages. Your login is from before ColdChat could delete them.'**
+  String get deleteMessageNeedsScope;
+
   /// No description provided for @mentionUser.
   ///
   /// In en, this message translates to:

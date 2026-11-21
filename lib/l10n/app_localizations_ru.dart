@@ -283,6 +283,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get deleteMessage => 'Удалить сообщение';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Сообщение не удалено: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Войди снова, чтобы удалять сообщения. Твой вход был выполнен до того, как ColdChat научился это делать.';
+
+  @override
   String get mentionUser => 'Упомянуть пользователя';
 
   @override

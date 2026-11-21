@@ -191,6 +191,8 @@
   "copyText": "Αντιγραφή κειμένου",
   "copyTextSubtitle": "Κράτα πατημένο για αντιγραφή μαζί με το όνομα χρήστη",
   "deleteMessage": "Διαγραφή μηνύματος",
+  "deleteMessageFailed": "Το μήνυμα δεν διαγράφηκε: {reason}",
+  "deleteMessageNeedsScope": "Συνδέσου ξανά για να διαγράφεις μηνύματα. Η σύνδεσή σου είναι από πριν το ColdChat μπορεί να τα διαγράφει.",
   "mentionUser": "Αναφορά χρήστη",
   "copyMessageId": "Αντιγραφή ID μηνύματος",
   "theme": "Θέμα",

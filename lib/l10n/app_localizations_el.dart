@@ -283,6 +283,15 @@ class AppLocalizationsEl extends AppLocalizations {
   String get deleteMessage => 'Διαγραφή μηνύματος';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Το μήνυμα δεν διαγράφηκε: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Συνδέσου ξανά για να διαγράφεις μηνύματα. Η σύνδεσή σου είναι από πριν το ColdChat μπορεί να τα διαγράφει.';
+
+  @override
   String get mentionUser => 'Αναφορά χρήστη';
 
   @override

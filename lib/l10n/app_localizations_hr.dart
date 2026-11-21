@@ -283,6 +283,15 @@ class AppLocalizationsHr extends AppLocalizations {
   String get deleteMessage => 'Izbriši poruku';
 
   @override
+  String deleteMessageFailed(String reason) {
+    return 'Poruka nije izbrisana: $reason';
+  }
+
+  @override
+  String get deleteMessageNeedsScope =>
+      'Prijavi se ponovno za brisanje poruka. Tvoja prijava je iz vremena prije nego što je ColdChat to mogao.';
+
+  @override
   String get mentionUser => 'Spomeni korisnika';
 
   @override

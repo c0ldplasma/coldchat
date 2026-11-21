@@ -191,6 +191,8 @@
   "copyText": "テキストをコピー",
   "copyTextSubtitle": "長押しでユーザー名ごとコピー",
   "deleteMessage": "メッセージを削除",
+  "deleteMessageFailed": "メッセージを削除できませんでした: {reason}",
+  "deleteMessageNeedsScope": "メッセージを削除するには、もう一度サインインしてください。ColdChat が削除に対応する前のログインです。",
   "mentionUser": "ユーザーをメンション",
   "copyMessageId": "メッセージIDをコピー",
   "theme": "テーマ",
