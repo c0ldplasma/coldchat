@@ -76,6 +76,8 @@ class EventSubSocket {
     _migrating = migrating;
     final channel = IOWebSocketChannel.connect(Uri.parse(url));
     _channel = channel;
+    // A failed connect completes `ready` with the error the stream also reports (and reconnects on).
+    unawaited(channel.ready.catchError((Object e) => log('EventSub connection failed: $e')));
     _subscription = channel.stream.listen(
       (raw) => _receive(channel, raw),
       onDone: () => _lost(channel),
