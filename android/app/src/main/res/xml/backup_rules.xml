@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Auto Backup rules for Android 11 and lower (android:fullBackupContent).
+     Everything else is backed up; the Twitch logins (access tokens) are not.
+     Hive keeps its boxes in getApplicationDocumentsDirectory(), which on Android is
+     Context.getDir("flutter") = <data dir>/app_flutter, hence domain "root".
+     Box files are named after the lowercased box name (see lib/main.dart).
+     Keep in sync with data_extraction_rules.xml. -->
+<full-backup-content>
+    <exclude domain="root" path="app_flutter/twitchaccounts.hive" />
+    <exclude domain="root" path="app_flutter/twitchaccounts.hivec" />
+    <exclude domain="root" path="app_flutter/twitchaccounts.lock" />
+</full-backup-content>
