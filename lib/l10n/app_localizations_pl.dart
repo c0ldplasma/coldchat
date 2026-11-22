@@ -549,6 +549,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Usuwa wiadomości z tego urządzenia. Twitch nie przechowuje historii szeptów.';
 
   @override
+  String get logInToChat => 'Zaloguj się, aby czatować';
+
+  @override
+  String get logInToSeeMore => 'Zaloguj się, aby zobaczyć więcej';
+
+  @override
   String get whisperNeedsLogin => 'Zaloguj się przez Twitcha, aby wysyłać szepty.';
 
   @override

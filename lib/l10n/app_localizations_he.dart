@@ -548,6 +548,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get deleteConversationSubtitle => 'מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.';
 
   @override
+  String get logInToChat => 'יש להתחבר כדי לכתוב בצ׳אט';
+
+  @override
+  String get logInToSeeMore => 'יש להתחבר כדי לראות עוד';
+
+  @override
   String get whisperNeedsLogin => 'כדי לשלוח לחישות, יש להתחבר עם Twitch.';
 
   @override

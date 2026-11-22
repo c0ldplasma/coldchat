@@ -551,6 +551,12 @@ class AppLocalizationsEl extends AppLocalizations {
       'Διαγράφει τα μηνύματα από αυτήν τη συσκευή. Το Twitch δεν κρατά ιστορικό ψιθύρων.';
 
   @override
+  String get logInToChat => 'Συνδέσου για να γράψεις στο chat';
+
+  @override
+  String get logInToSeeMore => 'Συνδέσου για να δεις περισσότερα';
+
+  @override
   String get whisperNeedsLogin => 'Συνδέσου με το Twitch για να στέλνεις ψιθύρους.';
 
   @override

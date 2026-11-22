@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
+import '../tmi/channel/can_send.dart';
 import '../tmi/channel/composer_draft.dart';
 import '../tmi/channel/messages/channel_message_chat.dart';
 import '../tmi/moderation.dart';
@@ -25,6 +26,9 @@ class MessageModal extends StatelessWidget {
   /// hidden for everyone else, like the ban and timeout row on the user card.
   bool get _canDelete => message.channel?.canModerateHere ?? false;
 
+  /// Reply and Mention only fill the composer, which is a login button while there is no login to send with.
+  bool get _canCompose => message.channel?.sendAvailability != SendAvailability.needsLogin;
+
   /// Closes every sheet, applies [change] to the composer draft of the message's channel and switches to that
   /// channel's tab. From inside that channel's view, the tab stays and only the sheet closes.
   void _toComposer(BuildContext context, void Function(ComposerDraft draft) change) {
@@ -43,7 +47,7 @@ class MessageModal extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: ChatMessage(message: message),
       ),
-      if (!_whisper)
+      if (!_whisper && _canCompose)
         Tile(
           title: AppLocalizations.of(context).reply,
           prefix: const Icon(Icons.reply_outlined),
@@ -82,14 +86,15 @@ class MessageModal extends StatelessWidget {
             }
           },
         ),
-      Tile(
-        title: AppLocalizations.of(context).mentionUser,
-        prefix: const Icon(Icons.alternate_email_outlined),
-        onTap: () => _toComposer(context, (draft) {
-          final login = message.user.login;
-          if (login != null) draft.mention(login);
-        }),
-      ),
+      if (_canCompose)
+        Tile(
+          title: AppLocalizations.of(context).mentionUser,
+          prefix: const Icon(Icons.alternate_email_outlined),
+          onTap: () => _toComposer(context, (draft) {
+            final login = message.user.login;
+            if (login != null) draft.mention(login);
+          }),
+        ),
       Tile(
         title: AppLocalizations.of(context).copyMessageId,
         prefix: const Icon(Icons.medical_information_outlined),

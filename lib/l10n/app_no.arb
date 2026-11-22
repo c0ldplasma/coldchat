@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "Meldingene blir værende på denne enheten og kommer tilbake med neste hviskemelding.",
   "deleteConversation": "Slett samtale",
   "deleteConversationSubtitle": "Sletter meldingene fra denne enheten. Twitch lagrer ingen logg over hviskemeldinger.",
+  "logInToChat": "Logg inn for å chatte",
+  "logInToSeeMore": "Logg inn for å se mer",
   "whisperNeedsLogin": "Logg inn med Twitch for å sende hviskemeldinger.",
   "whisperNeedsScope": "Logg inn igjen for å sende og motta hviskemeldinger. Innloggingen din er fra før ColdChat støttet dem.",
   "whisperUserNotFound": "Det finnes ingen Twitch-bruker med det navnet.",

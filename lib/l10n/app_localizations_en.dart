@@ -548,6 +548,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteConversationSubtitle => 'Deletes the messages from this device. Twitch keeps no whisper history.';
 
   @override
+  String get logInToChat => 'Log in to chat';
+
+  @override
+  String get logInToSeeMore => 'Log in to see more';
+
+  @override
   String get whisperNeedsLogin => 'Sign in with Twitch to send whispers.';
 
   @override

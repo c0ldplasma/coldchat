@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "Поруке остају на овом уређају и враћају се са следећим шапатом.",
   "deleteConversation": "Избриши разговор",
   "deleteConversationSubtitle": "Брише поруке са овог уређаја. Twitch не чува историју шапата.",
+  "logInToChat": "Пријави се за чет",
+  "logInToSeeMore": "Пријави се да видиш више",
   "whisperNeedsLogin": "Пријави се на Twitch за слање шапата.",
   "whisperNeedsScope": "Поново се пријави за слање и примање шапата. Твоја пријава потиче из времена пре него што их је ColdChat подржавао.",
   "whisperUserNotFound": "Не постоји Twitch корисник са тим именом.",

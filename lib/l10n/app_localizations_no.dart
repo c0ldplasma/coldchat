@@ -550,6 +550,12 @@ class AppLocalizationsNo extends AppLocalizations {
       'Sletter meldingene fra denne enheten. Twitch lagrer ingen logg over hviskemeldinger.';
 
   @override
+  String get logInToChat => 'Logg inn for å chatte';
+
+  @override
+  String get logInToSeeMore => 'Logg inn for å se mer';
+
+  @override
   String get whisperNeedsLogin => 'Logg inn med Twitch for å sende hviskemeldinger.';
 
   @override

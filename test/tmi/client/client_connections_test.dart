@@ -8,12 +8,14 @@ import 'package:coldchat/data/twitch/token_data.dart';
 import 'package:coldchat/data/twitch_account.dart';
 import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
+import 'package:coldchat/tmi/channel/can_send.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/channel_state.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_ban.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_notice.dart';
 import 'package:coldchat/tmi/client/client.dart';
+import 'package:coldchat/tmi/client/client_lookups.dart';
 import 'package:coldchat/tmi/connection/connection.dart';
 import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
 import 'package:flutter_test/flutter_test.dart';
@@ -341,11 +343,26 @@ void main() {
       expect(setup.receiver.sent.where((line) => line.startsWith('PRIVMSG')), isEmpty);
     });
 
-    test('is not possible without an account, while reading works', () async {
+    test('is not possible without an account, while reading works: the composer asks for a login', () async {
       final setup = await joined();
 
       expect(setup.channel('#ronni').state, isA<ChannelConnected>());
       expect(setup.channel('#ronni').canSend, isFalse);
+      expect(setup.channel('#ronni').sendAvailability, SendAvailability.needsLogin);
+      expect(setup.client.canLookUpProfiles, isFalse);
+    });
+
+    test('with an account the composer connects, then is ready, and profiles can be looked up', () async {
+      final setup = await start(account: _account('moddy'));
+      await setup.receiver.welcome();
+      await setup.receiver.echoJoin('#ronni');
+      final ronni = setup.channel('#ronni');
+      expect(ronni.sendAvailability, SendAvailability.connecting);
+      expect(setup.client.canLookUpProfiles, isTrue);
+
+      await setup.transmitter.welcome();
+      await setup.transmitter.echoJoin('#ronni');
+      expect(ronni.sendAvailability, SendAvailability.ready);
     });
   });
 
@@ -447,6 +464,8 @@ void main() {
       expect(setup.receiver.socket.sink.closed, isFalse);
       expect(ronni.state, isA<ChannelConnected>());
       expect(ronni.canSend, isFalse);
+      expect(ronni.sendAvailability, SendAvailability.needsLogin);
+      expect(setup.client.canLookUpProfiles, isFalse);
 
       await setup.receiver.receive('@id=m2;user-id=1337 :ronni!ronni@ronni.tmi.twitch.tv PRIVMSG #ronni :still here');
       expect(ronni.channelMessages.state.whereType<ChannelMessageChat>(), hasLength(1));

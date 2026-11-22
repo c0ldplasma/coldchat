@@ -548,6 +548,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get deleteConversationSubtitle => 'Удаляет сообщения с этого устройства. Twitch не хранит историю шепота.';
 
   @override
+  String get logInToChat => 'Войди, чтобы писать в чат';
+
+  @override
+  String get logInToSeeMore => 'Войди, чтобы увидеть больше';
+
+  @override
   String get whisperNeedsLogin => 'Войди через Twitch, чтобы отправлять шепот.';
 
   @override

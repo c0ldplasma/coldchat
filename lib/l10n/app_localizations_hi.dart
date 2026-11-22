@@ -548,6 +548,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get deleteConversationSubtitle => 'इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।';
 
   @override
+  String get logInToChat => 'चैट करने के लिए लॉग इन करें';
+
+  @override
+  String get logInToSeeMore => 'और देखने के लिए लॉग इन करें';
+
+  @override
   String get whisperNeedsLogin => 'व्हिस्पर भेजने के लिए Twitch से साइन इन करें।';
 
   @override

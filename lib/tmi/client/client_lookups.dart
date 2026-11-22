@@ -9,6 +9,9 @@ import 'client.dart';
 /// The Helix lookups the user card, the chatter list and the login need, so the widgets don't talk to Helix
 /// themselves. They run as [AccountSession.apiTokenData] unless a token is given.
 extension ClientLookups on Client {
+  /// Whether [profileOf] can return anything: profiles come from Helix, which needs a login.
+  bool get canLookUpProfiles => session.apiTokenData != null;
+
   /// Everything the user card shows about [login], or null without a login, for an unknown user or when the
   /// request fails.
   Future<TwitchProfile?> profileOf(String login) async {

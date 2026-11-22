@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "메시지는 이 기기에 남아 있다가 다음 귓속말이 오면 다시 표시돼요.",
   "deleteConversation": "대화 삭제",
   "deleteConversationSubtitle": "이 기기에서 메시지를 삭제해요. Twitch는 귓속말 기록을 보관하지 않아요.",
+  "logInToChat": "로그인하고 채팅하기",
+  "logInToSeeMore": "로그인하고 더 보기",
   "whisperNeedsLogin": "귓속말을 보내려면 Twitch로 로그인하세요.",
   "whisperNeedsScope": "귓속말을 주고받으려면 다시 로그인하세요. 현재 로그인은 ColdChat이 귓속말을 지원하기 전에 한 것이에요.",
   "whisperUserNotFound": "해당 이름의 Twitch 사용자가 없어요.",

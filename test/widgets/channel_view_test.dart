@@ -23,6 +23,7 @@ import 'package:coldchat/pages/home.dart';
 import 'package:coldchat/sheets/message.dart';
 import 'package:coldchat/sources/chat_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
+import 'package:coldchat/tmi/channel/can_send.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
 import 'package:coldchat/tmi/channel/messages/channel_message_chat.dart';
 import 'package:coldchat/tmi/client/client.dart';
@@ -72,8 +73,17 @@ void main() {
   // Made outside the tests' fake time: a connection starts a periodic watchdog the tests would report as pending.
   late Connection transmitter;
 
+  /// Logged in, as the composer needs: the transmitter is connected, but a new channel's JOIN isn't acknowledged yet,
+  /// so the composer says it's connecting. Tests that change the transmitter go back to this.
+  Future<void> loggedInConnecting() async {
+    if (transmitter.state is tmi.ConnectionConnected) return;
+    transmitter.add(ConnectionEstablished(tmi.ConnectionConnected(_account)));
+    await transmitter.stream.firstWhere((state) => state is tmi.ConnectionConnected);
+  }
+
   setUpAll(() async {
     transmitter = Connection(name: 'transmitter');
+    await loggedInConnecting();
     Hive.registerAdapters();
     tempDir = Directory.systemTemp.createTempSync('coldchat_channel_view_test');
     Hive.init(tempDir.path);
@@ -263,10 +273,7 @@ void main() {
     (channel.client as FakeClient).globals.emotes.change([
       Emote(id: 'pog', name: 'PogChamp', mipmap: ['https://example.com/pog'], source: _TestSource()),
     ]);
-    await tester.runAsync(() async {
-      transmitter.add(ConnectionEstablished(tmi.ConnectionConnected(_account)));
-      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionConnected);
-    });
+    await tester.runAsync(loggedInConnecting);
     channel.transmitterJoin.joined();
     await tester.pump();
     Finder suggestion(String title) => find.descendant(of: find.byType(Tile), matching: find.text(title));
@@ -284,12 +291,9 @@ void main() {
       expect(suggestion(title), findsNothing);
     }
 
-    // The transmitter is shared by every test here: leave it disconnected again, as the next test expects.
+    // The transmitter is shared by every test here: leave it logged in but connecting again, as the next test expects.
     channel.transmitterJoin.parted();
-    await tester.runAsync(() async {
-      transmitter.add(ConnectionDisconnect());
-      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
-    });
+    await tester.runAsync(loggedInConnecting);
     await finish(tester);
   });
 
@@ -301,10 +305,7 @@ void main() {
     String? hint() => tester.widget<TextField>(composer()).decoration!.hintText;
     expect(hint(), l10n.channelConnecting('#ronni'));
 
-    await tester.runAsync(() async {
-      transmitter.add(ConnectionEstablished(tmi.ConnectionConnected(_account)));
-      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionConnected);
-    });
+    await tester.runAsync(loggedInConnecting);
     channel.transmitterJoin.joined();
     await tester.pump();
     expect(hint(), l10n.sendMessageIn('#ronni'));
@@ -313,12 +314,58 @@ void main() {
     await tester.pump();
     expect(hint(), l10n.channelConnecting('#ronni'));
 
-    await tester.runAsync(() async {
-      transmitter.add(ConnectionDisconnect());
-      await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
-    });
+    await tester.runAsync(loggedInConnecting);
     await finish(tester);
   });
+
+  Future<void> logOut(WidgetTester tester) => tester.runAsync(() async {
+    transmitter.add(ConnectionDisconnect());
+    await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
+  });
+
+  testWidgets('logged out, the composer is a login button, and logging in brings the text field back', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await logOut(tester);
+    final channel = await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(find.byType(ChannelView)));
+
+    expect(composer(), findsNothing);
+    expect(find.text(l10n.logInToChat), findsOneWidget);
+    expect(find.byIcon(Icons.attach_file_rounded), findsNothing);
+    expect(find.byIcon(Icons.send_rounded), findsNothing);
+
+    await tester.runAsync(loggedInConnecting);
+    await tester.pump();
+    expect(find.text(l10n.logInToChat), findsNothing);
+    expect(composer(), findsOneWidget);
+    expect(channel.sendAvailability, SendAvailability.connecting);
+    await finish(tester);
+  });
+
+  testWidgets('logged out, the message sheet has no Reply or Mention', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await logOut(tester);
+    final channel = await showChannel(tester, mediaQuery);
+    final context = tester.element(find.byType(ChannelView));
+    final l10n = AppLocalizations.of(context);
+
+    unawaited(
+      Modal.show(
+        context: context,
+        child: MessageModal(message: _message(1, channel)),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.copyText), findsOneWidget);
+    expect(find.text(l10n.reply), findsNothing);
+    expect(find.text(l10n.mentionUser), findsNothing);
+
+    await tester.runAsync(loggedInConnecting);
+    await finish(tester);
+  });
+
   group('from a message sheet of another channel', () {
     late FakeClient client;
     late Channel a;

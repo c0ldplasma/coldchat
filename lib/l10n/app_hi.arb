@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "संदेश इस डिवाइस पर रहेंगे और अगले व्हिस्पर के साथ वापस आ जाएंगे।",
   "deleteConversation": "बातचीत मिटाएं",
   "deleteConversationSubtitle": "इस डिवाइस से संदेश मिटा देता है। Twitch व्हिस्पर का इतिहास नहीं रखता।",
+  "logInToChat": "चैट करने के लिए लॉग इन करें",
+  "logInToSeeMore": "और देखने के लिए लॉग इन करें",
   "whisperNeedsLogin": "व्हिस्पर भेजने के लिए Twitch से साइन इन करें।",
   "whisperNeedsScope": "व्हिस्पर भेजने और पाने के लिए फिर से साइन इन करें। आपका लॉगिन उस समय का है जब ColdChat इन्हें सपोर्ट नहीं करता था।",
   "whisperUserNotFound": "इस नाम का कोई Twitch उपयोगकर्ता नहीं है।",

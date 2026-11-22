@@ -554,6 +554,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Verwijdert de berichten van dit apparaat. Twitch bewaart geen geschiedenis van fluisterberichten.';
 
   @override
+  String get logInToChat => 'Log in om te chatten';
+
+  @override
+  String get logInToSeeMore => 'Log in om meer te zien';
+
+  @override
   String get whisperNeedsLogin => 'Log in met Twitch om fluisterberichten te sturen.';
 
   @override

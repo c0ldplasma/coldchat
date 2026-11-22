@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "Wiadomości zostają na tym urządzeniu i wrócą przy następnym szepcie.",
   "deleteConversation": "Usuń rozmowę",
   "deleteConversationSubtitle": "Usuwa wiadomości z tego urządzenia. Twitch nie przechowuje historii szeptów.",
+  "logInToChat": "Zaloguj się, aby czatować",
+  "logInToSeeMore": "Zaloguj się, aby zobaczyć więcej",
   "whisperNeedsLogin": "Zaloguj się przez Twitcha, aby wysyłać szepty.",
   "whisperNeedsScope": "Zaloguj się ponownie, aby wysyłać i odbierać szepty. Twoje logowanie pochodzi z czasu, zanim ColdChat zaczął je obsługiwać.",
   "whisperUserNotFound": "Na Twitchu nie ma użytkownika o tej nazwie.",

@@ -1103,6 +1103,18 @@ abstract class AppLocalizations {
   /// **'Deletes the messages from this device. Twitch keeps no whisper history.'**
   String get deleteConversationSubtitle;
 
+  /// In place of the message field while not logged in: starts the Twitch login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to chat'**
+  String get logInToChat;
+
+  /// On a user card while not logged in, where the profile would be: starts the Twitch login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to see more'**
+  String get logInToSeeMore;
+
   /// No description provided for @whisperNeedsLogin.
   ///
   /// In en, this message translates to:

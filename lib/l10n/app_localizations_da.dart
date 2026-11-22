@@ -549,6 +549,12 @@ class AppLocalizationsDa extends AppLocalizations {
       'Sletter beskederne fra denne enhed. Twitch gemmer ingen historik over hviskebeskeder.';
 
   @override
+  String get logInToChat => 'Log ind for at chatte';
+
+  @override
+  String get logInToSeeMore => 'Log ind for at se mere';
+
+  @override
   String get whisperNeedsLogin => 'Log ind med Twitch for at sende hviskebeskeder.';
 
   @override

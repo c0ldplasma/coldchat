@@ -35,6 +35,30 @@ void main() {
     expect(Channel.canSendWith(transmitterConnected: false, transmitterJoined: false), isFalse);
   });
 
+  group('sendAvailabilityWith', () {
+    SendAvailability availability(tmi.ConnectionState transmitter, {bool joined = true}) =>
+        Channel.sendAvailabilityWith(transmitter: transmitter, transmitterJoined: joined);
+
+    test('needs a login while logged out: logging out leaves the transmitter disconnected', () {
+      expect(availability(tmi.ConnectionDisconnected()), SendAvailability.needsLogin);
+      expect(availability(tmi.ConnectionDisconnected(), joined: false), SendAvailability.needsLogin);
+    });
+
+    test('needs a login when Twitch refused it', () {
+      expect(availability(tmi.ConnectionInvalidCredentials(_account)), SendAvailability.needsLogin);
+    });
+
+    test('is connecting while the transmitter connects, reconnects or has not joined yet', () {
+      expect(availability(tmi.ConnectionConnecting(_account)), SendAvailability.connecting);
+      expect(availability(tmi.ConnectionReconnecting(_account)), SendAvailability.connecting);
+      expect(availability(tmi.ConnectionConnected(_account), joined: false), SendAvailability.connecting);
+    });
+
+    test('is ready once connected and joined', () {
+      expect(availability(tmi.ConnectionConnected(_account)), SendAvailability.ready);
+    });
+  });
+
   test('TransmitterJoin starts parted and reports joins and parts', () async {
     final join = TransmitterJoin();
     addTearDown(join.close);
@@ -54,7 +78,7 @@ void main() {
     late Connection transmitter;
     late TransmitterJoin join;
     late CanSend canSend;
-    late List<bool> states;
+    late List<SendAvailability> states;
 
     setUp(() {
       transmitter = Connection(name: 'transmitter');
@@ -76,45 +100,50 @@ void main() {
     }
 
     test('starts from the transmitter and the JOIN as they are', () async {
-      expect(canSend.state, isFalse);
+      expect(canSend.state, SendAvailability.needsLogin);
       await connect();
       join.joined();
       await Future<void>.delayed(Duration.zero);
       final later = CanSend(transmitter: transmitter, join: join);
       addTearDown(later.close);
-      expect(later.state, isTrue);
+      expect(later.state, SendAvailability.ready);
     });
 
-    test('becomes true once the transmitter is connected and its JOIN acknowledged', () async {
+    test('becomes ready once the transmitter is connected and its JOIN acknowledged', () async {
       await connect();
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isFalse);
+      expect(canSend.state, SendAvailability.connecting);
 
       join.joined();
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isTrue);
-      expect(states, [true]);
+      expect(canSend.state, SendAvailability.ready);
+      expect(states, [SendAvailability.connecting, SendAvailability.ready]);
     });
 
-    test('becomes false when the transmitter drops or parts, and true again after the next JOIN', () async {
+    test('needs a login after logging out, is ready again after the next login and JOIN', () async {
       join.joined();
       await connect();
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isTrue);
+      expect(canSend.state, SendAvailability.ready);
 
       transmitter.add(ConnectionDisconnect());
       await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isFalse);
+      expect(canSend.state, SendAvailability.needsLogin);
 
       await connect();
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isTrue);
+      expect(canSend.state, SendAvailability.ready);
 
       join.parted();
       await Future<void>.delayed(Duration.zero);
-      expect(canSend.state, isFalse);
-      expect(states, [true, false, true, false]);
+      expect(canSend.state, SendAvailability.connecting);
+      expect(states, [
+        SendAvailability.ready,
+        SendAvailability.needsLogin,
+        SendAvailability.ready,
+        SendAvailability.connecting,
+      ]);
     });
   });
 }

@@ -549,6 +549,12 @@ class AppLocalizationsPt extends AppLocalizations {
       'Exclui as mensagens deste dispositivo. A Twitch não guarda histórico de sussurros.';
 
   @override
+  String get logInToChat => 'Entre para conversar';
+
+  @override
+  String get logInToSeeMore => 'Entre para ver mais';
+
+  @override
   String get whisperNeedsLogin => 'Entre com a Twitch para enviar sussurros.';
 
   @override

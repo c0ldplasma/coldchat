@@ -320,6 +320,8 @@
   "closeConversationSubtitle": "ההודעות נשמרות במכשיר הזה ויחזרו עם הלחישה הבאה.",
   "deleteConversation": "מחיקת השיחה",
   "deleteConversationSubtitle": "מוחק את ההודעות מהמכשיר הזה. Twitch לא שומרת היסטוריית לחישות.",
+  "logInToChat": "יש להתחבר כדי לכתוב בצ׳אט",
+  "logInToSeeMore": "יש להתחבר כדי לראות עוד",
   "whisperNeedsLogin": "כדי לשלוח לחישות, יש להתחבר עם Twitch.",
   "whisperNeedsScope": "כדי לשלוח ולקבל לחישות, יש להתחבר מחדש. ההתחברות הנוכחית היא מלפני ש-ColdChat תמכה בהן.",
   "whisperUserNotFound": "אין משתמש Twitch בשם הזה.",

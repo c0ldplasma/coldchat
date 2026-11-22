@@ -12,6 +12,7 @@ import '../../sources/emoji_source.dart';
 import '../../sources/emote_source.dart';
 import '../badges.dart';
 import '../client/client.dart';
+import '../connection/connection_state.dart';
 import '../emotes.dart';
 import '../moderation.dart';
 import '../tmi_exception.dart';
@@ -225,6 +226,25 @@ class Channel extends Bloc<ChannelEvent, ChannelState> {
   /// [canSend]: the transmitter is connected and Twitch acknowledged its JOIN of the channel.
   static bool canSendWith({required bool transmitterConnected, required bool transmitterJoined}) =>
       transmitterConnected && transmitterJoined;
+
+  /// What the composer offers right now, see [SendAvailability].
+  SendAvailability get sendAvailability =>
+      sendAvailabilityWith(transmitter: client.transmitter.state, transmitterJoined: transmitterJoin.state);
+
+  /// [sendAvailability]: the transmitter is only disconnected while logged out (logging out closes it, and a dropped
+  /// connection reconnects), and locked in [ConnectionInvalidCredentials] when Twitch refused the login. Both need a
+  /// login before anything can be sent.
+  static SendAvailability sendAvailabilityWith({
+    required ConnectionState transmitter,
+    required bool transmitterJoined,
+  }) {
+    if (transmitter is ConnectionDisconnected || transmitter is ConnectionInvalidCredentials) {
+      return SendAvailability.needsLogin;
+    }
+    return canSendWith(transmitterConnected: transmitter is ConnectionConnected, transmitterJoined: transmitterJoined)
+        ? SendAvailability.ready
+        : SendAvailability.connecting;
+  }
 
   /// Sends [message] to the channel. Does nothing unless [canSend]; callers check it first so typed text isn't lost.
   Future<void> send(

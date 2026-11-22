@@ -550,6 +550,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Elimina los mensajes de este dispositivo. Twitch no guarda el historial de susurros.';
 
   @override
+  String get logInToChat => 'Inicia sesión para chatear';
+
+  @override
+  String get logInToSeeMore => 'Inicia sesión para ver más';
+
+  @override
   String get whisperNeedsLogin => 'Inicia sesión con Twitch para enviar susurros.';
 
   @override

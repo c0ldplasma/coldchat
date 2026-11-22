@@ -546,6 +546,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get deleteConversationSubtitle => '이 기기에서 메시지를 삭제해요. Twitch는 귓속말 기록을 보관하지 않아요.';
 
   @override
+  String get logInToChat => '로그인하고 채팅하기';
+
+  @override
+  String get logInToSeeMore => '로그인하고 더 보기';
+
+  @override
   String get whisperNeedsLogin => '귓속말을 보내려면 Twitch로 로그인하세요.';
 
   @override

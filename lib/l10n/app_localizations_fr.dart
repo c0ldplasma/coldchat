@@ -553,6 +553,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Supprime les messages de cet appareil. Twitch ne conserve aucun historique des chuchotements.';
 
   @override
+  String get logInToChat => 'Connecte-toi pour discuter';
+
+  @override
+  String get logInToSeeMore => 'Connecte-toi pour en voir plus';
+
+  @override
   String get whisperNeedsLogin => 'Connecte-toi avec Twitch pour envoyer des chuchotements.';
 
   @override

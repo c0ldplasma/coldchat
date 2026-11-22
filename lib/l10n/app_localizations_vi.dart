@@ -550,6 +550,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteConversationSubtitle => 'Xóa tin nhắn khỏi thiết bị này. Twitch không lưu lịch sử tin thì thầm.';
 
   @override
+  String get logInToChat => 'Đăng nhập để trò chuyện';
+
+  @override
+  String get logInToSeeMore => 'Đăng nhập để xem thêm';
+
+  @override
   String get whisperNeedsLogin => 'Hãy đăng nhập Twitch để gửi tin thì thầm.';
 
   @override
