@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../data/emote.dart';
+import '../data/emote_cache.dart';
 import '../data/inline_url.dart';
 import '../data/repositories/settings_repository.dart';
 import '../data/settings/message_appearance.dart';
@@ -301,7 +302,7 @@ class _ChatMessageState extends State<ChatMessage> {
   }
 
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(
-    image: CachedNetworkImageProvider(emote.mipmap.last),
+    image: CachedNetworkImageProvider(emote.mipmap.last, cacheManager: EmoteCacheManager.instance),
     height:
         (emote.source.name == 'Emoji' ||
                 (emote.source.name == 'Twitch' && ChatMessage._twitchClassicEmoticons.contains(emote.name))
@@ -379,7 +380,10 @@ class _ChatMessageState extends State<ChatMessage> {
                                 height: 20.0 * messageAppearance.scale,
                               )
                             : Image(
-                                image: CachedNetworkImageProvider(badge.mipmap.last),
+                                image: CachedNetworkImageProvider(
+                                  badge.mipmap.last,
+                                  cacheManager: EmoteCacheManager.instance,
+                                ),
                                 height: 20.0 * messageAppearance.scale,
                               ),
                       ),

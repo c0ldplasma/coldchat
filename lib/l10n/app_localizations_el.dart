@@ -410,6 +410,19 @@ class AppLocalizationsEl extends AppLocalizations {
   String get clearCache => 'Εκκαθάριση προσωρινής μνήμης';
 
   @override
+  String get emoteCache => 'Προσωρινή μνήμη emotes';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used από $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Συμμετέχοντες';
 
   @override

@@ -1,14 +1,19 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:provider/provider.dart';
 
 import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
+import '../data/emote_cache.dart';
+import '../data/emote_cache_cubit.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
+import '../tools/megabytes.dart';
 import 'about.dart';
 import 'application_appearance.dart';
 import 'application_theme.dart';
@@ -116,6 +121,7 @@ class SettingsModal extends StatelessWidget {
             ),
             onTap: () => settings.setChatHistory(!settings.chatHistory),
           ),
+          const _EmoteCacheTile(),
           FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
             builder: (context, snapshot) {
@@ -134,5 +140,41 @@ class SettingsModal extends StatelessWidget {
         ],
       );
     },
+  );
+}
+
+/// The emote cache's size, with a button that empties it. Cleared images are downloaded again when shown.
+class _EmoteCacheTile extends StatelessWidget {
+  const _EmoteCacheTile();
+
+  @override
+  Widget build(BuildContext context) => BlocProvider(
+    create: (_) {
+      final cubit = EmoteCacheCubit.of(EmoteCacheManager.instance);
+      unawaited(cubit.load());
+      return cubit;
+    },
+    child: BlocBuilder<EmoteCacheCubit, EmoteCacheState>(
+      builder: (context, state) {
+        final l10n = AppLocalizations.of(context);
+        final locale = Localizations.localeOf(context).toLanguageTag();
+        final bytes = state.bytes;
+        return Tile(
+          title: l10n.emoteCache,
+          subtitle: bytes == null
+              ? null
+              : l10n.emoteCacheUsage(
+                  l10n.megabytes(megabytes(bytes, locale)),
+                  l10n.megabytes(megabytes(EmoteCacheManager.maxBytes, locale)),
+                ),
+          prefix: const Icon(Icons.emoji_emotions_outlined),
+          suffix: IconButton(
+            tooltip: l10n.clearCache,
+            icon: const Icon(Icons.delete_outline),
+            onPressed: state.clearing || bytes == 0 ? null : () => unawaited(context.read<EmoteCacheCubit>().clear()),
+          ),
+        );
+      },
+    ),
   );
 }

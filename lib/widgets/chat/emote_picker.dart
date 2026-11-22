@@ -7,6 +7,7 @@ import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../components/surface.dart';
 import '../../data/emote.dart';
+import '../../data/emote_cache.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/coldchat_theme.dart';
 import '../../tmi/channel/channel.dart';
@@ -236,6 +237,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                         size: 32.0,
                                         image: () => CachedNetworkImage(
                                           imageUrl: emote.mipmap.last,
+                                          cacheManager: EmoteCacheManager.instance,
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -348,6 +350,7 @@ class _EmotePickerState extends State<EmotePicker> {
   /// Fallback for any other section: its first emote, never cut-off text.
   Widget firstEmoteIcon(List<Emote> emotes) => CachedNetworkImage(
     imageUrl: emotes.first.mipmap.last,
+    cacheManager: EmoteCacheManager.instance,
     fit: BoxFit.contain,
   );
 }

@@ -245,6 +245,9 @@
   "clearAll": "Limpar tudo",
   "cache": "Cache",
   "clearCache": "Limpar cache",
+  "emoteCache": "Cache de emotes",
+  "emoteCacheUsage": "{used} de {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Participantes",
   "lastSeenAgo": "Visto pela última vez há {time}",
   "@lastSeenAgo": {

@@ -412,6 +412,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get clearCache => 'Cache wissen';
 
   @override
+  String get emoteCache => 'Emote-cache';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used van $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Chatters';
 
   @override

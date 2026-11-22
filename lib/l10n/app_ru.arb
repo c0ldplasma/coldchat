@@ -245,6 +245,9 @@
   "clearAll": "Очистить всё",
   "cache": "Кэш",
   "clearCache": "Очистить кэш",
+  "emoteCache": "Кэш эмоутов",
+  "emoteCacheUsage": "{used} из {limit}",
+  "megabytes": "{size} МБ",
   "chatters": "Участники чата",
   "lastSeenAgo": "Последняя активность {time} назад",
   "@lastSeenAgo": {

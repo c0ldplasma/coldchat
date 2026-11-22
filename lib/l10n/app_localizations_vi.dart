@@ -410,6 +410,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get clearCache => 'Xóa bộ nhớ đệm';
 
   @override
+  String get emoteCache => 'Bộ nhớ đệm emote';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used / $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Người chat';
 
   @override

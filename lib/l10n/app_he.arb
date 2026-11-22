@@ -245,6 +245,9 @@
   "clearAll": "ניקוי הכול",
   "cache": "מטמון",
   "clearCache": "ניקוי המטמון",
+  "emoteCache": "מטמון אימוטים",
+  "emoteCacheUsage": "{used} מתוך {limit}",
+  "megabytes": "{size} MB",
   "chatters": "משתתפי הצ׳אט",
   "lastSeenAgo": "פעילות אחרונה: לפני {time}",
   "@lastSeenAgo": {

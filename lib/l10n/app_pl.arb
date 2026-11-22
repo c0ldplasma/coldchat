@@ -245,6 +245,9 @@
   "clearAll": "Wyczyść wszystko",
   "cache": "Pamięć podręczna",
   "clearCache": "Wyczyść pamięć podręczną",
+  "emoteCache": "Pamięć podręczna emotek",
+  "emoteCacheUsage": "{used} z {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Czatujący",
   "lastSeenAgo": "Ostatnia aktywność {time} temu",
   "@lastSeenAgo": {

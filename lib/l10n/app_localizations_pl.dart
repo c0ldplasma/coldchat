@@ -410,6 +410,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get clearCache => 'Wyczyść pamięć podręczną';
 
   @override
+  String get emoteCache => 'Pamięć podręczna emotek';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used z $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Czatujący';
 
   @override
