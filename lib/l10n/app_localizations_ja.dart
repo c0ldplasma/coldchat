@@ -552,6 +552,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get deleteConversationSubtitle => 'この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。';
 
   @override
+  String get logInToChat => 'ログインしてチャットする';
+
+  @override
+  String get logInToSeeMore => 'ログインして詳しく見る';
+
+  @override
+  String get uploadNeedsLogin => 'チャットで写真を共有するにはログインしてください';
+
+  @override
   String get whisperNeedsLogin => 'ウィスパーを送るには、Twitchでログインしてください。';
 
   @override

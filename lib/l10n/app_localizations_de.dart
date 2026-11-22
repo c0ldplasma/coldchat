@@ -561,6 +561,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Löscht die Nachrichten von diesem Gerät. Twitch speichert keinen Verlauf von Flüsternachrichten.';
 
   @override
+  String get logInToChat => 'Anmelden, um zu chatten';
+
+  @override
+  String get logInToSeeMore => 'Anmelden, um mehr zu sehen';
+
+  @override
+  String get uploadNeedsLogin => 'Melde dich an, um Fotos im Chat zu teilen';
+
+  @override
   String get whisperNeedsLogin => 'Melde dich bei Twitch an, um Flüsternachrichten zu senden.';
 
   @override

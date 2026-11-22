@@ -556,6 +556,15 @@ class AppLocalizationsSv extends AppLocalizations {
       'Raderar meddelandena från den här enheten. Twitch sparar ingen historik över viskningar.';
 
   @override
+  String get logInToChat => 'Logga in för att chatta';
+
+  @override
+  String get logInToSeeMore => 'Logga in för att se mer';
+
+  @override
+  String get uploadNeedsLogin => 'Logga in för att dela bilder i chatten';
+
+  @override
   String get whisperNeedsLogin => 'Logga in med Twitch för att skicka viskningar.';
 
   @override

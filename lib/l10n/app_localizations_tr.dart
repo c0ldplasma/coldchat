@@ -554,6 +554,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deleteConversationSubtitle => 'Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.';
 
   @override
+  String get logInToChat => 'Sohbet etmek için giriş yap';
+
+  @override
+  String get logInToSeeMore => 'Daha fazlası için giriş yap';
+
+  @override
+  String get uploadNeedsLogin => 'Sohbette fotoğraf paylaşmak için giriş yap';
+
+  @override
   String get whisperNeedsLogin => 'Fısıltı göndermek için Twitch ile giriş yap.';
 
   @override

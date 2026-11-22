@@ -558,6 +558,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Elimina i messaggi da questo dispositivo. Twitch non conserva la cronologia dei sussurri.';
 
   @override
+  String get logInToChat => 'Accedi per chattare';
+
+  @override
+  String get logInToSeeMore => 'Accedi per vedere di più';
+
+  @override
+  String get uploadNeedsLogin => 'Accedi per condividere foto in chat';
+
+  @override
   String get whisperNeedsLogin => 'Accedi con Twitch per inviare sussurri.';
 
   @override

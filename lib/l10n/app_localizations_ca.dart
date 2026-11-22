@@ -556,6 +556,15 @@ class AppLocalizationsCa extends AppLocalizations {
       'Suprimeix els missatges d\'aquest dispositiu. Twitch no desa l\'historial de xiuxiueigs.';
 
   @override
+  String get logInToChat => 'Inicia la sessió per xatejar';
+
+  @override
+  String get logInToSeeMore => 'Inicia la sessió per veure\'n més';
+
+  @override
+  String get uploadNeedsLogin => 'Inicia la sessió per compartir fotos al xat';
+
+  @override
   String get whisperNeedsLogin => 'Inicia la sessió amb Twitch per enviar xiuxiueigs.';
 
   @override

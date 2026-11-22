@@ -554,6 +554,15 @@ class AppLocalizationsSr extends AppLocalizations {
   String get deleteConversationSubtitle => 'Брише поруке са овог уређаја. Twitch не чува историју шапата.';
 
   @override
+  String get logInToChat => 'Пријави се за чет';
+
+  @override
+  String get logInToSeeMore => 'Пријави се да видиш више';
+
+  @override
+  String get uploadNeedsLogin => 'Пријави се за дељење фотографија у чету';
+
+  @override
   String get whisperNeedsLogin => 'Пријави се на Twitch за слање шапата.';
 
   @override

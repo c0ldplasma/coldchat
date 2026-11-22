@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../api/twitch/twitch_profile.dart';
+import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
@@ -79,10 +80,18 @@ class _UserModalState extends State<UserModal> {
       final canModerate = shownChannel?.canModerateHere ?? false;
       final loading = snapshot.connectionState != ConnectionState.done;
       final profile = snapshot.data;
+      final canLookUp = (channel?.client ?? context.read<Client>()).canLookUpProfiles;
       return ListView(
         shrinkWrap: true,
         children: [
-          if (loading || profile != null) UserModalHeader(profile: profile, name: widget.login),
+          // Without a login there is no profile, but the card still says whose it is.
+          if (loading || profile != null || !canLookUp) UserModalHeader(profile: profile, name: widget.login),
+          if (!canLookUp)
+            Tile(
+              prefix: const Icon(Icons.login_rounded),
+              title: AppLocalizations.of(context).logInToSeeMore,
+              onTap: () => showTwitchLogin(context),
+            ),
           if (profile != null)
             _UserSafetyActions(client: channel?.client ?? context.read<Client>(), user: profile.user),
           // Moderation acts on a channel; a whisper conversation has none. Only the broadcaster and moderators can

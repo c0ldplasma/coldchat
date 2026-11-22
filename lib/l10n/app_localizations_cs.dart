@@ -555,6 +555,15 @@ class AppLocalizationsCs extends AppLocalizations {
   String get deleteConversationSubtitle => 'Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.';
 
   @override
+  String get logInToChat => 'Přihlas se a chatuj';
+
+  @override
+  String get logInToSeeMore => 'Přihlas se a uvidíš víc';
+
+  @override
+  String get uploadNeedsLogin => 'Přihlas se a sdílej fotky v chatu';
+
+  @override
   String get whisperNeedsLogin => 'Pro posílání šepotů se přihlas přes Twitch.';
 
   @override
