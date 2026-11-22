@@ -277,5 +277,6 @@
   "durationHoursShort": "{count} Std.",
   "durationMinutesShort": "{count} Min.",
   "durationSecondsShort": "{count} Sek.",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Auf Twitch ansehen"
 }

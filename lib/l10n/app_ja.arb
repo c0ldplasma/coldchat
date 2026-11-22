@@ -381,5 +381,6 @@
   "durationHoursShort": "{count}時間",
   "durationMinutesShort": "{count}分",
   "durationSecondsShort": "{count}秒",
-  "durationPair": "{larger}{smaller}"
+  "durationPair": "{larger}{smaller}",
+  "watchOnTwitch": "Twitchで視聴"
 }

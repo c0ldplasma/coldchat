@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} u",
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Bekijken op Twitch"
 }

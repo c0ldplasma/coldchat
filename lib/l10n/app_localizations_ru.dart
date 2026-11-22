@@ -746,4 +746,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String durationPair(String larger, String smaller) {
     return '$larger $smaller';
   }
+
+  @override
+  String get watchOnTwitch => 'Смотреть на Twitch';
 }

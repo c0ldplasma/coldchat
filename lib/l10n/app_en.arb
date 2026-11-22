@@ -487,5 +487,9 @@
         "type": "String"
       }
     }
+  },
+  "watchOnTwitch": "Watch on Twitch",
+  "@watchOnTwitch": {
+    "description": "Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it."
   }
 }

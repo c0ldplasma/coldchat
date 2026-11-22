@@ -1390,6 +1390,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{larger} {smaller}'**
   String durationPair(String larger, String smaller);
+
+  /// Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch on Twitch'**
+  String get watchOnTwitch;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

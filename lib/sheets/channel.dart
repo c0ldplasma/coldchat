@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../api/twitch/twitch_profile.dart';
 import '../components/modal.dart';
 import '../components/tile.dart';
+import '../data/live/live_channels_cubit.dart';
 import '../l10n/app_localizations.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/channel_info.dart';
@@ -43,6 +45,19 @@ class _ChannelModalState extends State<ChannelModal> {
       shrinkWrap: true,
       children: [
         UserModalHeader(profile: state, name: channel.name.replaceFirst('#', '')),
+        // Only while the channel is live: there is nothing to watch otherwise.
+        if (isChannelLive(login: channel.name, profile: state, live: context.watch<LiveChannelsCubit>().state))
+          Tile(
+            title: AppLocalizations.of(context).watchOnTwitch,
+            prefix: const Icon(Icons.play_arrow_rounded),
+            // The system opens twitch.tv links in the Twitch app when it is installed, in the browser otherwise.
+            onTap: () => unawaited(
+              launchUrl(
+                Uri.parse('https://www.twitch.tv/${channel.name.replaceFirst('#', '')}'),
+                mode: LaunchMode.externalApplication,
+              ),
+            ),
+          ),
         Tile(
           title: AppLocalizations.of(context).chatters,
           prefix: const Icon(Icons.people_outline_outlined),
