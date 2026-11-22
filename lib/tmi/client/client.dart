@@ -10,6 +10,7 @@ import '../../api/chatterino/chatterino.dart';
 import '../../api/dankchat/dankchat.dart';
 import '../../api/emojis/emoji_data.dart';
 import '../../api/frankerfacez/frankerfacez.dart';
+import '../../api/ivr/ivr.dart';
 import '../../api/recentmessages/recentmessages.dart';
 import '../../api/seventv/seventv.dart';
 import '../../api/twitch/eventsub_socket.dart';
@@ -88,7 +89,7 @@ class Client implements AccountConnector {
         FfzSource(FfzApi(api)),
         DankChatSource(DankChatApi(api)),
         ChatterinoSource(ChatterinoApi(api)),
-        TwitchSource(helix: helix),
+        TwitchSource(helix: helix, ivr: IvrApi(api)),
         EmojiSource(EmojiDataApi(api)),
       ];
 
