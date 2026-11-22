@@ -26,10 +26,7 @@ class SevenTvSource extends ChatSource with EmoteSource, BadgeSource {
         Emote(
           id: emote.id,
           name: emote.name,
-          mipmap: [
-            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
-              'https:${emote.data.host.url}/${urlArray.name}',
-          ],
+          mipmap: mipmap(emote.data.host),
           source: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
@@ -44,14 +41,20 @@ class SevenTvSource extends ChatSource with EmoteSource, BadgeSource {
         Emote(
           id: emote.id,
           name: emote.name,
-          mipmap: [
-            for (final urlArray in emote.data.host.files.where((element) => element.format != 'AVIF'))
-              'https:${emote.data.host.url}/${urlArray.name}',
-          ],
+          mipmap: mipmap(emote.data.host),
           source: this,
           flags: _isZeroWidth(emote) ? EmoteFlags.overlay : 0,
         ),
     ];
+  }
+
+  /// The emote's image URLs, smallest first. 7TV lists every size as WebP, AVIF and GIF (PNG for static emotes);
+  /// WebP is the smallest Flutter can decode (it has no AVIF decoder) at the same resolution, on average less than half
+  /// the size of the GIF and PNG files. Emotes without WebP files fall back to the other formats except AVIF.
+  static List<String> mipmap(SevenTVEmoteDataHost host) {
+    final webp = host.files.where((file) => file.format == 'WEBP');
+    final files = webp.isNotEmpty ? webp : host.files.where((file) => file.format != 'AVIF');
+    return [for (final file in files) 'https:${host.url}/${file.name}'];
   }
 
   // The emote's own ZeroWidth flag (1 << 8), or the emote set entry's (1 << 0).
