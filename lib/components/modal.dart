@@ -12,37 +12,34 @@ class Modal extends StatelessWidget {
     this.clipBehavior = Clip.antiAlias,
   });
 
+  /// The gap between the status bar and the top of a sheet as tall as the screen allows, so it still reads as a sheet.
+  static const topGap = 32.0;
+
   @override
-  Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: mediaQuery.viewInsets.bottom,
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Material(
-              color: ChatColors.of(context).sheet,
-              clipBehavior: clipBehavior,
-              borderRadius: const BorderRadius.only(topRight: Radius.circular(8.0), topLeft: Radius.circular(8.0)),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 1024.0,
-                  // Up to a small gap below the status bar, so longer sheets like
-                  // settings fit without scrolling but still read as a sheet.
-                  maxHeight: mediaQuery.size.height - mediaQuery.viewInsets.vertical - mediaQuery.padding.top - 32.0,
-                ),
-                child: SafeArea(child: child),
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+    // The route's SafeArea (useSafeArea in [show]) already keeps the sheet below the status bar, so the space given
+    // here is what's left under it.
+    child: LayoutBuilder(
+      builder: (context, constraints) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Material(
+            color: ChatColors.of(context).sheet,
+            clipBehavior: clipBehavior,
+            borderRadius: const BorderRadius.only(topRight: Radius.circular(8.0), topLeft: Radius.circular(8.0)),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 1024.0,
+                maxHeight: modalMaxHeight(constraints.maxHeight),
               ),
+              child: SafeArea(child: child),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
   static Future<void> show({
     required BuildContext context,
@@ -56,6 +53,8 @@ class Modal extends StatelessWidget {
     context: Navigator.of(context).context,
     enableDrag: enableDrag,
     isScrollControlled: true,
+    // Without it the route removes the status bar's padding from the sheet, and a tall sheet slides under it.
+    useSafeArea: true,
     backgroundColor: Colors.transparent,
     builder: (context) {
       return Modal(
@@ -65,3 +64,7 @@ class Modal extends StatelessWidget {
     },
   );
 }
+
+/// The height a sheet may take of the [available] height below the status bar (and above the keyboard): all of it but
+/// [Modal.topGap], never negative.
+double modalMaxHeight(double available) => (available - Modal.topGap).clamp(0.0, double.infinity);
