@@ -245,6 +245,9 @@
   "clearAll": "すべてクリア",
   "cache": "キャッシュ",
   "clearCache": "キャッシュをクリア",
+  "emoteCache": "エモートのキャッシュ",
+  "emoteCacheUsage": "{used} / {limit}",
+  "megabytes": "{size} MB",
   "chatters": "チャッター",
   "lastSeenAgo": "最終確認：{time}前",
   "@lastSeenAgo": {

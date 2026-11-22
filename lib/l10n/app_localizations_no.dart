@@ -410,6 +410,19 @@ class AppLocalizationsNo extends AppLocalizations {
   String get clearCache => 'Tøm hurtigbuffer';
 
   @override
+  String get emoteCache => 'Hurtigbuffer for emotes';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used av $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Chattere';
 
   @override

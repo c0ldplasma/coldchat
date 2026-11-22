@@ -410,6 +410,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get clearCache => 'Очистить кэш';
 
   @override
+  String get emoteCache => 'Кэш эмоутов';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used из $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size МБ';
+  }
+
+  @override
   String get chatters => 'Участники чата';
 
   @override

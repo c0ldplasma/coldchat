@@ -410,6 +410,19 @@ class AppLocalizationsCa extends AppLocalizations {
   String get clearCache => 'Buida la memòria cau';
 
   @override
+  String get emoteCache => 'Memòria cau d\'emotes';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used de $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Usuaris del xat';
 
   @override

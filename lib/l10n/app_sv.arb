@@ -245,6 +245,9 @@
   "clearAll": "Rensa allt",
   "cache": "Cache",
   "clearCache": "Rensa cache",
+  "emoteCache": "Emote-cache",
+  "emoteCacheUsage": "{used} av {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chattare",
   "lastSeenAgo": "Sågs senast för {time} sedan",
   "@lastSeenAgo": {

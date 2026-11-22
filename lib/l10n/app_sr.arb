@@ -245,6 +245,9 @@
   "clearAll": "Обриши све",
   "cache": "Кеш",
   "clearCache": "Обриши кеш",
+  "emoteCache": "Кеш емотова",
+  "emoteCacheUsage": "{used} од {limit}",
+  "megabytes": "{size} МБ",
   "chatters": "Учесници чета",
   "lastSeenAgo": "Последња активност пре {time}",
   "@lastSeenAgo": {

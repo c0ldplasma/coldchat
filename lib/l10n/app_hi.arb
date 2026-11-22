@@ -245,6 +245,9 @@
   "clearAll": "सब साफ़ करें",
   "cache": "कैश",
   "clearCache": "कैश साफ़ करें",
+  "emoteCache": "इमोट कैश",
+  "emoteCacheUsage": "{limit} में से {used}",
+  "megabytes": "{size} MB",
   "chatters": "चैटर्स",
   "lastSeenAgo": "{time} पहले देखा गया",
   "@lastSeenAgo": {

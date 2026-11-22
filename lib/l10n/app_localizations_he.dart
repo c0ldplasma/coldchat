@@ -410,6 +410,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get clearCache => 'ניקוי המטמון';
 
   @override
+  String get emoteCache => 'מטמון אימוטים';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used מתוך $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'משתתפי הצ׳אט';
 
   @override

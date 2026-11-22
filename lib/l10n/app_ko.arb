@@ -245,6 +245,9 @@
   "clearAll": "모두 지우기",
   "cache": "캐시",
   "clearCache": "캐시 지우기",
+  "emoteCache": "이모트 캐시",
+  "emoteCacheUsage": "{used} / {limit}",
+  "megabytes": "{size}MB",
   "chatters": "채팅 참여자",
   "lastSeenAgo": "마지막 활동: {time} 전",
   "@lastSeenAgo": {

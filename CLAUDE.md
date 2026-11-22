@@ -220,6 +220,10 @@ themselves. After changing it, run `dart run flutter_launcher_icons` and commit 
   network service (`lib/api/`, upload hosts, image sources), update `docs/privacy.html` in the same PR** and bump
   its date; the App Store privacy label and Play data safety form must match it.
 - Settings → About shows the AGPL notices and links the source of the installed build by its release tag.
+- Emote and badge images use `EmoteCacheManager.instance` (`lib/data/emote_cache.dart`): limited to 500 MB, least
+  recently used evicted first, 90-day stale period. Pass it as `cacheManager:` to every `CachedNetworkImage` of an
+  emote or badge (`test/architecture_test.dart` checks this); avatars, thumbnails and embeds use the default cache.
+  Don't override the servers' `max-age`: Twitch and FFZ can change an image under the same URL.
 - `build/` is currently untracked but present in the working tree; don't commit it.
 - **Whispers** (`lib/tmi/whispers/`) arrive over EventSub WebSocket (`lib/api/twitch/eventsub_socket.dart`,
   `user.whisper.message`) and are sent with Helix `POST /whispers`; IRC whispers are not used. Both need the

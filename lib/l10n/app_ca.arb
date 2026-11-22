@@ -245,6 +245,9 @@
   "clearAll": "Esborra-ho tot",
   "cache": "Memòria cau",
   "clearCache": "Buida la memòria cau",
+  "emoteCache": "Memòria cau d'emotes",
+  "emoteCacheUsage": "{used} de {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Usuaris del xat",
   "lastSeenAgo": "Vist per última vegada fa {time}",
   "@lastSeenAgo": {

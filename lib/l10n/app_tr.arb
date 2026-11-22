@@ -245,6 +245,9 @@
   "clearAll": "Tümünü temizle",
   "cache": "Önbellek",
   "clearCache": "Önbelleği temizle",
+  "emoteCache": "Emote önbelleği",
+  "emoteCacheUsage": "{used} / {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Sohbettekiler",
   "lastSeenAgo": "Son görülme: {time} önce",
   "@lastSeenAgo": {

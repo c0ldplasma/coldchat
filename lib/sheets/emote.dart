@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/emote.dart';
+import '../data/emote_cache.dart';
 import '../l10n/app_localizations.dart';
 import '../sources/emote_source.dart';
 
@@ -22,6 +23,7 @@ class EmoteModal extends StatelessWidget {
       children: [
         CachedNetworkImage(
           imageUrl: emote.mipmap.last,
+          cacheManager: EmoteCacheManager.instance,
           height: 64.0,
         ),
         const SizedBox(width: 16.0),

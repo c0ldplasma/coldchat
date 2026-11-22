@@ -410,6 +410,19 @@ class AppLocalizationsCs extends AppLocalizations {
   String get clearCache => 'Vymazat mezipaměť';
 
   @override
+  String get emoteCache => 'Mezipaměť emotů';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used z $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Chatující';
 
   @override

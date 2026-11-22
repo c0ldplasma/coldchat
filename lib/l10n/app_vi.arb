@@ -245,6 +245,9 @@
   "clearAll": "Xóa tất cả",
   "cache": "Bộ nhớ đệm",
   "clearCache": "Xóa bộ nhớ đệm",
+  "emoteCache": "Bộ nhớ đệm emote",
+  "emoteCacheUsage": "{used} / {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Người chat",
   "lastSeenAgo": "Hoạt động {time} trước",
   "@lastSeenAgo": {

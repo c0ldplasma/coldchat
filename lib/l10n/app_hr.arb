@@ -245,6 +245,9 @@
   "clearAll": "Očisti sve",
   "cache": "Predmemorija",
   "clearCache": "Očisti predmemoriju",
+  "emoteCache": "Predmemorija emotea",
+  "emoteCacheUsage": "{used} od {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Sudionici chata",
   "lastSeenAgo": "Zadnja aktivnost prije {time}",
   "@lastSeenAgo": {

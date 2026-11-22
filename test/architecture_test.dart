@@ -120,6 +120,26 @@ void main() {
     );
   });
 
+  // Emote and badge images share a byte-limited cache (lib/data/emote_cache.dart); in the default one, 200 files, they
+  // get evicted and downloaded again within a day.
+  test('emote and badge images use the emote cache', () {
+    final files = _dartFiles('lib');
+    final calls = [
+      for (final file in files)
+        for (final call in _calls(_code(file.readAsStringSync()), RegExp(r'\bCachedNetworkImage(Provider)?\(')))
+          if (call.contains('mipmap')) (file: _relative(file), call: call),
+    ];
+    expect(calls, isNotEmpty, reason: 'The check finds no emote images, so it checks nothing.');
+    expect(
+      [
+        for (final c in calls)
+          if (!c.call.contains('cacheManager: EmoteCacheManager.instance')) '${c.file}: ${c.call}',
+      ],
+      isEmpty,
+      reason: 'Pass cacheManager: EmoteCacheManager.instance to emote and badge images.',
+    );
+  });
+
   // A stored model whose adapter isn't registered makes opening its box throw, and main() never reaches runApp.
   // The tests register the generated list too, so only this check catches main.dart not using it.
   group('Hive adapters', () {
@@ -132,6 +152,20 @@ void main() {
       expect(_matchingLines(_dartFiles('lib'), _handRegisteredAdapter), isEmpty, reason: _hiveHint);
     });
   });
+}
+
+/// The calls in [code] that start with [start] (ending in the opening parenthesis), up to their closing one.
+List<String> _calls(String code, RegExp start) => [
+  for (final match in start.allMatches(code)) _untilClosingParenthesis(code, match.end),
+];
+
+String _untilClosingParenthesis(String code, int afterOpening) {
+  var depth = 1;
+  for (var i = afterOpening; i < code.length; i++) {
+    if (code[i] == '(') depth++;
+    if (code[i] == ')' && --depth == 0) return code.substring(afterOpening - 1, i + 1);
+  }
+  return code.substring(afterOpening - 1);
 }
 
 const _hint =

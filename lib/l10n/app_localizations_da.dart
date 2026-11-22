@@ -410,6 +410,19 @@ class AppLocalizationsDa extends AppLocalizations {
   String get clearCache => 'Ryd cache';
 
   @override
+  String get emoteCache => 'Emote-cache';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used af $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Chattere';
 
   @override
