@@ -42,4 +42,54 @@ void main() {
     expect(find.text('next'), findsNothing);
     expect(find.text('second'), findsOneWidget);
   });
+
+  // showModalBottomSheet removes the status bar's padding from the sheet unless it's opened with useSafeArea; a tall
+  // sheet like Settings then slid under the status bar.
+  testWidgets('a tall sheet stays below the status bar, with a gap', (tester) async {
+    const statusBar = 59.0;
+    tester.view.padding = FakeViewPadding(top: statusBar * tester.view.devicePixelRatio);
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ColdChatTheme.build(ColdChatTheme.defaultAccent, Brightness.dark),
+        home: Builder(
+          builder: (context) => TextButton(
+            onPressed: () => Modal.show(
+              context: context,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('header'),
+                  Flexible(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [for (var i = 0; i < 100; i++) Text('entry $i')],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            child: const Text('open'),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+
+    expect(tester.getTopLeft(find.text('header')).dy, greaterThanOrEqualTo(statusBar + Modal.topGap));
+
+    // Only the entries scroll; the header stays where it is.
+    final headerTop = tester.getTopLeft(find.text('header')).dy;
+    await tester.drag(find.text('entry 5'), const Offset(0.0, -300.0));
+    await tester.pumpAndSettle();
+    expect(tester.getTopLeft(find.text('header')).dy, headerTop);
+    expect(find.text('entry 0'), findsNothing);
+  });
+
+  test('a sheet may take all the height below the status bar but the gap, never less than nothing', () {
+    expect(modalMaxHeight(800.0), 800.0 - Modal.topGap);
+    expect(modalMaxHeight(10.0), 0.0);
+  });
 }
