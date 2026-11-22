@@ -9,8 +9,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 class EmoteCacheManager extends CacheManager with ImageCacheManager {
   static const key = 'emoteImages';
 
-  /// About 1500 mostly animated emotes, many more when they're static.
-  static const maxBytes = 300 * 1000 * 1000;
+  /// About 2500 mostly animated emotes (WebP 7TV emotes average about 200 KB), many more when they're static.
+  static const maxBytes = 500 * 1000 * 1000;
 
   /// Images not shown for this long are removed even under the budget.
   static const stalePeriod = Duration(days: 90);

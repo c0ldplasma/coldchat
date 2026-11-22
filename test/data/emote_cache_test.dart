@@ -32,8 +32,8 @@ void main() {
     });
   });
 
-  test('the emote cache keeps 300 MB for 90 days in its own cache', () {
-    expect(EmoteCacheManager.maxBytes, 300 * 1000 * 1000);
+  test('the emote cache keeps 500 MB for 90 days in its own cache', () {
+    expect(EmoteCacheManager.maxBytes, 500 * 1000 * 1000);
     expect(EmoteCacheManager.stalePeriod, const Duration(days: 90));
     expect(EmoteCacheManager.key, isNot(DefaultCacheManager.key));
   });
