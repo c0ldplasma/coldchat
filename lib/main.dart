@@ -12,10 +12,12 @@ import 'api/api_client.dart';
 import 'api/recentmessages/recentmessages.dart';
 import 'app.dart';
 import 'data/filesharing/upload_queue_cubit.dart';
+import 'data/live/live_channels_cubit.dart';
 import 'data/notifications_cubit.dart';
 import 'data/repositories/repositories.dart';
 import 'hive_registrar.g.dart';
 import 'tmi/client/client.dart';
+import 'tmi/client/client_lookups.dart';
 import 'tools/coldchat_binding.dart';
 
 Future<void> main() async {
@@ -60,6 +62,18 @@ Future<void> main() async {
         // Above the channel views on purpose: an upload must survive switching
         // tabs and must never be awaited by the composer.
         BlocProvider<UploadQueueCubit>(create: (context) => UploadQueueCubit(api: api)),
+        // Above the app, so the channel sheet (a route of its own) sees it as well as the tabs.
+        BlocProvider<LiveChannelsCubit>(
+          create: (context) {
+            final client = context.read<Client>();
+            return LiveChannelsCubit(
+              helix: () => client.helixAsActive(repositories.accounts),
+              logins: () => [for (final channel in client.channels.state) channel.name],
+              channelChanges: client.channels.stream,
+              accountChanges: repositories.accounts.activeChanges,
+            );
+          },
+        ),
       ],
       child: const App(),
     ),

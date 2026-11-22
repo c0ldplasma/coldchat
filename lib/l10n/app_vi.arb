@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} giờ",
   "durationMinutesShort": "{count} phút",
   "durationSecondsShort": "{count} giây",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Xem trên Twitch"
 }

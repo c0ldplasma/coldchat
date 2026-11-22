@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} ч",
   "durationMinutesShort": "{count} мин",
   "durationSecondsShort": "{count} с",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Gledaj na Twitchu"
 }

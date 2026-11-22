@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} שע׳",
   "durationMinutesShort": "{count} דק׳",
   "durationSecondsShort": "{count} שנ׳",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "צפייה ב-Twitch"
 }

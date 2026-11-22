@@ -742,4 +742,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String durationPair(String larger, String smaller) {
     return '$larger $smaller';
   }
+
+  @override
+  String get watchOnTwitch => 'Titta på Twitch';
 }

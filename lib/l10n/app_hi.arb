@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} घं॰",
   "durationMinutesShort": "{count} मि॰",
   "durationSecondsShort": "{count} से॰",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Twitch पर देखें"
 }

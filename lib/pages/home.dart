@@ -8,6 +8,7 @@ import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../data/home/home_streams_cubit.dart';
 import '../data/home/start_screen_cubit.dart';
+import '../data/live/live_channels_cubit.dart';
 import '../data/repositories/account_repository.dart';
 import '../data/repositories/channel_repository.dart';
 import '../data/repositories/settings_repository.dart';
@@ -286,7 +287,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 },
                                 child: SizedBox(
                                   height: 48.0,
-                                  child: Center(child: Text(channel.name)),
+                                  child: Center(child: _ChannelTabLabel(channel: channel)),
                                 ),
                               ),
                             for (final conversation in whispers)
@@ -360,6 +361,35 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       },
     ),
   );
+}
+
+/// A channel tab: its name, with a red dot before it while the channel is live.
+class _ChannelTabLabel extends StatelessWidget {
+  final Channel channel;
+
+  const _ChannelTabLabel({required this.channel});
+
+  @override
+  Widget build(BuildContext context) {
+    final login = channel.name.replaceFirst('#', '').toLowerCase();
+    return BlocSelector<LiveChannelsCubit, Set<String>, bool>(
+      selector: (live) => live.contains(login),
+      builder: (context, live) => Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (live) ...[
+            Container(
+              width: 8.0,
+              height: 8.0,
+              decoration: const BoxDecoration(color: ChatColors.live, shape: BoxShape.circle),
+            ),
+            const SizedBox(width: 6.0),
+          ],
+          Text(channel.name),
+        ],
+      ),
+    );
+  }
 }
 
 /// A whisper tab: the partner's name, on red while there are unread whispers.

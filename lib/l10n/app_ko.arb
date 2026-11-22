@@ -381,5 +381,6 @@
   "durationHoursShort": "{count}시간",
   "durationMinutesShort": "{count}분",
   "durationSecondsShort": "{count}초",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Twitch에서 보기"
 }

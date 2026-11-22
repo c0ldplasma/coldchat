@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:coldchat/app.dart';
 import 'package:coldchat/data/emote_button_icon.dart';
 import 'package:coldchat/data/filesharing/upload_queue_cubit.dart';
+import 'package:coldchat/data/live/live_channels_cubit.dart';
 import 'package:coldchat/data/notifications_cubit.dart';
 import 'package:coldchat/data/repositories/account_repository.dart';
 import 'package:coldchat/data/repositories/channel_repository.dart';
@@ -88,6 +89,15 @@ void main() {
           Provider<EmoteButtonIcon>.value(value: EmoteButtonIcon(settings, api: offlineApi())),
           BlocProvider<NotificationsCubit>.value(value: notifications),
           BlocProvider<UploadQueueCubit>.value(value: uploads),
+          BlocProvider<LiveChannelsCubit>(
+            create: (_) => LiveChannelsCubit(
+              helix: () => null,
+              logins: () => const [],
+              channelChanges: const Stream.empty(),
+              accountChanges: ChangeNotifier(),
+              watchLifecycle: false,
+            ),
+          ),
         ],
         child: const App(),
       ),

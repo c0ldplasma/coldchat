@@ -381,5 +381,6 @@
   "durationHoursShort": "{count} ώ.",
   "durationMinutesShort": "{count} λ.",
   "durationSecondsShort": "{count} δ.",
-  "durationPair": "{larger} {smaller}"
+  "durationPair": "{larger} {smaller}",
+  "watchOnTwitch": "Παρακολούθηση στο Twitch"
 }
