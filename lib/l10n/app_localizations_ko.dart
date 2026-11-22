@@ -409,6 +409,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get clearCache => '캐시 지우기';
 
   @override
+  String get emoteCache => '이모트 캐시';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used / $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '${size}MB';
+  }
+
+  @override
   String get chatters => '채팅 참여자';
 
   @override

@@ -245,6 +245,9 @@
   "clearAll": "Vymazat vše",
   "cache": "Mezipaměť",
   "clearCache": "Vymazat mezipaměť",
+  "emoteCache": "Mezipaměť emotů",
+  "emoteCacheUsage": "{used} z {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chatující",
   "lastSeenAgo": "Naposledy aktivní před {time}",
   "@lastSeenAgo": {

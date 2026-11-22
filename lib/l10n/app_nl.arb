@@ -245,6 +245,9 @@
   "clearAll": "Alles wissen",
   "cache": "Cache",
   "clearCache": "Cache wissen",
+  "emoteCache": "Emote-cache",
+  "emoteCacheUsage": "{used} van {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chatters",
   "lastSeenAgo": "{time} geleden voor het laatst gezien",
   "@lastSeenAgo": {

@@ -245,6 +245,9 @@
   "clearAll": "Fjern alt",
   "cache": "Hurtigbuffer",
   "clearCache": "Tøm hurtigbuffer",
+  "emoteCache": "Hurtigbuffer for emotes",
+  "emoteCacheUsage": "{used} av {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chattere",
   "lastSeenAgo": "Sist sett for {time} siden",
   "@lastSeenAgo": {

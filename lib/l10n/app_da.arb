@@ -245,6 +245,9 @@
   "clearAll": "Ryd alt",
   "cache": "Cache",
   "clearCache": "Ryd cache",
+  "emoteCache": "Emote-cache",
+  "emoteCacheUsage": "{used} af {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chattere",
   "lastSeenAgo": "Sidst set for {time} siden",
   "@lastSeenAgo": {

@@ -213,6 +213,26 @@
   "clearAll": "Clear all",
   "cache": "Cache",
   "clearCache": "Clear cache",
+  "emoteCache": "Emote cache",
+  "emoteCacheUsage": "{used} of {limit}",
+  "@emoteCacheUsage": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "limit": {
+        "type": "String"
+      }
+    }
+  },
+  "megabytes": "{size} MB",
+  "@megabytes": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
   "chatters": "Chatters",
   "lastSeenAgo": "Last seen {time} ago",
   "@lastSeenAgo": {

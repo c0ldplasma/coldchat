@@ -410,6 +410,19 @@ class AppLocalizationsHi extends AppLocalizations {
   String get clearCache => 'कैश साफ़ करें';
 
   @override
+  String get emoteCache => 'इमोट कैश';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$limit में से $used';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'चैटर्स';
 
   @override

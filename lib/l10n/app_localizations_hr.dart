@@ -410,6 +410,19 @@ class AppLocalizationsHr extends AppLocalizations {
   String get clearCache => 'Očisti predmemoriju';
 
   @override
+  String get emoteCache => 'Predmemorija emotea';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used od $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size MB';
+  }
+
+  @override
   String get chatters => 'Sudionici chata';
 
   @override

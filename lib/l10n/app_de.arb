@@ -185,6 +185,9 @@
   "clearAll": "Alles löschen",
   "cache": "Cache",
   "clearCache": "Cache leeren",
+  "emoteCache": "Emote-Cache",
+  "emoteCacheUsage": "{used} von {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Chatter",
   "lastSeenAgo": "Zuletzt gesehen vor {time}",
   "@lastSeenAgo": {

@@ -410,6 +410,19 @@ class AppLocalizationsSr extends AppLocalizations {
   String get clearCache => 'Обриши кеш';
 
   @override
+  String get emoteCache => 'Кеш емотова';
+
+  @override
+  String emoteCacheUsage(String used, String limit) {
+    return '$used од $limit';
+  }
+
+  @override
+  String megabytes(String size) {
+    return '$size МБ';
+  }
+
+  @override
   String get chatters => 'Учесници чета';
 
   @override

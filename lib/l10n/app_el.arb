@@ -245,6 +245,9 @@
   "clearAll": "Εκκαθάριση όλων",
   "cache": "Προσωρινή μνήμη",
   "clearCache": "Εκκαθάριση προσωρινής μνήμης",
+  "emoteCache": "Προσωρινή μνήμη emotes",
+  "emoteCacheUsage": "{used} από {limit}",
+  "megabytes": "{size} MB",
   "chatters": "Συμμετέχοντες",
   "lastSeenAgo": "Τελευταία δραστηριότητα πριν από {time}",
   "@lastSeenAgo": {

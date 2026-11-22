@@ -12,6 +12,7 @@ import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../components/surface.dart';
 import '../components/tile.dart';
+import '../data/emote_cache.dart';
 import '../data/filesharing/upload_queue_cubit.dart';
 import '../data/filesharing/upload_task.dart';
 import '../data/repositories/custom_command_repository.dart';
@@ -354,7 +355,12 @@ class ChannelViewState extends State<ChannelView> {
           prefix: EmoteGlyph(
             emote: emote,
             size: 24.0,
-            image: () => CachedNetworkImage(imageUrl: emote.mipmap.last, width: 24.0, height: 24.0),
+            image: () => CachedNetworkImage(
+              imageUrl: emote.mipmap.last,
+              cacheManager: EmoteCacheManager.instance,
+              width: 24.0,
+              height: 24.0,
+            ),
           ),
           title: emote.name,
           subtitle: emote.source.name,

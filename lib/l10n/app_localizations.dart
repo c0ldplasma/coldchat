@@ -863,6 +863,24 @@ abstract class AppLocalizations {
   /// **'Clear cache'**
   String get clearCache;
 
+  /// No description provided for @emoteCache.
+  ///
+  /// In en, this message translates to:
+  /// **'Emote cache'**
+  String get emoteCache;
+
+  /// No description provided for @emoteCacheUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {limit}'**
+  String emoteCacheUsage(String used, String limit);
+
+  /// No description provided for @megabytes.
+  ///
+  /// In en, this message translates to:
+  /// **'{size} MB'**
+  String megabytes(String size);
+
   /// No description provided for @chatters.
   ///
   /// In en, this message translates to:
