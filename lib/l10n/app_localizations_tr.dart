@@ -362,7 +362,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get continueWithoutLogin => 'Giriş yapmadan devam et';
 
   @override
-  String get logInForSearch => 'Kanal aramak ve canlı yayınları görmek için giriş yap';
+  String get logInForSearch => 'Arama sonuçlarını ve popüler canlı kanalları görmek için giriş yap';
 
   @override
   String get loginWithTwitch => 'Twitch ile giriş yap';

@@ -362,7 +362,7 @@ class AppLocalizationsHr extends AppLocalizations {
   String get continueWithoutLogin => 'Nastavi bez prijave';
 
   @override
-  String get logInForSearch => 'Prijavi se za pretraživanje kanala i prijenose uživo';
+  String get logInForSearch => 'Prijavi se za rezultate pretraživanja i popularne kanale uživo';
 
   @override
   String get loginWithTwitch => 'Prijavi se putem Twitcha';

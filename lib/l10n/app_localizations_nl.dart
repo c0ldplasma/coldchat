@@ -364,7 +364,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get continueWithoutLogin => 'Doorgaan zonder in te loggen';
 
   @override
-  String get logInForSearch => 'Log in om kanalen te zoeken en livestreams te zien';
+  String get logInForSearch => 'Log in om zoekresultaten en populaire live kanalen te zien';
 
   @override
   String get loginWithTwitch => 'Inloggen met Twitch';

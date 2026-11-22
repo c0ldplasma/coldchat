@@ -362,7 +362,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get continueWithoutLogin => 'המשך בלי להתחבר';
 
   @override
-  String get logInForSearch => 'יש להתחבר כדי לחפש ערוצים ולראות שידורים חיים';
+  String get logInForSearch => 'יש להתחבר כדי לראות תוצאות חיפוש וערוצים פופולריים בשידור חי';
 
   @override
   String get loginWithTwitch => 'התחברות עם Twitch';

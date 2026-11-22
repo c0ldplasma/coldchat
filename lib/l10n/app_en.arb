@@ -200,9 +200,9 @@
   "@continueWithoutLogin": {
     "description": "Plain text button under 'Log in with Twitch' on the first start screen: use the app read-only."
   },
-  "logInForSearch": "Log in to search channels and see live streams",
+  "logInForSearch": "Log in to see search results and popular live channels",
   "@logInForSearch": {
-    "description": "On the home tab while logged out, in place of the live stream lists: starts the Twitch login."
+    "description": "On the home tab while logged out, in place of the live channel lists (ColdChat shows no video): starts the Twitch login."
   },
   "loginWithTwitch": "Log in with Twitch",
   "addChannel": "Add channel",

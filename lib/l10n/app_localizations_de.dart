@@ -364,7 +364,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get continueWithoutLogin => 'Ohne Anmeldung fortfahren';
 
   @override
-  String get logInForSearch => 'Melde dich an, um Kanäle zu suchen und Livestreams zu sehen';
+  String get logInForSearch => 'Melde dich an, um Suchergebnisse und beliebte Live-Kanäle zu sehen';
 
   @override
   String get loginWithTwitch => 'Mit Twitch anmelden';

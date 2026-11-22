@@ -362,7 +362,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get continueWithoutLogin => 'Fortsett uten å logge inn';
 
   @override
-  String get logInForSearch => 'Logg inn for å søke etter kanaler og se direktesendinger';
+  String get logInForSearch => 'Logg inn for å se søkeresultater og populære kanaler som sender direkte';
 
   @override
   String get loginWithTwitch => 'Logg inn med Twitch';

@@ -361,7 +361,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get continueWithoutLogin => '로그인하지 않고 계속';
 
   @override
-  String get logInForSearch => '로그인하면 채널을 검색하고 라이브 방송을 볼 수 있어요';
+  String get logInForSearch => '로그인하면 검색 결과와 인기 라이브 채널을 볼 수 있어요';
 
   @override
   String get loginWithTwitch => 'Twitch로 로그인';

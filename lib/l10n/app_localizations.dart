@@ -767,10 +767,10 @@ abstract class AppLocalizations {
   /// **'Continue without logging in'**
   String get continueWithoutLogin;
 
-  /// On the home tab while logged out, in place of the live stream lists: starts the Twitch login.
+  /// On the home tab while logged out, in place of the live channel lists (ColdChat shows no video): starts the Twitch login.
   ///
   /// In en, this message translates to:
-  /// **'Log in to search channels and see live streams'**
+  /// **'Log in to see search results and popular live channels'**
   String get logInForSearch;
 
   /// No description provided for @loginWithTwitch.

@@ -362,7 +362,8 @@ class AppLocalizationsEl extends AppLocalizations {
   String get continueWithoutLogin => 'Συνέχεια χωρίς σύνδεση';
 
   @override
-  String get logInForSearch => 'Συνδέσου για να ψάχνεις κανάλια και να βλέπεις ζωντανές μεταδόσεις';
+  String get logInForSearch =>
+      'Συνδέσου για να βλέπεις αποτελέσματα αναζήτησης και δημοφιλή κανάλια σε ζωντανή μετάδοση';
 
   @override
   String get loginWithTwitch => 'Σύνδεση με Twitch';

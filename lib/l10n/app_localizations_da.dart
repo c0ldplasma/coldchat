@@ -362,7 +362,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get continueWithoutLogin => 'Fortsæt uden at logge ind';
 
   @override
-  String get logInForSearch => 'Log ind for at søge efter kanaler og se livestreams';
+  String get logInForSearch => 'Log ind for at se søgeresultater og populære kanaler, der er live';
 
   @override
   String get loginWithTwitch => 'Log ind med Twitch';

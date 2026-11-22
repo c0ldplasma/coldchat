@@ -362,7 +362,7 @@ class AppLocalizationsCa extends AppLocalizations {
   String get continueWithoutLogin => 'Continua sense iniciar la sessió';
 
   @override
-  String get logInForSearch => 'Inicia la sessió per cercar canals i veure directes';
+  String get logInForSearch => 'Inicia la sessió per veure resultats de cerca i canals populars en directe';
 
   @override
   String get loginWithTwitch => 'Inicia la sessió amb Twitch';

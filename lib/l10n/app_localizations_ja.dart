@@ -361,7 +361,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get continueWithoutLogin => 'ログインせずに続ける';
 
   @override
-  String get logInForSearch => 'ログインするとチャンネル検索や配信中の一覧が使えます';
+  String get logInForSearch => 'ログインすると検索結果や人気の配信中チャンネルが表示されます';
 
   @override
   String get loginWithTwitch => 'Twitchでログイン';

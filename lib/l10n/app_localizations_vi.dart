@@ -362,7 +362,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get continueWithoutLogin => 'Tiếp tục mà không đăng nhập';
 
   @override
-  String get logInForSearch => 'Đăng nhập để tìm kênh và xem các buổi phát trực tiếp';
+  String get logInForSearch => 'Đăng nhập để xem kết quả tìm kiếm và các kênh nổi tiếng đang phát trực tiếp';
 
   @override
   String get loginWithTwitch => 'Đăng nhập bằng Twitch';

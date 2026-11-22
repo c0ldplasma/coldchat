@@ -364,7 +364,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get continueWithoutLogin => 'Continuer sans se connecter';
 
   @override
-  String get logInForSearch => 'Connecte-toi pour chercher des chaînes et voir les lives';
+  String get logInForSearch => 'Connecte-toi pour voir les résultats de recherche et les chaînes populaires en live';
 
   @override
   String get loginWithTwitch => 'Se connecter avec Twitch';

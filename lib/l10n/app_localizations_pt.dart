@@ -362,7 +362,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get continueWithoutLogin => 'Continuar sem entrar';
 
   @override
-  String get logInForSearch => 'Entre para buscar canais e ver transmissões ao vivo';
+  String get logInForSearch => 'Entre para ver resultados de busca e canais populares ao vivo';
 
   @override
   String get loginWithTwitch => 'Entrar com a Twitch';

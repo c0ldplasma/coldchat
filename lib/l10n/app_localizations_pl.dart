@@ -362,7 +362,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get continueWithoutLogin => 'Kontynuuj bez logowania';
 
   @override
-  String get logInForSearch => 'Zaloguj się, aby wyszukiwać kanały i widzieć transmisje na żywo';
+  String get logInForSearch => 'Zaloguj się, aby zobaczyć wyniki wyszukiwania i popularne kanały na żywo';
 
   @override
   String get loginWithTwitch => 'Zaloguj się przez Twitcha';
