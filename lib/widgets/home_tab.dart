@@ -19,7 +19,6 @@ import '../theme/coldchat_theme.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_lookups.dart';
 import '../tools/browser_warmup.dart';
-import '../tools/channel_ranking.dart';
 import 'avatar_button.dart';
 
 /// Joins [channelName] (if not already joined) and switches to its tab via the
@@ -163,7 +162,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
                 ChannelSearchFailed() => SliverList.list(
                   children: [Text(AppLocalizations.of(context).channelSearchFailed)],
                 ),
-                ChannelSearchLoaded(:final results) => _searchResults(context, results),
+                final ChannelSearchLoaded loaded => _searchResults(context, loaded),
               },
             ),
           ],
@@ -172,16 +171,14 @@ class _HomeTabViewState extends State<_HomeTabView> {
     },
   );
 
-  Widget _searchResults(BuildContext context, List<ChannelCandidate> results) {
-    final query = normalizeChannelQuery(searchTextController.text);
-    // The typed name as a channel to join, if it can be one and the results don't already show it as the exact match.
-    final showTyped = couldBeLogin(query) && !results.any((c) => c.login.toLowerCase() == query.toLowerCase());
+  Widget _searchResults(BuildContext context, ChannelSearchLoaded search) {
+    final typedChannel = search.typedChannel;
     final colors = Theme.of(context).colorScheme;
     return SliverList.list(
       children: [
-        if (showTyped) ...[
+        if (typedChannel != null) ...[
           Tile(
-            onTap: () => _openSearchResult('#${query.toLowerCase()}'),
+            onTap: () => _openSearchResult('#$typedChannel'),
             prefix: ClipRRect(
               borderRadius: BorderRadius.circular(48.0),
               clipBehavior: Clip.antiAlias,
@@ -190,11 +187,11 @@ class _HomeTabViewState extends State<_HomeTabView> {
                 child: const Icon(Icons.add_circle_outline),
               ),
             ),
-            title: query,
+            title: search.query,
           ),
           const Separator(),
         ],
-        for (final result in results)
+        for (final result in search.results)
           Tile(
             onTap: () => _openSearchResult('#${result.login}'),
             prefix: ClipRRect(

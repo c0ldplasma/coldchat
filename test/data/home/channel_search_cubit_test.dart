@@ -140,6 +140,42 @@ void main() {
     });
   });
 
+  test('without an account every letter typed shows, not only the first', () {
+    fakeAsync((async) {
+      helix = null;
+      final cubit = create();
+      final shown = <String?>[];
+      final subscription = cubit.stream.listen((state) => shown.add(state is ChannelSearchLoaded ? state.query : null));
+      for (final text in ['f', 'fo', 'for']) {
+        cubit.queryChanged(text);
+        async.flushMicrotasks();
+      }
+      expect(shown, ['f', 'fo', 'for']);
+      expect((cubit.state as ChannelSearchLoaded).typedChannel, 'for');
+      unawaited(subscription.cancel());
+      unawaited(cubit.close());
+    });
+  });
+
+  group('typedChannel', () {
+    test('is the typed name, lower case, without # or @', () {
+      helix = null;
+      final cubit = create()..queryChanged('  #Forsen ');
+      expect((cubit.state as ChannelSearchLoaded).typedChannel, 'forsen');
+      unawaited(cubit.close());
+    });
+
+    test('is null for text that cannot be a Twitch login', () {
+      expect(const ChannelSearchLoaded('hello world', []).typedChannel, isNull);
+      expect(const ChannelSearchLoaded('ö', []).typedChannel, isNull);
+    });
+
+    test('is null when the results already show the exact match', () {
+      expect(ChannelSearchLoaded('Forsen', [_candidate('forsen')]).typedChannel, isNull);
+      expect(ChannelSearchLoaded('fors', [_candidate('forsen')]).typedChannel, 'fors');
+    });
+  });
+
   test('closing cancels a pending search', () {
     fakeAsync((async) {
       final cubit = create()..queryChanged('forsen');
