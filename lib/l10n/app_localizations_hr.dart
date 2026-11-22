@@ -359,6 +359,12 @@ class AppLocalizationsHr extends AppLocalizations {
   String get appTagline => 'Twitch chat s emotikonima iz 7TV-a, BTTV-a i FFZ-a';
 
   @override
+  String get continueWithoutLogin => 'Nastavi bez prijave';
+
+  @override
+  String get logInForSearch => 'Prijavi se za rezultate pretraživanja i popularne kanale uživo';
+
+  @override
   String get loginWithTwitch => 'Prijavi se putem Twitcha';
 
   @override

@@ -27,7 +27,7 @@ class AccountSession implements AccountConnector {
   /// Where a refreshed expiry of the active account is saved. Null in tests, then nothing is saved.
   final AccountRepository? accounts;
 
-  /// Called when a token for API requests is there after browsing anonymously, e.g. to load what needs one.
+  /// Called when a token for API requests is there after browsing anonymously, e.g. to load the badges from Helix.
   final void Function() onApiAccessGained;
 
   /// Called when [connectAs] or [disconnect] switched the account (null when logged out), after [ownColor] was reset.
@@ -210,8 +210,8 @@ class AccountSession implements AccountConnector {
       return;
     }
 
-    // Twitch badges need a token, so a first login after browsing anonymously
-    // has to load them now.
+    // Without a token the Twitch badges came from ivr.fi; a first login after
+    // browsing anonymously loads them from Helix instead.
     final gainedApiAccess = _apiAccount?.tokenData.accessToken == null && twitchAccount.tokenData.accessToken != null;
     _apiAccount = twitchAccount;
     if (gainedApiAccess) onApiAccessGained();

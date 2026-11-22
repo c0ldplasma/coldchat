@@ -228,6 +228,8 @@
   "hideMessage": "Amaga el missatge",
   "scrollToBottom": "Ves al final",
   "appTagline": "Xat de Twitch amb emotes de 7TV, BTTV i FFZ",
+  "continueWithoutLogin": "Continua sense iniciar la sessió",
+  "logInForSearch": "Inicia la sessió per veure resultats de cerca i canals populars en directe",
   "loginWithTwitch": "Inicia la sessió amb Twitch",
   "addChannel": "Afegeix un canal",
   "chatSettings": "Configuració del xat",

@@ -228,6 +228,8 @@
   "hideMessage": "Ẩn tin nhắn",
   "scrollToBottom": "Cuộn xuống cuối",
   "appTagline": "Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ",
+  "continueWithoutLogin": "Tiếp tục mà không đăng nhập",
+  "logInForSearch": "Đăng nhập để xem kết quả tìm kiếm và các kênh nổi tiếng đang phát trực tiếp",
   "loginWithTwitch": "Đăng nhập bằng Twitch",
   "addChannel": "Thêm kênh",
   "chatSettings": "Cài đặt chat",

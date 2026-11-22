@@ -228,6 +228,8 @@
   "hideMessage": "संदेश छिपाएं",
   "scrollToBottom": "सबसे नीचे जाएं",
   "appTagline": "7TV, BTTV और FFZ इमोट के साथ Twitch चैट",
+  "continueWithoutLogin": "लॉग इन किए बिना जारी रखें",
+  "logInForSearch": "खोज परिणाम और लोकप्रिय लाइव चैनल देखने के लिए लॉग इन करें",
   "loginWithTwitch": "Twitch से लॉग इन करें",
   "addChannel": "चैनल जोड़ें",
   "chatSettings": "चैट सेटिंग्स",

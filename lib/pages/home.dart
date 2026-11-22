@@ -7,8 +7,10 @@ import 'package:provider/provider.dart';
 import '../components/bottom_bar.dart';
 import '../components/modal.dart';
 import '../data/home/home_streams_cubit.dart';
+import '../data/home/start_screen_cubit.dart';
 import '../data/repositories/account_repository.dart';
 import '../data/repositories/channel_repository.dart';
+import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../sheets/channel.dart';
 import '../sheets/coldchat.dart';
@@ -24,6 +26,7 @@ import '../tmi/whispers/whisper_channel.dart';
 import '../tmi/whispers/whispers.dart';
 import '../widgets/channel_view.dart';
 import '../widgets/home_tab.dart';
+import '../widgets/logged_out_start.dart';
 import '../widgets/login_expired_banner.dart';
 
 /// Lets descendants (the search/stream tiles in [HomeTab]) ask the home page to
@@ -186,9 +189,27 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
-  // Above the tab view, which disposes the home tab on every tab switch, so its stream lists survive switching.
+  // A fresh install first shows only the start screen, without the tab bar, until the user logs in or continues
+  // without logging in.
   @override
-  Widget build(BuildContext context) => BlocProvider<HomeStreamsCubit>(
+  Widget build(BuildContext context) => BlocProvider<StartScreenCubit>(
+    create: (context) {
+      final settings = context.read<SettingsRepository>();
+      final accounts = context.read<AccountRepository>();
+      return StartScreenCubit(
+        isDone: () => settings.startScreenDone,
+        markDone: settings.finishStartScreen,
+        hasAccount: () => accounts.accounts.isNotEmpty,
+        changes: Listenable.merge([settings.startScreenChanges, accounts.changes]),
+      );
+    },
+    child: BlocBuilder<StartScreenCubit, bool>(
+      builder: (context, startScreen) => startScreen ? const Scaffold(body: LoggedOutStart()) : _buildHome(context),
+    ),
+  );
+
+  // Above the tab view, which disposes the home tab on every tab switch, so its stream lists survive switching.
+  Widget _buildHome(BuildContext context) => BlocProvider<HomeStreamsCubit>(
     create: (context) {
       final accounts = context.read<AccountRepository>();
       final client = context.read<Client>();

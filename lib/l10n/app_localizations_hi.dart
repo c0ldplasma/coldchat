@@ -359,6 +359,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get appTagline => '7TV, BTTV और FFZ इमोट के साथ Twitch चैट';
 
   @override
+  String get continueWithoutLogin => 'लॉग इन किए बिना जारी रखें';
+
+  @override
+  String get logInForSearch => 'खोज परिणाम और लोकप्रिय लाइव चैनल देखने के लिए लॉग इन करें';
+
+  @override
   String get loginWithTwitch => 'Twitch से लॉग इन करें';
 
   @override

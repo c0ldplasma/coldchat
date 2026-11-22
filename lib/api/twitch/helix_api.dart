@@ -105,13 +105,8 @@ class HelixApi {
       ApiClient.decode(await _send('GET', path, query: query), _badgeSetsFromJson, inIsolate: true);
 
   // Static, so it can be sent to the isolate that decodes the response.
-  static Map<String, Map<String, TwitchBadge>> _badgeSetsFromJson(dynamic json) => {
-    for (final badgeSet in (json as JsonMap)['data'] as List<dynamic>)
-      (badgeSet as JsonMap)['set_id'] as String: {
-        for (final badgeVersion in badgeSet['versions'] as List<dynamic>)
-          (badgeVersion as JsonMap)['id'] as String: TwitchBadge.fromJson(badgeVersion),
-      },
-  };
+  static Map<String, Map<String, TwitchBadge>> _badgeSetsFromJson(dynamic json) =>
+      twitchBadgeSetsFromJson((json as JsonMap)['data'] as List<dynamic>);
 
   /// Up to 100 users per request; logins that don't exist are left out.
   Future<List<TwitchUser>> usersByLogin(List<String> logins) async {

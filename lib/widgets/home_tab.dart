@@ -14,12 +14,12 @@ import '../data/repositories/account_repository.dart';
 import '../data/twitch/stream_data.dart';
 import '../l10n/app_localizations.dart';
 import '../pages/home.dart';
+import '../sheets/login.dart';
 import '../theme/coldchat_theme.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_lookups.dart';
-import '../tools/channel_ranking.dart';
+import '../tools/browser_warmup.dart';
 import 'avatar_button.dart';
-import 'logged_out_start.dart';
 
 /// Joins [channelName] (if not already joined) and switches to its tab via the
 /// [HomeTabSwitcher] provided by the home page.
@@ -33,7 +33,8 @@ void joinAndOpenChannel(BuildContext context, String channelName) {
 }
 
 /// The home tab: channel search, recommended and top streams. The streams come from the [HomeStreamsCubit] the home
-/// page provides; the search lives (and resets) with this tab.
+/// page provides; the search lives (and resets) with this tab. Logged out, Twitch's search and stream lists can't be
+/// used (Helix needs a login): the search field then only opens the channel typed, and a line offers to log in.
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
 
@@ -83,7 +84,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
 
   // The "+" in the tab bar: put the cursor in the channel search, with any old search selected so typing replaces it.
   void _focusSearchIfRequested() {
-    if (!mounted || !searchRequest.take() || !context.read<HomeStreamsCubit>().state.loggedIn) return;
+    if (!mounted || !searchRequest.take()) return;
     searchFocus.requestFocus();
     searchTextController.selection = TextSelection(baseOffset: 0, extentOffset: searchTextController.text.length);
     // Focus set from code, mid tab animation, doesn't bring up the keyboard on Android by itself.
@@ -104,8 +105,6 @@ class _HomeTabViewState extends State<_HomeTabView> {
   Widget build(BuildContext context) => BlocBuilder<HomeStreamsCubit, HomeStreamsState>(
     buildWhen: (previous, current) => previous.loggedIn != current.loggedIn,
     builder: (context, streamsState) {
-      if (!streamsState.loggedIn) return const LoggedOutStart();
-
       return RefreshIndicator(
         onRefresh: context.read<HomeStreamsCubit>().refresh,
         child: CustomScrollView(
@@ -158,12 +157,12 @@ class _HomeTabViewState extends State<_HomeTabView> {
             ),
             BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
               builder: (context, search) => switch (search) {
-                ChannelSearchIdle() => const _StreamLists(),
+                ChannelSearchIdle() => streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
                 ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
                 ChannelSearchFailed() => SliverList.list(
                   children: [Text(AppLocalizations.of(context).channelSearchFailed)],
                 ),
-                ChannelSearchLoaded(:final results) => _searchResults(context, results),
+                final ChannelSearchLoaded loaded => _searchResults(context, loaded),
               },
             ),
           ],
@@ -172,16 +171,14 @@ class _HomeTabViewState extends State<_HomeTabView> {
     },
   );
 
-  Widget _searchResults(BuildContext context, List<ChannelCandidate> results) {
-    final query = normalizeChannelQuery(searchTextController.text);
-    // The typed name as a channel to join, unless the results already show it as the exact match.
-    final hasExact = results.any((c) => c.login.toLowerCase() == query.toLowerCase());
+  Widget _searchResults(BuildContext context, ChannelSearchLoaded search) {
+    final typedChannel = search.typedChannel;
     final colors = Theme.of(context).colorScheme;
     return SliverList.list(
       children: [
-        if (!hasExact && query.isNotEmpty) ...[
+        if (typedChannel != null) ...[
           Tile(
-            onTap: () => _openSearchResult('#${query.toLowerCase()}'),
+            onTap: () => _openSearchResult('#$typedChannel'),
             prefix: ClipRRect(
               borderRadius: BorderRadius.circular(48.0),
               clipBehavior: Clip.antiAlias,
@@ -190,11 +187,11 @@ class _HomeTabViewState extends State<_HomeTabView> {
                 child: const Icon(Icons.add_circle_outline),
               ),
             ),
-            title: query,
+            title: search.query,
           ),
           const Separator(),
         ],
-        for (final result in results)
+        for (final result in search.results)
           Tile(
             onTap: () => _openSearchResult('#${result.login}'),
             prefix: ClipRRect(
@@ -230,6 +227,24 @@ class _HomeTabViewState extends State<_HomeTabView> {
       ],
     );
   }
+}
+
+/// In place of the stream lists while logged out: they come from Helix, which needs a login.
+class _LogInForStreams extends StatelessWidget {
+  const _LogInForStreams();
+
+  @override
+  Widget build(BuildContext context) => SliverList.list(
+    children: [
+      WarmsUpTwitchLogin(
+        child: Tile(
+          onTap: () => showTwitchLogin(context),
+          prefix: Icon(Icons.login_rounded, color: Theme.of(context).colorScheme.primary),
+          title: AppLocalizations.of(context).logInForSearch,
+        ),
+      ),
+    ],
+  );
 }
 
 class _Spinner extends StatelessWidget {
