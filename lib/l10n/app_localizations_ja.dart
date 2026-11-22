@@ -358,6 +358,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get appTagline => '7TV・BTTV・FFZのエモートが使えるTwitchチャット';
 
   @override
+  String get continueWithoutLogin => 'ログインせずに続ける';
+
+  @override
+  String get logInForSearch => 'ログインするとチャンネル検索や配信中の一覧が使えます';
+
+  @override
   String get loginWithTwitch => 'Twitchでログイン';
 
   @override

@@ -359,6 +359,12 @@ class AppLocalizationsEl extends AppLocalizations {
   String get appTagline => 'Συνομιλία Twitch με emote από 7TV, BTTV και FFZ';
 
   @override
+  String get continueWithoutLogin => 'Συνέχεια χωρίς σύνδεση';
+
+  @override
+  String get logInForSearch => 'Συνδέσου για να ψάχνεις κανάλια και να βλέπεις ζωντανές μεταδόσεις';
+
+  @override
   String get loginWithTwitch => 'Σύνδεση με Twitch';
 
   @override

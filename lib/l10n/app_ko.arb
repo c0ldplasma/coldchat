@@ -228,6 +228,8 @@
   "hideMessage": "메시지 숨기기",
   "scrollToBottom": "맨 아래로 스크롤",
   "appTagline": "7TV, BTTV, FFZ 이모티콘을 지원하는 Twitch 채팅",
+  "continueWithoutLogin": "로그인하지 않고 계속",
+  "logInForSearch": "로그인하면 채널을 검색하고 라이브 방송을 볼 수 있어요",
   "loginWithTwitch": "Twitch로 로그인",
   "addChannel": "채널 추가",
   "chatSettings": "채팅 설정",

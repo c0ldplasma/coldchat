@@ -125,12 +125,16 @@ void main() {
     });
   });
 
-  test('without an account nothing is searched', () {
+  test('without an account nothing is searched: the results are empty right away, so only the typed name shows', () {
     fakeAsync((async) {
       helix = null;
       final cubit = create()..queryChanged('forsen');
+      expect(resultLogins(cubit.state), isEmpty);
       async.elapse(const Duration(seconds: 1));
       expect(queries, isEmpty);
+      expect(resultLogins(cubit.state), isEmpty);
+
+      cubit.queryChanged('');
       expect(cubit.state, isA<ChannelSearchIdle>());
       unawaited(cubit.close());
     });

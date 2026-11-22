@@ -228,6 +228,8 @@
   "hideMessage": "Сакриј поруку",
   "scrollToBottom": "Скочи на дно",
   "appTagline": "Twitch чет са емотиконима из 7TV, BTTV и FFZ",
+  "continueWithoutLogin": "Настави без пријаве",
+  "logInForSearch": "Пријави се за претрагу канала и преносе уживо",
   "loginWithTwitch": "Пријави се преко Twitch-а",
   "addChannel": "Додај канал",
   "chatSettings": "Подешавања чета",

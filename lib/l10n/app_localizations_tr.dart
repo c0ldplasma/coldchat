@@ -359,6 +359,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get appTagline => '7TV, BTTV ve FFZ ifadeleriyle Twitch sohbeti';
 
   @override
+  String get continueWithoutLogin => 'Giriş yapmadan devam et';
+
+  @override
+  String get logInForSearch => 'Kanal aramak ve canlı yayınları görmek için giriş yap';
+
+  @override
   String get loginWithTwitch => 'Twitch ile giriş yap';
 
   @override

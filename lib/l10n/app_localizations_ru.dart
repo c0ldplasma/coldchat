@@ -359,6 +359,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appTagline => 'Чат Twitch со смайликами 7TV, BTTV и FFZ';
 
   @override
+  String get continueWithoutLogin => 'Продолжить без входа';
+
+  @override
+  String get logInForSearch => 'Войди, чтобы искать каналы и видеть трансляции';
+
+  @override
   String get loginWithTwitch => 'Войти через Twitch';
 
   @override

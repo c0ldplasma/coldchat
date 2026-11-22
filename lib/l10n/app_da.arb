@@ -228,6 +228,8 @@
   "hideMessage": "Skjul besked",
   "scrollToBottom": "Rul til bunden",
   "appTagline": "Twitch-chat med emotes fra 7TV, BTTV og FFZ",
+  "continueWithoutLogin": "Fortsæt uden at logge ind",
+  "logInForSearch": "Log ind for at søge efter kanaler og se livestreams",
   "loginWithTwitch": "Log ind med Twitch",
   "addChannel": "Tilføj kanal",
   "chatSettings": "Chatindstillinger",

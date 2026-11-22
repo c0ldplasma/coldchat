@@ -9,6 +9,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '../../api/api_client.dart';
 import '../emote_button_icon.dart';
+import '../home/start_screen_cubit.dart';
 import 'account_repository.dart';
 import 'channel_repository.dart';
 import 'custom_command_repository.dart';
@@ -80,6 +81,10 @@ class Repositories {
       EmoteBadgeCacheRepository.open(),
       SeenMentionsRepository.open(),
     ).wait;
+    if (!settings.startScreenDone &&
+        startScreenAlreadyDone(hasAccount: accounts.accounts.isNotEmpty, hasChannels: channels.channels.isNotEmpty)) {
+      await settings.finishStartScreen();
+    }
     return Repositories._(
       accounts: accounts,
       settings: settings,

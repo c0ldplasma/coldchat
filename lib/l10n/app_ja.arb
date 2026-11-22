@@ -228,6 +228,8 @@
   "hideMessage": "メッセージを非表示",
   "scrollToBottom": "最下部へスクロール",
   "appTagline": "7TV・BTTV・FFZのエモートが使えるTwitchチャット",
+  "continueWithoutLogin": "ログインせずに続ける",
+  "logInForSearch": "ログインするとチャンネル検索や配信中の一覧が使えます",
   "loginWithTwitch": "Twitchでログイン",
   "addChannel": "チャンネルを追加",
   "chatSettings": "チャット設定",

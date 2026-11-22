@@ -228,6 +228,8 @@
   "hideMessage": "Skrýt zprávu",
   "scrollToBottom": "Přejít na konec",
   "appTagline": "Chat na Twitchi s emotikony ze 7TV, BTTV a FFZ",
+  "continueWithoutLogin": "Pokračovat bez přihlášení",
+  "logInForSearch": "Přihlas se a můžeš hledat kanály a vidět živá vysílání",
   "loginWithTwitch": "Přihlásit se přes Twitch",
   "addChannel": "Přidat kanál",
   "chatSettings": "Nastavení chatu",

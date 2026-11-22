@@ -358,6 +358,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get appTagline => '7TV, BTTV, FFZ 이모티콘을 지원하는 Twitch 채팅';
 
   @override
+  String get continueWithoutLogin => '로그인하지 않고 계속';
+
+  @override
+  String get logInForSearch => '로그인하면 채널을 검색하고 라이브 방송을 볼 수 있어요';
+
+  @override
   String get loginWithTwitch => 'Twitch로 로그인';
 
   @override

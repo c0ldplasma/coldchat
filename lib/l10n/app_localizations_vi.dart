@@ -359,6 +359,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appTagline => 'Chat Twitch với biểu tượng cảm xúc từ 7TV, BTTV và FFZ';
 
   @override
+  String get continueWithoutLogin => 'Tiếp tục mà không đăng nhập';
+
+  @override
+  String get logInForSearch => 'Đăng nhập để tìm kênh và xem các buổi phát trực tiếp';
+
+  @override
   String get loginWithTwitch => 'Đăng nhập bằng Twitch';
 
   @override

@@ -761,6 +761,18 @@ abstract class AppLocalizations {
   /// **'Twitch chat with 7TV, BTTV and FFZ emotes'**
   String get appTagline;
 
+  /// Plain text button under 'Log in with Twitch' on the first start screen: use the app read-only.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue without logging in'**
+  String get continueWithoutLogin;
+
+  /// On the home tab while logged out, in place of the live stream lists: starts the Twitch login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to search channels and see live streams'**
+  String get logInForSearch;
+
   /// No description provided for @loginWithTwitch.
   ///
   /// In en, this message translates to:

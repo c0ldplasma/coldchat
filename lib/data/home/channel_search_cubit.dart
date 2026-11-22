@@ -41,7 +41,7 @@ class ChannelSearchCubit extends Cubit<ChannelSearchState> {
     this._search = searchChannels,
   }) : super(const ChannelSearchIdle());
 
-  /// Helix as the active account, or null without one (then nothing is searched).
+  /// Helix as the active account, or null without one (then nothing is searched and the results stay empty).
   final HelixApi? Function() _helix;
   final Future<List<ChannelCandidate>> Function(HelixApi helix, String query) _search;
   final Duration debounce;
@@ -56,6 +56,12 @@ class ChannelSearchCubit extends Cubit<ChannelSearchState> {
     _debounceTimer?.cancel();
     if (normalizeChannelQuery(text).isEmpty) {
       clear();
+      return;
+    }
+    // Without a login Twitch can't be searched: no results, so the typed name is all there is to open.
+    if (_helix() == null) {
+      _generation++;
+      emit(const ChannelSearchLoaded([]));
       return;
     }
     _debounceTimer = Timer(debounce, () => unawaited(_run(text)));

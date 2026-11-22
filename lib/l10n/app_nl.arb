@@ -228,6 +228,8 @@
   "hideMessage": "Bericht verbergen",
   "scrollToBottom": "Naar beneden scrollen",
   "appTagline": "Twitch-chat met emotes van 7TV, BTTV en FFZ",
+  "continueWithoutLogin": "Doorgaan zonder in te loggen",
+  "logInForSearch": "Log in om kanalen te zoeken en livestreams te zien",
   "loginWithTwitch": "Inloggen met Twitch",
   "addChannel": "Kanaal toevoegen",
   "chatSettings": "Chatinstellingen",
