@@ -359,6 +359,12 @@ class AppLocalizationsDa extends AppLocalizations {
   String get appTagline => 'Twitch-chat med emotes fra 7TV, BTTV og FFZ';
 
   @override
+  String get continueWithoutLogin => 'Fortsæt uden at logge ind';
+
+  @override
+  String get logInForSearch => 'Log ind for at se søgeresultater og populære kanaler, der er live';
+
+  @override
   String get loginWithTwitch => 'Log ind med Twitch';
 
   @override

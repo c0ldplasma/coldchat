@@ -228,6 +228,8 @@
   "hideMessage": "Απόκρυψη μηνύματος",
   "scrollToBottom": "Μετάβαση στο τέλος",
   "appTagline": "Συνομιλία Twitch με emote από 7TV, BTTV και FFZ",
+  "continueWithoutLogin": "Συνέχεια χωρίς σύνδεση",
+  "logInForSearch": "Συνδέσου για να βλέπεις αποτελέσματα αναζήτησης και δημοφιλή κανάλια σε ζωντανή μετάδοση",
   "loginWithTwitch": "Σύνδεση με Twitch",
   "addChannel": "Προσθήκη καναλιού",
   "chatSettings": "Ρυθμίσεις συνομιλίας",

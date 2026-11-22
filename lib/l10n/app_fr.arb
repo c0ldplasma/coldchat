@@ -228,6 +228,8 @@
   "hideMessage": "Masquer le message",
   "scrollToBottom": "Aller en bas",
   "appTagline": "Le chat Twitch avec les emotes 7TV, BTTV et FFZ",
+  "continueWithoutLogin": "Continuer sans se connecter",
+  "logInForSearch": "Connecte-toi pour voir les résultats de recherche et les chaînes populaires en live",
   "loginWithTwitch": "Se connecter avec Twitch",
   "addChannel": "Ajouter une chaîne",
   "chatSettings": "Paramètres du chat",

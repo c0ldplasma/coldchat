@@ -228,6 +228,8 @@
   "hideMessage": "הסתרת ההודעה",
   "scrollToBottom": "גלילה לסוף",
   "appTagline": "צ'אט של Twitch עם אימוטים מ-7TV, ‏BTTV ו-FFZ",
+  "continueWithoutLogin": "המשך בלי להתחבר",
+  "logInForSearch": "יש להתחבר כדי לראות תוצאות חיפוש וערוצים פופולריים בשידור חי",
   "loginWithTwitch": "התחברות עם Twitch",
   "addChannel": "הוספת ערוץ",
   "chatSettings": "הגדרות צ׳אט",

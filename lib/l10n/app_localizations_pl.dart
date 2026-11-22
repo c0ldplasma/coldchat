@@ -359,6 +359,12 @@ class AppLocalizationsPl extends AppLocalizations {
   String get appTagline => 'Czat Twitcha z emotkami z 7TV, BTTV i FFZ';
 
   @override
+  String get continueWithoutLogin => 'Kontynuuj bez logowania';
+
+  @override
+  String get logInForSearch => 'Zaloguj się, aby zobaczyć wyniki wyszukiwania i popularne kanały na żywo';
+
+  @override
   String get loginWithTwitch => 'Zaloguj się przez Twitcha';
 
   @override

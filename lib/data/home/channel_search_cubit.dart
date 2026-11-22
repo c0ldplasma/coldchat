@@ -23,9 +23,20 @@ class ChannelSearchLoading extends ChannelSearchState {
 }
 
 class ChannelSearchLoaded extends ChannelSearchState {
+  /// What was searched for, as a channel name ([normalizeChannelQuery]).
+  final String query;
+
   final List<ChannelCandidate> results;
 
-  const ChannelSearchLoaded(this.results);
+  const ChannelSearchLoaded(this.query, this.results);
+
+  /// The typed name as a channel to open (lower case), if it can be a Twitch login and the results don't already show
+  /// it as the exact match. Logged out it is the only way to open a channel.
+  String? get typedChannel {
+    final login = query.toLowerCase();
+    if (!couldBeLogin(query) || results.any((c) => c.login.toLowerCase() == login)) return null;
+    return login;
+  }
 }
 
 class ChannelSearchFailed extends ChannelSearchState {
@@ -41,7 +52,7 @@ class ChannelSearchCubit extends Cubit<ChannelSearchState> {
     this._search = searchChannels,
   }) : super(const ChannelSearchIdle());
 
-  /// Helix as the active account, or null without one (then nothing is searched).
+  /// Helix as the active account, or null without one (then nothing is searched and the results stay empty).
   final HelixApi? Function() _helix;
   final Future<List<ChannelCandidate>> Function(HelixApi helix, String query) _search;
   final Duration debounce;
@@ -56,6 +67,12 @@ class ChannelSearchCubit extends Cubit<ChannelSearchState> {
     _debounceTimer?.cancel();
     if (normalizeChannelQuery(text).isEmpty) {
       clear();
+      return;
+    }
+    // Without a login Twitch can't be searched: no results, so the typed name is all there is to open.
+    if (_helix() == null) {
+      _generation++;
+      emit(ChannelSearchLoaded(normalizeChannelQuery(text), const []));
       return;
     }
     _debounceTimer = Timer(debounce, () => unawaited(_run(text)));
@@ -76,7 +93,7 @@ class ChannelSearchCubit extends Cubit<ChannelSearchState> {
     emit(const ChannelSearchLoading());
     ChannelSearchState result;
     try {
-      result = ChannelSearchLoaded(await _search(helix, text));
+      result = ChannelSearchLoaded(normalizeChannelQuery(text), await _search(helix, text));
     } catch (_) {
       result = const ChannelSearchFailed();
     }

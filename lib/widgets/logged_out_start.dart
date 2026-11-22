@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../components/modal.dart';
+import '../data/home/start_screen_cubit.dart';
 import '../l10n/app_localizations.dart';
 import '../sheets/about.dart';
 import '../sheets/login.dart';
@@ -10,7 +12,8 @@ import '../sheets/twitch_token_input.dart';
 import '../theme/coldchat_theme.dart';
 import '../tools/browser_warmup.dart';
 
-/// The home tab before any Twitch account is added: what ColdChat is and one button to sign in.
+/// The full-screen start of a fresh install, before the tab bar: what ColdChat is, a button to sign in and a way to
+/// continue without logging in. Either one leaves it for good ([StartScreenCubit]).
 ///
 /// Long-pressing the button opens the access-token input instead, like long-pressing "Add another account" in the
 /// account sheet. App review uses it to sign in without Twitch's email code.
@@ -84,7 +87,14 @@ class LoggedOutStart extends StatelessWidget {
                       label: Text(l10n.loginWithTwitch),
                     ),
                   ),
-                  const SizedBox(height: 24.0),
+                  const SizedBox(height: 8.0),
+                  // Reading chat needs no account, so the app can be used without one.
+                  TextButton(
+                    onPressed: () => context.read<StartScreenCubit>().continueWithoutLogin(),
+                    style: TextButton.styleFrom(minimumSize: const Size.fromHeight(48.0)),
+                    child: Text(l10n.continueWithoutLogin),
+                  ),
+                  const SizedBox(height: 16.0),
                   Wrap(
                     alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,

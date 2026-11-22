@@ -38,6 +38,9 @@ class SettingsRepository {
   static const String chatHistoryKey = 'recentMessagesChatHistory';
   static const String whisperHistoryHintDismissedKey = 'whisperHistoryHintDismissed';
 
+  /// Set once the full-screen start screen was left, by logging in or "Continue without logging in".
+  static const String startScreenDoneKey = 'startScreenDone';
+
   final Box<dynamic> _box;
 
   /// Takes the open `Settings` box; [open] opens it.
@@ -178,4 +181,11 @@ class SettingsRepository {
   bool get whisperHistoryHintDismissed => _box.get(whisperHistoryHintDismissedKey) == true;
 
   Future<void> dismissWhisperHistoryHint() => _box.put(whisperHistoryHintDismissedKey, true);
+
+  /// Whether the full-screen start screen of a fresh install was left; it never shows again then.
+  bool get startScreenDone => _box.get(startScreenDoneKey) == true;
+
+  Future<void> finishStartScreen() => _box.put(startScreenDoneKey, true);
+
+  late final Listenable startScreenChanges = BoxChanges(_box, keys: const [startScreenDoneKey]);
 }

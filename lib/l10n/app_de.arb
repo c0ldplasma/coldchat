@@ -168,6 +168,8 @@
   "hideMessage": "Nachricht ausblenden",
   "scrollToBottom": "Zum Ende springen",
   "appTagline": "Twitch-Chat mit Emotes von 7TV, BTTV und FFZ",
+  "continueWithoutLogin": "Ohne Anmeldung fortfahren",
+  "logInForSearch": "Melde dich an, um Suchergebnisse und beliebte Live-Kanäle zu sehen",
   "loginWithTwitch": "Mit Twitch anmelden",
   "addChannel": "Kanal hinzufügen",
   "chatSettings": "Chateinstellungen",

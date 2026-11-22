@@ -359,6 +359,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get appTagline => 'צ\'אט של Twitch עם אימוטים מ-7TV, ‏BTTV ו-FFZ';
 
   @override
+  String get continueWithoutLogin => 'המשך בלי להתחבר';
+
+  @override
+  String get logInForSearch => 'יש להתחבר כדי לראות תוצאות חיפוש וערוצים פופולריים בשידור חי';
+
+  @override
   String get loginWithTwitch => 'התחברות עם Twitch';
 
   @override

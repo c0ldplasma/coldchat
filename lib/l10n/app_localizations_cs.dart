@@ -359,6 +359,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get appTagline => 'Chat na Twitchi s emotikony ze 7TV, BTTV a FFZ';
 
   @override
+  String get continueWithoutLogin => 'Pokračovat bez přihlášení';
+
+  @override
+  String get logInForSearch => 'Přihlas se a uvidíš výsledky hledání a oblíbené kanály, které právě vysílají';
+
+  @override
   String get loginWithTwitch => 'Přihlásit se přes Twitch';
 
   @override

@@ -32,6 +32,7 @@ import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
 import 'package:coldchat/widgets/channel_view.dart';
 import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
+import 'package:coldchat/widgets/logged_out_start.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -82,6 +83,8 @@ void main() {
     // time never finishes, which would keep Hive from closing.
     await settings.put(SettingsRepository.messageAppearanceKey, MessageAppearance());
     await settings.put(SettingsRepository.chatSettingsKey, ChatSettings());
+    // Past the start screen of a fresh install, so the home page shows its tabs.
+    await settings.put(SettingsRepository.startScreenDoneKey, true);
     await Hive.openBox<dynamic>('AccountSettings');
     await Hive.openBox<dynamic>('TwitchAccounts');
     await Hive.openBox<dynamic>(CustomCommandRepository.boxName);
@@ -369,6 +372,26 @@ void main() {
       );
       await tester.pumpAndSettle();
     }
+
+    testWidgets('a fresh install shows only the start screen, until "Continue without logging in"', (tester) async {
+      await tester.runAsync(() => Hive.box<dynamic>('Settings').delete(SettingsRepository.startScreenDoneKey));
+      await showHome(tester);
+      final l10n = AppLocalizations.of(tester.element(find.byType(LoggedOutStart)));
+      expect(find.byType(TabBar), findsNothing);
+      expect(find.byType(ChannelView), findsNothing);
+
+      // In real time: a write to the settings box started in the test's fake time never finishes, and Hive would wait
+      // for it when closing.
+      await tester.runAsync(() async {
+        await tester.tap(find.text(l10n.continueWithoutLogin));
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      });
+      await tester.pumpAndSettle();
+
+      expect(find.byType(LoggedOutStart), findsNothing);
+      expect(find.byType(TabBar), findsOneWidget);
+      expect(SettingsRepository(Hive.box<dynamic>('Settings')).startScreenDone, isTrue);
+    });
 
     Channel shownChannel(WidgetTester tester) => tester.widget<ChannelView>(find.byType(ChannelView)).channel;
 

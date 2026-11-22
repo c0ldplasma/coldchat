@@ -79,7 +79,10 @@ class ColdChatModal extends StatelessWidget {
                   );
                 },
                 prefix: const Icon(Icons.person_add_alt),
-                title: AppLocalizations.of(context).addAnotherAccount,
+                // Without any account there is no "another" one yet.
+                title: accounts.accounts.isEmpty
+                    ? AppLocalizations.of(context).loginWithTwitch
+                    : AppLocalizations.of(context).addAnotherAccount,
               ),
               const Separator(),
               Padding(
