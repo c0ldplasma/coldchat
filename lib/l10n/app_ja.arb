@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "この端末からメッセージを削除します。Twitchはウィスパーの履歴を保存しません。",
   "logInToChat": "ログインしてチャットする",
   "logInToSeeMore": "ログインして詳しく見る",
+  "uploadNeedsLogin": "チャットで写真を共有するにはログインしてください",
   "whisperNeedsLogin": "ウィスパーを送るには、Twitchでログインしてください。",
   "whisperNeedsScope": "ウィスパーを送受信するには、もう一度ログインしてください。現在のログインはColdChatがウィスパーに対応する前のものです。",
   "whisperUserNotFound": "その名前のTwitchユーザーは存在しません。",

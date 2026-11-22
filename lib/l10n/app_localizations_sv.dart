@@ -556,6 +556,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get logInToSeeMore => 'Logga in för att se mer';
 
   @override
+  String get uploadNeedsLogin => 'Logga in för att dela bilder i chatten';
+
+  @override
   String get whisperNeedsLogin => 'Logga in med Twitch för att skicka viskningar.';
 
   @override

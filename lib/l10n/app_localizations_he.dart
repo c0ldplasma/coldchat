@@ -554,6 +554,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get logInToSeeMore => 'יש להתחבר כדי לראות עוד';
 
   @override
+  String get uploadNeedsLogin => 'יש להתחבר כדי לשתף תמונות בצ׳אט';
+
+  @override
   String get whisperNeedsLogin => 'כדי לשלוח לחישות, יש להתחבר עם Twitch.';
 
   @override

@@ -554,6 +554,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get logInToSeeMore => 'Войди, чтобы увидеть больше';
 
   @override
+  String get uploadNeedsLogin => 'Войди, чтобы делиться фото в чате';
+
+  @override
   String get whisperNeedsLogin => 'Войди через Twitch, чтобы отправлять шепот.';
 
   @override

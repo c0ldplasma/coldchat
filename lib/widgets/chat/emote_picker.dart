@@ -54,6 +54,9 @@ class EmotePicker extends StatefulWidget {
   /// which calls it with null.
   final void Function(Emote? emote)? onPickButtonIcon;
 
+  /// Called instead of [insertFieldInput] when an emote is tapped, e.g. to show it while there's no text field.
+  final void Function(Emote emote)? onShowEmote;
+
   const EmotePicker({
     super.key,
     required this.client,
@@ -62,6 +65,7 @@ class EmotePicker extends StatefulWidget {
     required this.setFieldInput,
     required this.insertFieldInput,
     this.onPickButtonIcon,
+    this.onShowEmote,
   });
 
   @override
@@ -227,9 +231,15 @@ class _EmotePickerState extends State<EmotePicker> {
                                 return Tooltip(
                                   message: emote.name,
                                   child: InkWell(
-                                    onTap: () async => widget.onPickButtonIcon != null
-                                        ? widget.onPickButtonIcon!(emote)
-                                        : widget.insertFieldInput(emote.code ?? emote.name),
+                                    onTap: () async {
+                                      if (widget.onPickButtonIcon != null) {
+                                        widget.onPickButtonIcon!(emote);
+                                      } else if (widget.onShowEmote != null) {
+                                        widget.onShowEmote!(emote);
+                                      } else {
+                                        widget.insertFieldInput(emote.code ?? emote.name);
+                                      }
+                                    },
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: EmoteGlyph(

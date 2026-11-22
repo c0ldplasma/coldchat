@@ -290,6 +290,10 @@
   "@logInToSeeMore": {
     "description": "On a user card while not logged in, where the profile would be: starts the Twitch login."
   },
+  "uploadNeedsLogin": "Log in to share photos in chat",
+  "@uploadNeedsLogin": {
+    "description": "At the top of the photo/file sheet while logged out (camera and library are greyed out): starts the Twitch login."
+  },
   "whisperNeedsLogin": "Sign in with Twitch to send whispers.",
   "whisperNeedsScope": "Sign in again to send and receive whispers. Your login is from before ColdChat supported them.",
   "whisperUserNotFound": "There is no Twitch user with that name.",

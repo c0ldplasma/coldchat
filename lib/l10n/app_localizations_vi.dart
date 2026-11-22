@@ -556,6 +556,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get logInToSeeMore => 'Đăng nhập để xem thêm';
 
   @override
+  String get uploadNeedsLogin => 'Đăng nhập để chia sẻ ảnh trong trò chuyện';
+
+  @override
   String get whisperNeedsLogin => 'Hãy đăng nhập Twitch để gửi tin thì thầm.';
 
   @override

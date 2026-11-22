@@ -557,6 +557,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get logInToSeeMore => 'Συνδέσου για να δεις περισσότερα';
 
   @override
+  String get uploadNeedsLogin => 'Συνδέσου για να μοιράζεσαι φωτογραφίες στο chat';
+
+  @override
   String get whisperNeedsLogin => 'Συνδέσου με το Twitch για να στέλνεις ψιθύρους.';
 
   @override

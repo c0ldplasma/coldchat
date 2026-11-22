@@ -559,6 +559,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get logInToSeeMore => 'Connecte-toi pour en voir plus';
 
   @override
+  String get uploadNeedsLogin => 'Connecte-toi pour partager des photos dans le chat';
+
+  @override
   String get whisperNeedsLogin => 'Connecte-toi avec Twitch pour envoyer des chuchotements.';
 
   @override

@@ -558,6 +558,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get logInToSeeMore => 'Accedi per vedere di più';
 
   @override
+  String get uploadNeedsLogin => 'Accedi per condividere foto in chat';
+
+  @override
   String get whisperNeedsLogin => 'Accedi con Twitch per inviare sussurri.';
 
   @override

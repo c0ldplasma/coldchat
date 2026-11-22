@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "Smaže zprávy z tohoto zařízení. Twitch historii šepotů neukládá.",
   "logInToChat": "Přihlas se a chatuj",
   "logInToSeeMore": "Přihlas se a uvidíš víc",
+  "uploadNeedsLogin": "Přihlas se a sdílej fotky v chatu",
   "whisperNeedsLogin": "Pro posílání šepotů se přihlas přes Twitch.",
   "whisperNeedsScope": "Pro posílání a příjem šepotů se přihlas znovu. Tvoje přihlášení je z doby, kdy je ColdChat ještě nepodporoval.",
   "whisperUserNotFound": "Na Twitchi není žádný uživatel s tímto jménem.",

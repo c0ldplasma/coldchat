@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "Verwijdert de berichten van dit apparaat. Twitch bewaart geen geschiedenis van fluisterberichten.",
   "logInToChat": "Log in om te chatten",
   "logInToSeeMore": "Log in om meer te zien",
+  "uploadNeedsLogin": "Log in om foto's in de chat te delen",
   "whisperNeedsLogin": "Log in met Twitch om fluisterberichten te sturen.",
   "whisperNeedsScope": "Log opnieuw in om fluisterberichten te sturen en te ontvangen. Je login is van voordat ColdChat ze ondersteunde.",
   "whisperUserNotFound": "Er is geen Twitch-gebruiker met die naam.",

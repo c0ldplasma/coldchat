@@ -554,6 +554,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get logInToSeeMore => 'और देखने के लिए लॉग इन करें';
 
   @override
+  String get uploadNeedsLogin => 'चैट में फ़ोटो शेयर करने के लिए लॉग इन करें';
+
+  @override
   String get whisperNeedsLogin => 'व्हिस्पर भेजने के लिए Twitch से साइन इन करें।';
 
   @override

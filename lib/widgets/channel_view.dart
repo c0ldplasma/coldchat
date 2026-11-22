@@ -19,6 +19,7 @@ import '../data/filesharing/upload_task.dart';
 import '../data/repositories/custom_command_repository.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
+import '../sheets/emote.dart';
 import '../sheets/login.dart';
 import '../sheets/whisper_errors.dart';
 import '../theme/coldchat_theme.dart';
@@ -213,27 +214,53 @@ class ChannelViewState extends State<ChannelView> {
   /// the text beforehand and wrote that snapshot back afterwards — which threw
   /// away anything typed in the meantime and showed nothing while it ran.
   Future<void> pickAndUploadFiles() async {
+    // An upload only ends up as a link in a message, so without a login the choices are shown but can't be picked.
+    final needsLogin = _needsLogin(widget.channel.sendAvailability);
+    final channelContext = context;
     await Modal.show(
       context: context,
       child: Builder(
         builder: (context) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Tile(
-              title: AppLocalizations.of(context).takePhoto,
-              prefix: const Icon(Icons.photo_camera_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                unawaited(takeAndUploadPhoto());
-              },
-            ),
-            Tile(
-              title: AppLocalizations.of(context).chooseFromLibrary,
-              prefix: const Icon(Icons.photo_library_outlined),
-              onTap: () {
-                Navigator.of(context).pop();
-                unawaited(pickAndUploadFromLibrary());
-              },
+            if (needsLogin)
+              WarmsUpTwitchLogin(
+                child: Tile(
+                  title: AppLocalizations.of(context).uploadNeedsLogin,
+                  prefix: Icon(Icons.login_rounded, color: Theme.of(context).colorScheme.primary),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    unawaited(showTwitchLogin(channelContext));
+                  },
+                ),
+              ),
+            Opacity(
+              opacity: needsLogin ? 0.4 : 1.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Tile(
+                    title: AppLocalizations.of(context).takePhoto,
+                    prefix: const Icon(Icons.photo_camera_outlined),
+                    onTap: needsLogin
+                        ? null
+                        : () {
+                            Navigator.of(context).pop();
+                            unawaited(takeAndUploadPhoto());
+                          },
+                  ),
+                  Tile(
+                    title: AppLocalizations.of(context).chooseFromLibrary,
+                    prefix: const Icon(Icons.photo_library_outlined),
+                    onTap: needsLogin
+                        ? null
+                        : () {
+                            Navigator.of(context).pop();
+                            unawaited(pickAndUploadFromLibrary());
+                          },
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -433,93 +460,96 @@ class ChannelViewState extends State<ChannelView> {
                   ),
                 ),
               ),
-              // Logged out (or with a refused login) the whole row becomes a login button: nothing could be sent.
+              // Logged out (or with a refused login) the text field and send button become a login button: nothing
+              // could be sent. Uploads and the emote menu stay, they say themselves what needs a login.
               BlocBuilder<CanSend, SendAvailability>(
                 bloc: widget.channel.canSendCubit,
                 buildWhen: (previous, current) => _needsLogin(previous) != _needsLogin(current),
-                builder: (context, availability) => _needsLogin(availability)
-                    ? const _LoginToChatButton()
-                    : SizedBox(
-                        height: 48.0,
-                        child: Row(
-                          children: [
-                            InkWell(
-                              onTap: pickAndUploadFiles,
-                              child: const SizedBox(
-                                width: 48.0,
-                                height: 48.0,
-                                child: Icon(Icons.attach_file_rounded),
-                              ),
-                            ),
-                            // const Separator(axis: Axis.vertical),
-                            Expanded(
-                              // The hint says "Connecting to …" until the channel can be written to.
-                              child: BlocBuilder<CanSend, SendAvailability>(
-                                bloc: widget.channel.canSendCubit,
-                                builder: (context, availability) => TextField(
-                                  controller: textEditingController,
-                                  focusNode: textFocusNode,
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                    hintText: widget.channel is WhisperChannel
-                                        ? AppLocalizations.of(context)
-                                              .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
-                                        : availability == SendAvailability.ready
-                                        ? AppLocalizations.of(context).sendMessageIn(widget.channel.name)
-                                        : AppLocalizations.of(context).channelConnecting(widget.channel.name),
-                                    border: InputBorder.none,
-                                  ),
-                                  onSubmitted: (text) {
-                                    unawaited(sendMessage());
-                                    textFocusNode.requestFocus();
-                                  },
-                                  onChanged: (text) {
-                                    setState(() {});
-                                  },
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  emoteKeyboard = !emoteKeyboard;
-                                  pickingButtonIcon = false;
-                                });
-                              },
-                              onLongPress: () {
-                                setState(() {
-                                  emoteKeyboard = true;
-                                  pickingButtonIcon = true;
-                                });
-                              },
-                              child: const SizedBox(
-                                width: 48.0,
-                                height: 48.0,
-                                child: Center(
-                                  child: EmoteButtonIconView(),
-                                ),
-                              ),
-                            ),
-                            // const Separator(axis: Axis.vertical),
-                            InkWell(
-                              onTap: sendMessage,
-                              child: SizedBox(
-                                width: 48.0,
-                                height: 48.0,
-                                child: BlocBuilder<CanSend, SendAvailability>(
-                                  bloc: widget.channel.canSendCubit,
-                                  builder: (context, availability) => Icon(
-                                    Icons.send_rounded,
-                                    color: availability == SendAvailability.ready
-                                        ? Theme.of(context).colorScheme.primary
-                                        : Theme.of(context).colorScheme.onSurfaceVariant,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                builder: (context, availability) => SizedBox(
+                  height: 48.0,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: pickAndUploadFiles,
+                        child: const SizedBox(
+                          width: 48.0,
+                          height: 48.0,
+                          child: Icon(Icons.attach_file_rounded),
                         ),
                       ),
+                      // const Separator(axis: Axis.vertical),
+                      if (_needsLogin(availability))
+                        const Expanded(child: _LoginToChatButton())
+                      else
+                        Expanded(
+                          // The hint says "Connecting to …" until the channel can be written to.
+                          child: BlocBuilder<CanSend, SendAvailability>(
+                            bloc: widget.channel.canSendCubit,
+                            builder: (context, availability) => TextField(
+                              controller: textEditingController,
+                              focusNode: textFocusNode,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                hintText: widget.channel is WhisperChannel
+                                    ? AppLocalizations.of(context)
+                                          .whisperTo((widget.channel as WhisperChannel).partnerDisplayName)
+                                    : availability == SendAvailability.ready
+                                    ? AppLocalizations.of(context).sendMessageIn(widget.channel.name)
+                                    : AppLocalizations.of(context).channelConnecting(widget.channel.name),
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (text) {
+                                unawaited(sendMessage());
+                                textFocusNode.requestFocus();
+                              },
+                              onChanged: (text) {
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                        ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            emoteKeyboard = !emoteKeyboard;
+                            pickingButtonIcon = false;
+                          });
+                        },
+                        onLongPress: () {
+                          setState(() {
+                            emoteKeyboard = true;
+                            pickingButtonIcon = true;
+                          });
+                        },
+                        child: const SizedBox(
+                          width: 48.0,
+                          height: 48.0,
+                          child: Center(
+                            child: EmoteButtonIconView(),
+                          ),
+                        ),
+                      ),
+                      // const Separator(axis: Axis.vertical),
+                      if (!_needsLogin(availability))
+                        InkWell(
+                          onTap: sendMessage,
+                          child: SizedBox(
+                            width: 48.0,
+                            height: 48.0,
+                            child: BlocBuilder<CanSend, SendAvailability>(
+                              bloc: widget.channel.canSendCubit,
+                              builder: (context, availability) => Icon(
+                                Icons.send_rounded,
+                                color: availability == SendAvailability.ready
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
               // Slides open and closed like a keyboard instead of popping in. The
               // AnimatedSwitcher keeps the picker mounted while it collapses.
@@ -536,7 +566,7 @@ class ChannelViewState extends State<ChannelView> {
                     alignment: const Alignment(-1.0, -1.0),
                     child: child,
                   ),
-                  child: !emoteKeyboard || _needsLogin(availability)
+                  child: !emoteKeyboard
                       ? const SizedBox.shrink(key: ValueKey(false))
                       : SizedBox(
                           key: const ValueKey(true),
@@ -544,6 +574,13 @@ class ChannelViewState extends State<ChannelView> {
                           child: EmotePicker(
                             client: widget.channel.client,
                             channel: widget.channel,
+                            // Without a text field to put it in, an emote shows what it is instead.
+                            onShowEmote: _needsLogin(availability)
+                                ? (emote) => Modal.show(
+                                    context: context,
+                                    child: EmoteModal(emote: emote),
+                                  )
+                                : null,
                             onPickButtonIcon: pickingButtonIcon
                                 ? (emote) async {
                                     if (await chooseEmoteButtonIcon(context, emote) && mounted) {
@@ -581,17 +618,16 @@ class ChannelViewState extends State<ChannelView> {
 }
 
 /// The message the next one replies to, above the composer, with a button to cancel the reply.
-/// In place of the composer while there is no login to send with: starts the Twitch login, after which the chat goes
-/// on as that account.
+/// In place of the text field and send button while there is no login to send with: starts the Twitch login, after
+/// which the chat goes on as that account.
 class _LoginToChatButton extends StatelessWidget {
   const _LoginToChatButton();
 
   @override
   Widget build(BuildContext context) => WarmsUpTwitchLogin(
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
       child: SizedBox(
-        width: double.infinity,
         height: 40.0,
         child: FilledButton.icon(
           style: FilledButton.styleFrom(

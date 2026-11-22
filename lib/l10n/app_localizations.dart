@@ -1115,6 +1115,12 @@ abstract class AppLocalizations {
   /// **'Log in to see more'**
   String get logInToSeeMore;
 
+  /// At the top of the photo/file sheet while logged out (camera and library are greyed out): starts the Twitch login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to share photos in chat'**
+  String get uploadNeedsLogin;
+
   /// No description provided for @whisperNeedsLogin.
   ///
   /// In en, this message translates to:

@@ -555,6 +555,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get logInToSeeMore => 'Log ind for at se mere';
 
   @override
+  String get uploadNeedsLogin => 'Log ind for at dele billeder i chatten';
+
+  @override
   String get whisperNeedsLogin => 'Log ind med Twitch for at sende hviskebeskeder.';
 
   @override

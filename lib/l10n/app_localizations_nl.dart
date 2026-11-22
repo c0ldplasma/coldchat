@@ -560,6 +560,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get logInToSeeMore => 'Log in om meer te zien';
 
   @override
+  String get uploadNeedsLogin => 'Log in om foto\'s in de chat te delen';
+
+  @override
   String get whisperNeedsLogin => 'Log in met Twitch om fluisterberichten te sturen.';
 
   @override

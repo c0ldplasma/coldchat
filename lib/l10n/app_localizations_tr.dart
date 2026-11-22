@@ -554,6 +554,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get logInToSeeMore => 'Daha fazlası için giriş yap';
 
   @override
+  String get uploadNeedsLogin => 'Sohbette fotoğraf paylaşmak için giriş yap';
+
+  @override
   String get whisperNeedsLogin => 'Fısıltı göndermek için Twitch ile giriş yap.';
 
   @override

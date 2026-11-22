@@ -552,6 +552,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get logInToSeeMore => '로그인하고 더 보기';
 
   @override
+  String get uploadNeedsLogin => '채팅에서 사진을 공유하려면 로그인하세요';
+
+  @override
   String get whisperNeedsLogin => '귓속말을 보내려면 Twitch로 로그인하세요.';
 
   @override

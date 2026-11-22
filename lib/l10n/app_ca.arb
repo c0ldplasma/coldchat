@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "Suprimeix els missatges d'aquest dispositiu. Twitch no desa l'historial de xiuxiueigs.",
   "logInToChat": "Inicia la sessió per xatejar",
   "logInToSeeMore": "Inicia la sessió per veure'n més",
+  "uploadNeedsLogin": "Inicia la sessió per compartir fotos al xat",
   "whisperNeedsLogin": "Inicia la sessió amb Twitch per enviar xiuxiueigs.",
   "whisperNeedsScope": "Torna a iniciar la sessió per enviar i rebre xiuxiueigs. La teva sessió és d'abans que ColdChat els admetés.",
   "whisperUserNotFound": "No hi ha cap usuari de Twitch amb aquest nom.",

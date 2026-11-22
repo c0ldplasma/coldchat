@@ -20,8 +20,10 @@ import 'package:coldchat/hive_registrar.g.dart';
 import 'package:coldchat/irc/message.dart' as irc;
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/pages/home.dart';
+import 'package:coldchat/sheets/emote.dart';
 import 'package:coldchat/sheets/message.dart';
 import 'package:coldchat/sources/chat_source.dart';
+import 'package:coldchat/sources/emote_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/tmi/channel/can_send.dart';
 import 'package:coldchat/tmi/channel/channel.dart';
@@ -33,6 +35,7 @@ import 'package:coldchat/tmi/connection/connection_state.dart' as tmi;
 import 'package:coldchat/widgets/channel_view.dart';
 import 'package:coldchat/widgets/chat_message.dart';
 import 'package:coldchat/widgets/chat_view.dart';
+import 'package:coldchat/widgets/emote_button_icon_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -323,7 +326,7 @@ void main() {
     await transmitter.stream.firstWhere((state) => state is tmi.ConnectionDisconnected);
   });
 
-  testWidgets('logged out, the composer is a login button, and logging in brings the text field back', (tester) async {
+  testWidgets('logged out, the text field is a login button, and logging in brings it back', (tester) async {
     final mediaQuery = statusBarOnly();
     addTearDown(mediaQuery.dispose);
     await logOut(tester);
@@ -332,14 +335,77 @@ void main() {
 
     expect(composer(), findsNothing);
     expect(find.text(l10n.logInToChat), findsOneWidget);
-    expect(find.byIcon(Icons.attach_file_rounded), findsNothing);
     expect(find.byIcon(Icons.send_rounded), findsNothing);
+    // Uploads and the emote menu stay.
+    expect(find.byIcon(Icons.attach_file_rounded), findsOneWidget);
+    expect(find.byType(EmoteButtonIconView), findsOneWidget);
 
     await tester.runAsync(loggedInConnecting);
     await tester.pump();
     expect(find.text(l10n.logInToChat), findsNothing);
     expect(composer(), findsOneWidget);
     expect(channel.sendAvailability, SendAvailability.connecting);
+    await finish(tester);
+  });
+
+  testWidgets('logged out, the upload sheet asks for a login and its choices do nothing', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await logOut(tester);
+    await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(find.byType(ChannelView)));
+
+    await tester.tap(find.byIcon(Icons.attach_file_rounded));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.uploadNeedsLogin), findsOneWidget);
+
+    // Tapping a greyed-out choice keeps the sheet open: nothing is picked or uploaded.
+    await tester.tap(find.text(l10n.takePhoto));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.takePhoto), findsOneWidget);
+
+    await tester.runAsync(loggedInConnecting);
+    await finish(tester);
+  });
+
+  testWidgets('logged in, the upload sheet has no login row', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await showChannel(tester, mediaQuery);
+    final l10n = AppLocalizations.of(tester.element(find.byType(ChannelView)));
+
+    await tester.tap(find.byIcon(Icons.attach_file_rounded));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.takePhoto), findsOneWidget);
+    expect(find.text(l10n.uploadNeedsLogin), findsNothing);
+    await finish(tester);
+  });
+
+  testWidgets('logged out, tapping an emote in the emote menu shows it instead of typing it', (tester) async {
+    final mediaQuery = statusBarOnly();
+    addTearDown(mediaQuery.dispose);
+    await logOut(tester);
+    final channel = await showChannel(tester, mediaQuery);
+    (channel.client as FakeClient).globals.emotes.change([
+      Emote(id: 'pog', name: 'PogChamp', mipmap: ['https://example.com/pog'], source: _TestEmoteSource()),
+    ]);
+
+    // The buttons' own handlers: in this test's layout a tap on them lands on something else. Fixed pumps: the emote
+    // images keep loading, so the frames never settle.
+    void tapInkWellAround(Finder finder) =>
+        tester.widget<InkWell>(find.ancestor(of: finder, matching: find.byType(InkWell)).first).onTap!();
+    tapInkWellAround(find.byType(EmoteButtonIconView));
+    await tester.pump(const Duration(milliseconds: 500));
+    // The emote's InkWell is inside its Tooltip.
+    tester.widget<InkWell>(find.descendant(of: find.byTooltip('PogChamp'), matching: find.byType(InkWell))).onTap!();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.byType(EmoteModal), findsOneWidget);
+    await tester.runAsync(loggedInConnecting);
+    await tester.pump();
+    // The composer's field comes first; the emote menu's search field is below it.
+    expect(tester.widget<TextField>(composer().first).controller!.text, isEmpty);
     await finish(tester);
   });
 
@@ -500,4 +566,15 @@ class _TestSource extends ChatSource {
 
   @override
   String? get description => null;
+}
+
+class _TestEmoteSource extends ChatSource with EmoteSource {
+  @override
+  String get name => '7TV';
+
+  @override
+  String? get description => null;
+
+  @override
+  String? emoteUrl(String id) => null;
 }

@@ -555,6 +555,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get logInToSeeMore => 'Přihlas se a uvidíš víc';
 
   @override
+  String get uploadNeedsLogin => 'Přihlas se a sdílej fotky v chatu';
+
+  @override
   String get whisperNeedsLogin => 'Pro posílání šepotů se přihlas přes Twitch.';
 
   @override

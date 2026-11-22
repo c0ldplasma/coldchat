@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "Supprime les messages de cet appareil. Twitch ne conserve aucun historique des chuchotements.",
   "logInToChat": "Connecte-toi pour discuter",
   "logInToSeeMore": "Connecte-toi pour en voir plus",
+  "uploadNeedsLogin": "Connecte-toi pour partager des photos dans le chat",
   "whisperNeedsLogin": "Connecte-toi avec Twitch pour envoyer des chuchotements.",
   "whisperNeedsScope": "Reconnecte-toi pour envoyer et recevoir des chuchotements. Ta connexion date d'avant leur prise en charge par ColdChat.",
   "whisperUserNotFound": "Aucun utilisateur Twitch ne porte ce nom.",

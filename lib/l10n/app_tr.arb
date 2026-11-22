@@ -322,6 +322,7 @@
   "deleteConversationSubtitle": "Mesajları bu cihazdan siler. Twitch fısıltı geçmişi tutmaz.",
   "logInToChat": "Sohbet etmek için giriş yap",
   "logInToSeeMore": "Daha fazlası için giriş yap",
+  "uploadNeedsLogin": "Sohbette fotoğraf paylaşmak için giriş yap",
   "whisperNeedsLogin": "Fısıltı göndermek için Twitch ile giriş yap.",
   "whisperNeedsScope": "Fısıltı gönderip almak için tekrar giriş yap. Girişin, ColdChat fısıltıları desteklemeden önceye ait.",
   "whisperUserNotFound": "Bu adda bir Twitch kullanıcısı yok.",

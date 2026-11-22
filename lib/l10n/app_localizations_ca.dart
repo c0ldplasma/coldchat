@@ -556,6 +556,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get logInToSeeMore => 'Inicia la sessió per veure\'n més';
 
   @override
+  String get uploadNeedsLogin => 'Inicia la sessió per compartir fotos al xat';
+
+  @override
   String get whisperNeedsLogin => 'Inicia la sessió amb Twitch per enviar xiuxiueigs.';
 
   @override

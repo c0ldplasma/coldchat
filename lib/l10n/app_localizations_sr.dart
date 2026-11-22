@@ -554,6 +554,9 @@ class AppLocalizationsSr extends AppLocalizations {
   String get logInToSeeMore => 'Пријави се да видиш више';
 
   @override
+  String get uploadNeedsLogin => 'Пријави се за дељење фотографија у чету';
+
+  @override
   String get whisperNeedsLogin => 'Пријави се на Twitch за слање шапата.';
 
   @override
