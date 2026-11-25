@@ -37,6 +37,7 @@
 !/pubspec.yaml
 !/pubspec.lock
 !/l10n.yaml
+!/.gitattributes
 
 # Website (GitHub Pages: support page, privacy policy, terms)
 !/docs/**

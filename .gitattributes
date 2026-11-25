@@ -1,0 +1,4 @@
+# Collapse the translations in GitHub's pull request diffs. They aren't generated: they are written along with each
+# change (see CLAUDE.md, "Localization"), but they repeat the English template, which stays expanded.
+/lib/l10n/*.arb linguist-generated=true
+/lib/l10n/app_en.arb linguist-generated=false
