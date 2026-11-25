@@ -253,6 +253,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get pattern => 'תבנית';
 
   @override
+  String get messageTriggerPatternHelp => 'אחד בכל שורה. גם קידומות של Chatty כמו regi: עובדות.';
+
+  @override
   String get mention => 'אזכור';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get invalidRegex => 'regex לא תקין';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'שורה $line אינה regex תקין';
+  }
 
   @override
   String get caseSensitive => 'תלוי רישיות';
@@ -314,6 +322,9 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get login => 'שם משתמש';
+
+  @override
+  String get userTriggerLoginHelp => 'הפרידו בין כמה שמות משתמש בפסיקים או ברווחים';
 
   @override
   String get newUserTrigger => 'טריגר משתמש חדש';

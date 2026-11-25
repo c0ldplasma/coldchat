@@ -253,6 +253,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get pattern => 'पैटर्न';
 
   @override
+  String get messageTriggerPatternHelp => 'हर पंक्ति में एक। Chatty के उपसर्ग जैसे regi: भी काम करते हैं।';
+
+  @override
   String get mention => 'मेंशन';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get invalidRegex => 'यह मान्य regex नहीं है';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'पंक्ति $line मान्य regex नहीं है';
+  }
 
   @override
   String get caseSensitive => 'केस-सेंसिटिव';
@@ -314,6 +322,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get login => 'लॉगिन नाम';
+
+  @override
+  String get userTriggerLoginHelp => 'कई लॉगिन नामों को कॉमा या स्पेस से अलग करें';
 
   @override
   String get newUserTrigger => 'नया उपयोगकर्ता ट्रिगर';

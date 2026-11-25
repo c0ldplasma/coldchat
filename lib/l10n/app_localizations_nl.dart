@@ -255,6 +255,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pattern => 'Patroon';
 
   @override
+  String get messageTriggerPatternHelp => 'Eén per regel. Chatty-voorvoegsels zoals regi: werken ook.';
+
+  @override
   String get mention => 'Vermelding';
 
   @override
@@ -265,6 +268,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Geen geldige regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Regel $line is geen geldige regex';
+  }
 
   @override
   String get caseSensitive => 'Hoofdlettergevoelig';
@@ -316,6 +324,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get login => 'Gebruikersnaam';
+
+  @override
+  String get userTriggerLoginHelp => 'Scheid meerdere gebruikersnamen met komma\'s of spaties';
 
   @override
   String get newUserTrigger => 'Nieuwe gebruikerstrigger';

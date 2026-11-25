@@ -253,6 +253,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pattern => 'Pattern';
 
   @override
+  String get messageTriggerPatternHelp => 'One per line. Chatty prefixes like regi: work too.';
+
+  @override
   String get mention => 'Mention';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Not a valid regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Line $line is not a valid regex';
+  }
 
   @override
   String get caseSensitive => 'Case sensitive';
@@ -314,6 +322,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login => 'Login';
+
+  @override
+  String get userTriggerLoginHelp => 'Separate several logins with commas or spaces';
 
   @override
   String get newUserTrigger => 'New user trigger';

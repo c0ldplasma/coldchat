@@ -253,6 +253,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pattern => 'Шаблон';
 
   @override
+  String get messageTriggerPatternHelp => 'По одному в строке. Префиксы Chatty вроде regi: тоже работают.';
+
+  @override
   String get mention => 'Выделить';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Недопустимый regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Строка $line — недопустимый regex';
+  }
 
   @override
   String get caseSensitive => 'Учитывать регистр';
@@ -314,6 +322,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get login => 'Логин';
+
+  @override
+  String get userTriggerLoginHelp => 'Разделяйте несколько логинов запятыми или пробелами';
 
   @override
   String get newUserTrigger => 'Новое правило';

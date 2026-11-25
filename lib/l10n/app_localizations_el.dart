@@ -253,6 +253,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get pattern => 'Μοτίβο';
 
   @override
+  String get messageTriggerPatternHelp => 'Ένα ανά γραμμή. Λειτουργούν και τα προθέματα του Chatty όπως regi:.';
+
+  @override
   String get mention => 'Επισήμανση';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Μη έγκυρο regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Η γραμμή $line δεν είναι έγκυρο regex';
+  }
 
   @override
   String get caseSensitive => 'Διάκριση πεζών-κεφαλαίων';
@@ -314,6 +322,9 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get login => 'Όνομα σύνδεσης';
+
+  @override
+  String get userTriggerLoginHelp => 'Διαχωρίστε πολλά ονόματα με κόμματα ή κενά';
 
   @override
   String get newUserTrigger => 'Νέος κανόνας χρήστη';

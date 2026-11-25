@@ -253,6 +253,9 @@ class AppLocalizationsHr extends AppLocalizations {
   String get pattern => 'Uzorak';
 
   @override
+  String get messageTriggerPatternHelp => 'Jedan po retku. Rade i Chatty prefiksi poput regi:.';
+
+  @override
   String get mention => 'Spominjanje';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Neispravan regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Redak $line nije ispravan regex';
+  }
 
   @override
   String get caseSensitive => 'Razlikuj velika i mala slova';
@@ -314,6 +322,9 @@ class AppLocalizationsHr extends AppLocalizations {
 
   @override
   String get login => 'Korisničko ime';
+
+  @override
+  String get userTriggerLoginHelp => 'Više korisničkih imena odvojite zarezima ili razmacima';
 
   @override
   String get newUserTrigger => 'Novi okidač korisnika';

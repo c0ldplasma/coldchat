@@ -253,6 +253,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get pattern => 'Mẫu';
 
   @override
+  String get messageTriggerPatternHelp => 'Mỗi dòng một mục. Tiền tố của Chatty như regi: cũng dùng được.';
+
+  @override
   String get mention => 'Nhắc đến';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Regex không hợp lệ';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Dòng $line không phải regex hợp lệ';
+  }
 
   @override
   String get caseSensitive => 'Phân biệt chữ hoa/thường';
@@ -314,6 +322,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get login => 'Tên đăng nhập';
+
+  @override
+  String get userTriggerLoginHelp => 'Phân tách nhiều tên đăng nhập bằng dấu phẩy hoặc dấu cách';
 
   @override
   String get newUserTrigger => 'Bộ lọc người dùng mới';

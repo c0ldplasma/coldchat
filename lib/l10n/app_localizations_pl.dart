@@ -253,6 +253,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get pattern => 'Wzorzec';
 
   @override
+  String get messageTriggerPatternHelp => 'Jeden w wierszu. Działają też prefiksy z Chatty, np. regi:.';
+
+  @override
   String get mention => 'Wzmianka';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Nieprawidłowy regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Wiersz $line nie jest prawidłowym regexem';
+  }
 
   @override
   String get caseSensitive => 'Rozróżniaj wielkość liter';
@@ -314,6 +322,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get login => 'Nazwa użytkownika';
+
+  @override
+  String get userTriggerLoginHelp => 'Oddziel kilka nazw użytkowników przecinkami lub spacjami';
 
   @override
   String get newUserTrigger => 'Nowy wyzwalacz';

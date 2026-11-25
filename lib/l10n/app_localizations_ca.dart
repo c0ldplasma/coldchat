@@ -253,6 +253,9 @@ class AppLocalizationsCa extends AppLocalizations {
   String get pattern => 'Patró';
 
   @override
+  String get messageTriggerPatternHelp => 'Un per línia. També funcionen els prefixos de Chatty com regi:.';
+
+  @override
   String get mention => 'Menció';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get invalidRegex => 'No és un regex vàlid';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'La línia $line no és un regex vàlid';
+  }
 
   @override
   String get caseSensitive => 'Distingeix majúscules i minúscules';
@@ -314,6 +322,9 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get login => 'Nom d\'usuari';
+
+  @override
+  String get userTriggerLoginHelp => 'Separa diversos noms d\'usuari amb comes o espais';
 
   @override
   String get newUserTrigger => 'Activador nou';
