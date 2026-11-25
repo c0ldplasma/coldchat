@@ -41,13 +41,12 @@ jobs:
       - name: Generate sources
         run: dart run build_runner build --delete-conflicting-outputs
 
-      - name: Check that the localizations are complete and up to date
-        # gen-l10n writes build/untranslated_messages.json and fails if build/ doesn't exist yet. That file lists every
-        # key a language lacks.
+      - name: Generate localizations and check that they are complete
+        # lib/l10n/app_localizations*.dart are generated, not tracked. gen-l10n also writes
+        # build/untranslated_messages.json, listing every key a language lacks, and fails if build/ doesn't exist yet.
         run: |
           mkdir -p build
           flutter gen-l10n
-          git diff --exit-code lib/l10n
           if [ "$(tr -d '[:space:]' < build/untranslated_messages.json)" != "{}" ]; then
             echo "::error::Strings missing from some languages (add them to every lib/l10n/*.arb):"
             cat build/untranslated_messages.json
@@ -60,9 +59,9 @@ jobs:
       - name: Test
         run: flutter test
 
-      # Generated files are left out: gen-l10n and build_runner format their own output.
+      # Only tracked files: the generated ones (gen-l10n, build_runner) aren't, and format their own output.
       - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed $(git ls-files 'lib/*.dart' 'test/*.dart' | grep -v '^lib/l10n/app_localizations')
+        run: dart format --output=none --set-exit-if-changed $(git ls-files 'lib/*.dart' 'test/*.dart')
 
   build:
     strategy:

@@ -45,16 +45,18 @@ an action (an upload finished, a whisper to focus) are fine: subscribe in `initS
 
 ## Localization
 
-`lib/l10n/app_localizations*.dart` is **generated but checked in**. After editing any `lib/l10n/*.arb`:
+`lib/l10n/app_localizations*.dart` is **generated and not tracked** (`.gitignore`). `generate: true` in
+`pubspec.yaml` makes `flutter pub get`, `flutter run` and `flutter build` create them; after editing any
+`lib/l10n/*.arb`, run this so the analyzer and tests see the change:
 
 ```bash
 flutter gen-l10n
 ```
 
 Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb` is the template, see `l10n.yaml`);
-there is no translation service, translations are written along with the change. CI fails if a language
-lacks a key (gen-l10n lists those in `build/untranslated_messages.json`) or if the checked-in
-`app_localizations*.dart` don't match the arb files. Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
+there is no translation service, translations are written along with the change. `.gitattributes` marks the
+arb files other than English and German `linguist-generated`, so GitHub collapses them in PR diffs. CI fails if a language
+lacks a key (gen-l10n lists those in `build/untranslated_messages.json`). Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
 don't put user-facing text in Dart string literals. Times of day go through `clockTimeOf` (`lib/tools/clock_time.dart`),
 which follows the language (12-hour in English, 24-hour in German) and the phone's 24-hour setting.
 
@@ -65,7 +67,7 @@ and an Android and an unsigned iOS build. It pins the Flutter version; raise `FL
 the minimum in `pubspec.yaml`. Lints are `flutter_lints` plus stricter settings in
 `analysis_options.yaml` (keep `flutter analyze` at "No issues found!"; `dart fix --apply` fixes the mechanical ones):
 strict casts and inference, so JSON values need an explicit `as` and untyped calls like `showModalBottomSheet`
-need a type argument; every future is awaited or wrapped in `unawaited(...)`; imports inside `lib/` are relative. Unit tests live in `test/` (`flutter test`; run `dart run build_runner build` first on a fresh checkout).
+need a type argument; every future is awaited or wrapped in `unawaited(...)`; imports inside `lib/` are relative. Unit tests live in `test/` (`flutter test`; on a fresh checkout run `flutter pub get` and `dart run build_runner build` first).
 `test/data/hive_storage_test.dart` opens `test/fixtures/hive_models.hive`, a box written by an earlier version: if it
 fails, a typeId or field number changed, so revert that rather than regenerating the fixture. Code is formatted with `dart format` at width 120 with trailing commas preserved (settings in
 `analysis_options.yaml`): run `dart format lib` before committing. The commit that formatted everything is listed in
