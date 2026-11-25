@@ -55,7 +55,7 @@ flutter gen-l10n
 
 Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb` is the template, see `l10n.yaml`);
 there is no translation service, translations are written along with the change. `.gitattributes` marks the
-non-English arb files `linguist-generated`, so GitHub collapses them in PR diffs. CI fails if a language
+arb files other than English and German `linguist-generated`, so GitHub collapses them in PR diffs. CI fails if a language
 lacks a key (gen-l10n lists those in `build/untranslated_messages.json`). Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
 don't put user-facing text in Dart string literals. Times of day go through `clockTimeOf` (`lib/tools/clock_time.dart`),
 which follows the language (12-hour in English, 24-hour in German) and the phone's 24-hour setting.
