@@ -1,5 +1,7 @@
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 
+import '../tools/regex_dialect.dart';
+
 part 'message_trigger.g.dart';
 
 enum MessageTriggerType {
@@ -44,11 +46,13 @@ class MessageTrigger extends HiveObject {
   /// that doesn't compile is stored as null.
   static final Map<(String, bool), RegExp?> _regexCache = {};
 
-  /// [pattern] compiled as a regex, or null when it isn't a valid one.
+  /// [pattern] compiled as a regex, or null when it isn't a valid one. Java and PCRE syntax from Chatty and
+  /// Chatterino is translated first (see [toDartRegex]).
   static RegExp? compileRegex(String pattern, {required bool caseSensitive}) =>
       _regexCache.putIfAbsent((pattern, caseSensitive), () {
         try {
-          return RegExp(pattern, caseSensitive: caseSensitive);
+          final dart = toDartRegex(pattern);
+          return RegExp(dart.pattern, caseSensitive: caseSensitive, unicode: dart.unicode);
         } on FormatException {
           return null;
         }
