@@ -563,6 +563,12 @@ abstract class AppLocalizations {
   /// **'Pattern'**
   String get pattern;
 
+  /// Message trigger sheet, under the pattern field: each line becomes its own trigger. Chatty is another Twitch chat client; keep 'regi:' unchanged.
+  ///
+  /// In en, this message translates to:
+  /// **'One per line. Chatty prefixes like regi: work too.'**
+  String get messageTriggerPatternHelp;
+
   /// No description provided for @mention.
   ///
   /// In en, this message translates to:
@@ -586,6 +592,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not a valid regex'**
   String get invalidRegex;
+
+  /// Message trigger sheet, under the field when it holds several lines and one of them is a regex that does not compile.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {line} is not a valid regex'**
+  String invalidRegexLine(int line);
 
   /// No description provided for @caseSensitive.
   ///
@@ -682,6 +694,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login'**
   String get login;
+
+  /// User trigger sheet, under the login field: several logins can be entered at once.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate several logins with commas or spaces'**
+  String get userTriggerLoginHelp;
 
   /// No description provided for @newUserTrigger.
   ///

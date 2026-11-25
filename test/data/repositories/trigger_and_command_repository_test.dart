@@ -78,6 +78,63 @@ void main() {
       expect(repository.userTriggerFor(null), isNull);
     });
 
+    test('saves several message triggers entered at once', () async {
+      var repository = await TriggerRepository.open();
+      await repository.saveMessageTriggerEntries([
+        (pattern: 'a', enableRegex: false, caseSensitive: false),
+        (pattern: 'b|c', enableRegex: true, caseSensitive: true),
+      ], type: MessageTriggerType.block);
+
+      await reopen();
+      repository = await TriggerRepository.open();
+      expect(
+        [for (final t in repository.messageTriggers) (t.pattern, t.enableRegex, t.caseSensitive, t.type)],
+        [
+          ('a', false, false, MessageTriggerType.block.index),
+          ('b|c', true, true, MessageTriggerType.block.index),
+        ],
+      );
+    });
+
+    test('editing a message trigger into several lines keeps it and adds the rest', () async {
+      final repository = await TriggerRepository.open();
+      await repository.addMessageTrigger(MessageTrigger(type: MessageTriggerType.mention.index, pattern: 'old'));
+      await repository.addMessageTrigger(MessageTrigger(type: MessageTriggerType.mention.index, pattern: 'other'));
+
+      await repository.saveMessageTriggerEntries(
+        [
+          (pattern: 'new', enableRegex: true, caseSensitive: false),
+          (pattern: 'extra', enableRegex: false, caseSensitive: false),
+        ],
+        type: MessageTriggerType.mention,
+        existing: repository.messageTriggers.first,
+      );
+
+      expect([for (final t in repository.messageTriggers) t.pattern], ['new', 'other', 'extra']);
+      expect(repository.messageTriggers.first.enableRegex, isTrue);
+    });
+
+    test('saves several user triggers entered at once, editing the first', () async {
+      final repository = await TriggerRepository.open();
+      await repository.addUserTrigger(UserTrigger(type: UserTriggerType.mention.index, login: 'old'));
+
+      await repository.saveUserTriggerLogins(
+        ['alice', 'bob'],
+        type: UserTriggerType.block,
+        existing: repository.userTriggers.single,
+      );
+      await repository.saveUserTriggerLogins(['carol'], type: UserTriggerType.mention);
+
+      expect(
+        [for (final t in repository.userTriggers) (t.login, t.type)],
+        [
+          ('alice', UserTriggerType.block.index),
+          ('bob', UserTriggerType.block.index),
+          ('carol', UserTriggerType.mention.index),
+        ],
+      );
+    });
+
     test('each list has its own listenable', () async {
       final repository = await TriggerRepository.open();
       var messageChanges = 0;

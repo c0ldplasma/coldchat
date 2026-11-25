@@ -253,6 +253,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get pattern => 'Mønster';
 
   @override
+  String get messageTriggerPatternHelp => 'Ét per linje. Chatty-præfikser som regi: virker også.';
+
+  @override
   String get mention => 'Omtale';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Ikke et gyldigt regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Linje $line er ikke et gyldigt regex';
+  }
 
   @override
   String get caseSensitive => 'Skeln mellem store og små bogstaver';
@@ -314,6 +322,9 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get login => 'Brugernavn';
+
+  @override
+  String get userTriggerLoginHelp => 'Adskil flere brugernavne med kommaer eller mellemrum';
 
   @override
   String get newUserTrigger => 'Ny brugerudløser';

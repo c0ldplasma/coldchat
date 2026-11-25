@@ -148,10 +148,19 @@
   "showBadges": "Show badges",
   "messageTrigger": "Message trigger",
   "pattern": "Pattern",
+  "messageTriggerPatternHelp": "One per line. Chatty prefixes like regi: work too.",
+  "@messageTriggerPatternHelp": {
+    "description": "Message trigger sheet, under the pattern field: each line becomes its own trigger. Chatty is another Twitch chat client; keep 'regi:' unchanged."
+  },
   "mention": "Mention",
   "block": "Block",
   "enableRegex": "Enable regex",
   "invalidRegex": "Not a valid regex",
+  "invalidRegexLine": "Line {line} is not a valid regex",
+  "@invalidRegexLine": {
+    "description": "Message trigger sheet, under the field when it holds several lines and one of them is a regex that does not compile.",
+    "placeholders": {"line": {"type": "int"}}
+  },
   "caseSensitive": "Case sensitive",
   "messageTriggers": "Message triggers",
   "newMessageTrigger": "New message trigger",
@@ -169,6 +178,10 @@
   "userTriggers": "User triggers",
   "chatHistory": "Chat history",
   "login": "Login",
+  "userTriggerLoginHelp": "Separate several logins with commas or spaces",
+  "@userTriggerLoginHelp": {
+    "description": "User trigger sheet, under the login field: several logins can be entered at once."
+  },
   "newUserTrigger": "New user trigger",
   "ban": "Ban",
   "unban": "Unban",

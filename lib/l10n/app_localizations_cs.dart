@@ -253,6 +253,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get pattern => 'Vzor';
 
   @override
+  String get messageTriggerPatternHelp => 'Jeden na řádek. Fungují i prefixy z Chatty jako regi:.';
+
+  @override
   String get mention => 'Zmínka';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Neplatný regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Řádek $line není platný regex';
+  }
 
   @override
   String get caseSensitive => 'Rozlišovat velká a malá písmena';
@@ -314,6 +322,9 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get login => 'Uživatelské jméno';
+
+  @override
+  String get userTriggerLoginHelp => 'Více uživatelských jmen oddělte čárkami nebo mezerami';
 
   @override
   String get newUserTrigger => 'Nový spouštěč uživatele';

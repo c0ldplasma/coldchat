@@ -253,6 +253,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pattern => 'パターン';
 
   @override
+  String get messageTriggerPatternHelp => '1行に1つ。regi: などの Chatty の接頭辞も使えます。';
+
+  @override
   String get mention => 'メンション';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get invalidRegex => '無効な正規表現です';
+
+  @override
+  String invalidRegexLine(int line) {
+    return '$line行目は有効な正規表現ではありません';
+  }
 
   @override
   String get caseSensitive => '大文字と小文字を区別';
@@ -313,6 +321,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get login => 'ログイン名';
+
+  @override
+  String get userTriggerLoginHelp => '複数のログイン名はカンマかスペースで区切ります';
 
   @override
   String get newUserTrigger => '新しいユーザートリガー';

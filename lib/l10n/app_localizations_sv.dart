@@ -253,6 +253,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get pattern => 'Mönster';
 
   @override
+  String get messageTriggerPatternHelp => 'En per rad. Chatty-prefix som regi: fungerar också.';
+
+  @override
   String get mention => 'Omnämnande';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Inte ett giltigt regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Rad $line är inte ett giltigt regex';
+  }
 
   @override
   String get caseSensitive => 'Skiftlägeskänslig';
@@ -314,6 +322,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get login => 'Användarnamn';
+
+  @override
+  String get userTriggerLoginHelp => 'Separera flera användarnamn med kommatecken eller mellanslag';
 
   @override
   String get newUserTrigger => 'Ny användarutlösare';

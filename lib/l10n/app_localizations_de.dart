@@ -255,6 +255,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pattern => 'Begriff';
 
   @override
+  String get messageTriggerPatternHelp => 'Einer pro Zeile. Chatty-Präfixe wie regi: gehen auch.';
+
+  @override
   String get mention => 'Erwähnung';
 
   @override
@@ -265,6 +268,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Kein gültiger Regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'Zeile $line ist kein gültiger Regex';
+  }
 
   @override
   String get caseSensitive => 'Groß-/Kleinschreibung beachten';
@@ -316,6 +324,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get login => 'Nutzername';
+
+  @override
+  String get userTriggerLoginHelp => 'Mehrere Nutzernamen mit Komma oder Leerzeichen trennen';
 
   @override
   String get newUserTrigger => 'Neuer Auslöser';

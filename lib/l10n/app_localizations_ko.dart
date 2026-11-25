@@ -253,6 +253,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get pattern => '패턴';
 
   @override
+  String get messageTriggerPatternHelp => '한 줄에 하나씩. regi: 같은 Chatty 접두사도 쓸 수 있습니다.';
+
+  @override
   String get mention => '멘션';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get invalidRegex => '유효하지 않은 regex입니다';
+
+  @override
+  String invalidRegexLine(int line) {
+    return '$line번째 줄이 유효한 regex가 아닙니다';
+  }
 
   @override
   String get caseSensitive => '대소문자 구분';
@@ -313,6 +321,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get login => '로그인 이름';
+
+  @override
+  String get userTriggerLoginHelp => '여러 로그인 이름은 쉼표나 공백으로 구분하세요';
 
   @override
   String get newUserTrigger => '새 사용자 트리거';

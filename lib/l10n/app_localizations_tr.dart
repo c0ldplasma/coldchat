@@ -253,6 +253,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pattern => 'Kalıp';
 
   @override
+  String get messageTriggerPatternHelp => 'Her satıra bir tane. regi: gibi Chatty önekleri de çalışır.';
+
+  @override
   String get mention => 'Vurgula';
 
   @override
@@ -263,6 +266,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Geçersiz regex';
+
+  @override
+  String invalidRegexLine(int line) {
+    return '$line. satır geçerli bir regex değil';
+  }
 
   @override
   String get caseSensitive => 'Büyük/küçük harfe duyarlı';
@@ -314,6 +322,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get login => 'Kullanıcı adı';
+
+  @override
+  String get userTriggerLoginHelp => 'Birden fazla kullanıcı adını virgül veya boşlukla ayırın';
 
   @override
   String get newUserTrigger => 'Yeni kullanıcı tetikleyicisi';

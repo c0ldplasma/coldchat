@@ -255,6 +255,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pattern => 'Motif';
 
   @override
+  String get messageTriggerPatternHelp => 'Un par ligne. Les préfixes de Chatty comme regi: fonctionnent aussi.';
+
+  @override
   String get mention => 'Mention';
 
   @override
@@ -265,6 +268,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get invalidRegex => 'Regex non valide';
+
+  @override
+  String invalidRegexLine(int line) {
+    return 'La ligne $line n\'est pas une regex valide';
+  }
 
   @override
   String get caseSensitive => 'Respecter la casse';
@@ -316,6 +324,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get login => 'Identifiant';
+
+  @override
+  String get userTriggerLoginHelp => 'Séparez plusieurs identifiants par des virgules ou des espaces';
 
   @override
   String get newUserTrigger => 'Nouveau déclencheur';
