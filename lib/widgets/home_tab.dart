@@ -112,7 +112,11 @@ class _HomeTabViewState extends State<_HomeTabView> {
             SliverAppBar.large(
               surfaceTintColor: Colors.transparent,
               // foregroundColor: Colors.transparent,
-              title: Text(AppLocalizations.of(context).appName),
+              // Bold like the name on the start screen (LoggedOutStart); size and font come from the app bar.
+              title: Text(
+                AppLocalizations.of(context).appName,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
               actions: const [
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
