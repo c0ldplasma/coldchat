@@ -64,16 +64,6 @@ class SettingsModal extends StatelessWidget {
                   onTap: () => Modal.show(context: context, child: const EmoteSettingsModal()),
                 ),
                 Tile(
-                  title: AppLocalizations.of(context).language,
-                  subtitle:
-                      LocaleNamesLocalizationsDelegate.nativeLocaleNames[AppLocalizations.supportedLocales
-                          .firstWhereOrNull((element) => element.toLanguageTag() == settings.locale)
-                          .toString()] ??
-                      AppLocalizations.of(context).systemDefault,
-                  prefix: const Icon(Icons.language_outlined),
-                  onTap: () => Modal.show(context: context, child: const LanguageSelectionModal()),
-                ),
-                Tile(
                   title: AppLocalizations.of(context).messageAppearance,
                   prefix: const Icon(Icons.font_download_rounded),
                   onTap: () => Modal.show(context: context, child: const MessageAppearanceModal()),
@@ -97,6 +87,16 @@ class SettingsModal extends StatelessWidget {
                   title: AppLocalizations.of(context).credits,
                   prefix: const Icon(Icons.work_outline_outlined),
                   onTap: () => Modal.show(context: context, child: const CreditsModal()),
+                ),
+                Tile(
+                  title: AppLocalizations.of(context).language,
+                  subtitle:
+                      LocaleNamesLocalizationsDelegate.nativeLocaleNames[AppLocalizations.supportedLocales
+                          .firstWhereOrNull((element) => element.toLanguageTag() == settings.locale)
+                          .toString()] ??
+                      AppLocalizations.of(context).systemDefault,
+                  prefix: const Icon(Icons.language_outlined),
+                  onTap: () => Modal.show(context: context, child: const LanguageSelectionModal()),
                 ),
                 Tile(
                   title: AppLocalizations.of(context).about,
