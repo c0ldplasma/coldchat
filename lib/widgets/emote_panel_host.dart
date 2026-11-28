@@ -196,15 +196,11 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
     // How far up from the screen's bottom the panel reaches. While searching, at least enough above the keyboard for
     // the search field and the first results; with the keyboard down that's no taller than usual.
     final panelTop = searching ? math.max(_panelHeight, keyboard + _aboveKeyboardWhileSearching) : _panelHeight;
-    // While searching, its content ends at the keyboard, so the results scroll all the way up into view. Its sheet
-    // still reaches the screen's bottom: iOS's keyboard has rounded top corners, and the sheet shows through them
-    // instead of the chat. Otherwise the content keeps clear of the home indicator, and the keyboard covers the
-    // panel while handing over.
-    // Without a search the emotes reach the bottom edge, scrolling on below the section bar floating where the
-    // channel switcher's capsule sits.
-    // Once the search let go of the keyboard, the content is laid out as without a search right away: the section bar
-    // is back at its place at the panel's bottom, behind the keyboard, which reveals it as it slides away while the
-    // panel shrinks back with it.
+    // While searching, the emotes end at the keyboard (or the home indicator), so the results scroll all the way up
+    // into view. Otherwise they reach the bottom edge, scrolling on below the section bar. The sheet always reaches the
+    // screen's bottom (iOS's keyboard has rounded top corners, and the sheet shows through them instead of the chat),
+    // and so does the section bar's place: it fades away where it is when the search takes the keyboard, and the
+    // keyboard reveals it there when it goes.
     final contentBottom = _searchFocus.hasFocus ? math.max(keyboard, media.viewPadding.bottom) : 0.0;
     final sectionBarInset = ChannelSwitcher.bottomInset(context);
     return BlocListener<EmotePanelCubit, EmotePanel>(
@@ -281,6 +277,8 @@ class _Panel extends StatelessWidget {
   final Channel channel;
   final EmotePanel mode;
   final FocusNode searchFocus;
+
+  /// Where the emotes end above the panel's bottom edge; the section bar stays at the bottom.
   final double bottomPadding;
 
   /// How far the section bar floats above the screen's bottom edge.
@@ -316,33 +314,31 @@ class _Panel extends StatelessWidget {
             side: BorderSide(color: colors.glassBorder, width: 0.5),
           ),
         ),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: bottomPadding),
-          child: Opacity(
-            opacity: contentOpacity,
-            child: EmotePicker(
-              client: channel.client,
-              channel: channel,
-              backgroundColor: color,
-              searchFocusNode: searchFocus,
-              bottomInset: sectionBarInset,
-              // Without a text field to put it in, an emote shows what it is instead.
-              onShowEmote: needsLogin
-                  ? (emote) => Modal.show(
-                      context: context,
-                      child: EmoteModal(emote: emote),
-                    )
-                  : null,
-              onPickButtonIcon: mode == EmotePanel.pickingButtonIcon
-                  ? (emote) async {
-                      final panel = context.read<EmotePanelCubit>();
-                      if (await chooseEmoteButtonIcon(context, emote)) panel.hide();
-                    }
-                  : null,
-              getFieldInput: () => channel.composerDraft.text,
-              setFieldInput: (_) {},
-              insertFieldInput: channel.composerDraft.insert,
-            ),
+        child: Opacity(
+          opacity: contentOpacity,
+          child: EmotePicker(
+            client: channel.client,
+            channel: channel,
+            backgroundColor: color,
+            searchFocusNode: searchFocus,
+            bottomInset: sectionBarInset,
+            scrollBottom: bottomPadding,
+            // Without a text field to put it in, an emote shows what it is instead.
+            onShowEmote: needsLogin
+                ? (emote) => Modal.show(
+                    context: context,
+                    child: EmoteModal(emote: emote),
+                  )
+                : null,
+            onPickButtonIcon: mode == EmotePanel.pickingButtonIcon
+                ? (emote) async {
+                    final panel = context.read<EmotePanelCubit>();
+                    if (await chooseEmoteButtonIcon(context, emote)) panel.hide();
+                  }
+                : null,
+            getFieldInput: () => channel.composerDraft.text,
+            setFieldInput: (_) {},
+            insertFieldInput: channel.composerDraft.insert,
           ),
         ),
       ),

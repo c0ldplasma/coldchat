@@ -864,7 +864,8 @@ void main() {
       expect(tester.testTextInput.isVisible, isTrue);
       expect(tester.getRect(search).bottom, lessThan(keyboardTop));
       // The results end at the keyboard, so the last ones can scroll up into view.
-      expect(tester.getRect(find.byType(EmotePicker)).bottom, moreOrLessEquals(keyboardTop));
+      final results = find.descendant(of: find.byType(EmotePicker), matching: find.byType(CustomScrollView));
+      expect(tester.getRect(results).bottom, moreOrLessEquals(keyboardTop));
       expect(tester.getRect(composer()).bottom, lessThan(tester.getRect(find.byType(EmotePicker)).top));
 
       // The keyboard going away shrinks the panel back to its height before the search.
@@ -894,9 +895,10 @@ void main() {
       final sectionBarBottom = tester.getRect(sectionBar).bottom;
       await tester.tap(search);
       await tester.pump();
-      // It fades out with the search taking the keyboard, rather than vanishing at once.
+      // It fades out where it is with the search taking the keyboard, rather than vanishing at once or moving.
       await tester.pump(const Duration(milliseconds: 100));
       expect(barStrength(), inExclusiveRange(0.0, 1.0));
+      expect(tester.getRect(sectionBar).bottom, moreOrLessEquals(sectionBarBottom));
       for (final inset in [100.0, 200.0, 336.0]) {
         tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
         tester.view.padding = FakeViewPadding.zero;
