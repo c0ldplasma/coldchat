@@ -393,7 +393,7 @@
   "hideEmoteSection": "Сакриј ове емотиконе",
   "hideEmoteSectionSubtitle": "Више се не приказују у панелу емотикона ни у предлозима. Ако упишеш име емотикона, ипак се шаље.",
   "hiddenEmoteSections": "Сакривени одељци емотикона",
-  "hiddenEmoteSectionsNone": "Дуго притисни одељак канала у панелу емотикона да сакријеш његове емотиконе.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 канал} few{{count} канала} other{{count} канала}}",
+  "hiddenEmoteSectionsNone": "Дуго притисни одељак у панелу емотикона да сакријеш његове емотиконе.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 одељак} few{{count} одељка} other{{count} одељака}}",
   "showEmoteSection": "Прикажи"
 }

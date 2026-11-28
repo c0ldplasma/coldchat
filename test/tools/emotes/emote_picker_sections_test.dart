@@ -123,6 +123,44 @@ void main() {
       final searched = sections.matching('bye').single;
       expect((searched.iconUrl, searched.ownerId), ('https://example.com/ronni-sub', '1'));
     });
+
+    test("keys a channel's section by the channel, any other by its title", () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: [_emote('grinning', _emoji, category: 'Smileys & Emotion')],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', ownerId: '1'),
+        ],
+      );
+
+      expect(
+        [for (final section in sections.sections) section.key],
+        [
+          'section:7TV',
+          'section:Twitch',
+          '1',
+          'section:Smileys & Emotion',
+        ],
+      );
+      // The key of each emote's section, which hiding filters the emotes by, is its section's.
+      for (final section in sections.sections) {
+        expect(section.emotes.map(emoteSectionKeyOf), everyElement(section.key));
+      }
+    });
+
+    test('leaves out the empty Twitch section while it is hidden', () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+      );
+
+      expect(_titles(sections.sections), {
+        '7TV': ['peepoHappy'],
+      });
+    });
   });
 
   group('EmotePickerSections.matching', () {
@@ -199,6 +237,24 @@ void main() {
       expect(_titles(third.matching('cat')), {
         'BetterTTV': ['catJAM'],
       });
+
+      // Hiding the Twitch section groups again too.
+      final fourth = cache.sectionsFor(
+        channelEmotes: moreChannelEmotes,
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+      );
+      expect(fourth.sections.map((section) => section.title), ['7TV', 'BetterTTV']);
+      expect(
+        cache.sectionsFor(
+          channelEmotes: moreChannelEmotes,
+          globalEmotes: const [],
+          userEmotes: const [],
+          keepTwitchSection: false,
+        ),
+        same(fourth),
+      );
     });
   });
 

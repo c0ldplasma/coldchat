@@ -393,7 +393,7 @@
   "hideEmoteSection": "Nascondi queste emote",
   "hideEmoteSectionSubtitle": "Non compaiono più nel pannello delle emote né nei suggerimenti. Scrivendo il nome di un'emote, viene comunque inviata.",
   "hiddenEmoteSections": "Sezioni di emote nascoste",
-  "hiddenEmoteSectionsNone": "Tieni premuta la sezione di un canale nel pannello delle emote per nasconderne le emote.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 canale} other{{count} canali}}",
+  "hiddenEmoteSectionsNone": "Tieni premuta una sezione nel pannello delle emote per nasconderne le emote.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sezione} other{{count} sezioni}}",
   "showEmoteSection": "Mostra"
 }

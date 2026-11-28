@@ -5,39 +5,66 @@ import 'package:flutter_test/flutter_test.dart';
 
 class _Source extends ChatSource {
   @override
-  String get name => 'Twitch';
+  final String name;
+
+  _Source(this.name);
 
   @override
   String? get description => null;
 }
 
-final _twitch = _Source();
+final _twitch = _Source('Twitch');
+final _sevenTv = _Source('7TV');
 
-Emote _emote(String name, {String? ownerId}) =>
-    Emote(id: name, name: name, mipmap: const [''], source: _twitch, ownerId: ownerId);
+Emote _emote(String name, {ChatSource? source, String? ownerId, String? category}) => Emote(
+  id: name,
+  name: name,
+  mipmap: const [''],
+  source: source ?? _twitch,
+  ownerId: ownerId,
+  category: category,
+);
 
 void main() {
-  final emotes = [_emote('Kappa'), _emote('animeHi', ownerId: '1'), _emote('ronniHi', ownerId: '2')];
+  final emotes = [
+    _emote('Kappa'),
+    _emote('animeHi', ownerId: '1', category: 'Anime_Marathon_1'),
+    _emote('ronniHi', ownerId: '2', category: 'ronni'),
+    _emote('peepoHappy', source: _sevenTv),
+    _emote('grinning', category: 'Smileys & Emotion'),
+  ];
 
-  test('leaves out the emotes of hidden channels', () {
-    final visible = VisibleEmotes().of(emotes, {'1'});
+  List<String> names(List<Emote> emotes) => [for (final emote in emotes) emote.name];
 
-    expect(visible.map((emote) => emote.name), ['Kappa', 'ronniHi']);
+  test('leaves out the emotes of a hidden channel by its id', () {
+    expect(names(VisibleEmotes().of(emotes, {'1'})), ['Kappa', 'ronniHi', 'peepoHappy', 'grinning']);
+  });
+
+  test('leaves out the emotes of any other hidden section by its title', () {
+    expect(names(VisibleEmotes().of(emotes, {'section:7TV'})), ['Kappa', 'animeHi', 'ronniHi', 'grinning']);
+    expect(names(VisibleEmotes().of(emotes, {'section:Smileys & Emotion'})), [
+      'Kappa',
+      'animeHi',
+      'ronniHi',
+      'peepoHappy',
+    ]);
+    // The Twitch section holds Twitch's emotes without a channel, not the channels' sections.
+    expect(names(VisibleEmotes().of(emotes, {'section:Twitch'})), ['animeHi', 'ronniHi', 'peepoHappy', 'grinning']);
   });
 
   test('is the list given when no emote in it is hidden', () {
     expect(VisibleEmotes().of(emotes, const {}), same(emotes));
-    expect(VisibleEmotes().of(emotes, {'3'}), same(emotes));
+    expect(VisibleEmotes().of(emotes, {'3', 'section:BetterTTV'}), same(emotes));
   });
 
-  test('filters again only when the list or the hidden channels change', () {
+  test('filters again only when the list or the hidden sections change', () {
     final visibleEmotes = VisibleEmotes();
     final first = visibleEmotes.of(emotes, {'1'});
 
     // An equal set in a new object, as each rebuild reads it from the settings.
     expect(visibleEmotes.of(emotes, {'1'}), same(first));
-    expect(visibleEmotes.of(emotes, {'1', '2'}).map((emote) => emote.name), ['Kappa']);
-    expect(visibleEmotes.of([...emotes], {'1', '2'}).map((emote) => emote.name), ['Kappa']);
+    expect(names(visibleEmotes.of(emotes, {'1', '2'})), ['Kappa', 'peepoHappy', 'grinning']);
+    expect(names(visibleEmotes.of([...emotes], {'1', '2'})), ['Kappa', 'peepoHappy', 'grinning']);
     expect(visibleEmotes.of(emotes, const {}), same(emotes));
   });
 }

@@ -99,7 +99,13 @@ class _EmotePickerState extends State<EmotePicker> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
+  // Each list without the emotes of hidden sections, remembered so the sections are only grouped again on a change.
+  final VisibleEmotes _visibleChannelEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleGlobalEmotes = VisibleEmotes();
   final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
+
+  /// The keys of the hidden sections, as last built.
+  Set<String> _hiddenSections = const {};
   // One key per section title, kept across rebuilds so the section headers aren't rebuilt from scratch every time;
   // the tab bar scrolls to a section by its key.
   final Map<String, GlobalKey> groupKeys = {};
@@ -196,34 +202,31 @@ class _EmotePickerState extends State<EmotePicker> {
     super.dispose();
   }
 
-  /// Long-pressing a channel's section offers hiding its emotes.
-  Future<void> _showSectionActions(EmoteSection section) async {
-    final channelId = section.ownerId;
-    if (channelId == null) return;
-    await Modal.show(
-      context: context,
-      child: EmoteSectionModal(channelId: channelId, channelName: section.title),
-    );
-  }
+  /// Long-pressing a section offers hiding its emotes.
+  Future<void> _showSectionActions(EmoteSection section) => Modal.show(
+    context: context,
+    child: EmoteSectionModal(sectionKey: section.key, title: section.title),
+  );
 
   // Emotes keep loading after the picker opens (Twitch's only arrive once the chat connection is up), so it rebuilds
-  // when any list changes, and when a channel's emotes are hidden or shown again.
+  // when any list changes, and when a section is hidden or shown again.
   @override
   Widget build(BuildContext context) {
     final settings = context.read<SettingsRepository>();
     return ListenableBuilder(
-      listenable: settings.hiddenEmoteChannelsChanges,
-      builder: (context, _) => _buildWithEmotes(context, settings.hiddenEmoteChannels.keys.toSet()),
+      listenable: settings.hiddenEmoteSectionsChanges,
+      builder: (context, _) {
+        _hiddenSections = settings.hiddenEmoteSections.keys.toSet();
+        return _buildWithEmotes(context);
+      },
     );
   }
 
-  Widget _buildWithEmotes(BuildContext context, Set<String> hiddenChannels) => BlocBuilder<Emotes, List<Emote>>(
+  Widget _buildWithEmotes(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
     bloc: widget.client.globals.emotes,
     builder: (context, globalEmotes) => BlocBuilder<Emotes, List<Emote>>(
       bloc: widget.client.globals.twitchUserEmotes,
-      builder: (context, allUserEmotes) {
-        // Twitch's emotes are the only ones of a channel ([Emote.ownerId]), so the only ones that can be hidden.
-        final userEmotes = _visibleUserEmotes.of(allUserEmotes, hiddenChannels);
+      builder: (context, userEmotes) {
         final channelEmotes = widget.channel?.channelEmotes;
         if (channelEmotes == null) {
           return _buildPicker(context, channelEmotes: const [], globalEmotes: globalEmotes, userEmotes: userEmotes);
@@ -247,11 +250,12 @@ class _EmotePickerState extends State<EmotePicker> {
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
   }) {
-    // Grouped again only when an emote list changed, filtered again only when the search did.
+    // Grouped again only when an emote list or the hidden sections changed, filtered again only when the search did.
     final pickerSections = sectionsCache.sectionsFor(
-      channelEmotes: channelEmotes,
-      globalEmotes: globalEmotes,
-      userEmotes: userEmotes,
+      channelEmotes: _visibleChannelEmotes.of(channelEmotes, _hiddenSections),
+      globalEmotes: _visibleGlobalEmotes.of(globalEmotes, _hiddenSections),
+      userEmotes: _visibleUserEmotes.of(userEmotes, _hiddenSections),
+      keepTwitchSection: !_hiddenSections.contains(emoteSectionKey(title: twitchSection)),
     );
     final sections = pickerSections.sections;
     final matchingSections = pickerSections.matching(searchController.text.toLowerCase());
@@ -338,7 +342,7 @@ class _EmotePickerState extends State<EmotePicker> {
                         key: groupKeys[section.title],
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
-                          onLongPress: section.ownerId == null ? null : () => _showSectionActions(section),
+                          onLongPress: () => _showSectionActions(section),
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
                             child: Row(
@@ -492,7 +496,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                   child: InkWell(
                                     customBorder: const StadiumBorder(),
                                     onTap: () => _scrollToSection(tab.title),
-                                    onLongPress: tab.ownerId == null ? null : () => _showSectionActions(tab),
+                                    onLongPress: () => _showSectionActions(tab),
                                     // The section in view sits on a tinted pill, like the channel switcher's tab.
                                     child: AnimatedContainer(
                                       duration: const Duration(milliseconds: 200),

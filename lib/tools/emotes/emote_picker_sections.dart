@@ -5,6 +5,15 @@ import '../../sources/emoji_source.dart';
 
 const twitchSection = 'Twitch';
 
+/// The key a picker section is hidden by (`SettingsRepository.hiddenEmoteSections`): a channel's section by the
+/// channel's user id ([ownerId]), which stays when the channel is renamed; any other by its [title], e.g. `section:7TV`
+/// or `section:Smileys & Emotion`. User ids are numbers, so the two never collide.
+String emoteSectionKey({String? ownerId, required String title}) => ownerId ?? 'section:$title';
+
+/// The key of the section [emote] is in, see [EmotePickerSections.group].
+String emoteSectionKeyOf(Emote emote) =>
+    emoteSectionKey(ownerId: emote.ownerId, title: emote.category ?? emote.source.name);
+
 /// Which of the picker's sections is being looked at, for the section bar's highlight: the last one whose start
 /// ([sectionStarts], scroll offsets in section order) has reached the top of the view, scrolled to [offset]. Before the
 /// first one starts (the search field above it), the first. Null without sections.
@@ -31,6 +40,9 @@ class EmoteSection {
   final String? ownerId;
 
   const EmoteSection(this.title, this.emotes, {this.iconUrl, this.ownerId});
+
+  /// What hiding this section stores, see [emoteSectionKey].
+  String get key => emoteSectionKey(ownerId: ownerId, title: title);
 }
 
 /// The emote picker's sections for one set of emote lists, and which of their emotes match a search.
@@ -52,10 +64,13 @@ class EmotePickerSections {
 
   EmotePickerSections._(this.sections, this._lowercaseNames);
 
+  /// Without [keepTwitchSection] (the Twitch section is hidden), there is no empty Twitch section waiting for its
+  /// emotes.
   factory EmotePickerSections.group({
     required List<Emote> channelEmotes,
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
+    bool keepTwitchSection = true,
   }) {
     final allEmotes = [...channelEmotes, ...globalEmotes, ...userEmotes];
     final emoteGroups = <String, List<Emote>>{};
@@ -69,7 +84,7 @@ class EmotePickerSections {
     }
     // There are always Twitch emotes, so keep their section in place with a
     // spinner while they load instead of having it pop in later.
-    emoteGroups.putIfAbsent(twitchSection, () => []);
+    if (keepTwitchSection) emoteGroups.putIfAbsent(twitchSection, () => []);
     final groups = {...emoteGroups, ...emojiGroups};
     return EmotePickerSections._(
       [
@@ -117,27 +132,32 @@ class EmotePickerSectionsCache {
   List<Emote>? _channelEmotes;
   List<Emote>? _globalEmotes;
   List<Emote>? _userEmotes;
+  bool? _keepTwitchSection;
   EmotePickerSections? _sections;
 
   EmotePickerSections sectionsFor({
     required List<Emote> channelEmotes,
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
+    bool keepTwitchSection = true,
   }) {
     final cached = _sections;
     if (cached != null &&
         identical(channelEmotes, _channelEmotes) &&
         identical(globalEmotes, _globalEmotes) &&
-        identical(userEmotes, _userEmotes)) {
+        identical(userEmotes, _userEmotes) &&
+        keepTwitchSection == _keepTwitchSection) {
       return cached;
     }
     _channelEmotes = channelEmotes;
     _globalEmotes = globalEmotes;
     _userEmotes = userEmotes;
+    _keepTwitchSection = keepTwitchSection;
     return _sections = EmotePickerSections.group(
       channelEmotes: channelEmotes,
       globalEmotes: globalEmotes,
       userEmotes: userEmotes,
+      keepTwitchSection: keepTwitchSection,
     );
   }
 }

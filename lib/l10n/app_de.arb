@@ -289,7 +289,7 @@
   "hideEmoteSection": "Diese Emotes ausblenden",
   "hideEmoteSectionSubtitle": "Sie fehlen dann im Emote-Panel und in den Vorschlägen. Den Namen eines Emotes zu tippen, sendet es trotzdem.",
   "hiddenEmoteSections": "Ausgeblendete Emote-Bereiche",
-  "hiddenEmoteSectionsNone": "Halte den Bereich eines Kanals im Emote-Panel gedrückt, um seine Emotes auszublenden.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 Kanal} other{{count} Kanäle}}",
+  "hiddenEmoteSectionsNone": "Halte einen Bereich im Emote-Panel gedrückt, um seine Emotes auszublenden.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 Bereich} other{{count} Bereiche}}",
   "showEmoteSection": "Einblenden"
 }

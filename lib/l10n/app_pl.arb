@@ -393,7 +393,7 @@
   "hideEmoteSection": "Ukryj te emotki",
   "hideEmoteSectionSubtitle": "Nie będą widoczne w panelu emotek ani w podpowiedziach. Wpisanie nazwy emotki nadal ją wysyła.",
   "hiddenEmoteSections": "Ukryte sekcje emotek",
-  "hiddenEmoteSectionsNone": "Przytrzymaj sekcję kanału w panelu emotek, aby ukryć jego emotki.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanał} few{{count} kanały} many{{count} kanałów} other{{count} kanału}}",
+  "hiddenEmoteSectionsNone": "Przytrzymaj sekcję w panelu emotek, aby ukryć jej emotki.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sekcja} few{{count} sekcje} many{{count} sekcji} other{{count} sekcji}}",
   "showEmoteSection": "Pokaż"
 }

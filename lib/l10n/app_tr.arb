@@ -393,7 +393,7 @@
   "hideEmoteSection": "Bu emote'ları gizle",
   "hideEmoteSectionSubtitle": "Artık emote panelinde ve önerilerde görünmezler. Bir emote'un adını yazarsan yine de gönderilir.",
   "hiddenEmoteSections": "Gizlenen emote bölümleri",
-  "hiddenEmoteSectionsNone": "Bir kanalın emote'larını gizlemek için emote panelinde bölümüne uzun bas.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanal} other{{count} kanal}}",
+  "hiddenEmoteSectionsNone": "Bir bölümün emote'larını gizlemek için emote panelinde bölüme uzun bas.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 bölüm} other{{count} bölüm}}",
   "showEmoteSection": "Göster"
 }

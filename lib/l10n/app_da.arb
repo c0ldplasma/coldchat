@@ -393,7 +393,7 @@
   "hideEmoteSection": "Skjul disse emotes",
   "hideEmoteSectionSubtitle": "De vises ikke længere i emote-panelet og forslagene. Skriver du en emotes navn, sendes den stadig.",
   "hiddenEmoteSections": "Skjulte emote-sektioner",
-  "hiddenEmoteSectionsNone": "Hold en kanals sektion nede i emote-panelet for at skjule dens emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanal} other{{count} kanaler}}",
+  "hiddenEmoteSectionsNone": "Hold en sektion nede i emote-panelet for at skjule dens emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sektion} other{{count} sektioner}}",
   "showEmoteSection": "Vis"
 }

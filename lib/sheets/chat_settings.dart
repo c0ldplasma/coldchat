@@ -107,7 +107,7 @@ class ChatSettingsModal extends StatelessWidget {
           ),
           Tile(
             title: AppLocalizations.of(context).hiddenEmoteSections,
-            subtitle: switch (settings.hiddenEmoteChannels.length) {
+            subtitle: switch (settings.hiddenEmoteSections.length) {
               0 => AppLocalizations.of(context).hiddenEmoteSectionsNone,
               final count => AppLocalizations.of(context).hiddenEmoteSectionsCount(count),
             },

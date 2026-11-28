@@ -393,7 +393,7 @@
   "hideEmoteSection": "Dölj de här emotes",
   "hideEmoteSectionSubtitle": "De visas inte längre i emotepanelen och förslagen. Skriver du namnet på en emote skickas den ändå.",
   "hiddenEmoteSections": "Dolda emotesektioner",
-  "hiddenEmoteSectionsNone": "Håll in en kanals sektion i emotepanelen för att dölja dess emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanal} other{{count} kanaler}}",
+  "hiddenEmoteSectionsNone": "Håll in en sektion i emotepanelen för att dölja dess emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sektion} other{{count} sektioner}}",
   "showEmoteSection": "Visa"
 }

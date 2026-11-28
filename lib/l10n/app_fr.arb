@@ -393,7 +393,7 @@
   "hideEmoteSection": "Masquer ces emotes",
   "hideEmoteSectionSubtitle": "Elles n'apparaissent plus dans le panneau d'emotes ni dans les suggestions. Taper le nom d'une emote l'envoie quand même.",
   "hiddenEmoteSections": "Sections d'emotes masquées",
-  "hiddenEmoteSectionsNone": "Appuie longuement sur la section d'une chaîne dans le panneau d'emotes pour masquer ses emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 chaîne} other{{count} chaînes}}",
+  "hiddenEmoteSectionsNone": "Appuie longuement sur une section du panneau d'emotes pour masquer ses emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 section} other{{count} sections}}",
   "showEmoteSection": "Afficher"
 }

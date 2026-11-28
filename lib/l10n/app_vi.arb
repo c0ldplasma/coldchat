@@ -393,7 +393,7 @@
   "hideEmoteSection": "Ẩn các emote này",
   "hideEmoteSectionSubtitle": "Chúng sẽ không còn xuất hiện trong bảng emote và gợi ý. Gõ tên emote vẫn gửi được.",
   "hiddenEmoteSections": "Các mục emote đã ẩn",
-  "hiddenEmoteSectionsNone": "Nhấn giữ mục của một kênh trong bảng emote để ẩn emote của kênh đó.",
-  "hiddenEmoteSectionsCount": "{count, plural, other{{count} kênh}}",
+  "hiddenEmoteSectionsNone": "Nhấn giữ một mục trong bảng emote để ẩn emote của mục đó.",
+  "hiddenEmoteSectionsCount": "{count, plural, other{{count} mục}}",
   "showEmoteSection": "Hiện"
 }

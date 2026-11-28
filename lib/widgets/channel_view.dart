@@ -73,6 +73,9 @@ class ChannelViewState extends State<ChannelView> {
   final TextEditingController textEditingController = TextEditingController();
   // Keeps the autocompletion's emote and chatter lists between rebuilds, see [AutocompletionMatcher].
   final AutocompletionMatcher _autocompletion = AutocompletionMatcher();
+  // Each emote list without the emotes of sections hidden in the emote picker.
+  final VisibleEmotes _visibleChannelEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleGlobalEmotes = VisibleEmotes();
   final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
   StreamSubscription<UploadTask>? _uploadSubscription;
   StreamSubscription<String>? _mentionSubscription;
@@ -395,14 +398,11 @@ class ChannelViewState extends State<ChannelView> {
 
     final chatSettings = context.read<SettingsRepository>().chatSettings;
 
+    final hiddenSections = context.read<SettingsRepository>().hiddenEmoteSections.keys.toSet();
     final sortedEmotes = _autocompletion.emotes(
-      channelEmotes: widget.channel.channelEmotes.state,
-      globalEmotes: widget.channel.client.globals.emotes.state,
-      // Without the emotes of channels hidden in the emote picker.
-      userEmotes: _visibleUserEmotes.of(
-        widget.channel.client.globals.twitchUserEmotes.state,
-        context.read<SettingsRepository>().hiddenEmoteChannels.keys.toSet(),
-      ),
+      channelEmotes: _visibleChannelEmotes.of(widget.channel.channelEmotes.state, hiddenSections),
+      globalEmotes: _visibleGlobalEmotes.of(widget.channel.client.globals.emotes.state, hiddenSections),
+      userEmotes: _visibleUserEmotes.of(widget.channel.client.globals.twitchUserEmotes.state, hiddenSections),
       // As typed: emote names are case-sensitive, so `Kappa` ranks above `kappa` for "Kappa".
       search: typed,
       needsColon: chatSettings.emoteAutocompletionWithColon,

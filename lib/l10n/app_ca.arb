@@ -393,7 +393,7 @@
   "hideEmoteSection": "Amaga aquestes emoticones",
   "hideEmoteSectionSubtitle": "Ja no surten al tauler d'emoticones ni als suggeriments. Si escrius el nom d'una emoticona, s'envia igualment.",
   "hiddenEmoteSections": "Seccions d'emoticones amagades",
-  "hiddenEmoteSectionsNone": "Mantén premuda la secció d'un canal al tauler d'emoticones per amagar-ne les emoticones.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 canal} other{{count} canals}}",
+  "hiddenEmoteSectionsNone": "Mantén premuda una secció del tauler d'emoticones per amagar-ne les emoticones.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 secció} other{{count} seccions}}",
   "showEmoteSection": "Mostra"
 }

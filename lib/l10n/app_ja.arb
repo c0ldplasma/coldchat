@@ -393,7 +393,7 @@
   "hideEmoteSection": "このエモートを非表示",
   "hideEmoteSectionSubtitle": "エモートパネルと候補に表示されなくなります。エモート名を入力すれば送信はできます。",
   "hiddenEmoteSections": "非表示のエモートセクション",
-  "hiddenEmoteSectionsNone": "エモートパネルでチャンネルのセクションを長押しすると、そのエモートを非表示にできます。",
-  "hiddenEmoteSectionsCount": "{count, plural, other{{count} チャンネル}}",
+  "hiddenEmoteSectionsNone": "エモートパネルでセクションを長押しすると、そのエモートを非表示にできます。",
+  "hiddenEmoteSectionsCount": "{count, plural, other{{count} セクション}}",
   "showEmoteSection": "表示"
 }

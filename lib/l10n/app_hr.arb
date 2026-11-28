@@ -393,7 +393,7 @@
   "hideEmoteSection": "Sakrij ove emotikone",
   "hideEmoteSectionSubtitle": "Više se ne prikazuju u ploči emotikona ni u prijedlozima. Ako upišeš ime emotikona, ipak se šalje.",
   "hiddenEmoteSections": "Skriveni odjeljci emotikona",
-  "hiddenEmoteSectionsNone": "Dugo pritisni odjeljak kanala u ploči emotikona da sakriješ njegove emotikone.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanal} few{{count} kanala} other{{count} kanala}}",
+  "hiddenEmoteSectionsNone": "Dugo pritisni odjeljak u ploči emotikona da sakriješ njegove emotikone.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 odjeljak} few{{count} odjeljka} other{{count} odjeljaka}}",
   "showEmoteSection": "Prikaži"
 }

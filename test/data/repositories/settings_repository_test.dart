@@ -89,28 +89,28 @@ void main() {
     expect(settings.keyboardHeight, isNull);
   });
 
-  test('hides emote channels across launches and shows them again', () async {
+  test('hides emote sections across launches and shows them again', () async {
     var settings = await SettingsRepository.open();
-    expect(settings.hiddenEmoteChannels, isEmpty);
+    expect(settings.hiddenEmoteSections, isEmpty);
     var notified = 0;
-    settings.hiddenEmoteChannelsChanges.addListener(() => notified++);
+    settings.hiddenEmoteSectionsChanges.addListener(() => notified++);
 
-    await settings.hideEmoteChannel('1', 'Anime_Marathon_1');
-    await settings.hideEmoteChannel('2', 'ronni');
+    await settings.hideEmoteSection('1', 'Anime_Marathon_1');
+    await settings.hideEmoteSection('section:7TV', '7TV');
     await pumpEventQueue();
     expect(notified, 2);
 
     await Hive.close();
     Hive.init(tempDir.path);
     settings = await SettingsRepository.open();
-    expect(settings.hiddenEmoteChannels, {'1': 'Anime_Marathon_1', '2': 'ronni'});
+    expect(settings.hiddenEmoteSections, {'1': 'Anime_Marathon_1', 'section:7TV': '7TV'});
 
-    await settings.showEmoteChannel('1');
-    expect(settings.hiddenEmoteChannels, {'2': 'ronni'});
+    await settings.showEmoteSection('1');
+    expect(settings.hiddenEmoteSections, {'section:7TV': '7TV'});
 
     // Something else stored under the key reads as nothing hidden.
-    await Hive.box<dynamic>('Settings').put(SettingsRepository.hiddenEmoteChannelsKey, 'nonsense');
-    expect(settings.hiddenEmoteChannels, isEmpty);
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.hiddenEmoteSectionsKey, 'nonsense');
+    expect(settings.hiddenEmoteSections, isEmpty);
   });
 
   test('keeps stored settings and reads them', () async {
