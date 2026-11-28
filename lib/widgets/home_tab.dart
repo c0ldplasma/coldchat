@@ -154,27 +154,36 @@ class _HomeTabViewState extends State<_HomeTabView> {
                   // The search floats over this room, see below.
                   const SliverToBoxAdapter(child: SizedBox(height: _searchHeight + 16.0)),
                   BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
-                    builder: (context, search) => SliverMainAxisGroup(
-                      slivers: [
-                        switch (search) {
-                          ChannelSearchIdle() =>
-                            streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
-                          ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
-                          ChannelSearchFailed() => SliverList.list(
-                            children: [Text(AppLocalizations.of(context).channelSearchFailed)],
+                    builder: (context, search) => switch (search) {
+                      ChannelSearchIdle() => streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
+                      ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
+                      ChannelSearchFailed() => SliverList.list(
+                        children: [Text(AppLocalizations.of(context).channelSearchFailed)],
+                      ),
+                      final ChannelSearchLoaded loaded => _searchResults(context, loaded),
+                    },
+                  ),
+                  // A few results don't fill the screen, and the list couldn't stay scrolled to where the search sticks
+                  // at the top: the scroll view would quietly correct its offset, and the results would be laid out
+                  // further down than the floating search, which only follows notified scrolling. Room below them
+                  // keeps it scrollable that far. A sliver of its own, sized from what comes before it, which doesn't
+                  // change while scrolling (a SliverFillRemaining in a SliverMainAxisGroup with the results made them
+                  // jump by a row when the search reached the top).
+                  BlocSelector<ChannelSearchCubit, ChannelSearchState, bool>(
+                    selector: (search) => search is! ChannelSearchIdle,
+                    builder: (context, searching) => !searching
+                        ? const SliverToBoxAdapter()
+                        : SliverLayoutBuilder(
+                            builder: (context, constraints) => SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: searchRoomBelowResults(
+                                  viewport: constraints.viewportMainAxisExtent,
+                                  above: constraints.precedingScrollExtent,
+                                  collapsedAt: _bigTitleHeight,
+                                ),
+                              ),
+                            ),
                           ),
-                          final ChannelSearchLoaded loaded => _searchResults(context, loaded),
-                        },
-                        // A few results don't fill the screen, and the list couldn't stay scrolled to where the search
-                        // sticks at the top: the scroll view would quietly correct its offset, and the results would be
-                        // laid out further down than the floating search, which only follows notified scrolling. Room
-                        // below them keeps it scrollable that far.
-                        if (search is! ChannelSearchIdle) ...[
-                          const SliverFillRemaining(hasScrollBody: false),
-                          const SliverToBoxAdapter(child: SizedBox(height: _bigTitleHeight)),
-                        ],
-                      ],
-                    ),
                   ),
                   // The last streams can scroll up above the channel switcher floating over the list.
                   SliverPadding(padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 8.0)),
