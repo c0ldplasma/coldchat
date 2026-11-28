@@ -118,6 +118,16 @@ class HelixApi {
     return users;
   }
 
+  /// Up to 100 users per request; ids that don't exist are left out.
+  Future<List<TwitchUser>> usersById(List<String> ids) async {
+    final users = <TwitchUser>[];
+    for (var i = 0; i < ids.length; i += _pageSize) {
+      final json = await _get('users', {'id': ids.skip(i).take(_pageSize).toList()});
+      users.addAll([for (final data in json['data'] as List<dynamic>) TwitchUser.fromJson(data as JsonMap)]);
+    }
+    return users;
+  }
+
   /// Everything the user card and the channel header show, or null when the
   /// login doesn't exist. The follower total is returned for any user token;
   /// only the follower list itself needs moderator rights.

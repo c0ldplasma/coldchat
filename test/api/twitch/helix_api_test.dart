@@ -228,6 +228,20 @@ void main() {
     expect(requests[1].url.queryParametersAll['login'], logins.skip(100));
   });
 
+  test('usersById asks for at most 100 ids per request', () async {
+    final ids = [for (var i = 0; i < 150; i++) '$i'];
+    answer = (request) => _json({
+      'data': [for (final id in request.url.queryParametersAll['id']!) _user(id, 'user$id')],
+    });
+
+    final users = await helix.usersById(ids);
+
+    expect(users.map((u) => u.id), ids);
+    expect(requests, hasLength(2));
+    expect(requests[0].url.queryParametersAll['id'], ids.take(100));
+    expect(requests[1].url.queryParametersAll['id'], ids.skip(100));
+  });
+
   group('profile', () {
     test('combines the user, the follower total and the live stream with its game cover', () async {
       answer = (request) => switch (request.url.path) {

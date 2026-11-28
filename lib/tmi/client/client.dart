@@ -16,7 +16,6 @@ import '../../api/seventv/seventv.dart';
 import '../../api/twitch/eventsub_socket.dart';
 import '../../api/twitch/helix_api.dart';
 import '../../api/twitch/twitch_auth_api.dart';
-import '../../data/emote.dart';
 import '../../data/repositories/account_repository.dart';
 import '../../data/repositories/channel_repository.dart';
 import '../../data/repositories/emote_badge_cache_repository.dart';
@@ -52,6 +51,7 @@ import 'chat_globals.dart';
 import 'chat_history.dart';
 import 'client_channels.dart';
 import 'client_listener.dart';
+import 'twitch_user_emotes.dart';
 
 /// The chat client. It has two IRC connections:
 ///
@@ -467,21 +467,14 @@ class Client implements AccountConnector {
         // Without a Twitch source (tests) the emotes would have no source to belong to: don't ask for them.
         final twitch = sources.firstWhereOrNull((source) => source.name == 'Twitch');
         if (twitch == null) return;
-        final emotes = await helix
-            .forToken(stateTwitchAccount.tokenData)
-            .emoteSets(event.tags['emote-sets']?.split(',') ?? []);
+        final userEmotes = await loadTwitchUserEmotes(
+          helix.forToken(stateTwitchAccount.tokenData),
+          event.tags['emote-sets']?.split(',') ?? [],
+          twitch,
+        );
         // Every account has at least the global Twitch emotes, so an empty
         // result means the request failed: keep the cached list instead.
-        if (emotes.isNotEmpty) {
-          final userEmotes = [
-            for (final emote in emotes)
-              Emote(
-                id: emote.id,
-                mipmap: emote.images.values.toList(),
-                name: emote.name,
-                source: twitch,
-              ),
-          ];
+        if (userEmotes.isNotEmpty) {
           globals.setTwitchUserEmotes(stateTwitchAccount.tokenData.userId, userEmotes);
         }
       }

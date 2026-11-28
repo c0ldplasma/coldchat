@@ -18,12 +18,16 @@ int? currentSectionIndex(List<double> sectionStarts, double offset) {
   return current;
 }
 
-/// A section of the emote picker: an emote category (e.g. an emoji group) or else a source, with its emotes.
+/// A section of the emote picker: an emote category (e.g. an emoji group or a channel's Twitch emotes) or else a
+/// source, with its emotes.
 class EmoteSection {
   final String title;
   final List<Emote> emotes;
 
-  const EmoteSection(this.title, this.emotes);
+  /// The image for the section bar, e.g. a channel's subscriber badge: the first [Emote.categoryIcon] of its emotes.
+  final String? iconUrl;
+
+  const EmoteSection(this.title, this.emotes, {this.iconUrl});
 }
 
 /// The emote picker's sections for one set of emote lists, and which of their emotes match a search.
@@ -33,8 +37,8 @@ class EmoteSection {
 /// [EmotePickerSectionsCache] only makes a new one when an emote list changes.
 class EmotePickerSections {
   /// Every section, in the picker's order: the emote sections in the order their emotes come in channel emotes,
-  /// global emotes and the user's Twitch emotes, then the emoji sections. The Twitch section is always there, empty
-  /// while Twitch's emotes load.
+  /// global emotes and the user's Twitch emotes (where each channel's sub emotes have a section of their own), then
+  /// the emoji sections. The Twitch section is always there, empty while Twitch's emotes load.
   final List<EmoteSection> sections;
 
   /// The lowercase name of each emote in [sections], at the same positions.
@@ -65,7 +69,14 @@ class EmotePickerSections {
     emoteGroups.putIfAbsent(twitchSection, () => []);
     final groups = {...emoteGroups, ...emojiGroups};
     return EmotePickerSections._(
-      [for (final group in groups.entries) EmoteSection(group.key, group.value)],
+      [
+        for (final group in groups.entries)
+          EmoteSection(
+            group.key,
+            group.value,
+            iconUrl: group.value.map((emote) => emote.categoryIcon).nonNulls.firstOrNull,
+          ),
+      ],
       [
         for (final group in groups.values) [for (final emote in group) emote.name.toLowerCase()],
       ],
@@ -87,7 +98,7 @@ class EmotePickerSections {
         for (var j = 0; j < names.length; j++)
           if (names[j].contains(search)) section.emotes[j],
       ];
-      if (emotes.isNotEmpty) matching.add(EmoteSection(section.title, emotes));
+      if (emotes.isNotEmpty) matching.add(EmoteSection(section.title, emotes, iconUrl: section.iconUrl));
     }
     _search = search;
     return _matching = matching;

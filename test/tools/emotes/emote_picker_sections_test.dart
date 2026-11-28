@@ -22,8 +22,14 @@ final _sevenTv = _Source('7TV');
 final _bttv = _Source('BetterTTV');
 final _emoji = EmojiSource(EmojiDataApi(offlineApi()));
 
-Emote _emote(String name, ChatSource source, {String? category}) =>
-    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], source: source, category: category);
+Emote _emote(String name, ChatSource source, {String? category, String? categoryIcon}) => Emote(
+  id: name,
+  name: name,
+  mipmap: ['https://example.com/$name'],
+  source: source,
+  category: category,
+  categoryIcon: categoryIcon,
+);
 
 /// The titles of [sections] with the names of their emotes.
 Map<String, List<String>> _titles(List<EmoteSection> sections) => {
@@ -85,6 +91,34 @@ void main() {
         'ronni': ['ronniHi'],
         'Twitch': ['Kappa'],
       });
+    });
+
+    test("gives each channel's sub emotes a section with its badge, also when searching", () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: const [],
+        globalEmotes: const [],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub'),
+          _emote('ronniBye', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub'),
+          _emote('forsenE', _twitch, category: 'forsen'),
+        ],
+      );
+
+      expect(_titles(sections.sections), {
+        'Twitch': ['Kappa'],
+        'Ronni': ['ronniHi', 'ronniBye'],
+        'forsen': ['forsenE'],
+      });
+      expect(
+        [for (final section in sections.sections) section.iconUrl],
+        [
+          null,
+          'https://example.com/ronni-sub',
+          null,
+        ],
+      );
+      expect(sections.matching('bye').single.iconUrl, 'https://example.com/ronni-sub');
     });
   });
 

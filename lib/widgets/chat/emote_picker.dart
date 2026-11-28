@@ -317,12 +317,23 @@ class _EmotePickerState extends State<EmotePicker> {
                         key: groupKeys[section.title],
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
-                          child: Text(
-                            section.title,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          child: Row(
+                            children: [
+                              if (section.iconUrl case final iconUrl?) ...[
+                                SizedBox.square(dimension: 18.0, child: _iconImage(iconUrl)),
+                                const SizedBox(width: 6.0),
+                              ],
+                              Flexible(
+                                child: Text(
+                                  section.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -449,6 +460,10 @@ class _EmotePickerState extends State<EmotePicker> {
                                       dimension: 24.0,
                                       child:
                                           icons[tab.title] ??
+                                          switch (tab.iconUrl) {
+                                            final iconUrl? => _iconImage(iconUrl),
+                                            null => null,
+                                          } ??
                                           sourceLogo(context, tab.title) ??
                                           firstEmoteIcon(tab.emotes),
                                     ),
@@ -487,9 +502,13 @@ class _EmotePickerState extends State<EmotePicker> {
   }
 
   /// Fallback for any other section: its first emote, never cut-off text.
-  Widget firstEmoteIcon(List<Emote> emotes) => CachedNetworkImage(
-    imageUrl: emotes.first.mipmap.last,
+  Widget firstEmoteIcon(List<Emote> emotes) => _iconImage(emotes.first.mipmap.last);
+
+  /// A section's icon from [url]: a badge or an emote, so from the emote cache.
+  Widget _iconImage(String url) => CachedNetworkImage(
+    imageUrl: url,
     cacheManager: EmoteCacheManager.instance,
     fit: BoxFit.contain,
+    filterQuality: FilterQuality.medium,
   );
 }
