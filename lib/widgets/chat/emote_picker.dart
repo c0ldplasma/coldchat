@@ -68,6 +68,10 @@ class EmotePicker extends StatefulWidget {
   /// How far the section bar floats above the picker's bottom edge; the emotes scroll on below it.
   final double bottomInset;
 
+  /// Where the emotes end above the picker's bottom edge, e.g. at the keyboard while searching, so the last results
+  /// can scroll up into view. The section bar keeps its place at the bottom.
+  final double scrollBottom;
+
   const EmotePicker({
     super.key,
     required this.client,
@@ -80,6 +84,7 @@ class EmotePicker extends StatefulWidget {
     this.backgroundColor,
     this.searchFocusNode,
     this.bottomInset = 8.0,
+    this.scrollBottom = 0.0,
   });
 
   @override
@@ -248,7 +253,11 @@ class _EmotePickerState extends State<EmotePicker> {
       color: background,
       child: Stack(
         children: [
-          Positioned.fill(
+          Positioned(
+            left: 0.0,
+            top: 0.0,
+            right: 0.0,
+            bottom: widget.scrollBottom,
             child: CustomScrollView(
               controller: scrollController,
               // padding: EdgeInsets.zero,
