@@ -255,19 +255,6 @@ class _EmotePickerState extends State<EmotePicker> {
       groupKeys.putIfAbsent(section.title, GlobalKey.new);
     }
 
-    const icons = {
-      'Symbols': Icon(Icons.star_border_outlined),
-      'Activities': Icon(Icons.local_activity_outlined),
-      'Flags': Icon(Icons.flag_outlined),
-      'Travel & Places': Icon(Icons.card_travel_outlined),
-      'Food & Drink': Icon(Icons.fastfood_outlined),
-      'Animals & Nature': Icon(Icons.pest_control_outlined),
-      'People & Body': Icon(Icons.people_outline_outlined),
-      'Objects': Icon(Icons.emoji_objects_outlined),
-      'Component': Icon(Icons.settings_input_component_outlined),
-      'Smileys & Emotion': Icon(Icons.emoji_emotions_outlined),
-    };
-
     final background = widget.backgroundColor ?? Theme.of(context).colorScheme.surface;
     return Material(
       color: background,
@@ -347,8 +334,18 @@ class _EmotePickerState extends State<EmotePicker> {
                             padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
                             child: Row(
                               children: [
-                                if (section.iconUrl case final iconUrl?) ...[
-                                  SizedBox.square(dimension: 18.0, child: _iconImage(iconUrl)),
+                                // The section's icon from the section bar, in the title's color.
+                                if (_sectionIcon(context, section) case final icon?) ...[
+                                  SizedBox.square(
+                                    dimension: 18.0,
+                                    child: IconTheme.merge(
+                                      data: IconThemeData(
+                                        size: 18.0,
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
+                                      child: icon,
+                                    ),
+                                  ),
                                   const SizedBox(width: 6.0),
                                 ],
                                 Flexible(
@@ -488,14 +485,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                   child: Center(
                                     child: SizedBox.square(
                                       dimension: 24.0,
-                                      child:
-                                          icons[tab.title] ??
-                                          switch (tab.iconUrl) {
-                                            final iconUrl? => _iconImage(iconUrl),
-                                            null => null,
-                                          } ??
-                                          sourceLogo(context, tab.title) ??
-                                          firstEmoteIcon(tab.emotes),
+                                      child: _sectionIcon(context, tab),
                                     ),
                                   ),
                                 ),
@@ -512,6 +502,30 @@ class _EmotePickerState extends State<EmotePicker> {
       ),
     );
   }
+
+  static const _emojiGroupIcons = {
+    'Symbols': Icon(Icons.star_border_outlined),
+    'Activities': Icon(Icons.local_activity_outlined),
+    'Flags': Icon(Icons.flag_outlined),
+    'Travel & Places': Icon(Icons.card_travel_outlined),
+    'Food & Drink': Icon(Icons.fastfood_outlined),
+    'Animals & Nature': Icon(Icons.pest_control_outlined),
+    'People & Body': Icon(Icons.people_outline_outlined),
+    'Objects': Icon(Icons.emoji_objects_outlined),
+    'Component': Icon(Icons.settings_input_component_outlined),
+    'Smileys & Emotion': Icon(Icons.emoji_emotions_outlined),
+  };
+
+  /// The icon of [section], in the section bar and before its title: an emoji group's symbol, a channel's badge, a
+  /// source's logo, else its first emote. Null only for an empty section without any of these.
+  Widget? _sectionIcon(BuildContext context, EmoteSection section) =>
+      _emojiGroupIcons[section.title] ??
+      switch (section.iconUrl) {
+        final iconUrl? => _iconImage(iconUrl),
+        null => null,
+      } ??
+      sourceLogo(context, section.title) ??
+      firstEmoteIcon(section.emotes);
 
   /// Logo for a source's section, or null if [category] isn't a source.
   Widget? sourceLogo(BuildContext context, String category) {
@@ -531,8 +545,8 @@ class _EmotePickerState extends State<EmotePicker> {
     };
   }
 
-  /// Fallback for any other section: its first emote, never cut-off text.
-  Widget firstEmoteIcon(List<Emote> emotes) => _iconImage(emotes.first.mipmap.last);
+  /// Fallback for any other section: its first emote, never cut-off text. Null while the section is empty.
+  Widget? firstEmoteIcon(List<Emote> emotes) => emotes.isEmpty ? null : _iconImage(emotes.first.mipmap.last);
 
   /// A section's icon from [url]: a badge or an emote, so from the emote cache.
   Widget _iconImage(String url) => CachedNetworkImage(
