@@ -906,9 +906,9 @@ void main() {
       await tester.pump();
       expect(tester.getRect(find.byType(EmotePicker)).top, moreOrLessEquals(searchTop));
       var previous = searchTop;
-      // The section bar is back and rides down on the keyboard.
-      var previousBar = tester.getRect(sectionBar).bottom;
-      expect(previousBar, moreOrLessEquals(874.0 - 336.0 - (874.0 - sectionBarBottom)));
+      // The section bar is back at its place at the panel's bottom, behind the keyboard, and stays there: the keyboard
+      // reveals it as it slides away.
+      expect(tester.getRect(sectionBar).bottom, moreOrLessEquals(sectionBarBottom));
       for (final inset in [300.0, 250.0, 200.0, 100.0, 20.0, 0.0]) {
         tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
         if (inset == 0.0) tester.view.padding = const FakeViewPadding(bottom: 34.0 * 3.0);
@@ -917,14 +917,10 @@ void main() {
         expect(top, greaterThanOrEqualTo(previous - 0.01), reason: 'keyboard at $inset');
         expect(top, lessThanOrEqualTo(pickerTop + 0.01), reason: 'keyboard at $inset');
         previous = top;
-        // Exactly as far above its place as the keyboard is high, so its last step is as small as the keyboard's.
-        final bar = tester.getRect(sectionBar).bottom;
-        expect(bar, moreOrLessEquals(sectionBarBottom - inset), reason: 'keyboard at $inset');
-        previousBar = bar;
+        expect(tester.getRect(sectionBar).bottom, moreOrLessEquals(sectionBarBottom), reason: 'keyboard at $inset');
       }
       // It moved in steps with the keyboard, not all at once at the end.
       expect(previous, moreOrLessEquals(pickerTop));
-      expect(previousBar, moreOrLessEquals(sectionBarBottom));
     });
 
     testWidgets('behind the keyboard alone is the chat\'s color, not the emote panel\'s', (tester) async {
