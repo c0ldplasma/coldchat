@@ -21,6 +21,7 @@ import '../theme/coldchat_theme.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_lookups.dart';
 import '../tools/browser_warmup.dart';
+import '../tools/home_search_scroll.dart';
 import 'avatar_button.dart';
 
 /// Joins [channelName] (if not already joined) and switches to its tab via the
@@ -130,127 +131,150 @@ class _HomeTabViewState extends State<_HomeTabView> {
       // Where the search is with the page at the top: below the big title.
       final searchTop = rowBottom + _bigTitleHeight;
       // The page runs under the floating top, like the chat under its controls: nothing opaque above it.
-      return Stack(
-        children: [
-          RefreshIndicator(
-            onRefresh: context.read<HomeStreamsCubit>().refresh,
-            // Below the search, not behind it.
-            edgeOffset: searchTop + _searchHeight,
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                // Room for the big title, which the floating top draws: it turns into the title pill on scrolling.
-                SliverToBoxAdapter(child: SizedBox(height: rowBottom + _bigTitleHeight)),
-                // The search floats over this room, see below.
-                const SliverToBoxAdapter(child: SizedBox(height: _searchHeight + 16.0)),
-                BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
-                  builder: (context, search) => switch (search) {
-                    ChannelSearchIdle() => streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
-                    ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
-                    ChannelSearchFailed() => SliverList.list(
-                      children: [Text(AppLocalizations.of(context).channelSearchFailed)],
-                    ),
-                    final ChannelSearchLoaded loaded => _searchResults(context, loaded),
-                  },
-                ),
-                // The last streams can scroll up above the channel switcher floating over the list.
-                SliverPadding(padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 8.0)),
-              ],
-            ),
-          ),
-          // Soft edges where the page scrolls under the floating controls: down to below the stuck search at the top,
-          // behind the channel switcher at the bottom.
-          Positioned(
-            left: 0.0,
-            right: 0.0,
-            top: 0.0,
-            child: EdgeFade.top(height: rowBottom + _gap + _searchHeight + 16.0),
-          ),
-          Positioned(
-            left: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            child: EdgeFade.bottom(height: MediaQuery.paddingOf(context).bottom + 24.0),
-          ),
-          // Only the floating top follows the scrolling; the page below isn't rebuilt for it.
-          AnimatedBuilder(
-            animation: scrollController,
-            builder: (context, _) {
-              final offset = scrollController.hasClients ? scrollController.offset : 0.0;
-              // 0 with the page at the top, 1 once the big title has become the title pill.
-              final progress = (offset / _bigTitleHeight).clamp(0.0, 1.0);
-              final theme = Theme.of(context);
-              final bigStyle = theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold);
-              final fontSize = lerpDouble(bigStyle?.fontSize ?? 28.0, _pillFontSize, progress)!;
-              // The title's middle: in the page below the row, moving with it (also when pulled down to refresh),
-              // and in the pill once scrolled.
-              final pageMiddle = rowBottom + _bigTitleHeight / 2;
-              final pillMiddle = safeTop + _gap + _rowHeight / 2;
-              final titleMiddle = offset < 0.0 ? pageMiddle - offset : lerpDouble(pageMiddle, pillMiddle, progress)!;
-              // The pill around the title: it grows from the bare text to the pill, fading in as it goes.
-              final pillLeft = lerpDouble(16.0, 12.0, progress)!;
-              final pillPadding = _pillPadding * progress;
-              final pillHeight = lerpDouble(_bigTitleHeight * 0.7, _rowHeight, progress)!;
-              return Stack(
-                children: [
-                  // Scrolls up with the page, then sticks right under the avatar row.
-                  Positioned(
-                    left: 12.0,
-                    right: 12.0,
-                    // Always the same gap below the title pill, while it moves and when it has settled.
-                    top: titleMiddle + pillHeight / 2 + _gap,
-                    child: _SearchPill(
-                      controller: searchTextController,
-                      focusNode: searchFocus,
-                      onChanged: context.read<ChannelSearchCubit>().queryChanged,
-                    ),
-                  ),
-                  Positioned(
-                    left: 12.0,
-                    right: 12.0,
-                    top: safeTop + _gap,
-                    child: const Row(
-                      children: [
-                        Spacer(),
-                        AvatarButton(),
+      return BlocListener<ChannelSearchCubit, ChannelSearchState>(
+        // A search started further down: up to where the search sticks at the top, so the results start right below it.
+        listenWhen: (previous, current) => previous is ChannelSearchIdle && current is! ChannelSearchIdle,
+        listener: (context, _) {
+          if (!scrollController.hasClients) return;
+          final offset = scrollController.offset;
+          final target = searchStartOffset(offset, _bigTitleHeight);
+          if (target != offset) scrollController.jumpTo(target);
+        },
+        child: Stack(
+          children: [
+            RefreshIndicator(
+              onRefresh: context.read<HomeStreamsCubit>().refresh,
+              // Below the search, not behind it.
+              edgeOffset: searchTop + _searchHeight,
+              child: CustomScrollView(
+                controller: scrollController,
+                slivers: [
+                  // Room for the big title, which the floating top draws: it turns into the title pill on scrolling.
+                  SliverToBoxAdapter(child: SizedBox(height: rowBottom + _bigTitleHeight)),
+                  // The search floats over this room, see below.
+                  const SliverToBoxAdapter(child: SizedBox(height: _searchHeight + 16.0)),
+                  BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
+                    builder: (context, search) => SliverMainAxisGroup(
+                      slivers: [
+                        switch (search) {
+                          ChannelSearchIdle() =>
+                            streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
+                          ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
+                          ChannelSearchFailed() => SliverList.list(
+                            children: [Text(AppLocalizations.of(context).channelSearchFailed)],
+                          ),
+                          final ChannelSearchLoaded loaded => _searchResults(context, loaded),
+                        },
+                        // A few results don't fill the screen, and the list couldn't stay scrolled to where the search
+                        // sticks at the top: the scroll view would quietly correct its offset, and the results would be
+                        // laid out further down than the floating search, which only follows notified scrolling. Room
+                        // below them keeps it scrollable that far.
+                        if (search is! ChannelSearchIdle) ...[
+                          const SliverFillRemaining(hasScrollBody: false),
+                          const SliverToBoxAdapter(child: SizedBox(height: _bigTitleHeight)),
+                        ],
                       ],
                     ),
                   ),
-                  // The one "ColdChat": big in the page, shrinking up into the top row as the page scrolls, with the
-                  // glass pill fading in around it on the way. Bold like the name on the start screen (LoggedOutStart).
-                  Positioned(
-                    left: pillLeft,
-                    top: titleMiddle - pillHeight / 2,
-                    height: pillHeight,
-                    child: IgnorePointer(
-                      child: Stack(
+                  // The last streams can scroll up above the channel switcher floating over the list.
+                  SliverPadding(padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 8.0)),
+                ],
+              ),
+            ),
+            // Soft edges where the page scrolls under the floating controls: down to below the stuck search at the top,
+            // behind the channel switcher at the bottom.
+            Positioned(
+              left: 0.0,
+              right: 0.0,
+              top: 0.0,
+              child: EdgeFade.top(height: rowBottom + _gap + _searchHeight + 16.0),
+            ),
+            Positioned(
+              left: 0.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: EdgeFade.bottom(height: MediaQuery.paddingOf(context).bottom + 24.0),
+            ),
+            // Only the floating top follows the scrolling; the page below isn't rebuilt for it.
+            AnimatedBuilder(
+              animation: scrollController,
+              builder: (context, _) {
+                final offset = scrollController.hasClients ? scrollController.offset : 0.0;
+                // 0 with the page at the top, 1 once the big title has become the title pill.
+                final progress = (offset / _bigTitleHeight).clamp(0.0, 1.0);
+                final theme = Theme.of(context);
+                final bigStyle = theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold);
+                final fontSize = lerpDouble(bigStyle?.fontSize ?? 28.0, _pillFontSize, progress)!;
+                // The title's middle: in the page below the row, moving with it (also when pulled down to refresh),
+                // and in the pill once scrolled.
+                final pageMiddle = rowBottom + _bigTitleHeight / 2;
+                final pillMiddle = safeTop + _gap + _rowHeight / 2;
+                final titleMiddle = offset < 0.0 ? pageMiddle - offset : lerpDouble(pageMiddle, pillMiddle, progress)!;
+                // The pill around the title: it grows from the bare text to the pill, fading in as it goes.
+                final pillLeft = lerpDouble(16.0, 12.0, progress)!;
+                final pillPadding = _pillPadding * progress;
+                final pillHeight = lerpDouble(_bigTitleHeight * 0.7, _rowHeight, progress)!;
+                return Stack(
+                  children: [
+                    // Scrolls up with the page, then sticks right under the avatar row.
+                    Positioned(
+                      left: 12.0,
+                      right: 12.0,
+                      // Always the same gap below the title pill, while it moves and when it has settled.
+                      top: titleMiddle + pillHeight / 2 + _gap,
+                      child: _SearchPill(
+                        controller: searchTextController,
+                        focusNode: searchFocus,
+                        onChanged: context.read<ChannelSearchCubit>().queryChanged,
+                      ),
+                    ),
+                    Positioned(
+                      left: 12.0,
+                      right: 12.0,
+                      top: safeTop + _gap,
+                      child: const Row(
                         children: [
-                          // Faded in by the glass's own strength: an Opacity wouldn't fade its blur.
-                          Positioned.fill(
-                            child: Glass(strength: progress, child: const SizedBox.expand()),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: pillPadding),
-                            child: Center(
-                              widthFactor: 1.0,
-                              child: Semantics(
-                                header: true,
-                                child: Text(
-                                  AppLocalizations.of(context).appName,
-                                  style: bigStyle?.copyWith(fontSize: fontSize),
-                                ),
-                              ),
-                            ),
-                          ),
+                          Spacer(),
+                          AvatarButton(),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ],
+                    // The one "ColdChat": big in the page, shrinking up into the top row as the page scrolls, with the
+                    // glass pill fading in around it on the way. Bold like the name on the start screen (LoggedOutStart).
+                    Positioned(
+                      left: pillLeft,
+                      top: titleMiddle - pillHeight / 2,
+                      height: pillHeight,
+                      child: IgnorePointer(
+                        child: Stack(
+                          children: [
+                            // Faded in by the glass's own strength: an Opacity wouldn't fade its blur.
+                            Positioned.fill(
+                              child: Glass(strength: progress, child: const SizedBox.expand()),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: pillPadding),
+                              child: Center(
+                                widthFactor: 1.0,
+                                child: Semantics(
+                                  header: true,
+                                  child: Text(
+                                    AppLocalizations.of(context).appName,
+                                    style: bigStyle?.copyWith(fontSize: fontSize),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       );
     },
   );
