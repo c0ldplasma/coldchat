@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Logget inn via {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -385,5 +381,8 @@
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Se på Twitch"
+  "watchOnTwitch": "Se på Twitch",
+  "creditLogoDesigner": "Logodesign",
+  "creditTranslation": "Deler av oversettelsen: {language}",
+  "creditsAiTranslations": "Tekster som er lagt til senere, og språk som ikke står her, er oversatt med KI og kan inneholde feil. Rettelser er velkomne på GitHub."
 }

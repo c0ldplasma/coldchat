@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Пријављено преко {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -385,5 +381,8 @@
   "durationMinutesShort": "{count} мин",
   "durationSecondsShort": "{count} с",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Gledaj na Twitchu"
+  "watchOnTwitch": "Gledaj na Twitchu",
+  "creditLogoDesigner": "Дизајн логотипа",
+  "creditTranslation": "Делови превода: {language}",
+  "creditsAiTranslations": "Касније додати текстови и језици који овде нису наведени преведени су помоћу вештачке интелигенције и могу садржати грешке. Исправке су добродошле на GitHub-у."
 }

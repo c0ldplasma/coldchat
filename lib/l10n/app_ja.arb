@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "{provider}でログイン中",
   "@loggedInVia": {
     "placeholders": {
@@ -385,5 +381,8 @@
   "durationMinutesShort": "{count}分",
   "durationSecondsShort": "{count}秒",
   "durationPair": "{larger}{smaller}",
-  "watchOnTwitch": "Twitchで視聴"
+  "watchOnTwitch": "Twitchで視聴",
+  "creditLogoDesigner": "ロゴデザイン",
+  "creditTranslation": "翻訳の一部: {language}",
+  "creditsAiTranslations": "後から追加されたテキストと、ここに記載のない言語は AI で翻訳されており、誤りを含む場合があります。修正は GitHub で歓迎します。"
 }

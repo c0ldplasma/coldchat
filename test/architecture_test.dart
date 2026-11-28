@@ -26,6 +26,33 @@ final _handRegisteredAdapter = RegExp(r'\bregisterAdapter\(');
 /// and transparent stay allowed for scrims, overlays on images and invisible backgrounds.
 final _hardcodedColor = RegExp(r'\bColor\(0x|\bColors\.(?!black|white|transparent)\w+');
 
+/// A string literal given to something that shows text: a `Text`, or a tooltip, title, label or hint.
+final _shownLiteral = RegExp(
+  r'''(?:\bText\(|\b(?:tooltip|message|title|subtitle|description|label|labelText|hintText|helperText|semanticLabel|semanticsLabel):)\s*(?:'([^'\n]*)'|"([^"\n]*)")''',
+);
+
+/// Interpolations in a literal, which aren't text of their own.
+final _interpolation = RegExp(r'\$\{[^}]*\}|\$\w+');
+
+/// A word in a literal: two letters or more.
+final _word = RegExp(r'\p{L}{2,}', unicode: true);
+
+/// A web address, which isn't translated.
+final _webAddress = RegExp(r'^(?:https?://)?[\w-]+(?:\.[\w-]+)+(?:/\S*)?$');
+
+/// The lines of [files] that show a word in a string literal instead of a text from AppLocalizations. A line saying
+/// `// Not translated: <why>` is a deliberate exception, e.g. a license's name.
+List<String> _untranslatedLines(List<File> files) => [
+  for (final file in files)
+    for (final (i, line) in _code(file.readAsStringSync()).split('\n').indexed)
+      if (!line.contains('// Not translated:') &&
+          _shownLiteral.allMatches(line).any((match) {
+            final text = (match[1] ?? match[2]!).replaceAll(_interpolation, '').trim();
+            return _word.hasMatch(text) && !_webAddress.hasMatch(text);
+          }))
+        '${_relative(file)}:${i + 1}: ${line.trim()}',
+];
+
 final _import = RegExp(r'''^import\s+'([^']+)'(?:\s+as\s+\w+)?;''', multiLine: true);
 
 /// The Dart files in [folder], without generated ones.
@@ -117,6 +144,20 @@ void main() {
       _matchingLines(files, _hardcodedColor),
       isEmpty,
       reason: 'Name the color in lib/theme/coldchat_theme.dart (ColorScheme or ChatColors) and use it from there.',
+    );
+  });
+
+  // Keep in sync with "Localization" in CLAUDE.md. gen-l10n only checks that every language has every key of the
+  // .arb files; text typed into the code instead stays English in every language.
+  test('the UI shows no text typed into the code', () {
+    final files = [for (final folder in _uiFolders) ..._dartFiles(folder)];
+    expect(files, isNotEmpty);
+    expect(
+      _untranslatedLines(files),
+      isEmpty,
+      reason:
+          'Add the text to every lib/l10n/*.arb and use AppLocalizations.of(context). For a deliberate exception, '
+          'end the line with // Not translated: <why>.',
     );
   });
 

@@ -47,7 +47,7 @@ class AboutModal extends StatelessWidget {
           ),
           Tile(
             title: AppLocalizations.of(context).license,
-            subtitle: 'GNU Affero General Public License v3.0',
+            subtitle: 'GNU Affero General Public License v3.0', // Not translated: the license's name.
             prefix: const Icon(Icons.gavel_rounded),
             onTap: () => _open('$repositoryUrl/blob/main/LICENSE'),
           ),

@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Đã đăng nhập qua {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -385,5 +381,8 @@
   "durationMinutesShort": "{count} phút",
   "durationSecondsShort": "{count} giây",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Xem trên Twitch"
+  "watchOnTwitch": "Xem trên Twitch",
+  "creditLogoDesigner": "Thiết kế logo",
+  "creditTranslation": "Một phần bản dịch: {language}",
+  "creditsAiTranslations": "Các văn bản được thêm sau và những ngôn ngữ không có ở đây được dịch bằng AI và có thể có lỗi. Rất hoan nghênh các bản sửa trên GitHub."
 }

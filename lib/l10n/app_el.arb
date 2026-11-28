@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Σύνδεση μέσω {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -385,5 +381,8 @@
   "durationMinutesShort": "{count} λ.",
   "durationSecondsShort": "{count} δ.",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Παρακολούθηση στο Twitch"
+  "watchOnTwitch": "Παρακολούθηση στο Twitch",
+  "creditLogoDesigner": "Σχεδιασμός λογότυπου",
+  "creditTranslation": "Τμήματα της μετάφρασης: {language}",
+  "creditsAiTranslations": "Τα κείμενα που προστέθηκαν αργότερα και οι γλώσσες που δεν αναφέρονται εδώ μεταφράστηκαν με AI και μπορεί να έχουν λάθη. Οι διορθώσεις είναι ευπρόσδεκτες στο GitHub."
 }

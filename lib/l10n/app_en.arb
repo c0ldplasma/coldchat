@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Logged in via {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -504,5 +500,17 @@
   "watchOnTwitch": "Watch on Twitch",
   "@watchOnTwitch": {
     "description": "Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it."
+  },
+  "creditLogoDesigner": "Logo designer",
+  "creditTranslation": "Parts of the {language} translation",
+  "creditsAiTranslations": "Texts added later, and the languages not listed here, were translated with AI and may contain mistakes. Corrections are welcome on GitHub.",
+  "@creditTranslation": {
+    "description": "Under a translator's name in Settings → Credits: they wrote parts of the translation into this language, not all of it.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Vietnamese"
+      }
+    }
   }
 }
