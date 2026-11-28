@@ -1,0 +1,6 @@
+• Log in with Twitch in your system's login sheet
+• Accent colors, OLED black and a proper light mode
+• A "+" in the tab bar jumps straight to the channel search
+• Channel search shows exact matches first, then live channels by viewers
+• Clearer connection status and login expiry
+• Every screen is now translated into all supported languages

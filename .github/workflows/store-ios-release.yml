@@ -1,0 +1,35 @@
+name: Store 3 · iOS · Release
+
+# Step 3 on iOS: releases the approved version (Pending Developer Release) on the App Store.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, e.g. v2.6.0+157 (checked against the version waiting for release)
+        required: true
+
+concurrency: store-ios
+
+jobs:
+  release:
+    name: Release on the App Store
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Release
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          version=${TAG#v}; version=${version%%+*}
+          bundle exec fastlane ios release version:"$version"

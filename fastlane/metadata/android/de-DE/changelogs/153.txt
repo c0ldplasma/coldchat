@@ -1,0 +1,6 @@
+• Anmeldung bei Twitch über das Anmeldefenster deines Systems
+• Akzentfarben, OLED-Schwarz und ein richtiger heller Modus
+• Ein „+“ in der Tableiste führt direkt zur Kanalsuche
+• Die Kanalsuche zeigt exakte Treffer zuerst, dann Live-Kanäle nach Zuschauern
+• Verständlicherer Verbindungsstatus und Ablauf der Anmeldung
+• Alle Bildschirme sind jetzt in allen unterstützten Sprachen übersetzt
