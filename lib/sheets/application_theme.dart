@@ -197,7 +197,8 @@ class _Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = accent.colorScheme(brightness);
-    final bar = ChatColors.from(scheme).bar;
+    // The glass of the bottom controls as it looks over the chat.
+    final bar = Color.alphaBlend(ChatColors.from(scheme).glass, scheme.surface);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
       decoration: BoxDecoration(

@@ -4,19 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../components/bottom_bar.dart';
-import '../components/modal.dart';
+import '../data/home/emote_panel_cubit.dart';
 import '../data/home/home_streams_cubit.dart';
 import '../data/home/start_screen_cubit.dart';
-import '../data/live/live_channels_cubit.dart';
 import '../data/repositories/account_repository.dart';
 import '../data/repositories/channel_repository.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
-import '../sheets/channel.dart';
-import '../sheets/coldchat.dart';
-import '../sheets/whisper.dart';
-import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/client/client.dart';
 import '../tmi/client/client_channels.dart';
@@ -25,7 +19,9 @@ import '../tmi/connection/connection.dart';
 import '../tmi/connection/connection_state.dart' as tmi;
 import '../tmi/whispers/whisper_channel.dart';
 import '../tmi/whispers/whispers.dart';
+import '../widgets/channel_switcher.dart';
 import '../widgets/channel_view.dart';
+import '../widgets/emote_panel_host.dart';
 import '../widgets/home_tab.dart';
 import '../widgets/logged_out_start.dart';
 import '../widgets/login_expired_banner.dart';
@@ -67,7 +63,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController? _tabController;
   int _lastLength = -1;
   // Always reflects the tab list (channels, then whisper conversations) from
@@ -125,6 +121,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   final ChannelSearchRequest _searchRequest = ChannelSearchRequest();
+
+  /// Owned here, not created by a provider below: the tab listener closes it, and that runs with this page's context.
+  final EmotePanelCubit _emotePanel = EmotePanelCubit();
   late final HomeTabSwitcher _switcher = HomeTabSwitcher(_openChannel, _searchRequest);
 
   // The "+" in the tab bar: back to the home tab, straight into the channel search.
@@ -159,6 +158,8 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     final name = index == 0 ? '' : (index - 1 < _channels.length ? _channels[index - 1].name : '');
     unawaited(context.read<ChannelRepository>().setLastChannel(name));
     _updateActiveWhisper();
+    // The emote panel belongs to the chat it was opened in.
+    _emotePanel.hide();
   }
 
   TabController _ensureController(List<Channel> channels) {
@@ -187,6 +188,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     }
     _tabController?.dispose();
     _searchRequest.dispose();
+    unawaited(_emotePanel.close());
     super.dispose();
   }
 
@@ -210,16 +212,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   );
 
   // Above the tab view, which disposes the home tab on every tab switch, so its stream lists survive switching.
-  Widget _buildHome(BuildContext context) => BlocProvider<HomeStreamsCubit>(
-    create: (context) {
-      final accounts = context.read<AccountRepository>();
-      final client = context.read<Client>();
-      return HomeStreamsCubit(
-        helix: () => client.helixAsActive(accounts),
-        accountChanges: accounts.activeChanges,
-      );
-    },
-    child: _buildTabs(context),
+  Widget _buildHome(BuildContext context) => MultiBlocProvider(
+    providers: [
+      BlocProvider<HomeStreamsCubit>(
+        create: (context) {
+          final accounts = context.read<AccountRepository>();
+          final client = context.read<Client>();
+          return HomeStreamsCubit(
+            helix: () => client.helixAsActive(accounts),
+            accountChanges: accounts.activeChanges,
+          );
+        },
+      ),
+      BlocProvider<EmotePanelCubit>.value(value: _emotePanel),
+    ],
+    // The glass controls blur the same backdrop, which BackdropGroup lets Flutter do once for all of them.
+    child: BackdropGroup(child: _buildTabs(context)),
   );
 
   Widget _buildTabs(BuildContext context) => BlocBuilder<ClientChannels, List<Channel>>(
@@ -231,195 +239,65 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         final tabController = _ensureController(state);
         return Provider<HomeTabSwitcher>.value(
           value: _switcher,
-          child: Scaffold(
-            extendBody: true,
-            extendBodyBehindAppBar: true,
-            bottomNavigationBar: BottomBar(
-              child: Builder(
-                builder: (context) {
-                  final muted = ChatColors.of(context).muted;
-                  final accent = Theme.of(context).colorScheme.primary;
-                  // The "+" stays at the right edge, outside the scrolling tabs, so it's always in reach.
-                  return Row(
+          // The emote panel takes the keyboard's place below the Scaffold, for the chat that is shown.
+          child: EmotePanelHost(
+            savedKeyboardHeight: context.read<SettingsRepository>().keyboardHeight,
+            onKeyboardHeight: (height) => unawaited(context.read<SettingsRepository>().setKeyboardHeight(height)),
+            channel: () {
+              final index = tabController.index;
+              return index > 0 && index - 1 < state.length ? state[index - 1] : null;
+            },
+            child: Scaffold(
+              extendBody: true,
+              extendBodyBehindAppBar: true,
+              // Floats over the chats and the home tab, which scroll on below it (extendBody).
+              bottomNavigationBar: ChannelSwitcher(
+                controller: tabController,
+                channels: channels,
+                whispers: whispers,
+                onAdd: _openChannelSearch,
+              ),
+              body: BlocBuilder<Connection, tmi.ConnectionState>(
+                bloc: context.read<Client>().transmitter,
+                builder: (context, connectionState) {
+                  // The banner claims the status-bar inset itself, so drop the
+                  // top inset for everything below it — otherwise the home
+                  // tab's large app bar and the chat view would each add it a
+                  // second time and leave a gap under the banner.
+                  final loginExpired = connectionState is tmi.ConnectionInvalidCredentials;
+                  final tabs = TabBarView(
+                    controller: tabController,
                     children: [
-                      Expanded(
-                        child: TabBar(
-                          controller: tabController,
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          // The selected tab is one of the places the accent color shows.
-                          labelColor: accent,
-                          unselectedLabelColor: muted,
-                          // 12 instead of 16, so the home icon lines up with the composer's image button below it.
-                          labelPadding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          indicatorSize: TabBarIndicatorSize.label,
-                          indicator: UnderlineTabIndicator(
-                            borderSide: BorderSide(color: accent, width: 3.0),
-                            // A rounded pill a little below the label, not a bar cut off by the tab's bottom edge.
-                            borderRadius: BorderRadius.circular(3.0),
-                            insets: const EdgeInsets.only(bottom: 8.0),
-                          ),
-                          dividerColor: Colors.transparent,
-                          tabs: [
-                            GestureDetector(
-                              onLongPress: () {
-                                unawaited(
-                                  Modal.show(
-                                    context: context,
-                                    child: const ColdChatModal(),
-                                  ),
-                                );
-                              },
-                              child: const SizedBox(
-                                height: 48.0,
-                                child: Icon(Icons.home_outlined),
-                              ),
-                            ),
-                            for (final channel in channels)
-                              GestureDetector(
-                                onLongPress: () {
-                                  unawaited(
-                                    Modal.show(
-                                      context: context,
-                                      child: ChannelModal(channel: channel),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  height: 48.0,
-                                  child: Center(child: _ChannelTabLabel(channel: channel)),
-                                ),
-                              ),
-                            for (final conversation in whispers)
-                              GestureDetector(
-                                onLongPress: () {
-                                  unawaited(
-                                    Modal.show(
-                                      context: context,
-                                      child: WhisperModal(conversation: conversation),
-                                    ),
-                                  );
-                                },
-                                child: SizedBox(
-                                  height: 48.0,
-                                  child: Center(child: _WhisperTabLabel(conversation: conversation)),
-                                ),
-                              ),
-                          ],
+                      const HomeTab(),
+                      for (final channel in state)
+                        ChannelView(
+                          key: ObjectKey(channel),
+                          channel: channel,
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.add_circle_outline_rounded),
-                        color: accent,
-                        tooltip: AppLocalizations.of(context).addChannel,
-                        onPressed: _openChannelSearch,
+                    ],
+                  );
+                  return Column(
+                    children: [
+                      const LoginExpiredBanner(),
+                      Expanded(
+                        // removePadding depends on all of MediaQuery, which changes on every frame of the keyboard
+                        // animation. Only this Builder rebuilds then, with the same tabs, so the chats below don't.
+                        child: Builder(
+                          builder: (context) => MediaQuery.removePadding(
+                            context: context,
+                            removeTop: loginExpired,
+                            child: tabs,
+                          ),
+                        ),
                       ),
                     ],
                   );
                 },
               ),
             ),
-            body: BlocBuilder<Connection, tmi.ConnectionState>(
-              bloc: context.read<Client>().transmitter,
-              builder: (context, connectionState) {
-                // The banner claims the status-bar inset itself, so drop the
-                // top inset for everything below it — otherwise the home
-                // tab's large app bar and the chat view would each add it a
-                // second time and leave a gap under the banner.
-                final loginExpired = connectionState is tmi.ConnectionInvalidCredentials;
-                final tabs = TabBarView(
-                  controller: tabController,
-                  children: [
-                    const HomeTab(),
-                    for (final channel in state)
-                      ChannelView(
-                        key: ObjectKey(channel),
-                        channel: channel,
-                      ),
-                  ],
-                );
-                return Column(
-                  children: [
-                    const LoginExpiredBanner(),
-                    Expanded(
-                      // removePadding depends on all of MediaQuery, which changes on every frame of the keyboard
-                      // animation. Only this Builder rebuilds then, with the same tabs, so the chats below don't.
-                      child: Builder(
-                        builder: (context) => MediaQuery.removePadding(
-                          context: context,
-                          removeTop: loginExpired,
-                          child: tabs,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
           ),
         );
       },
     ),
   );
-}
-
-/// A channel tab: its name, with a red dot before it while the channel is live.
-class _ChannelTabLabel extends StatelessWidget {
-  final Channel channel;
-
-  const _ChannelTabLabel({required this.channel});
-
-  @override
-  Widget build(BuildContext context) {
-    final login = channel.name.replaceFirst('#', '').toLowerCase();
-    return BlocSelector<LiveChannelsCubit, Set<String>, bool>(
-      selector: (live) => live.contains(login),
-      builder: (context, live) => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (live) ...[
-            Container(
-              width: 8.0,
-              height: 8.0,
-              decoration: const BoxDecoration(color: ChatColors.live, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: 6.0),
-          ],
-          Text(channel.name),
-        ],
-      ),
-    );
-  }
-}
-
-/// A whisper tab: the partner's name, on red while there are unread whispers.
-class _WhisperTabLabel extends StatelessWidget {
-  final WhisperChannel conversation;
-
-  const _WhisperTabLabel({required this.conversation});
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    final unread = conversation.unread;
-    final label = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(Icons.mail_outline_rounded, size: 16.0, color: unread ? colors.onError : null),
-        const SizedBox(width: 4.0),
-        Text(
-          conversation.partnerDisplayName,
-          style: unread ? TextStyle(color: colors.onError, fontWeight: FontWeight.bold) : null,
-        ),
-      ],
-    );
-    if (!unread) return label;
-    return DecoratedBox(
-      decoration: BoxDecoration(color: colors.error, borderRadius: BorderRadius.circular(12.0)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: label,
-      ),
-    );
-  }
 }

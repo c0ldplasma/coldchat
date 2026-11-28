@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count}분",
   "durationSecondsShort": "{count}초",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Twitch에서 보기"
+  "watchOnTwitch": "Twitch에서 보기",
+  "home": "홈",
+  "attachPhoto": "사진 공유",
+  "emoteMenu": "이모트",
+  "sendMessage": "보내기"
 }

@@ -89,6 +89,29 @@ void main() {
       expect(draft.text, 'hi there @ronni');
       expect(draft.restoredCaret, draft.text.length);
     });
+
+    test('an emote from the panel goes to the shown view, not to the saved text', () async {
+      final draft = ComposerDraft()..save(text: 'hi', caret: 1);
+      addTearDown(draft.close);
+      final insertions = <String>[];
+      final subscription = draft.insertions.listen(insertions.add);
+
+      draft.insert('Kappa');
+      await subscription.cancel();
+
+      expect(insertions, ['Kappa']);
+      expect(draft.text, 'hi');
+    });
+
+    test('without a view an emote is appended to the saved text', () async {
+      final draft = ComposerDraft()..save(text: 'hi', caret: 1);
+      addTearDown(draft.close);
+
+      draft.insert('Kappa');
+
+      expect(draft.text, 'hi Kappa');
+      expect(draft.restoredCaret, draft.text.length);
+    });
   });
 
   group('UploadQueueCubit.takeUploadedUrls', () {

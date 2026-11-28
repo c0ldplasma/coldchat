@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} мин",
   "durationSecondsShort": "{count} с",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Gledaj na Twitchu"
+  "watchOnTwitch": "Gledaj na Twitchu",
+  "home": "Почетна",
+  "attachPhoto": "Подели фотографију",
+  "emoteMenu": "Емоути",
+  "sendMessage": "Пошаљи"
 }

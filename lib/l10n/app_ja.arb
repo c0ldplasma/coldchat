@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count}分",
   "durationSecondsShort": "{count}秒",
   "durationPair": "{larger}{smaller}",
-  "watchOnTwitch": "Twitchで視聴"
+  "watchOnTwitch": "Twitchで視聴",
+  "home": "ホーム",
+  "attachPhoto": "写真を共有",
+  "emoteMenu": "エモート",
+  "sendMessage": "送信"
 }

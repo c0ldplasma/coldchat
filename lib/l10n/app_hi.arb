@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} मि॰",
   "durationSecondsShort": "{count} से॰",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Twitch पर देखें"
+  "watchOnTwitch": "Twitch पर देखें",
+  "home": "होम",
+  "attachPhoto": "फ़ोटो साझा करें",
+  "emoteMenu": "इमोट्स",
+  "sendMessage": "भेजें"
 }

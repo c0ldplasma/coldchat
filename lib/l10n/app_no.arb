@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Se på Twitch"
+  "watchOnTwitch": "Se på Twitch",
+  "home": "Hjem",
+  "attachPhoto": "Del et bilde",
+  "emoteMenu": "Emotes",
+  "sendMessage": "Send"
 }

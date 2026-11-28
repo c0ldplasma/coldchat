@@ -1,12 +1,14 @@
 import 'dart:async';
+import 'dart:ui' show lerpDouble;
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../components/edge_fade.dart';
+import '../components/glass.dart';
 import '../components/separator.dart';
-import '../components/surface.dart';
 import '../components/tile.dart';
 import '../data/home/channel_search_cubit.dart';
 import '../data/home/home_streams_cubit.dart';
@@ -61,6 +63,9 @@ class _HomeTabView extends StatefulWidget {
 class _HomeTabViewState extends State<_HomeTabView> {
   final TextEditingController searchTextController = TextEditingController();
   final FocusNode searchFocus = FocusNode();
+
+  /// Drives the floating top: the title pill fades in and the search sticks below the avatar as the page scrolls.
+  final ScrollController scrollController = ScrollController();
   late final ChannelSearchRequest searchRequest = context.read<HomeTabSwitcher>().searchRequest;
 
   @override
@@ -79,6 +84,7 @@ class _HomeTabViewState extends State<_HomeTabView> {
     searchRequest.removeListener(_focusSearchIfRequested);
     searchFocus.dispose();
     searchTextController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -101,76 +107,150 @@ class _HomeTabViewState extends State<_HomeTabView> {
     FocusScope.of(context).unfocus();
   }
 
+  // The floating top, from the status bar down: the row with the title pill and the avatar, then the search.
+  static const double _rowHeight = 48.0;
+  static const double _searchHeight = 48.0;
+  static const double _gap = 8.0;
+
+  /// The big "ColdChat" below the row; its height with its padding.
+  static const double _bigTitleHeight = 60.0;
+
+  /// Between the title pill's edges and its label.
+  static const double _pillPadding = 18.0;
+
+  /// The title's size in the pill: a screen title's (Material's titleLarge), well above the tabs' labels.
+  static const double _pillFontSize = 22.0;
+
   @override
   Widget build(BuildContext context) => BlocBuilder<HomeStreamsCubit, HomeStreamsState>(
     buildWhen: (previous, current) => previous.loggedIn != current.loggedIn,
     builder: (context, streamsState) {
-      return RefreshIndicator(
-        onRefresh: context.read<HomeStreamsCubit>().refresh,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar.large(
-              surfaceTintColor: Colors.transparent,
-              // foregroundColor: Colors.transparent,
-              // Bold like the name on the start screen (LoggedOutStart); size and font come from the app bar.
-              title: Text(
-                AppLocalizations.of(context).appName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              actions: const [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: AvatarButton(),
+      final safeTop = MediaQuery.paddingOf(context).top;
+      final rowBottom = safeTop + _gap + _rowHeight;
+      // Where the search is with the page at the top: below the big title.
+      final searchTop = rowBottom + _bigTitleHeight;
+      // The page runs under the floating top, like the chat under its controls: nothing opaque above it.
+      return Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: context.read<HomeStreamsCubit>().refresh,
+            // Below the search, not behind it.
+            edgeOffset: searchTop + _searchHeight,
+            child: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                // Room for the big title, which the floating top draws: it turns into the title pill on scrolling.
+                SliverToBoxAdapter(child: SizedBox(height: rowBottom + _bigTitleHeight)),
+                // The search floats over this room, see below.
+                const SliverToBoxAdapter(child: SizedBox(height: _searchHeight + 16.0)),
+                BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
+                  builder: (context, search) => switch (search) {
+                    ChannelSearchIdle() => streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
+                    ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
+                    ChannelSearchFailed() => SliverList.list(
+                      children: [Text(AppLocalizations.of(context).channelSearchFailed)],
+                    ),
+                    final ChannelSearchLoaded loaded => _searchResults(context, loaded),
+                  },
                 ),
+                // The last streams can scroll up above the channel switcher floating over the list.
+                SliverPadding(padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 8.0)),
               ],
             ),
-            SliverList.list(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Surface(
-                    type: SurfaceType.surfaceVariant,
-                    borderRadius: BorderRadius.circular(48.0),
-                    child: Row(
+          ),
+          // Soft edges where the page scrolls under the floating controls: down to below the stuck search at the top,
+          // behind the channel switcher at the bottom.
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            top: 0.0,
+            child: EdgeFade.top(height: rowBottom + _gap + _searchHeight + 16.0),
+          ),
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            child: EdgeFade.bottom(height: MediaQuery.paddingOf(context).bottom + 24.0),
+          ),
+          // Only the floating top follows the scrolling; the page below isn't rebuilt for it.
+          AnimatedBuilder(
+            animation: scrollController,
+            builder: (context, _) {
+              final offset = scrollController.hasClients ? scrollController.offset : 0.0;
+              // 0 with the page at the top, 1 once the big title has become the title pill.
+              final progress = (offset / _bigTitleHeight).clamp(0.0, 1.0);
+              final theme = Theme.of(context);
+              final bigStyle = theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold);
+              final fontSize = lerpDouble(bigStyle?.fontSize ?? 28.0, _pillFontSize, progress)!;
+              // The title's middle: in the page below the row, moving with it (also when pulled down to refresh),
+              // and in the pill once scrolled.
+              final pageMiddle = rowBottom + _bigTitleHeight / 2;
+              final pillMiddle = safeTop + _gap + _rowHeight / 2;
+              final titleMiddle = offset < 0.0 ? pageMiddle - offset : lerpDouble(pageMiddle, pillMiddle, progress)!;
+              // The pill around the title: it grows from the bare text to the pill, fading in as it goes.
+              final pillLeft = lerpDouble(16.0, 12.0, progress)!;
+              final pillPadding = _pillPadding * progress;
+              final pillHeight = lerpDouble(_bigTitleHeight * 0.7, _rowHeight, progress)!;
+              return Stack(
+                children: [
+                  // Scrolls up with the page, then sticks right under the avatar row.
+                  Positioned(
+                    left: 12.0,
+                    right: 12.0,
+                    // Always the same gap below the title pill, while it moves and when it has settled.
+                    top: titleMiddle + pillHeight / 2 + _gap,
+                    child: _SearchPill(
+                      controller: searchTextController,
+                      focusNode: searchFocus,
+                      onChanged: context.read<ChannelSearchCubit>().queryChanged,
+                    ),
+                  ),
+                  Positioned(
+                    left: 12.0,
+                    right: 12.0,
+                    top: safeTop + _gap,
+                    child: const Row(
                       children: [
-                        const SizedBox(width: 16.0),
-                        Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
-                        const SizedBox(width: 8.0),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              filled: false,
-                              border: InputBorder.none,
-                              hintText: AppLocalizations.of(context).searchForChannels,
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            controller: searchTextController,
-                            focusNode: searchFocus,
-                            onChanged: context.read<ChannelSearchCubit>().queryChanged,
-                          ),
-                        ),
-                        const SizedBox(width: 16.0),
+                        Spacer(),
+                        AvatarButton(),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 16.0),
-              ],
-            ),
-            BlocBuilder<ChannelSearchCubit, ChannelSearchState>(
-              builder: (context, search) => switch (search) {
-                ChannelSearchIdle() => streamsState.loggedIn ? const _StreamLists() : const _LogInForStreams(),
-                ChannelSearchLoading() => SliverList.list(children: const [_Spinner()]),
-                ChannelSearchFailed() => SliverList.list(
-                  children: [Text(AppLocalizations.of(context).channelSearchFailed)],
-                ),
-                final ChannelSearchLoaded loaded => _searchResults(context, loaded),
-              },
-            ),
-          ],
-        ),
+                  // The one "ColdChat": big in the page, shrinking up into the top row as the page scrolls, with the
+                  // glass pill fading in around it on the way. Bold like the name on the start screen (LoggedOutStart).
+                  Positioned(
+                    left: pillLeft,
+                    top: titleMiddle - pillHeight / 2,
+                    height: pillHeight,
+                    child: IgnorePointer(
+                      child: Stack(
+                        children: [
+                          // Faded in by the glass's own strength: an Opacity wouldn't fade its blur.
+                          Positioned.fill(
+                            child: Glass(strength: progress, child: const SizedBox.expand()),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: pillPadding),
+                            child: Center(
+                              widthFactor: 1.0,
+                              child: Semantics(
+                                header: true,
+                                child: Text(
+                                  AppLocalizations.of(context).appName,
+                                  style: bigStyle?.copyWith(fontSize: fontSize),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
       );
     },
   );
@@ -506,4 +586,44 @@ class StreamPreviewLarge extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The channel search on the home tab: a glass capsule like the chat's search, with the accent search icon.
+class _SearchPill extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final ValueChanged<String> onChanged;
+
+  const _SearchPill({required this.controller, required this.focusNode, required this.onChanged});
+
+  @override
+  Widget build(BuildContext context) => Glass(
+    child: SizedBox(
+      height: 48.0,
+      child: Row(
+        children: [
+          const SizedBox(width: 16.0),
+          Icon(Icons.search, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                isCollapsed: true,
+                border: InputBorder.none,
+                hintText: AppLocalizations.of(context).searchForChannels,
+                hintStyle: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              ),
+              controller: controller,
+              focusNode: focusNode,
+              // Channel names aren't words: the keyboard would "correct" them into other channels.
+              autocorrect: false,
+              enableSuggestions: false,
+              onChanged: onChanged,
+            ),
+          ),
+          const SizedBox(width: 16.0),
+        ],
+      ),
+    ),
+  );
 }

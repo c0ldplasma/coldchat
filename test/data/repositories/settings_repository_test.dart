@@ -55,6 +55,7 @@ void main() {
     expect(SettingsRepository.emoteButtonGrayscaleKey, 'emoteButtonGrayscale');
     expect(SettingsRepository.chatHistoryKey, 'recentMessagesChatHistory');
     expect(SettingsRepository.whisperHistoryHintDismissedKey, 'whisperHistoryHintDismissed');
+    expect(SettingsRepository.keyboardHeightKey, 'keyboardHeight');
   });
 
   test('a fresh install stores default appearance and chat settings, and gets no accent entry', () async {
@@ -73,6 +74,19 @@ void main() {
     expect(settings.whisperHistoryHintDismissed, isFalse);
     expect(settings.emoteButtonIcon, isNull);
     expect(settings.emoteButtonGrayscale, isFalse);
+    expect(settings.keyboardHeight, isNull);
+  });
+
+  test('remembers the keyboard\'s height and ignores nonsense', () async {
+    final settings = await SettingsRepository.open();
+
+    await settings.setKeyboardHeight(336.0);
+    expect(settings.keyboardHeight, 336.0);
+
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.keyboardHeightKey, 'tall');
+    expect(settings.keyboardHeight, isNull);
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.keyboardHeightKey, 0);
+    expect(settings.keyboardHeight, isNull);
   });
 
   test('keeps stored settings and reads them', () async {

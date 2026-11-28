@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} мин",
   "durationSecondsShort": "{count} с",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Смотреть на Twitch"
+  "watchOnTwitch": "Смотреть на Twitch",
+  "home": "Главная",
+  "attachPhoto": "Поделиться фото",
+  "emoteMenu": "Эмоуты",
+  "sendMessage": "Отправить"
 }

@@ -5,6 +5,19 @@ import '../../sources/emoji_source.dart';
 
 const twitchSection = 'Twitch';
 
+/// Which of the picker's sections is being looked at, for the section bar's highlight: the last one whose start
+/// ([sectionStarts], scroll offsets in section order) has reached the top of the view, scrolled to [offset]. Before the
+/// first one starts (the search field above it), the first. Null without sections.
+int? currentSectionIndex(List<double> sectionStarts, double offset) {
+  if (sectionStarts.isEmpty) return null;
+  var current = 0;
+  for (var i = 0; i < sectionStarts.length; i++) {
+    // A pixel of slack: scrolling to a section lands exactly on its start, give or take rounding.
+    if (sectionStarts[i] <= offset + 1.0) current = i;
+  }
+  return current;
+}
+
 /// A section of the emote picker: an emote category (e.g. an emoji group) or else a source, with its emotes.
 class EmoteSection {
   final String title;

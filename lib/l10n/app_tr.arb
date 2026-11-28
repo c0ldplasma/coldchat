@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} dk.",
   "durationSecondsShort": "{count} sn.",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Twitch'te izle"
+  "watchOnTwitch": "Twitch'te izle",
+  "home": "Ana sayfa",
+  "attachPhoto": "Fotoğraf paylaş",
+  "emoteMenu": "Emote'lar",
+  "sendMessage": "Gönder"
 }
