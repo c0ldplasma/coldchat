@@ -391,9 +391,9 @@
   "emoteMenu": "Emotes",
   "sendMessage": "Enviar",
   "hideEmoteSection": "Ocultar estes emotes",
-  "hideEmoteSectionSubtitle": "Deixam de aparecer no painel de emotes e nas sugestões. Escrever o nome de um emote continua a enviá-lo.",
-  "hiddenEmoteSections": "Secções de emotes ocultas",
-  "hiddenEmoteSectionsNone": "Mantém premida uma secção do painel de emotes para ocultar os seus emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 secção} other{{count} secções}}",
+  "hideEmoteSectionSubtitle": "Eles deixam de aparecer no painel de emotes e nas sugestões. Digitar o nome de um emote ainda o envia.",
+  "hiddenEmoteSections": "Seções de emotes ocultas",
+  "hiddenEmoteSectionsNone": "Mantenha pressionada uma seção no painel de emotes para ocultar os emotes dela.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 seção} other{{count} seções}}",
   "showEmoteSection": "Mostrar"
 }
