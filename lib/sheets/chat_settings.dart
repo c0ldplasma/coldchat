@@ -15,6 +15,7 @@ import '../tmi/client/client.dart';
 import '../widgets/chat/emote_picker.dart';
 import '../widgets/emote_button_icon_view.dart';
 import 'components/modal_header.dart';
+import 'emote_section.dart';
 
 class ChatSettingsModal extends StatelessWidget {
   const ChatSettingsModal({super.key});
@@ -103,6 +104,16 @@ class ChatSettingsModal extends StatelessWidget {
               onChanged: (newValue) => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
             ),
             onTap: () => emoteButtonIcon.setGrayscale(!emoteButtonIcon.grayscale),
+          ),
+          Tile(
+            title: AppLocalizations.of(context).hiddenEmoteSections,
+            subtitle: switch (settings.hiddenEmoteSections.length) {
+              0 => AppLocalizations.of(context).hiddenEmoteSectionsNone,
+              final count => AppLocalizations.of(context).hiddenEmoteSectionsCount(count),
+            },
+            prefix: const Icon(Icons.visibility_off_outlined),
+            suffix: const Icon(Icons.chevron_right),
+            onTap: () => Modal.show(context: context, child: const HiddenEmoteSectionsModal()),
           ),
           Tile(
             title: AppLocalizations.of(context).showImagesFromLinks,

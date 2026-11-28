@@ -389,5 +389,11 @@
   "home": "Главная",
   "attachPhoto": "Поделиться фото",
   "emoteMenu": "Эмоуты",
-  "sendMessage": "Отправить"
+  "sendMessage": "Отправить",
+  "hideEmoteSection": "Скрыть эти эмоуты",
+  "hideEmoteSectionSubtitle": "Они пропадут из панели эмоутов и подсказок. Если ввести название эмоута, он всё равно отправится.",
+  "hiddenEmoteSections": "Скрытые разделы эмоутов",
+  "hiddenEmoteSectionsNone": "Удерживайте раздел в панели эмоутов, чтобы скрыть его эмоуты.",
+  "hiddenEmoteSectionsCount": "{count, plural, one{{count} раздел} few{{count} раздела} many{{count} разделов} other{{count} раздела}}",
+  "showEmoteSection": "Показать"
 }

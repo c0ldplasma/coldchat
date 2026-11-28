@@ -389,5 +389,11 @@
   "home": "בית",
   "attachPhoto": "שיתוף תמונה",
   "emoteMenu": "אימוטים",
-  "sendMessage": "שליחה"
+  "sendMessage": "שליחה",
+  "hideEmoteSection": "הסתרת האימוטים האלה",
+  "hideEmoteSectionSubtitle": "הם לא יופיעו בלוח האימוטים ובהצעות. הקלדת שם של אימוט עדיין שולחת אותו.",
+  "hiddenEmoteSections": "קטעי אימוטים מוסתרים",
+  "hiddenEmoteSectionsNone": "לחיצה ארוכה על קטע בלוח האימוטים מסתירה את האימוטים שלו.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{קטע אחד} other{{count} קטעים}}",
+  "showEmoteSection": "הצגה"
 }

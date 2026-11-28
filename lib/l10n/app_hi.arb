@@ -389,5 +389,11 @@
   "home": "होम",
   "attachPhoto": "फ़ोटो साझा करें",
   "emoteMenu": "इमोट्स",
-  "sendMessage": "भेजें"
+  "sendMessage": "भेजें",
+  "hideEmoteSection": "ये इमोट छिपाएँ",
+  "hideEmoteSectionSubtitle": "ये इमोट पैनल और सुझावों में नहीं दिखेंगे। इमोट का नाम टाइप करने पर वह फिर भी भेजा जाता है।",
+  "hiddenEmoteSections": "छिपे हुए इमोट सेक्शन",
+  "hiddenEmoteSectionsNone": "किसी सेक्शन के इमोट छिपाने के लिए इमोट पैनल में उसे दबाकर रखें।",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 सेक्शन} other{{count} सेक्शन}}",
+  "showEmoteSection": "दिखाएँ"
 }

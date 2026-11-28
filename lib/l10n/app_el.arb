@@ -389,5 +389,11 @@
   "home": "Αρχική",
   "attachPhoto": "Κοινοποίηση φωτογραφίας",
   "emoteMenu": "Emotes",
-  "sendMessage": "Αποστολή"
+  "sendMessage": "Αποστολή",
+  "hideEmoteSection": "Απόκρυψη αυτών των emotes",
+  "hideEmoteSectionSubtitle": "Δεν εμφανίζονται πια στο πάνελ emotes και στις προτάσεις. Αν πληκτρολογήσεις το όνομα ενός emote, στέλνεται κανονικά.",
+  "hiddenEmoteSections": "Κρυμμένες ενότητες emotes",
+  "hiddenEmoteSectionsNone": "Πάτησε παρατεταμένα μια ενότητα στο πάνελ emotes για να κρύψεις τα emotes της.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 ενότητα} other{{count} ενότητες}}",
+  "showEmoteSection": "Εμφάνιση"
 }

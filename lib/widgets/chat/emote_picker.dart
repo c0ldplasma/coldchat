@@ -8,14 +8,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../components/glass.dart';
+import '../../components/modal.dart';
 import '../../data/emote.dart';
 import '../../data/emote_cache.dart';
+import '../../data/repositories/settings_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../../sheets/emote_section.dart';
 import '../../theme/coldchat_theme.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
 import '../../tmi/emotes.dart';
 import '../../tools/emotes/emote_picker_sections.dart';
+import '../../tools/emotes/visible_emotes.dart';
 import '../emoji_glyph.dart';
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
@@ -95,6 +99,13 @@ class _EmotePickerState extends State<EmotePicker> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
+  // Each list without the emotes of hidden sections, remembered so the sections are only grouped again on a change.
+  final VisibleEmotes _visibleChannelEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleGlobalEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
+
+  /// The keys of the hidden sections, as last built.
+  Set<String> _hiddenSections = const {};
   // One key per section title, kept across rebuilds so the section headers aren't rebuilt from scratch every time;
   // the tab bar scrolls to a section by its key.
   final Map<String, GlobalKey> groupKeys = {};
@@ -191,10 +202,27 @@ class _EmotePickerState extends State<EmotePicker> {
     super.dispose();
   }
 
+  /// Long-pressing a section offers hiding its emotes.
+  Future<void> _showSectionActions(EmoteSection section) => Modal.show(
+    context: context,
+    child: EmoteSectionModal(sectionKey: section.key, title: section.title),
+  );
+
   // Emotes keep loading after the picker opens (Twitch's only arrive once the chat connection is up), so it rebuilds
-  // when any list changes.
+  // when any list changes, and when a section is hidden or shown again.
   @override
-  Widget build(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
+  Widget build(BuildContext context) {
+    final settings = context.read<SettingsRepository>();
+    return ListenableBuilder(
+      listenable: settings.hiddenEmoteSectionsChanges,
+      builder: (context, _) {
+        _hiddenSections = settings.hiddenEmoteSections.keys.toSet();
+        return _buildWithEmotes(context);
+      },
+    );
+  }
+
+  Widget _buildWithEmotes(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
     bloc: widget.client.globals.emotes,
     builder: (context, globalEmotes) => BlocBuilder<Emotes, List<Emote>>(
       bloc: widget.client.globals.twitchUserEmotes,
@@ -222,11 +250,12 @@ class _EmotePickerState extends State<EmotePicker> {
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
   }) {
-    // Grouped again only when an emote list changed, filtered again only when the search did.
+    // Grouped again only when an emote list or the hidden sections changed, filtered again only when the search did.
     final pickerSections = sectionsCache.sectionsFor(
-      channelEmotes: channelEmotes,
-      globalEmotes: globalEmotes,
-      userEmotes: userEmotes,
+      channelEmotes: _visibleChannelEmotes.of(channelEmotes, _hiddenSections),
+      globalEmotes: _visibleGlobalEmotes.of(globalEmotes, _hiddenSections),
+      userEmotes: _visibleUserEmotes.of(userEmotes, _hiddenSections),
+      keepTwitchSection: !_hiddenSections.contains(emoteSectionKey(title: twitchSection)),
     );
     final sections = pickerSections.sections;
     final matchingSections = pickerSections.matching(searchController.text.toLowerCase());
@@ -234,19 +263,6 @@ class _EmotePickerState extends State<EmotePicker> {
     for (final section in sections) {
       groupKeys.putIfAbsent(section.title, GlobalKey.new);
     }
-
-    const icons = {
-      'Symbols': Icon(Icons.star_border_outlined),
-      'Activities': Icon(Icons.local_activity_outlined),
-      'Flags': Icon(Icons.flag_outlined),
-      'Travel & Places': Icon(Icons.card_travel_outlined),
-      'Food & Drink': Icon(Icons.fastfood_outlined),
-      'Animals & Nature': Icon(Icons.pest_control_outlined),
-      'People & Body': Icon(Icons.people_outline_outlined),
-      'Objects': Icon(Icons.emoji_objects_outlined),
-      'Component': Icon(Icons.settings_input_component_outlined),
-      'Smileys & Emotion': Icon(Icons.emoji_emotions_outlined),
-    };
 
     final background = widget.backgroundColor ?? Theme.of(context).colorScheme.surface;
     return Material(
@@ -324,13 +340,38 @@ class _EmotePickerState extends State<EmotePicker> {
                       // section bar shows which section is in view.
                       SliverToBoxAdapter(
                         key: groupKeys[section.title],
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
-                          child: Text(
-                            section.title,
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onLongPress: () => _showSectionActions(section),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
+                            child: Row(
+                              children: [
+                                // The section's icon from the section bar, in the title's color.
+                                if (_sectionIcon(context, section) case final icon?) ...[
+                                  SizedBox.square(
+                                    dimension: 18.0,
+                                    child: IconTheme.merge(
+                                      data: IconThemeData(
+                                        size: 18.0,
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      ),
+                                      child: icon,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 6.0),
+                                ],
+                                Flexible(
+                                  child: Text(
+                                    section.title,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -455,6 +496,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                   child: InkWell(
                                     customBorder: const StadiumBorder(),
                                     onTap: () => _scrollToSection(tab.title),
+                                    onLongPress: () => _showSectionActions(tab),
                                     // The section in view sits on a tinted pill, like the channel switcher's tab.
                                     child: AnimatedContainer(
                                       duration: const Duration(milliseconds: 200),
@@ -470,10 +512,7 @@ class _EmotePickerState extends State<EmotePicker> {
                                       child: Center(
                                         child: SizedBox.square(
                                           dimension: 24.0,
-                                          child:
-                                              icons[tab.title] ??
-                                              sourceLogo(context, tab.title) ??
-                                              firstEmoteIcon(tab.emotes),
+                                          child: _sectionIcon(context, tab),
                                         ),
                                       ),
                                     ),
@@ -494,6 +533,30 @@ class _EmotePickerState extends State<EmotePicker> {
     );
   }
 
+  static const _emojiGroupIcons = {
+    'Symbols': Icon(Icons.star_border_outlined),
+    'Activities': Icon(Icons.local_activity_outlined),
+    'Flags': Icon(Icons.flag_outlined),
+    'Travel & Places': Icon(Icons.card_travel_outlined),
+    'Food & Drink': Icon(Icons.fastfood_outlined),
+    'Animals & Nature': Icon(Icons.pest_control_outlined),
+    'People & Body': Icon(Icons.people_outline_outlined),
+    'Objects': Icon(Icons.emoji_objects_outlined),
+    'Component': Icon(Icons.settings_input_component_outlined),
+    'Smileys & Emotion': Icon(Icons.emoji_emotions_outlined),
+  };
+
+  /// The icon of [section], in the section bar and before its title: an emoji group's symbol, a channel's badge, a
+  /// source's logo, else its first emote. Null only for an empty section without any of these.
+  Widget? _sectionIcon(BuildContext context, EmoteSection section) =>
+      _emojiGroupIcons[section.title] ??
+      switch (section.iconUrl) {
+        final iconUrl? => _iconImage(iconUrl),
+        null => null,
+      } ??
+      sourceLogo(context, section.title) ??
+      firstEmoteIcon(section.emotes);
+
   /// Logo for a source's section, or null if [category] isn't a source.
   Widget? sourceLogo(BuildContext context, String category) {
     final onSurface = Theme.of(context).colorScheme.onSurface;
@@ -512,10 +575,14 @@ class _EmotePickerState extends State<EmotePicker> {
     };
   }
 
-  /// Fallback for any other section: its first emote, never cut-off text.
-  Widget firstEmoteIcon(List<Emote> emotes) => CachedNetworkImage(
-    imageUrl: emotes.first.mipmap.last,
+  /// Fallback for any other section: its first emote, never cut-off text. Null while the section is empty.
+  Widget? firstEmoteIcon(List<Emote> emotes) => emotes.isEmpty ? null : _iconImage(emotes.first.mipmap.last);
+
+  /// A section's icon from [url]: a badge or an emote, so from the emote cache.
+  Widget _iconImage(String url) => CachedNetworkImage(
+    imageUrl: url,
     cacheManager: EmoteCacheManager.instance,
     fit: BoxFit.contain,
+    filterQuality: FilterQuality.medium,
   );
 }

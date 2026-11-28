@@ -34,6 +34,7 @@ import '../tools/browser_warmup.dart';
 import '../tools/composer/composer_send.dart';
 import '../tools/composer/composer_text.dart';
 import '../tools/emotes/autocompletion_matcher.dart';
+import '../tools/emotes/visible_emotes.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_view.dart';
 import 'emoji_glyph.dart';
@@ -72,6 +73,10 @@ class ChannelViewState extends State<ChannelView> {
   final TextEditingController textEditingController = TextEditingController();
   // Keeps the autocompletion's emote and chatter lists between rebuilds, see [AutocompletionMatcher].
   final AutocompletionMatcher _autocompletion = AutocompletionMatcher();
+  // Each emote list without the emotes of sections hidden in the emote picker.
+  final VisibleEmotes _visibleChannelEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleGlobalEmotes = VisibleEmotes();
+  final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
   StreamSubscription<UploadTask>? _uploadSubscription;
   StreamSubscription<String>? _mentionSubscription;
   StreamSubscription<String>? _insertionSubscription;
@@ -393,10 +398,11 @@ class ChannelViewState extends State<ChannelView> {
 
     final chatSettings = context.read<SettingsRepository>().chatSettings;
 
+    final hiddenSections = context.read<SettingsRepository>().hiddenEmoteSections.keys.toSet();
     final sortedEmotes = _autocompletion.emotes(
-      channelEmotes: widget.channel.channelEmotes.state,
-      globalEmotes: widget.channel.client.globals.emotes.state,
-      userEmotes: widget.channel.client.globals.twitchUserEmotes.state,
+      channelEmotes: _visibleChannelEmotes.of(widget.channel.channelEmotes.state, hiddenSections),
+      globalEmotes: _visibleGlobalEmotes.of(widget.channel.client.globals.emotes.state, hiddenSections),
+      userEmotes: _visibleUserEmotes.of(widget.channel.client.globals.twitchUserEmotes.state, hiddenSections),
       // As typed: emote names are case-sensitive, so `Kappa` ranks above `kappa` for "Kappa".
       search: typed,
       needsColon: chatSettings.emoteAutocompletionWithColon,

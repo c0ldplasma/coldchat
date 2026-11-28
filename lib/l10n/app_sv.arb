@@ -389,5 +389,11 @@
   "home": "Hem",
   "attachPhoto": "Dela ett foto",
   "emoteMenu": "Emotes",
-  "sendMessage": "Skicka"
+  "sendMessage": "Skicka",
+  "hideEmoteSection": "Dölj de här emotes",
+  "hideEmoteSectionSubtitle": "De visas inte längre i emotepanelen och förslagen. Skriver du namnet på en emote skickas den ändå.",
+  "hiddenEmoteSections": "Dolda emotesektioner",
+  "hiddenEmoteSectionsNone": "Håll in en sektion i emotepanelen för att dölja dess emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sektion} other{{count} sektioner}}",
+  "showEmoteSection": "Visa"
 }

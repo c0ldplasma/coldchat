@@ -113,7 +113,15 @@ void main() {
     test('EmoteBadgeCache turns cached emotes back into emotes of known sources', () async {
       final source = SevenTvSource(SevenTvApi(offlineApi()));
       final cache = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: [source]);
-      final emote = Emote(id: 'e1', name: 'Pog', mipmap: const ['https://example.com/1x'], source: source);
+      final emote = Emote(
+        id: 'e1',
+        name: 'Pog',
+        mipmap: const ['https://example.com/1x'],
+        source: source,
+        category: 'Ronni',
+        categoryIcon: 'https://example.com/badge',
+        ownerId: '42',
+      );
 
       await cache.saveChannelEmotes('forsen', [emote]);
       await reopen();
@@ -122,6 +130,7 @@ void main() {
       final [loaded] = reloaded.loadChannelEmotes('forsen');
       expect((loaded.id, loaded.name, loaded.source), ('e1', 'Pog', source));
       expect(loaded.mipmap, ['https://example.com/1x']);
+      expect((loaded.category, loaded.categoryIcon, loaded.ownerId), ('Ronni', 'https://example.com/badge', '42'));
       // An emote of a source that isn't there anymore is dropped.
       final withoutSource = EmoteBadgeCache(repository: await EmoteBadgeCacheRepository.open(), sources: []);
       expect(withoutSource.loadChannelEmotes('forsen'), isEmpty);

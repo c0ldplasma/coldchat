@@ -389,5 +389,11 @@
   "home": "Ana sayfa",
   "attachPhoto": "Fotoğraf paylaş",
   "emoteMenu": "Emote'lar",
-  "sendMessage": "Gönder"
+  "sendMessage": "Gönder",
+  "hideEmoteSection": "Bu emote'ları gizle",
+  "hideEmoteSectionSubtitle": "Artık emote panelinde ve önerilerde görünmezler. Bir emote'un adını yazarsan yine de gönderilir.",
+  "hiddenEmoteSections": "Gizlenen emote bölümleri",
+  "hiddenEmoteSectionsNone": "Bir bölümün emote'larını gizlemek için emote panelinde bölüme uzun bas.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 bölüm} other{{count} bölüm}}",
+  "showEmoteSection": "Göster"
 }
