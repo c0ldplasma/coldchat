@@ -18,6 +18,11 @@ enum SendAvailability {
   ready,
 }
 
+/// Whether a composer shows the "Log in to chat" button instead of its text field: there's no login to send with. A
+/// whisper conversation only exists while logged in and is sent over Helix, so it keeps its field.
+bool composerNeedsLogin(SendAvailability availability, {required bool isWhisper}) =>
+    !isWhisper && availability == SendAvailability.needsLogin;
+
 /// [Channel.sendAvailability] as state, for the composer: follows the [transmitter] logging in and out, connecting
 /// and dropping, and Twitch acknowledging its JOIN of the channel ([join]).
 class CanSend extends Cubit<SendAvailability> {

@@ -22,8 +22,15 @@ final _sevenTv = _Source('7TV');
 final _bttv = _Source('BetterTTV');
 final _emoji = EmojiSource(EmojiDataApi(offlineApi()));
 
-Emote _emote(String name, ChatSource source, {String? category}) =>
-    Emote(id: name, name: name, mipmap: ['https://example.com/$name'], source: source, category: category);
+Emote _emote(String name, ChatSource source, {String? category, String? categoryIcon, String? ownerId}) => Emote(
+  id: name,
+  name: name,
+  mipmap: ['https://example.com/$name'],
+  source: source,
+  category: category,
+  categoryIcon: categoryIcon,
+  ownerId: ownerId,
+);
 
 /// The titles of [sections] with the names of their emotes.
 Map<String, List<String>> _titles(List<EmoteSection> sections) => {
@@ -84,6 +91,93 @@ void main() {
       expect(_titles(sections.sections), {
         'ronni': ['ronniHi'],
         'Twitch': ['Kappa'],
+      });
+    });
+
+    test("gives each channel's sub emotes a section with its badge, also when searching", () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: const [],
+        globalEmotes: const [],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub', ownerId: '1'),
+          _emote('ronniBye', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub', ownerId: '1'),
+          _emote('forsenE', _twitch, category: 'forsen'),
+        ],
+      );
+
+      expect(_titles(sections.sections), {
+        'Twitch': ['Kappa'],
+        'Ronni': ['ronniHi', 'ronniBye'],
+        'forsen': ['forsenE'],
+      });
+      expect(
+        [for (final section in sections.sections) section.iconUrl],
+        [
+          null,
+          'https://example.com/ronni-sub',
+          null,
+        ],
+      );
+      expect([for (final section in sections.sections) section.ownerId], [null, '1', null]);
+      final searched = sections.matching('bye').single;
+      expect((searched.iconUrl, searched.ownerId), ('https://example.com/ronni-sub', '1'));
+    });
+
+    test("keys a channel's section by the channel, any other by its title", () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: [_emote('grinning', _emoji, category: 'Smileys & Emotion')],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', ownerId: '1'),
+        ],
+      );
+
+      expect(
+        [for (final section in sections.sections) section.key],
+        [
+          'section:7TV',
+          'section:Twitch',
+          '1',
+          'section:Smileys & Emotion',
+        ],
+      );
+      // The key of each emote's section, which hiding filters the emotes by, is its section's.
+      for (final section in sections.sections) {
+        expect(section.emotes.map(emoteSectionKeyOf), everyElement(section.key));
+      }
+    });
+
+    test('puts the sections in the order the user arranged, the emoji groups too', () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: [_emote('grinning', _emoji, category: 'Smileys & Emotion')],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', ownerId: '1'),
+        ],
+        order: ['section:Smileys & Emotion', '1', 'section:7TV', 'section:Twitch'],
+      );
+
+      expect(sections.sections.map((section) => section.title), ['Smileys & Emotion', 'Ronni', '7TV', 'Twitch']);
+      // Searching keeps that order, with each section's own emotes.
+      expect(_titles(sections.matching('i')), {
+        'Smileys & Emotion': ['grinning'],
+        'Ronni': ['ronniHi'],
+      });
+    });
+
+    test('leaves out the empty Twitch section while it is hidden', () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+      );
+
+      expect(_titles(sections.sections), {
+        '7TV': ['peepoHappy'],
       });
     });
   });
@@ -162,6 +256,63 @@ void main() {
       expect(_titles(third.matching('cat')), {
         'BetterTTV': ['catJAM'],
       });
+
+      // Hiding the Twitch section groups again too.
+      final fourth = cache.sectionsFor(
+        channelEmotes: moreChannelEmotes,
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+      );
+      expect(fourth.sections.map((section) => section.title), ['7TV', 'BetterTTV']);
+      expect(
+        cache.sectionsFor(
+          channelEmotes: moreChannelEmotes,
+          globalEmotes: const [],
+          userEmotes: const [],
+          keepTwitchSection: false,
+        ),
+        same(fourth),
+      );
+
+      // So does arranging them, and not an equal order in a new list.
+      final fifth = cache.sectionsFor(
+        channelEmotes: moreChannelEmotes,
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+        order: ['section:BetterTTV', 'section:7TV'],
+      );
+      expect(fifth.sections.map((section) => section.title), ['BetterTTV', '7TV']);
+      expect(
+        cache.sectionsFor(
+          channelEmotes: moreChannelEmotes,
+          globalEmotes: const [],
+          userEmotes: const [],
+          keepTwitchSection: false,
+          order: ['section:BetterTTV', 'section:7TV'],
+        ),
+        same(fifth),
+      );
+    });
+  });
+
+  group('currentSectionIndex', () {
+    test('is the last section whose start has reached the top', () {
+      const starts = [60.0, 400.0, 900.0];
+      expect(currentSectionIndex(starts, 0.0), 0, reason: 'above the first section, at the search field');
+      expect(currentSectionIndex(starts, 60.0), 0);
+      expect(currentSectionIndex(starts, 398.0), 0);
+      expect(currentSectionIndex(starts, 400.0), 1);
+      expect(currentSectionIndex(starts, 5000.0), 2);
+    });
+
+    test('takes a section scrolled to with a rounding error as reached', () {
+      expect(currentSectionIndex([0.0, 400.0], 399.5), 1);
+    });
+
+    test('is null without sections', () {
+      expect(currentSectionIndex(const [], 100.0), isNull);
     });
   });
 }

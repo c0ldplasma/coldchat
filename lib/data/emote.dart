@@ -27,6 +27,14 @@ class Emote {
   ChatSource source;
   String? category;
 
+  /// An image for the picker's section of [category], e.g. the subscriber badge of the channel a Twitch sub emote
+  /// belongs to.
+  String? categoryIcon;
+
+  /// The Twitch user id of the channel this emote belongs to (its sub, follower and Bits emotes), whose emotes can be
+  /// hidden from the picker together.
+  String? ownerId;
+
   Emote({
     required this.id,
     required this.name,
@@ -36,6 +44,8 @@ class Emote {
     this.flags = 0,
     required this.source,
     this.category,
+    this.categoryIcon,
+    this.ownerId,
   });
 }
 

@@ -106,15 +106,8 @@ class _AppState extends State<App> with WidgetsBindingObserver implements Client
                     ? Brightness.dark
                     : Brightness.light,
               ),
-              child: Stack(
-                children: [
-                  const HomePage(),
-                  Container(
-                    color: Theme.of(context).colorScheme.surface,
-                    height: MediaQuery.viewPaddingOf(context).top,
-                  ),
-                ],
-              ),
+              // Content runs under the status bar; each screen fades it out there (EdgeFade) below its own controls.
+              child: const HomePage(),
             );
           },
         ),

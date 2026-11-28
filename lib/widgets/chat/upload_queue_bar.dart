@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../components/glass.dart';
 import '../../components/surface.dart';
 import '../../data/filesharing/upload_queue_cubit.dart';
 import '../../data/filesharing/upload_task.dart';
@@ -30,14 +31,22 @@ class UploadQueueBar extends StatelessWidget {
       final mine = tasks.where((task) => task.channelName == channelName).toList();
       if (mine.isEmpty) return const SizedBox.shrink();
 
-      return ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: _maxHeight),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final task in mine) _UploadChip(task: task),
-            ],
+      // A glass card above the composer, like the reply and the suggestions.
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 8.0),
+        child: Glass(
+          shape: Glass.card,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: _maxHeight),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final task in mine) _UploadChip(task: task),
+                ],
+              ),
+            ),
           ),
         ),
       );
@@ -57,7 +66,7 @@ class _UploadChip extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Surface(
-      type: failed ? SurfaceType.error : SurfaceType.surfaceVariant,
+      type: failed ? SurfaceType.error : SurfaceType.transparent,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12.0, 8.0, 4.0, 8.0),
         child: Row(

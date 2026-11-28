@@ -38,6 +38,17 @@ class SettingsRepository {
   static const String chatHistoryKey = 'recentMessagesChatHistory';
   static const String whisperHistoryHintDismissedKey = 'whisperHistoryHintDismissed';
 
+  /// The on-screen keyboard's height when last seen open, which the emote panel takes in its place.
+  static const String keyboardHeightKey = 'keyboardHeight';
+
+  /// The emote picker's sections whose emotes the picker and the suggestions leave out: a map from the section's key
+  /// (`emoteSectionKey`: a channel's user id, or `section:<title>`) to its title at the time it was hidden, for the
+  /// list in Settings. Named from when only channels' sections could be hidden.
+  static const String hiddenEmoteSectionsKey = 'hiddenEmoteChannels';
+
+  /// The order the user arranged the emote picker's sections in: a list of section keys (`emoteSectionKey`).
+  static const String emoteSectionOrderKey = 'emoteSectionOrder';
+
   /// Set once the full-screen start screen was left, by logging in or "Continue without logging in".
   static const String startScreenDoneKey = 'startScreenDone';
 
@@ -181,6 +192,48 @@ class SettingsRepository {
   bool get whisperHistoryHintDismissed => _box.get(whisperHistoryHintDismissedKey) == true;
 
   Future<void> dismissWhisperHistoryHint() => _box.put(whisperHistoryHintDismissedKey, true);
+
+  /// The keyboard's height when last seen open, or null before it ever was.
+  double? get keyboardHeight {
+    final value = _box.get(keyboardHeightKey);
+    return value is num && value > 0 ? value.toDouble() : null;
+  }
+
+  Future<void> setKeyboardHeight(double height) => _box.put(keyboardHeightKey, height);
+
+  /// The picker's hidden sections, by key, with their titles; see [hiddenEmoteSectionsKey].
+  Map<String, String> get hiddenEmoteSections {
+    final value = _box.get(hiddenEmoteSectionsKey);
+    if (value is! Map) return const {};
+    return {
+      for (final MapEntry(:key, :value) in value.entries)
+        if (key is String && value is String) key: value,
+    };
+  }
+
+  /// Hides the emotes of the section [key], titled [title], from the picker and the suggestions.
+  Future<void> hideEmoteSection(String key, String title) =>
+      _box.put(hiddenEmoteSectionsKey, {...hiddenEmoteSections, key: title});
+
+  /// Shows the emotes of the section [key] again.
+  Future<void> showEmoteSection(String key) => _box.put(hiddenEmoteSectionsKey, {...hiddenEmoteSections}..remove(key));
+
+  /// The order the user arranged the picker's sections in, by key, or empty for the default order.
+  List<String> get emoteSectionOrder {
+    final value = _box.get(emoteSectionOrderKey);
+    return value is List ? value.whereType<String>().toList() : const [];
+  }
+
+  Future<void> setEmoteSectionOrder(List<String> keys) => _box.put(emoteSectionOrderKey, keys);
+
+  /// Back to the default order.
+  Future<void> resetEmoteSectionOrder() => _box.delete(emoteSectionOrderKey);
+
+  /// Sections hidden, shown again or arranged.
+  late final Listenable emoteSectionChanges = BoxChanges(
+    _box,
+    keys: const [hiddenEmoteSectionsKey, emoteSectionOrderKey],
+  );
 
   /// Whether the full-screen start screen of a fresh install was left; it never shows again then.
   bool get startScreenDone => _box.get(startScreenDoneKey) == true;

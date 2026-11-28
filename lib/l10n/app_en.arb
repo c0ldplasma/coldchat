@@ -501,6 +501,55 @@
   "@watchOnTwitch": {
     "description": "Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it."
   },
+  "home": "Home",
+  "@home": {
+    "description": "Accessibility label of the home tab (house icon) in the channel switcher at the bottom."
+  },
+  "attachPhoto": "Share a photo",
+  "@attachPhoto": {
+    "description": "Accessibility label of the round + button left of the message field: share a photo in chat."
+  },
+  "emoteMenu": "Emotes",
+  "@emoteMenu": {
+    "description": "Accessibility label of the emote button in the message field, which opens the emote panel."
+  },
+  "sendMessage": "Send",
+  "@sendMessage": {
+    "description": "Accessibility label of the round send button (arrow up) in the message field."
+  },
+  "hideEmoteSection": "Hide these emotes",
+  "hideEmoteSectionSubtitle": "They're left out of the emote panel and the suggestions. Typing an emote's name still sends it.",
+  "showEmoteSection": "Show",
+  "@hideEmoteSection": {
+    "description": "Long-press action on a section in the emote panel: hides that section's emotes (a channel's sub emotes, 7TV, an emoji group, …) from the panel and autocomplete."
+  },
+  "@showEmoteSection": {
+    "description": "Button next to a hidden section in Settings → Chat → Hidden emote sections: shows its emotes again."
+  },
+  "emotes": "Emotes",
+  "emoteSections": "Emote sections",
+  "emoteSectionsSubtitle": "Sort and hide the emote panel's sections",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 section hidden} other{{count} sections hidden}}",
+  "emoteSectionHidden": "Hidden",
+  "arrangeEmoteSections": "Arrange sections",
+  "resetEmoteSectionOrder": "Reset order",
+  "@emoteSectionsHiddenCount": {
+    "description": "Subtitle of Settings → Emotes → Emote sections while sections are hidden.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@arrangeEmoteSections": {
+    "description": "Long-press action on a section in the emote panel: opens the list to drag sections into another order."
+  },
+  "resetEmoteSectionOrderTitle": "Reset the order?",
+  "resetEmoteSectionOrderDescription": "The sections go back to their default order. Hidden sections stay hidden.",
+  "resetEmoteSectionOrderConfirm": "Reset",
+  "@resetEmoteSectionOrderTitle": {
+    "description": "Confirmation after tapping the reset button in Settings → Emotes → Emote sections; only the order is reset, not which sections are hidden."
+  },
   "creditTranslation": "Parts of the {language} translation",
   "creditsAiTranslations": "Texts added later, and the languages not listed here, were translated with AI and may contain mistakes. Corrections are welcome on GitHub.",
   "@creditTranslation": {

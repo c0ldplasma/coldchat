@@ -55,6 +55,7 @@ void main() {
     expect(SettingsRepository.emoteButtonGrayscaleKey, 'emoteButtonGrayscale');
     expect(SettingsRepository.chatHistoryKey, 'recentMessagesChatHistory');
     expect(SettingsRepository.whisperHistoryHintDismissedKey, 'whisperHistoryHintDismissed');
+    expect(SettingsRepository.keyboardHeightKey, 'keyboardHeight');
   });
 
   test('a fresh install stores default appearance and chat settings, and gets no accent entry', () async {
@@ -73,6 +74,65 @@ void main() {
     expect(settings.whisperHistoryHintDismissed, isFalse);
     expect(settings.emoteButtonIcon, isNull);
     expect(settings.emoteButtonGrayscale, isFalse);
+    expect(settings.keyboardHeight, isNull);
+  });
+
+  test('remembers the keyboard\'s height and ignores nonsense', () async {
+    final settings = await SettingsRepository.open();
+
+    await settings.setKeyboardHeight(336.0);
+    expect(settings.keyboardHeight, 336.0);
+
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.keyboardHeightKey, 'tall');
+    expect(settings.keyboardHeight, isNull);
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.keyboardHeightKey, 0);
+    expect(settings.keyboardHeight, isNull);
+  });
+
+  test('hides emote sections across launches and shows them again', () async {
+    var settings = await SettingsRepository.open();
+    expect(settings.hiddenEmoteSections, isEmpty);
+    var notified = 0;
+    settings.emoteSectionChanges.addListener(() => notified++);
+
+    await settings.hideEmoteSection('1', 'Anime_Marathon_1');
+    await settings.hideEmoteSection('section:7TV', '7TV');
+    await pumpEventQueue();
+    expect(notified, 2);
+
+    await Hive.close();
+    Hive.init(tempDir.path);
+    settings = await SettingsRepository.open();
+    expect(settings.hiddenEmoteSections, {'1': 'Anime_Marathon_1', 'section:7TV': '7TV'});
+
+    await settings.showEmoteSection('1');
+    expect(settings.hiddenEmoteSections, {'section:7TV': '7TV'});
+
+    // Something else stored under the key reads as nothing hidden.
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.hiddenEmoteSectionsKey, 'nonsense');
+    expect(settings.hiddenEmoteSections, isEmpty);
+  });
+
+  test('keeps the arranged order of the emote sections, and resets it', () async {
+    var settings = await SettingsRepository.open();
+    expect(settings.emoteSectionOrder, isEmpty);
+    var notified = 0;
+    settings.emoteSectionChanges.addListener(() => notified++);
+
+    await settings.setEmoteSectionOrder(['1', 'section:7TV', 'section:Twitch']);
+    await pumpEventQueue();
+    expect(notified, 1);
+
+    await Hive.close();
+    Hive.init(tempDir.path);
+    settings = await SettingsRepository.open();
+    expect(settings.emoteSectionOrder, ['1', 'section:7TV', 'section:Twitch']);
+
+    await settings.resetEmoteSectionOrder();
+    expect(settings.emoteSectionOrder, isEmpty);
+
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.emoteSectionOrderKey, 'nonsense');
+    expect(settings.emoteSectionOrder, isEmpty);
   });
 
   test('keeps stored settings and reads them', () async {

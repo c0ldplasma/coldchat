@@ -24,6 +24,22 @@ class ComposerDraft extends Cubit<ChannelMessageChat?> {
   /// Words to append to the composer's text, for the view that is shown. Without one, [mention] appends to [text].
   Stream<String> get mentions => _mentions.stream;
 
+  final StreamController<String> _insertions = StreamController.broadcast(sync: true);
+
+  /// Words to insert where the composer's caret is, for the view that is shown: emotes picked in the emote panel,
+  /// which the home page shows in the keyboard's place, outside the view.
+  Stream<String> get insertions => _insertions.stream;
+
+  /// Inserts [word] (an emote's code) at the composer's caret; without a view shown, appends it to [text].
+  void insert(String word) {
+    if (_insertions.hasListener) {
+      _insertions.add(word);
+    } else {
+      text = appendWordTo(text, word);
+      caret = -1;
+    }
+  }
+
   /// Replies to [message] with the next message, or to nothing.
   void replyTo(ChannelMessageChat? message) {
     if (!isClosed) emit(message);
@@ -51,6 +67,7 @@ class ComposerDraft extends Cubit<ChannelMessageChat?> {
   @override
   Future<void> close() async {
     await _mentions.close();
+    await _insertions.close();
     return super.close();
   }
 }
