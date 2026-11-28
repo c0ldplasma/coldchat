@@ -77,6 +77,10 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
   /// The panel's search field, which takes the keyboard.
   final FocusNode _searchFocus = FocusNode();
 
+  /// Whether the panel is laid out for its search: while the search field has the keyboard, and after it lost it
+  /// until the keyboard is down, so the panel shrinks back with the keyboard instead of jumping.
+  bool _searchLayout = false;
+
   /// How much of the panel stays above the keyboard while searching: the search field, a section header and the
   /// first row of results, with a bit of the second to show there are more.
   static const double _aboveKeyboardWhileSearching = 176.0;
@@ -87,13 +91,16 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
     _searchFocus.addListener(_onSearchFocusChanged);
   }
 
-  void _onSearchFocusChanged() => setState(() {});
+  void _onSearchFocusChanged() => setState(() {
+    _searchLayout = _searchFocus.hasFocus || (_searchLayout && MediaQuery.viewInsetsOf(context).bottom > 0.0);
+  });
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final inset = MediaQuery.viewInsetsOf(context).bottom;
     if (_waitingForKeyboard && inset >= _panelHeight - 1.0) _dropPanel();
+    if (inset <= 0.0 && !_searchFocus.hasFocus) _searchLayout = false;
     // The inset changes on every frame of the keyboard's animation; once it holds still, the keyboard has settled.
     _settleTimer?.cancel();
     _settleTimer = Timer(const Duration(milliseconds: 120), _onKeyboardSettled);
@@ -130,6 +137,7 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
 
   void _onPanelChanged(BuildContext context, EmotePanel panel) {
     _keyboardTimeout?.cancel();
+    if (panel == EmotePanel.closed) _searchLayout = _searchFocus.hasFocus;
     if (panel != EmotePanel.closed) {
       _shownMode = panel;
       _waitingForKeyboard = false;
@@ -184,7 +192,7 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     final keyboard = media.viewInsets.bottom;
-    final searching = _searchFocus.hasFocus;
+    final searching = _searchLayout;
     // How far up from the screen's bottom the panel reaches. While searching, at least enough above the keyboard for
     // the search field and the first results; with the keyboard down that's no taller than usual.
     final panelTop = searching ? math.max(_panelHeight, keyboard + _aboveKeyboardWhileSearching) : _panelHeight;

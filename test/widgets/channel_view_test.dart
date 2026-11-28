@@ -874,6 +874,48 @@ void main() {
       expect(tester.getRect(find.byType(EmotePicker)).top, moreOrLessEquals(pickerTop));
     });
 
+    testWidgets('the emote panel shrinks back with the keyboard when its search loses the keyboard', (tester) async {
+      tester.view.devicePixelRatio = 3.0;
+      tester.view.physicalSize = const Size(1206.0, 2622.0);
+      tester.view.viewPadding = const FakeViewPadding(bottom: 34.0 * 3.0);
+      tester.view.padding = const FakeViewPadding(bottom: 34.0 * 3.0);
+      addTearDown(tester.view.reset);
+      await showHome(tester);
+
+      BlocProvider.of<EmotePanelCubit>(tester.element(find.byType(ChannelView))).toggle();
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+      }
+      final search = find.descendant(of: find.byType(EmotePicker), matching: find.byType(TextField));
+      final pickerTop = tester.getRect(find.byType(EmotePicker)).top;
+      await tester.tap(search);
+      for (final inset in [100.0, 200.0, 336.0]) {
+        tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
+        tester.view.padding = FakeViewPadding.zero;
+        await tester.pump();
+      }
+      final searchTop = tester.getRect(find.byType(EmotePicker)).top;
+      expect(searchTop, lessThan(pickerTop));
+
+      // The search field loses the keyboard (its done key), which then slides down: the panel goes down with it,
+      // never below its height before the search, instead of jumping there at once.
+      tester.widget<TextField>(search).focusNode!.unfocus();
+      await tester.pump();
+      expect(tester.getRect(find.byType(EmotePicker)).top, moreOrLessEquals(searchTop));
+      var previous = searchTop;
+      for (final inset in [300.0, 250.0, 200.0, 100.0, 0.0]) {
+        tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
+        if (inset == 0.0) tester.view.padding = const FakeViewPadding(bottom: 34.0 * 3.0);
+        await tester.pump();
+        final top = tester.getRect(find.byType(EmotePicker)).top;
+        expect(top, greaterThanOrEqualTo(previous - 0.01), reason: 'keyboard at $inset');
+        expect(top, lessThanOrEqualTo(pickerTop + 0.01), reason: 'keyboard at $inset');
+        previous = top;
+      }
+      // It moved in steps with the keyboard, not all at once at the end.
+      expect(previous, moreOrLessEquals(pickerTop));
+    });
+
     testWidgets('behind the keyboard alone is the chat\'s color, not the emote panel\'s', (tester) async {
       await showHome(tester);
       final theme = Theme.of(tester.element(find.byType(ChannelView)));
