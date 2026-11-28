@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Prijavljeno putem {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "Vrati redoslijed",
   "resetEmoteSectionOrderTitle": "Vratiti redoslijed?",
   "resetEmoteSectionOrderDescription": "Odjeljci se vraćaju na zadani redoslijed. Skriveni odjeljci ostaju skriveni.",
-  "resetEmoteSectionOrderConfirm": "Vrati"
+  "resetEmoteSectionOrderConfirm": "Vrati",
+  "creditTranslation": "Dijelovi prijevoda: {language}",
+  "creditsAiTranslations": "Kasnije dodani tekstovi i jezici koji ovdje nisu navedeni prevedeni su pomoću AI-ja i mogu sadržavati pogreške. Ispravci su dobrodošli na GitHubu."
 }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../components/modal.dart';
 import '../components/tile.dart';
 import '../l10n/app_localizations.dart';
 import 'components/modal_header.dart';
+import 'credits.dart';
 
 const String repositoryUrl = 'https://github.com/c0ldplasma/coldchat';
 // Published from docs/ with GitHub Pages.
@@ -47,7 +49,7 @@ class AboutModal extends StatelessWidget {
           ),
           Tile(
             title: AppLocalizations.of(context).license,
-            subtitle: 'GNU Affero General Public License v3.0',
+            subtitle: 'GNU Affero General Public License v3.0', // Not translated: the license's name.
             prefix: const Icon(Icons.gavel_rounded),
             onTap: () => _open('$repositoryUrl/blob/main/LICENSE'),
           ),
@@ -56,6 +58,12 @@ class AboutModal extends StatelessWidget {
             subtitle: 'github.com/chatsen/chatsen',
             prefix: const Icon(Icons.call_split_rounded),
             onTap: () => _open('https://github.com/chatsen/chatsen'),
+          ),
+          // Its translators, who worked on Chatsen.
+          Tile(
+            title: AppLocalizations.of(context).credits,
+            prefix: const Icon(Icons.translate_rounded),
+            onTap: () => Modal.show(context: context, child: const CreditsModal()),
           ),
           Tile(
             title: AppLocalizations.of(context).contact,

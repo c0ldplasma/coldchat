@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "התחברת דרך {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "איפוס הסדר",
   "resetEmoteSectionOrderTitle": "לאפס את הסדר?",
   "resetEmoteSectionOrderDescription": "הקטעים יחזרו לסדר ברירת המחדל. קטעים מוסתרים יישארו מוסתרים.",
-  "resetEmoteSectionOrderConfirm": "איפוס"
+  "resetEmoteSectionOrderConfirm": "איפוס",
+  "creditTranslation": "חלקים מהתרגום: {language}",
+  "creditsAiTranslations": "טקסטים שנוספו מאוחר יותר והשפות שלא מופיעות כאן תורגמו בעזרת AI ועלולים להכיל טעויות. נשמח לתיקונים ב-GitHub."
 }

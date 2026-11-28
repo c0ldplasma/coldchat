@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Đã đăng nhập qua {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "Đặt lại thứ tự",
   "resetEmoteSectionOrderTitle": "Đặt lại thứ tự?",
   "resetEmoteSectionOrderDescription": "Các mục sẽ trở về thứ tự mặc định. Các mục đã ẩn vẫn bị ẩn.",
-  "resetEmoteSectionOrderConfirm": "Đặt lại"
+  "resetEmoteSectionOrderConfirm": "Đặt lại",
+  "creditTranslation": "Một phần bản dịch: {language}",
+  "creditsAiTranslations": "Các văn bản được thêm sau và những ngôn ngữ không có ở đây được dịch bằng AI và có thể có lỗi. Rất hoan nghênh các bản sửa trên GitHub."
 }

@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Connecté via {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "Rétablir l'ordre",
   "resetEmoteSectionOrderTitle": "Rétablir l'ordre ?",
   "resetEmoteSectionOrderDescription": "Les sections reprennent leur ordre par défaut. Les sections masquées restent masquées.",
-  "resetEmoteSectionOrderConfirm": "Rétablir"
+  "resetEmoteSectionOrderConfirm": "Rétablir",
+  "creditTranslation": "Parties de la traduction : {language}",
+  "creditsAiTranslations": "Les textes ajoutés plus tard et les langues qui ne figurent pas ici ont été traduits par IA et peuvent contenir des erreurs. Les corrections sont les bienvenues sur GitHub."
 }

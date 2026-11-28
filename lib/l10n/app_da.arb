@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Logget ind via {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "Nulstil rækkefølge",
   "resetEmoteSectionOrderTitle": "Nulstil rækkefølgen?",
   "resetEmoteSectionOrderDescription": "Sektionerne vender tilbage til deres standardrækkefølge. Skjulte sektioner forbliver skjulte.",
-  "resetEmoteSectionOrderConfirm": "Nulstil"
+  "resetEmoteSectionOrderConfirm": "Nulstil",
+  "creditTranslation": "Dele af oversættelsen: {language}",
+  "creditsAiTranslations": "Tekster, der er tilføjet senere, og sprog, der ikke står her, er oversat med AI og kan indeholde fejl. Rettelser er velkomne på GitHub."
 }

@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "{provider} ile giriş yapıldı",
   "@loggedInVia": {
     "placeholders": {
@@ -402,5 +398,7 @@
   "resetEmoteSectionOrder": "Sırayı sıfırla",
   "resetEmoteSectionOrderTitle": "Sıra sıfırlansın mı?",
   "resetEmoteSectionOrderDescription": "Bölümler varsayılan sıralarına döner. Gizli bölümler gizli kalır.",
-  "resetEmoteSectionOrderConfirm": "Sıfırla"
+  "resetEmoteSectionOrderConfirm": "Sıfırla",
+  "creditTranslation": "Çevirinin bölümleri: {language}",
+  "creditsAiTranslations": "Sonradan eklenen metinler ve burada listelenmeyen diller yapay zekâ ile çevrildi ve hatalar içerebilir. Düzeltmeler GitHub'da memnuniyetle karşılanır."
 }

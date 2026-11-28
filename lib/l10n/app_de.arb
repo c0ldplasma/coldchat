@@ -1,6 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
   "loggedInVia": "Eingeloggt über {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -298,5 +297,7 @@
   "resetEmoteSectionOrder": "Reihenfolge zurücksetzen",
   "resetEmoteSectionOrderTitle": "Reihenfolge zurücksetzen?",
   "resetEmoteSectionOrderDescription": "Die Bereiche kehren zu ihrer Standardreihenfolge zurück. Ausgeblendete Bereiche bleiben ausgeblendet.",
-  "resetEmoteSectionOrderConfirm": "Zurücksetzen"
+  "resetEmoteSectionOrderConfirm": "Zurücksetzen",
+  "creditTranslation": "Teile der Übersetzung: {language}",
+  "creditsAiTranslations": "Später hinzugefügte Texte und die hier nicht genannten Sprachen wurden mit KI übersetzt und können Fehler enthalten. Korrekturen sind auf GitHub willkommen."
 }

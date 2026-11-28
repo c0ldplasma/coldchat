@@ -57,7 +57,10 @@ Add every new string to **all** `lib/l10n/*.arb` files, translated (`app_en.arb`
 there is no translation service, translations are written along with the change. `.gitattributes` marks the
 arb files other than English and German `linguist-generated`, so GitHub collapses them in PR diffs. CI fails if a language
 lacks a key (gen-l10n lists those in `build/untranslated_messages.json`). Use `AppLocalizations.of(context).key` (no `!`: `nullable-getter: false` in `l10n.yaml`), and
-don't put user-facing text in Dart string literals. Times of day go through `clockTimeOf` (`lib/tools/clock_time.dart`),
+don't put user-facing text in Dart string literals: `test/architecture_test.dart` fails on a word in a literal given to
+`Text(`, a tooltip, title, label or hint in the UI folders (end the line with `// Not translated: <why>` for a
+deliberate exception, like a license's name). gen-l10n only checks that every language has every key, so text typed
+into the code would stay English everywhere. Times of day go through `clockTimeOf` (`lib/tools/clock_time.dart`),
 which follows the language (12-hour in English, 24-hour in German) and the phone's 24-hour setting.
 
 ## CI and tooling

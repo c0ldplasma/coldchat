@@ -1,9 +1,5 @@
 {
   "appName": "ColdChat",
-  "translationAuthorNames": "",
-  "@translationAuthorNames": {
-    "description": "Translators should put their desired names to be displayed in the application credits, separated by semicolons here. Example: forsen;nymn;randomuser123 (one per contributor)"
-  },
   "loggedInVia": "Logged in via {provider}",
   "@loggedInVia": {
     "placeholders": {
@@ -553,5 +549,16 @@
   "resetEmoteSectionOrderConfirm": "Reset",
   "@resetEmoteSectionOrderTitle": {
     "description": "Confirmation after tapping the reset button in Settings → Emotes → Emote sections; only the order is reset, not which sections are hidden."
+  },
+  "creditTranslation": "Parts of the {language} translation",
+  "creditsAiTranslations": "Texts added later, and the languages not listed here, were translated with AI and may contain mistakes. Corrections are welcome on GitHub.",
+  "@creditTranslation": {
+    "description": "Under a translator's name in Settings → Credits: they wrote parts of the translation into this language, not all of it.",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Vietnamese"
+      }
+    }
   }
 }

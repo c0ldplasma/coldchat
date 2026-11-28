@@ -298,7 +298,7 @@ class _ChatMessageState extends State<ChatMessage> {
         messageAppearance: messageAppearance,
       );
     }
-    return Text('Unhandled message type: ${widget.message.runtimeType}');
+    return Text('Unhandled message type: ${widget.message.runtimeType}'); // Not translated: a bug report, never shown.
   }
 
   static Widget _emoteImage(Emote emote, MessageAppearance messageAppearance) => Image(

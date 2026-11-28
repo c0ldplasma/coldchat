@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class ModalHeader extends StatelessWidget {
   final String? title;
   final Widget? trailing;
@@ -15,7 +17,7 @@ class ModalHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final closeButton = Tooltip(
-      message: 'Close',
+      message: AppLocalizations.of(context).close,
       child: InkWell(
         onTap: () async => Navigator.of(context).pop(),
         borderRadius: BorderRadius.circular(24.0),
