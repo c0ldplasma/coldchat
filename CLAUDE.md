@@ -157,7 +157,10 @@ helps.
 ## iOS
 
 The deployment target is iOS 15.0, which App Store Connect requires from Spring 2027. The app is iPhone-only
-(`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. Signing is automatic with team `RA25PYVUTF`;
+(`TARGETED_DEVICE_FAMILY = 1`), so the store needs no iPad screenshots. It runs in portrait only: landscape isn't laid out
+well yet, so `Info.plist` lists only `UIInterfaceOrientationPortrait` and Android's `MainActivity` has
+`android:screenOrientation="portrait"` (which Android 16 ignores on tablets and foldables, where the app may still
+rotate). Signing is automatic with team `RA25PYVUTF`;
 `ios/ExportOptions.plist` exports for App Store Connect.
 
 The Twitch logins (`TwitchAccounts` box) are kept out of backups on both platforms: on Android by the rules in
