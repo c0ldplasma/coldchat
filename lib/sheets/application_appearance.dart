@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../components/modal.dart';
 import '../components/tile.dart';
 import '../components/toggle.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
+import 'application_theme.dart';
 import 'components/modal_header.dart';
 
 class ApplicationAppearanceModal extends StatelessWidget {
@@ -54,6 +56,18 @@ class ApplicationAppearanceModal extends StatelessWidget {
             suffix: applicationAppearance.themeMode == 'system'
                 ? Icon(Icons.check_rounded, color: Theme.of(context).colorScheme.primary)
                 : null,
+          ),
+          Tile(
+            title: AppLocalizations.of(context).accentColor,
+            subtitle: settings.accent.name(AppLocalizations.of(context)),
+            prefix: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: DecoratedBox(
+                decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
+              ),
+            ),
+            suffix: const Icon(Icons.chevron_right),
+            onTap: () => Modal.show(context: context, child: const ApplicationThemeModal()),
           ),
           Tile(
             prefix: const Icon(Icons.contrast_rounded),

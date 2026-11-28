@@ -46,6 +46,9 @@ class SettingsRepository {
   /// list in Settings. Named from when only channels' sections could be hidden.
   static const String hiddenEmoteSectionsKey = 'hiddenEmoteChannels';
 
+  /// The order the user arranged the emote picker's sections in: a list of section keys (`emoteSectionKey`).
+  static const String emoteSectionOrderKey = 'emoteSectionOrder';
+
   /// Set once the full-screen start screen was left, by logging in or "Continue without logging in".
   static const String startScreenDoneKey = 'startScreenDone';
 
@@ -215,7 +218,22 @@ class SettingsRepository {
   /// Shows the emotes of the section [key] again.
   Future<void> showEmoteSection(String key) => _box.put(hiddenEmoteSectionsKey, {...hiddenEmoteSections}..remove(key));
 
-  late final Listenable hiddenEmoteSectionsChanges = BoxChanges(_box, keys: const [hiddenEmoteSectionsKey]);
+  /// The order the user arranged the picker's sections in, by key, or empty for the default order.
+  List<String> get emoteSectionOrder {
+    final value = _box.get(emoteSectionOrderKey);
+    return value is List ? value.whereType<String>().toList() : const [];
+  }
+
+  Future<void> setEmoteSectionOrder(List<String> keys) => _box.put(emoteSectionOrderKey, keys);
+
+  /// Back to the default order.
+  Future<void> resetEmoteSectionOrder() => _box.delete(emoteSectionOrderKey);
+
+  /// Sections hidden, shown again or arranged.
+  late final Listenable emoteSectionChanges = BoxChanges(
+    _box,
+    keys: const [hiddenEmoteSectionsKey, emoteSectionOrderKey],
+  );
 
   /// Whether the full-screen start screen of a fresh install was left; it never shows again then.
   bool get startScreenDone => _box.get(startScreenDoneKey) == true;

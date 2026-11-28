@@ -93,7 +93,7 @@ void main() {
     var settings = await SettingsRepository.open();
     expect(settings.hiddenEmoteSections, isEmpty);
     var notified = 0;
-    settings.hiddenEmoteSectionsChanges.addListener(() => notified++);
+    settings.emoteSectionChanges.addListener(() => notified++);
 
     await settings.hideEmoteSection('1', 'Anime_Marathon_1');
     await settings.hideEmoteSection('section:7TV', '7TV');
@@ -111,6 +111,28 @@ void main() {
     // Something else stored under the key reads as nothing hidden.
     await Hive.box<dynamic>('Settings').put(SettingsRepository.hiddenEmoteSectionsKey, 'nonsense');
     expect(settings.hiddenEmoteSections, isEmpty);
+  });
+
+  test('keeps the arranged order of the emote sections, and resets it', () async {
+    var settings = await SettingsRepository.open();
+    expect(settings.emoteSectionOrder, isEmpty);
+    var notified = 0;
+    settings.emoteSectionChanges.addListener(() => notified++);
+
+    await settings.setEmoteSectionOrder(['1', 'section:7TV', 'section:Twitch']);
+    await pumpEventQueue();
+    expect(notified, 1);
+
+    await Hive.close();
+    Hive.init(tempDir.path);
+    settings = await SettingsRepository.open();
+    expect(settings.emoteSectionOrder, ['1', 'section:7TV', 'section:Twitch']);
+
+    await settings.resetEmoteSectionOrder();
+    expect(settings.emoteSectionOrder, isEmpty);
+
+    await Hive.box<dynamic>('Settings').put(SettingsRepository.emoteSectionOrderKey, 'nonsense');
+    expect(settings.emoteSectionOrder, isEmpty);
   });
 
   test('keeps stored settings and reads them', () async {

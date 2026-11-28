@@ -392,8 +392,15 @@
   "sendMessage": "Versturen",
   "hideEmoteSection": "Deze emotes verbergen",
   "hideEmoteSectionSubtitle": "Ze staan dan niet meer in het emotepaneel en de suggesties. De naam van een emote typen verstuurt hem nog steeds.",
-  "hiddenEmoteSections": "Verborgen emotesecties",
-  "hiddenEmoteSectionsNone": "Houd een sectie in het emotepaneel ingedrukt om de emotes ervan te verbergen.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sectie} other{{count} secties}}",
-  "showEmoteSection": "Tonen"
+  "showEmoteSection": "Tonen",
+  "emotes": "Emotes",
+  "emoteSections": "Emotesecties",
+  "emoteSectionsSubtitle": "Secties van het emotepaneel sorteren en verbergen",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 sectie verborgen} other{{count} secties verborgen}}",
+  "emoteSectionHidden": "Verborgen",
+  "arrangeEmoteSections": "Secties ordenen",
+  "resetEmoteSectionOrder": "Volgorde herstellen",
+  "resetEmoteSectionOrderTitle": "Volgorde herstellen?",
+  "resetEmoteSectionOrderDescription": "De secties gaan terug naar hun standaardvolgorde. Verborgen secties blijven verborgen.",
+  "resetEmoteSectionOrderConfirm": "Herstellen"
 }

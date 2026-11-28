@@ -392,8 +392,15 @@
   "sendMessage": "Odeslat",
   "hideEmoteSection": "Skrýt tyto emoty",
   "hideEmoteSectionSubtitle": "Nebudou v panelu emotů ani v návrzích. Když napíšeš název emotu, i tak se odešle.",
-  "hiddenEmoteSections": "Skryté sekce emotů",
-  "hiddenEmoteSectionsNone": "Podrž sekci v panelu emotů a skryješ její emoty.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sekce} few{{count} sekce} other{{count} sekcí}}",
-  "showEmoteSection": "Zobrazit"
+  "showEmoteSection": "Zobrazit",
+  "emotes": "Emoty",
+  "emoteSections": "Sekce emotů",
+  "emoteSectionsSubtitle": "Seřaď a skryj sekce panelu emotů",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 skrytá sekce} few{{count} skryté sekce} other{{count} skrytých sekcí}}",
+  "emoteSectionHidden": "Skryto",
+  "arrangeEmoteSections": "Uspořádat sekce",
+  "resetEmoteSectionOrder": "Obnovit pořadí",
+  "resetEmoteSectionOrderTitle": "Obnovit pořadí?",
+  "resetEmoteSectionOrderDescription": "Sekce se vrátí do výchozího pořadí. Skryté sekce zůstanou skryté.",
+  "resetEmoteSectionOrderConfirm": "Obnovit"
 }

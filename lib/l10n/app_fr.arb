@@ -392,8 +392,15 @@
   "sendMessage": "Envoyer",
   "hideEmoteSection": "Masquer ces emotes",
   "hideEmoteSectionSubtitle": "Elles n'apparaissent plus dans le panneau d'emotes ni dans les suggestions. Taper le nom d'une emote l'envoie quand même.",
-  "hiddenEmoteSections": "Sections d'emotes masquées",
-  "hiddenEmoteSectionsNone": "Appuie longuement sur une section du panneau d'emotes pour masquer ses emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 section} other{{count} sections}}",
-  "showEmoteSection": "Afficher"
+  "showEmoteSection": "Afficher",
+  "emotes": "Emotes",
+  "emoteSections": "Sections d'emotes",
+  "emoteSectionsSubtitle": "Trier et masquer les sections du panneau d'emotes",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 section masquée} other{{count} sections masquées}}",
+  "emoteSectionHidden": "Masquée",
+  "arrangeEmoteSections": "Organiser les sections",
+  "resetEmoteSectionOrder": "Rétablir l'ordre",
+  "resetEmoteSectionOrderTitle": "Rétablir l'ordre ?",
+  "resetEmoteSectionOrderDescription": "Les sections reprennent leur ordre par défaut. Les sections masquées restent masquées.",
+  "resetEmoteSectionOrderConfirm": "Rétablir"
 }

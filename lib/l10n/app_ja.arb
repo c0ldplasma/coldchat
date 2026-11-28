@@ -392,8 +392,15 @@
   "sendMessage": "送信",
   "hideEmoteSection": "このエモートを非表示",
   "hideEmoteSectionSubtitle": "エモートパネルと候補に表示されなくなります。エモート名を入力すれば送信はできます。",
-  "hiddenEmoteSections": "非表示のエモートセクション",
-  "hiddenEmoteSectionsNone": "エモートパネルでセクションを長押しすると、そのエモートを非表示にできます。",
-  "hiddenEmoteSectionsCount": "{count, plural, other{{count} セクション}}",
-  "showEmoteSection": "表示"
+  "showEmoteSection": "表示",
+  "emotes": "エモート",
+  "emoteSections": "エモートセクション",
+  "emoteSectionsSubtitle": "エモートパネルのセクションを並べ替え・非表示",
+  "emoteSectionsHiddenCount": "{count, plural, other{{count} セクションを非表示}}",
+  "emoteSectionHidden": "非表示",
+  "arrangeEmoteSections": "セクションを並べ替え",
+  "resetEmoteSectionOrder": "順序をリセット",
+  "resetEmoteSectionOrderTitle": "順序をリセットしますか？",
+  "resetEmoteSectionOrderDescription": "セクションは標準の順序に戻ります。非表示のセクションは非表示のままです。",
+  "resetEmoteSectionOrderConfirm": "リセット"
 }

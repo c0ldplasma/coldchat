@@ -392,8 +392,15 @@
   "sendMessage": "भेजें",
   "hideEmoteSection": "ये इमोट छिपाएँ",
   "hideEmoteSectionSubtitle": "ये इमोट पैनल और सुझावों में नहीं दिखेंगे। इमोट का नाम टाइप करने पर वह फिर भी भेजा जाता है।",
-  "hiddenEmoteSections": "छिपे हुए इमोट सेक्शन",
-  "hiddenEmoteSectionsNone": "किसी सेक्शन के इमोट छिपाने के लिए इमोट पैनल में उसे दबाकर रखें।",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 सेक्शन} other{{count} सेक्शन}}",
-  "showEmoteSection": "दिखाएँ"
+  "showEmoteSection": "दिखाएँ",
+  "emotes": "इमोट",
+  "emoteSections": "इमोट सेक्शन",
+  "emoteSectionsSubtitle": "इमोट पैनल के सेक्शन क्रमबद्ध करें और छिपाएँ",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 सेक्शन छिपा है} other{{count} सेक्शन छिपे हैं}}",
+  "emoteSectionHidden": "छिपा हुआ",
+  "arrangeEmoteSections": "सेक्शन व्यवस्थित करें",
+  "resetEmoteSectionOrder": "क्रम रीसेट करें",
+  "resetEmoteSectionOrderTitle": "क्रम रीसेट करें?",
+  "resetEmoteSectionOrderDescription": "सेक्शन अपने डिफ़ॉल्ट क्रम में लौट आएँगे। छिपे हुए सेक्शन छिपे ही रहेंगे।",
+  "resetEmoteSectionOrderConfirm": "रीसेट करें"
 }

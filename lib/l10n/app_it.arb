@@ -392,8 +392,15 @@
   "sendMessage": "Invia",
   "hideEmoteSection": "Nascondi queste emote",
   "hideEmoteSectionSubtitle": "Non compaiono più nel pannello delle emote né nei suggerimenti. Scrivendo il nome di un'emote, viene comunque inviata.",
-  "hiddenEmoteSections": "Sezioni di emote nascoste",
-  "hiddenEmoteSectionsNone": "Tieni premuta una sezione nel pannello delle emote per nasconderne le emote.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sezione} other{{count} sezioni}}",
-  "showEmoteSection": "Mostra"
+  "showEmoteSection": "Mostra",
+  "emotes": "Emote",
+  "emoteSections": "Sezioni di emote",
+  "emoteSectionsSubtitle": "Ordina e nascondi le sezioni del pannello delle emote",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 sezione nascosta} other{{count} sezioni nascoste}}",
+  "emoteSectionHidden": "Nascosta",
+  "arrangeEmoteSections": "Ordina sezioni",
+  "resetEmoteSectionOrder": "Ripristina ordine",
+  "resetEmoteSectionOrderTitle": "Ripristinare l'ordine?",
+  "resetEmoteSectionOrderDescription": "Le sezioni tornano all'ordine predefinito. Le sezioni nascoste restano nascoste.",
+  "resetEmoteSectionOrderConfirm": "Ripristina"
 }

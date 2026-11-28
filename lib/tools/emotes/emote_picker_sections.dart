@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 
 import '../../data/emote.dart';
 import '../../sources/emoji_source.dart';
+import 'emote_section_order.dart';
 
 const twitchSection = 'Twitch';
 
@@ -65,12 +66,13 @@ class EmotePickerSections {
   EmotePickerSections._(this.sections, this._lowercaseNames);
 
   /// Without [keepTwitchSection] (the Twitch section is hidden), there is no empty Twitch section waiting for its
-  /// emotes.
+  /// emotes. [order] is the order the user arranged the sections in, see [orderSections].
   factory EmotePickerSections.group({
     required List<Emote> channelEmotes,
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
     bool keepTwitchSection = true,
+    List<String> order = const [],
   }) {
     final allEmotes = [...channelEmotes, ...globalEmotes, ...userEmotes];
     final emoteGroups = <String, List<Emote>>{};
@@ -86,7 +88,7 @@ class EmotePickerSections {
     // spinner while they load instead of having it pop in later.
     if (keepTwitchSection) emoteGroups.putIfAbsent(twitchSection, () => []);
     final groups = {...emoteGroups, ...emojiGroups};
-    return EmotePickerSections._(
+    final sections = orderSections(
       [
         for (final group in groups.entries)
           EmoteSection(
@@ -96,10 +98,12 @@ class EmotePickerSections {
             ownerId: group.value.map((emote) => emote.ownerId).nonNulls.firstOrNull,
           ),
       ],
-      [
-        for (final group in groups.values) [for (final emote in group) emote.name.toLowerCase()],
-      ],
+      (section) => section.key,
+      order,
     );
+    return EmotePickerSections._(sections, [
+      for (final section in sections) [for (final emote in section.emotes) emote.name.toLowerCase()],
+    ]);
   }
 
   /// The sections with an emote whose name contains [search] (lowercase), each with only those emotes. Without a
@@ -133,6 +137,7 @@ class EmotePickerSectionsCache {
   List<Emote>? _globalEmotes;
   List<Emote>? _userEmotes;
   bool? _keepTwitchSection;
+  List<String> _order = const [];
   EmotePickerSections? _sections;
 
   EmotePickerSections sectionsFor({
@@ -140,24 +145,28 @@ class EmotePickerSectionsCache {
     required List<Emote> globalEmotes,
     required List<Emote> userEmotes,
     bool keepTwitchSection = true,
+    List<String> order = const [],
   }) {
     final cached = _sections;
     if (cached != null &&
         identical(channelEmotes, _channelEmotes) &&
         identical(globalEmotes, _globalEmotes) &&
         identical(userEmotes, _userEmotes) &&
-        keepTwitchSection == _keepTwitchSection) {
+        keepTwitchSection == _keepTwitchSection &&
+        sameOrder(order, _order)) {
       return cached;
     }
     _channelEmotes = channelEmotes;
     _globalEmotes = globalEmotes;
     _userEmotes = userEmotes;
     _keepTwitchSection = keepTwitchSection;
+    _order = order;
     return _sections = EmotePickerSections.group(
       channelEmotes: channelEmotes,
       globalEmotes: globalEmotes,
       userEmotes: userEmotes,
       keepTwitchSection: keepTwitchSection,
+      order: order,
     );
   }
 }

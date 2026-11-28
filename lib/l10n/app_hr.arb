@@ -392,8 +392,15 @@
   "sendMessage": "Pošalji",
   "hideEmoteSection": "Sakrij ove emotikone",
   "hideEmoteSectionSubtitle": "Više se ne prikazuju u ploči emotikona ni u prijedlozima. Ako upišeš ime emotikona, ipak se šalje.",
-  "hiddenEmoteSections": "Skriveni odjeljci emotikona",
-  "hiddenEmoteSectionsNone": "Dugo pritisni odjeljak u ploči emotikona da sakriješ njegove emotikone.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 odjeljak} few{{count} odjeljka} other{{count} odjeljaka}}",
-  "showEmoteSection": "Prikaži"
+  "showEmoteSection": "Prikaži",
+  "emotes": "Emotikoni",
+  "emoteSections": "Odjeljci emotikona",
+  "emoteSectionsSubtitle": "Poredaj i sakrij odjeljke ploče emotikona",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 odjeljak skriven} few{{count} odjeljka skrivena} other{{count} odjeljaka skriveno}}",
+  "emoteSectionHidden": "Skriveno",
+  "arrangeEmoteSections": "Posloži odjeljke",
+  "resetEmoteSectionOrder": "Vrati redoslijed",
+  "resetEmoteSectionOrderTitle": "Vratiti redoslijed?",
+  "resetEmoteSectionOrderDescription": "Odjeljci se vraćaju na zadani redoslijed. Skriveni odjeljci ostaju skriveni.",
+  "resetEmoteSectionOrderConfirm": "Vrati"
 }
