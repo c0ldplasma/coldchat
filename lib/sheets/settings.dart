@@ -11,7 +11,6 @@ import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'about.dart';
 import 'application_appearance.dart';
-import 'application_theme.dart';
 import 'chat_settings.dart';
 import 'components/modal_header.dart';
 import 'credits.dart';
@@ -32,7 +31,6 @@ class SettingsModal extends StatelessWidget {
       final l10n = AppLocalizations.of(context);
       final settings = context.read<SettingsRepository>();
       final themeMode = settings.applicationAppearance.themeMode;
-      final accent = settings.accent;
       // The header stays put; only the entries below it scroll when they don't fit.
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -55,17 +53,6 @@ class SettingsModal extends StatelessWidget {
                     _ => Icons.phone_android_outlined,
                   }),
                   onTap: () => Modal.show(context: context, child: const ApplicationAppearanceModal()),
-                ),
-                Tile(
-                  title: l10n.accentColor,
-                  subtitle: accent.name(l10n),
-                  prefix: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                  onTap: () => Modal.show(context: context, child: const ApplicationThemeModal()),
                 ),
                 Tile(
                   title: AppLocalizations.of(context).chatSettings,
