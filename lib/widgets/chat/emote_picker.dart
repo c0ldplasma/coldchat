@@ -426,78 +426,95 @@ class _EmotePickerState extends State<EmotePicker> {
           // The section buttons in a glass capsule floating over the emotes, which scroll on below it like the
           // chat below the composer; on a fade, 8 points from the sides. In the emote panel it sits where the
           // channel switcher sits.
-          if (!_searching)
-            Positioned(
-              left: 0.0,
-              right: 0.0,
-              bottom: 0.0,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [background.withValues(alpha: 0.0), background.withValues(alpha: 0.72)],
-                    stops: const [0.0, 0.6],
+          Positioned(
+            left: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            // Fades out when the search takes the keyboard and back in when it lets go of it, instead of popping:
+            // the glass by its strength (an Opacity wouldn't fade its blur), the buttons and the fade behind it
+            // with it. Hidden, it takes no taps.
+            child: IgnorePointer(
+              ignoring: _searching,
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(end: _searching ? 0.0 : 1.0),
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                builder: (context, shown, _) => DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        background.withValues(alpha: 0.0),
+                        background.withValues(alpha: 0.72 * shown),
+                      ],
+                      stops: const [0.0, 0.6],
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(8.0, 12.0, 8.0, widget.bottomInset),
-                  child: Glass(
-                    child: SizedBox(
-                      height: 44.0,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        children: [
-                          // First, the search: scrolls back up to the search field at the top.
-                          Tooltip(
-                            message: AppLocalizations.of(context).search,
-                            child: InkWell(
-                              customBorder: const StadiumBorder(),
-                              onTap: _scrollToSearch,
-                              child: Container(
-                                width: 44.0,
-                                margin: const EdgeInsets.symmetric(vertical: 4.0),
-                                child: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                              ),
-                            ),
-                          ),
-                          for (final tab in sections)
-                            Tooltip(
-                              key: _barKeys.putIfAbsent(tab.title, GlobalKey.new),
-                              message: tab.title,
-                              child: InkWell(
-                                customBorder: const StadiumBorder(),
-                                onTap: () => _scrollToSection(tab.title),
-                                onLongPress: tab.ownerId == null ? null : () => _showSectionActions(tab),
-                                // The section in view sits on a tinted pill, like the channel switcher's tab.
-                                child: AnimatedContainer(
-                                  duration: const Duration(milliseconds: 200),
-                                  curve: Curves.easeOut,
-                                  width: 44.0,
-                                  margin: const EdgeInsets.symmetric(vertical: 4.0),
-                                  decoration: ShapeDecoration(
-                                    shape: const StadiumBorder(),
-                                    color: tab.title == (_currentSection ?? sections.firstOrNull?.title)
-                                        ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.18)
-                                        : Colors.transparent,
-                                  ),
-                                  child: Center(
-                                    child: SizedBox.square(
-                                      dimension: 24.0,
-                                      child: _sectionIcon(context, tab),
-                                    ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(8.0, 12.0, 8.0, widget.bottomInset),
+                    child: Glass(
+                      strength: shown,
+                      child: Opacity(
+                        opacity: shown,
+                        child: SizedBox(
+                          height: 44.0,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            children: [
+                              // First, the search: scrolls back up to the search field at the top.
+                              Tooltip(
+                                message: AppLocalizations.of(context).search,
+                                child: InkWell(
+                                  customBorder: const StadiumBorder(),
+                                  onTap: _scrollToSearch,
+                                  child: Container(
+                                    width: 44.0,
+                                    margin: const EdgeInsets.symmetric(vertical: 4.0),
+                                    child: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
                                   ),
                                 ),
                               ),
-                            ),
-                        ],
+                              for (final tab in sections)
+                                Tooltip(
+                                  key: _barKeys.putIfAbsent(tab.title, GlobalKey.new),
+                                  message: tab.title,
+                                  child: InkWell(
+                                    customBorder: const StadiumBorder(),
+                                    onTap: () => _scrollToSection(tab.title),
+                                    onLongPress: tab.ownerId == null ? null : () => _showSectionActions(tab),
+                                    // The section in view sits on a tinted pill, like the channel switcher's tab.
+                                    child: AnimatedContainer(
+                                      duration: const Duration(milliseconds: 200),
+                                      curve: Curves.easeOut,
+                                      width: 44.0,
+                                      margin: const EdgeInsets.symmetric(vertical: 4.0),
+                                      decoration: ShapeDecoration(
+                                        shape: const StadiumBorder(),
+                                        color: tab.title == (_currentSection ?? sections.firstOrNull?.title)
+                                            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.18)
+                                            : Colors.transparent,
+                                      ),
+                                      child: Center(
+                                        child: SizedBox.square(
+                                          dimension: 24.0,
+                                          child: _sectionIcon(context, tab),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
+          ),
         ],
       ),
     );
