@@ -888,15 +888,21 @@ void main() {
       }
       final search = find.descendant(of: find.byType(EmotePicker), matching: find.byType(TextField));
       final pickerTop = tester.getRect(find.byType(EmotePicker)).top;
-      // The section bar's glass capsule, hidden while searching.
+      // The section bar's glass capsule, faded out while searching.
       final sectionBar = find.descendant(of: find.byType(EmotePicker), matching: find.byType(Glass));
+      double barStrength() => tester.widget<Glass>(sectionBar).strength;
       final sectionBarBottom = tester.getRect(sectionBar).bottom;
       await tester.tap(search);
+      await tester.pump();
+      // It fades out with the search taking the keyboard, rather than vanishing at once.
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(barStrength(), inExclusiveRange(0.0, 1.0));
       for (final inset in [100.0, 200.0, 336.0]) {
         tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
         tester.view.padding = FakeViewPadding.zero;
-        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
       }
+      expect(barStrength(), 0.0);
       final searchTop = tester.getRect(find.byType(EmotePicker)).top;
       expect(searchTop, lessThan(pickerTop));
 
@@ -905,6 +911,9 @@ void main() {
       tester.widget<TextField>(search).focusNode!.unfocus();
       await tester.pump();
       expect(tester.getRect(find.byType(EmotePicker)).top, moreOrLessEquals(searchTop));
+      // And fades back in.
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(barStrength(), inExclusiveRange(0.0, 1.0));
       var previous = searchTop;
       // The section bar is back at its place at the panel's bottom, behind the keyboard, and stays there: the keyboard
       // reveals it as it slides away.
@@ -921,6 +930,8 @@ void main() {
       }
       // It moved in steps with the keyboard, not all at once at the end.
       expect(previous, moreOrLessEquals(pickerTop));
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(barStrength(), 1.0);
     });
 
     testWidgets('behind the keyboard alone is the chat\'s color, not the emote panel\'s', (tester) async {
