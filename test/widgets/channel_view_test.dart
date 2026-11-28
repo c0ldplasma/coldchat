@@ -936,6 +936,47 @@ void main() {
       expect(barStrength(), 1.0);
     });
 
+    testWidgets('the emote panel ends its search when the keyboard goes away with the field still focused', (
+      tester,
+    ) async {
+      tester.view.devicePixelRatio = 3.0;
+      tester.view.physicalSize = const Size(1206.0, 2622.0);
+      tester.view.viewPadding = const FakeViewPadding(bottom: 34.0 * 3.0);
+      tester.view.padding = const FakeViewPadding(bottom: 34.0 * 3.0);
+      addTearDown(tester.view.reset);
+      await showHome(tester);
+
+      BlocProvider.of<EmotePanelCubit>(tester.element(find.byType(ChannelView))).toggle();
+      for (var i = 0; i < 10; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+      }
+      final search = find.descendant(of: find.byType(EmotePicker), matching: find.byType(TextField));
+      final sectionBar = find.descendant(of: find.byType(EmotePicker), matching: find.byType(Glass));
+      final results = find.descendant(of: find.byType(EmotePicker), matching: find.byType(CustomScrollView));
+      await tester.tap(search);
+      for (final inset in [100.0, 200.0, 336.0]) {
+        tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
+        tester.view.padding = FakeViewPadding.zero;
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+      expect(tester.widget<Glass>(sectionBar).strength, 0.0);
+
+      // Android's back gesture hides the keyboard and leaves the field focused.
+      for (final inset in [200.0, 100.0, 0.0]) {
+        tester.view.viewInsets = FakeViewPadding(bottom: inset * 3.0);
+        if (inset == 0.0) tester.view.padding = const FakeViewPadding(bottom: 34.0 * 3.0);
+        await tester.pump();
+      }
+      for (var i = 0; i < 5; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+
+      // The search is over: the section bar is back and the emotes reach the screen's bottom edge again.
+      expect(tester.widget<TextField>(search).focusNode!.hasFocus, isFalse);
+      expect(tester.widget<Glass>(sectionBar).strength, 1.0);
+      expect(tester.getRect(results).bottom, moreOrLessEquals(874.0));
+    });
+
     testWidgets('behind the keyboard alone is the chat\'s color, not the emote panel\'s', (tester) async {
       await showHome(tester);
       final theme = Theme.of(tester.element(find.byType(ChannelView)));

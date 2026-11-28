@@ -81,6 +81,9 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
   /// until the keyboard is down, so the panel shrinks back with the keyboard instead of jumping.
   bool _searchLayout = false;
 
+  /// The search field's keyboard was up since the field took the focus.
+  bool _searchHadKeyboard = false;
+
   /// How much of the panel stays above the keyboard while searching: the search field, a section header and the
   /// first row of results, with a bit of the second to show there are more.
   static const double _aboveKeyboardWhileSearching = 176.0;
@@ -92,6 +95,7 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
   }
 
   void _onSearchFocusChanged() => setState(() {
+    if (!_searchFocus.hasFocus) _searchHadKeyboard = false;
     _searchLayout = _searchFocus.hasFocus || (_searchLayout && MediaQuery.viewInsetsOf(context).bottom > 0.0);
   });
 
@@ -101,6 +105,19 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
     final inset = MediaQuery.viewInsetsOf(context).bottom;
     if (_waitingForKeyboard && inset >= _panelHeight - 1.0) _dropPanel();
     if (inset <= 0.0 && !_searchFocus.hasFocus) _searchLayout = false;
+    if (_searchFocus.hasFocus) {
+      if (inset > 0.0) {
+        _searchHadKeyboard = true;
+      } else if (_searchHadKeyboard) {
+        // Android hides the keyboard (the back gesture, the keyboard's own button) and leaves the field focused: the
+        // search is over all the same, so the section bar comes back and the emotes reach the bottom again. A
+        // hardware keyboard, which never comes up, keeps the search.
+        _searchHadKeyboard = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _searchFocus.unfocus();
+        });
+      }
+    }
     // The inset changes on every frame of the keyboard's animation; once it holds still, the keyboard has settled.
     _settleTimer?.cancel();
     _settleTimer = Timer(const Duration(milliseconds: 120), _onKeyboardSettled);
