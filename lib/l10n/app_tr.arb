@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 bölüm gizli} other{{count} bölüm gizli}}",
   "emoteSectionHidden": "Gizli",
   "arrangeEmoteSections": "Bölümleri düzenle",
-  "resetEmoteSectionOrder": "Sırayı sıfırla"
+  "resetEmoteSectionOrder": "Sırayı sıfırla",
+  "resetEmoteSectionOrderTitle": "Sıra sıfırlansın mı?",
+  "resetEmoteSectionOrderDescription": "Bölümler varsayılan sıralarına döner. Gizli bölümler gizli kalır.",
+  "resetEmoteSectionOrderConfirm": "Sıfırla"
 }

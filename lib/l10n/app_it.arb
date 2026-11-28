@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 sezione nascosta} other{{count} sezioni nascoste}}",
   "emoteSectionHidden": "Nascosta",
   "arrangeEmoteSections": "Ordina sezioni",
-  "resetEmoteSectionOrder": "Ripristina ordine"
+  "resetEmoteSectionOrder": "Ripristina ordine",
+  "resetEmoteSectionOrderTitle": "Ripristinare l'ordine?",
+  "resetEmoteSectionOrderDescription": "Le sezioni tornano all'ordine predefinito. Le sezioni nascoste restano nascoste.",
+  "resetEmoteSectionOrderConfirm": "Ripristina"
 }

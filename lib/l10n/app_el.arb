@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 ενότητα κρυμμένη} other{{count} ενότητες κρυμμένες}}",
   "emoteSectionHidden": "Κρυμμένη",
   "arrangeEmoteSections": "Διάταξη ενοτήτων",
-  "resetEmoteSectionOrder": "Επαναφορά σειράς"
+  "resetEmoteSectionOrder": "Επαναφορά σειράς",
+  "resetEmoteSectionOrderTitle": "Επαναφορά της σειράς;",
+  "resetEmoteSectionOrderDescription": "Οι ενότητες επιστρέφουν στην προεπιλεγμένη σειρά. Οι κρυμμένες ενότητες παραμένουν κρυμμένες.",
+  "resetEmoteSectionOrderConfirm": "Επαναφορά"
 }

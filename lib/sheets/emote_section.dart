@@ -62,6 +62,30 @@ class _EmoteSectionsModalState extends State<EmoteSectionsModal> {
   /// The order just dragged into, until the settings have it: the list mustn't jump back for a frame.
   List<String>? _order;
 
+  /// Asks before going back to the default order, saying that hidden sections stay hidden.
+  Future<void> _confirmReset(SettingsRepository settings) async {
+    final l10n = AppLocalizations.of(context);
+    final error = Theme.of(context).colorScheme.error;
+    final reset = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.resetEmoteSectionOrderTitle),
+        content: Text(l10n.resetEmoteSectionOrderDescription),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text(l10n.cancel)),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: error),
+            child: Text(l10n.resetEmoteSectionOrderConfirm),
+          ),
+        ],
+      ),
+    );
+    if (reset != true || !mounted) return;
+    setState(() => _order = null);
+    await settings.resetEmoteSectionOrder();
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = context.read<SettingsRepository>();
@@ -90,12 +114,13 @@ class _EmoteSectionsModalState extends State<EmoteSectionsModal> {
                   : Tooltip(
                       message: l10n.resetEmoteSectionOrder,
                       child: InkWell(
-                        onTap: () {
-                          setState(() => _order = null);
-                          unawaited(settings.resetEmoteSectionOrder());
-                        },
+                        onTap: () => _confirmReset(settings),
                         borderRadius: BorderRadius.circular(24.0),
-                        child: const SizedBox(width: 40.0, height: 40.0, child: Icon(Icons.restart_alt)),
+                        child: SizedBox(
+                          width: 40.0,
+                          height: 40.0,
+                          child: Icon(Icons.restart_alt, color: Theme.of(context).colorScheme.error),
+                        ),
                       ),
                     ),
             ),

@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, other{Đã ẩn {count} mục}}",
   "emoteSectionHidden": "Đã ẩn",
   "arrangeEmoteSections": "Sắp xếp các mục",
-  "resetEmoteSectionOrder": "Đặt lại thứ tự"
+  "resetEmoteSectionOrder": "Đặt lại thứ tự",
+  "resetEmoteSectionOrderTitle": "Đặt lại thứ tự?",
+  "resetEmoteSectionOrderDescription": "Các mục sẽ trở về thứ tự mặc định. Các mục đã ẩn vẫn bị ẩn.",
+  "resetEmoteSectionOrderConfirm": "Đặt lại"
 }

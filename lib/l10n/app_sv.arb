@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 sektion dold} other{{count} sektioner dolda}}",
   "emoteSectionHidden": "Dold",
   "arrangeEmoteSections": "Ordna sektioner",
-  "resetEmoteSectionOrder": "Återställ ordning"
+  "resetEmoteSectionOrder": "Återställ ordning",
+  "resetEmoteSectionOrderTitle": "Återställa ordningen?",
+  "resetEmoteSectionOrderDescription": "Sektionerna går tillbaka till standardordningen. Dolda sektioner förblir dolda.",
+  "resetEmoteSectionOrderConfirm": "Återställ"
 }

@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 sektion skjult} other{{count} sektioner skjult}}",
   "emoteSectionHidden": "Skjult",
   "arrangeEmoteSections": "Arrangér sektioner",
-  "resetEmoteSectionOrder": "Nulstil rækkefølge"
+  "resetEmoteSectionOrder": "Nulstil rækkefølge",
+  "resetEmoteSectionOrderTitle": "Nulstil rækkefølgen?",
+  "resetEmoteSectionOrderDescription": "Sektionerne vender tilbage til deres standardrækkefølge. Skjulte sektioner forbliver skjulte.",
+  "resetEmoteSectionOrderConfirm": "Nulstil"
 }

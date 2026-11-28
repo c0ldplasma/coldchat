@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 одељак сакривен} few{{count} одељка сакривена} other{{count} одељака сакривено}}",
   "emoteSectionHidden": "Сакривено",
   "arrangeEmoteSections": "Поређај одељке",
-  "resetEmoteSectionOrder": "Врати редослед"
+  "resetEmoteSectionOrder": "Врати редослед",
+  "resetEmoteSectionOrderTitle": "Вратити редослед?",
+  "resetEmoteSectionOrderDescription": "Одељци се враћају на подразумевани редослед. Сакривени одељци остају сакривени.",
+  "resetEmoteSectionOrderConfirm": "Врати"
 }

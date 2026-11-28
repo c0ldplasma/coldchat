@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 sectie verborgen} other{{count} secties verborgen}}",
   "emoteSectionHidden": "Verborgen",
   "arrangeEmoteSections": "Secties ordenen",
-  "resetEmoteSectionOrder": "Volgorde herstellen"
+  "resetEmoteSectionOrder": "Volgorde herstellen",
+  "resetEmoteSectionOrderTitle": "Volgorde herstellen?",
+  "resetEmoteSectionOrderDescription": "De secties gaan terug naar hun standaardvolgorde. Verborgen secties blijven verborgen.",
+  "resetEmoteSectionOrderConfirm": "Herstellen"
 }

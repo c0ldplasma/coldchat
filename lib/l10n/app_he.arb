@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{קטע אחד מוסתר} other{{count} קטעים מוסתרים}}",
   "emoteSectionHidden": "מוסתר",
   "arrangeEmoteSections": "סידור קטעים",
-  "resetEmoteSectionOrder": "איפוס הסדר"
+  "resetEmoteSectionOrder": "איפוס הסדר",
+  "resetEmoteSectionOrderTitle": "לאפס את הסדר?",
+  "resetEmoteSectionOrderDescription": "הקטעים יחזרו לסדר ברירת המחדל. קטעים מוסתרים יישארו מוסתרים.",
+  "resetEmoteSectionOrderConfirm": "איפוס"
 }

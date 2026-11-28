@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 section masquée} other{{count} sections masquées}}",
   "emoteSectionHidden": "Masquée",
   "arrangeEmoteSections": "Organiser les sections",
-  "resetEmoteSectionOrder": "Rétablir l'ordre"
+  "resetEmoteSectionOrder": "Rétablir l'ordre",
+  "resetEmoteSectionOrderTitle": "Rétablir l'ordre ?",
+  "resetEmoteSectionOrderDescription": "Les sections reprennent leur ordre par défaut. Les sections masquées restent masquées.",
+  "resetEmoteSectionOrderConfirm": "Rétablir"
 }

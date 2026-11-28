@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, one{{count} раздел скрыт} few{{count} раздела скрыто} many{{count} разделов скрыто} other{{count} раздела скрыто}}",
   "emoteSectionHidden": "Скрыт",
   "arrangeEmoteSections": "Упорядочить разделы",
-  "resetEmoteSectionOrder": "Сбросить порядок"
+  "resetEmoteSectionOrder": "Сбросить порядок",
+  "resetEmoteSectionOrderTitle": "Сбросить порядок?",
+  "resetEmoteSectionOrderDescription": "Разделы вернутся к порядку по умолчанию. Скрытые разделы останутся скрытыми.",
+  "resetEmoteSectionOrderConfirm": "Сбросить"
 }

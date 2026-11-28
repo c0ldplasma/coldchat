@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, other{섹션 {count}개 숨김}}",
   "emoteSectionHidden": "숨김",
   "arrangeEmoteSections": "섹션 정렬",
-  "resetEmoteSectionOrder": "순서 초기화"
+  "resetEmoteSectionOrder": "순서 초기화",
+  "resetEmoteSectionOrderTitle": "순서를 초기화할까요?",
+  "resetEmoteSectionOrderDescription": "섹션이 기본 순서로 돌아갑니다. 숨긴 섹션은 계속 숨겨집니다.",
+  "resetEmoteSectionOrderConfirm": "초기화"
 }

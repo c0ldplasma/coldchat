@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, other{{count} セクションを非表示}}",
   "emoteSectionHidden": "非表示",
   "arrangeEmoteSections": "セクションを並べ替え",
-  "resetEmoteSectionOrder": "順序をリセット"
+  "resetEmoteSectionOrder": "順序をリセット",
+  "resetEmoteSectionOrderTitle": "順序をリセットしますか？",
+  "resetEmoteSectionOrderDescription": "セクションは標準の順序に戻ります。非表示のセクションは非表示のままです。",
+  "resetEmoteSectionOrderConfirm": "リセット"
 }

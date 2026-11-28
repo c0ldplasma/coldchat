@@ -547,5 +547,11 @@
   },
   "@arrangeEmoteSections": {
     "description": "Long-press action on a section in the emote panel: opens the list to drag sections into another order."
+  },
+  "resetEmoteSectionOrderTitle": "Reset the order?",
+  "resetEmoteSectionOrderDescription": "The sections go back to their default order. Hidden sections stay hidden.",
+  "resetEmoteSectionOrderConfirm": "Reset",
+  "@resetEmoteSectionOrderTitle": {
+    "description": "Confirmation after tapping the reset button in Settings → Emotes → Emote sections; only the order is reset, not which sections are hidden."
   }
 }

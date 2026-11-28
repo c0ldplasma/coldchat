@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 secció amagada} other{{count} seccions amagades}}",
   "emoteSectionHidden": "Amagada",
   "arrangeEmoteSections": "Ordena les seccions",
-  "resetEmoteSectionOrder": "Restableix l'ordre"
+  "resetEmoteSectionOrder": "Restableix l'ordre",
+  "resetEmoteSectionOrderTitle": "Vols restablir l'ordre?",
+  "resetEmoteSectionOrderDescription": "Les seccions tornen al seu ordre per defecte. Les seccions amagades continuen amagades.",
+  "resetEmoteSectionOrderConfirm": "Restableix"
 }

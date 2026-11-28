@@ -399,5 +399,8 @@
   "emoteSectionsHiddenCount": "{count, plural, =1{1 odjeljak skriven} few{{count} odjeljka skrivena} other{{count} odjeljaka skriveno}}",
   "emoteSectionHidden": "Skriveno",
   "arrangeEmoteSections": "Posloži odjeljke",
-  "resetEmoteSectionOrder": "Vrati redoslijed"
+  "resetEmoteSectionOrder": "Vrati redoslijed",
+  "resetEmoteSectionOrderTitle": "Vratiti redoslijed?",
+  "resetEmoteSectionOrderDescription": "Odjeljci se vraćaju na zadani redoslijed. Skriveni odjeljci ostaju skriveni.",
+  "resetEmoteSectionOrderConfirm": "Vrati"
 }
