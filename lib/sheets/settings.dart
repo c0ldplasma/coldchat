@@ -19,7 +19,6 @@ import 'application_appearance.dart';
 import 'application_theme.dart';
 import 'chat_settings.dart';
 import 'components/modal_header.dart';
-import 'credits.dart';
 import 'custom_commands.dart';
 import 'language_selection.dart';
 import 'message_appearance.dart';
@@ -105,11 +104,6 @@ class SettingsModal extends StatelessWidget {
                   title: AppLocalizations.of(context).userTriggers,
                   prefix: const Icon(Icons.person_outline_rounded),
                   onTap: () => Modal.show(context: context, child: const UserTriggersModal()),
-                ),
-                Tile(
-                  title: AppLocalizations.of(context).credits,
-                  prefix: const Icon(Icons.work_outline_outlined),
-                  onTap: () => Modal.show(context: context, child: const CreditsModal()),
                 ),
                 Tile(
                   title: AppLocalizations.of(context).about,
