@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} с",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Смотреть на Twitch",
-  "creditLogoDesigner": "Дизайн логотипа",
   "creditTranslation": "Части перевода: {language}",
   "creditsAiTranslations": "Тексты, добавленные позже, и языки, не указанные здесь, переведены с помощью ИИ и могут содержать ошибки. Исправления приветствуются на GitHub."
 }

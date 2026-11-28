@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Ver en Twitch",
-  "creditLogoDesigner": "Diseño del logotipo",
   "creditTranslation": "Partes de la traducción: {language}",
   "creditsAiTranslations": "Los textos añadidos más tarde y los idiomas que no aparecen aquí se tradujeron con IA y pueden contener errores. Las correcciones son bienvenidas en GitHub."
 }

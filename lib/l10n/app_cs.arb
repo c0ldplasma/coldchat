@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Sledovat na Twitchi",
-  "creditLogoDesigner": "Návrh loga",
   "creditTranslation": "Části překladu: {language}",
   "creditsAiTranslations": "Později přidané texty a jazyky, které tu nejsou uvedené, byly přeloženy pomocí AI a mohou obsahovat chyby. Opravy rádi přijmeme na GitHubu."
 }

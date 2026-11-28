@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} sn.",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Twitch'te izle",
-  "creditLogoDesigner": "Logo tasarımı",
   "creditTranslation": "Çevirinin bölümleri: {language}",
   "creditsAiTranslations": "Sonradan eklenen metinler ve burada listelenmeyen diller yapay zekâ ile çevrildi ve hatalar içerebilir. Düzeltmeler GitHub'da memnuniyetle karşılanır."
 }

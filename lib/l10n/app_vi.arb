@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} giây",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Xem trên Twitch",
-  "creditLogoDesigner": "Thiết kế logo",
   "creditTranslation": "Một phần bản dịch: {language}",
   "creditsAiTranslations": "Các văn bản được thêm sau và những ngôn ngữ không có ở đây được dịch bằng AI và có thể có lỗi. Rất hoan nghênh các bản sửa trên GitHub."
 }

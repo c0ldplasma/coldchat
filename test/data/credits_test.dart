@@ -7,9 +7,11 @@ void main() {
     final languages = {for (final locale in AppLocalizations.supportedLocales) locale.languageCode};
 
     for (final credit in credits) {
-      final language = credit.language;
-      if (language == null) continue;
-      expect(languages, contains(language.split('_').first), reason: '${credit.name} translated $language');
+      expect(
+        languages,
+        contains(credit.language.split('_').first),
+        reason: '${credit.name} translated ${credit.language}',
+      );
     }
   });
 }

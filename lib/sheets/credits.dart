@@ -22,10 +22,7 @@ class CreditsModal extends StatelessWidget {
         for (final credit in credits)
           Tile(
             title: credit.name,
-            subtitle: switch (credit.language) {
-              null => l10n.creditLogoDesigner,
-              final language => l10n.creditTranslation(LocaleNames.of(context)?.nameOf(language) ?? language),
-            },
+            subtitle: l10n.creditTranslation(LocaleNames.of(context)?.nameOf(credit.language) ?? credit.language),
             // Their initial: no picture to load from elsewhere.
             prefix: CircleAvatar(
               backgroundColor: colors.primaryContainer,

@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} с",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Gledaj na Twitchu",
-  "creditLogoDesigner": "Дизајн логотипа",
   "creditTranslation": "Делови превода: {language}",
   "creditsAiTranslations": "Касније додати текстови и језици који овде нису наведени преведени су помоћу вештачке интелигенције и могу садржати грешке. Исправке су добродошле на GitHub-у."
 }

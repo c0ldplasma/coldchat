@@ -1,20 +1,20 @@
-/// Someone the Credits thank: for the logo ([language] null), or for parts of the translation into [language].
+/// Someone the Credits thank for parts of the translation into [language].
 class Credit {
   final String name;
 
   /// Their Twitch channel.
   final String url;
 
-  /// The language they translated into, as a locale tag like `pt_BR`; null for the logo designer.
-  final String? language;
+  /// The language they translated into, as a locale tag like `pt_BR`.
+  final String language;
 
-  const Credit({required this.name, required this.url, this.language});
+  const Credit({required this.name, required this.url, required this.language});
 }
 
-/// The people who helped make ColdChat (Chatsen at the time). Translators wrote parts of their language's translation;
-/// texts added later, and the languages without a translator here, were translated with AI.
+/// The people who translated ColdChat (Chatsen at the time). They wrote parts of their language's translation; texts
+/// added later, and the languages without a translator here, were translated with AI. (Chatsen's logo designer isn't
+/// listed: ColdChat has a logo of its own.)
 const credits = [
-  Credit(name: 'ayyybubu', url: 'https://twitch.tv/ayyybubu'),
   Credit(name: '21mtd', url: 'https://twitch.tv/21mtd', language: 'vi'),
   Credit(name: 'badpixel134', url: 'https://twitch.tv/badpixel134', language: 'ko'),
   Credit(name: 'copperrum', url: 'https://twitch.tv/copperrum', language: 'ru'),

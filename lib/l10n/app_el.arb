@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} δ.",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Παρακολούθηση στο Twitch",
-  "creditLogoDesigner": "Σχεδιασμός λογότυπου",
   "creditTranslation": "Τμήματα της μετάφρασης: {language}",
   "creditsAiTranslations": "Τα κείμενα που προστέθηκαν αργότερα και οι γλώσσες που δεν αναφέρονται εδώ μεταφράστηκαν με AI και μπορεί να έχουν λάθη. Οι διορθώσεις είναι ευπρόσδεκτες στο GitHub."
 }

@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Titta på Twitch",
-  "creditLogoDesigner": "Logotypdesign",
   "creditTranslation": "Delar av översättningen: {language}",
   "creditsAiTranslations": "Texter som lagts till senare och språk som inte står här har översatts med AI och kan innehålla fel. Rättelser är välkomna på GitHub."
 }

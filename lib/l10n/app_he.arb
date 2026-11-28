@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} שנ׳",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "צפייה ב-Twitch",
-  "creditLogoDesigner": "עיצוב הלוגו",
   "creditTranslation": "חלקים מהתרגום: {language}",
   "creditsAiTranslations": "טקסטים שנוספו מאוחר יותר והשפות שלא מופיעות כאן תורגמו בעזרת AI ועלולים להכיל טעויות. נשמח לתיקונים ב-GitHub."
 }

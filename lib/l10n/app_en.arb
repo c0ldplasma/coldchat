@@ -501,7 +501,6 @@
   "@watchOnTwitch": {
     "description": "Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it."
   },
-  "creditLogoDesigner": "Logo designer",
   "creditTranslation": "Parts of the {language} translation",
   "creditsAiTranslations": "Texts added later, and the languages not listed here, were translated with AI and may contain mistakes. Corrections are welcome on GitHub.",
   "@creditTranslation": {

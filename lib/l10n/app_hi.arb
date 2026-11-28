@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} से॰",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Twitch पर देखें",
-  "creditLogoDesigner": "लोगो डिज़ाइन",
   "creditTranslation": "अनुवाद के हिस्से: {language}",
   "creditsAiTranslations": "बाद में जोड़े गए टेक्स्ट और यहाँ न दी गई भाषाओं का अनुवाद AI से किया गया है और उनमें गलतियाँ हो सकती हैं। GitHub पर सुधारों का स्वागत है।"
 }

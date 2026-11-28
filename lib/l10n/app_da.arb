@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} sek.",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Se på Twitch",
-  "creditLogoDesigner": "Logodesign",
   "creditTranslation": "Dele af oversættelsen: {language}",
   "creditsAiTranslations": "Tekster, der er tilføjet senere, og sprog, der ikke står her, er oversat med AI og kan indeholde fejl. Rettelser er velkomne på GitHub."
 }

@@ -382,7 +382,6 @@
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
   "watchOnTwitch": "Mira-ho a Twitch",
-  "creditLogoDesigner": "Disseny del logotip",
   "creditTranslation": "Parts de la traducció: {language}",
   "creditsAiTranslations": "Els textos afegits més tard i els idiomes que no surten aquí s'han traduït amb IA i poden contenir errors. Les correccions són benvingudes a GitHub."
 }
