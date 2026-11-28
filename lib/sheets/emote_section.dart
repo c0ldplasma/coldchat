@@ -84,14 +84,19 @@ class _EmoteSectionsModalState extends State<EmoteSectionsModal> {
           children: [
             ModalHeader(
               title: l10n.emoteSections,
+              // An icon like other sheets' header actions: its name doesn't fit next to the title in every language.
               trailing: saved.isEmpty && _order == null
                   ? null
-                  : TextButton(
-                      onPressed: () {
-                        setState(() => _order = null);
-                        unawaited(settings.resetEmoteSectionOrder());
-                      },
-                      child: Text(l10n.resetEmoteSectionOrder),
+                  : Tooltip(
+                      message: l10n.resetEmoteSectionOrder,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() => _order = null);
+                          unawaited(settings.resetEmoteSectionOrder());
+                        },
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: const SizedBox(width: 40.0, height: 40.0, child: Icon(Icons.restart_alt)),
+                      ),
                     ),
             ),
             Flexible(
