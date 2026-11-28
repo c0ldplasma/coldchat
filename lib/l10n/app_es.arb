@@ -392,8 +392,12 @@
   "sendMessage": "Enviar",
   "hideEmoteSection": "Ocultar estos emotes",
   "hideEmoteSectionSubtitle": "Ya no aparecen en el panel de emotes ni en las sugerencias. Si escribes el nombre de un emote, se envía igualmente.",
-  "hiddenEmoteSections": "Secciones de emotes ocultas",
-  "hiddenEmoteSectionsNone": "Mantén pulsada una sección del panel de emotes para ocultar sus emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sección} other{{count} secciones}}",
-  "showEmoteSection": "Mostrar"
+  "showEmoteSection": "Mostrar",
+  "emotes": "Emotes",
+  "emoteSections": "Secciones de emotes",
+  "emoteSectionsSubtitle": "Ordena y oculta las secciones del panel de emotes",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 sección oculta} other{{count} secciones ocultas}}",
+  "emoteSectionHidden": "Oculta",
+  "arrangeEmoteSections": "Ordenar secciones",
+  "resetEmoteSectionOrder": "Restablecer orden"
 }

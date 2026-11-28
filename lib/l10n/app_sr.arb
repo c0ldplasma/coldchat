@@ -392,8 +392,12 @@
   "sendMessage": "Пошаљи",
   "hideEmoteSection": "Сакриј ове емотиконе",
   "hideEmoteSectionSubtitle": "Више се не приказују у панелу емотикона ни у предлозима. Ако упишеш име емотикона, ипак се шаље.",
-  "hiddenEmoteSections": "Сакривени одељци емотикона",
-  "hiddenEmoteSectionsNone": "Дуго притисни одељак у панелу емотикона да сакријеш његове емотиконе.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 одељак} few{{count} одељка} other{{count} одељака}}",
-  "showEmoteSection": "Прикажи"
+  "showEmoteSection": "Прикажи",
+  "emotes": "Емотикони",
+  "emoteSections": "Одељци емотикона",
+  "emoteSectionsSubtitle": "Поређај и сакриј одељке панела емотикона",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 одељак сакривен} few{{count} одељка сакривена} other{{count} одељака сакривено}}",
+  "emoteSectionHidden": "Сакривено",
+  "arrangeEmoteSections": "Поређај одељке",
+  "resetEmoteSectionOrder": "Врати редослед"
 }

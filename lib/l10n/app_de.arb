@@ -288,8 +288,12 @@
   "sendMessage": "Senden",
   "hideEmoteSection": "Diese Emotes ausblenden",
   "hideEmoteSectionSubtitle": "Sie fehlen dann im Emote-Panel und in den Vorschlägen. Den Namen eines Emotes zu tippen, sendet es trotzdem.",
-  "hiddenEmoteSections": "Ausgeblendete Emote-Bereiche",
-  "hiddenEmoteSectionsNone": "Halte einen Bereich im Emote-Panel gedrückt, um seine Emotes auszublenden.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 Bereich} other{{count} Bereiche}}",
-  "showEmoteSection": "Einblenden"
+  "showEmoteSection": "Einblenden",
+  "emotes": "Emotes",
+  "emoteSections": "Emote-Bereiche",
+  "emoteSectionsSubtitle": "Bereiche des Emote-Panels sortieren und ausblenden",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 Bereich ausgeblendet} other{{count} Bereiche ausgeblendet}}",
+  "emoteSectionHidden": "Ausgeblendet",
+  "arrangeEmoteSections": "Bereiche anordnen",
+  "resetEmoteSectionOrder": "Reihenfolge zurücksetzen"
 }

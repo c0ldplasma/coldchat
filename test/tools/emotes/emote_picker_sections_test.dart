@@ -149,6 +149,25 @@ void main() {
       }
     });
 
+    test('puts the sections in the order the user arranged, the emoji groups too', () {
+      final sections = EmotePickerSections.group(
+        channelEmotes: [_emote('peepoHappy', _sevenTv)],
+        globalEmotes: [_emote('grinning', _emoji, category: 'Smileys & Emotion')],
+        userEmotes: [
+          _emote('Kappa', _twitch),
+          _emote('ronniHi', _twitch, category: 'Ronni', ownerId: '1'),
+        ],
+        order: ['section:Smileys & Emotion', '1', 'section:7TV', 'section:Twitch'],
+      );
+
+      expect(sections.sections.map((section) => section.title), ['Smileys & Emotion', 'Ronni', '7TV', 'Twitch']);
+      // Searching keeps that order, with each section's own emotes.
+      expect(_titles(sections.matching('i')), {
+        'Smileys & Emotion': ['grinning'],
+        'Ronni': ['ronniHi'],
+      });
+    });
+
     test('leaves out the empty Twitch section while it is hidden', () {
       final sections = EmotePickerSections.group(
         channelEmotes: [_emote('peepoHappy', _sevenTv)],
@@ -254,6 +273,26 @@ void main() {
           keepTwitchSection: false,
         ),
         same(fourth),
+      );
+
+      // So does arranging them, and not an equal order in a new list.
+      final fifth = cache.sectionsFor(
+        channelEmotes: moreChannelEmotes,
+        globalEmotes: const [],
+        userEmotes: const [],
+        keepTwitchSection: false,
+        order: ['section:BetterTTV', 'section:7TV'],
+      );
+      expect(fifth.sections.map((section) => section.title), ['BetterTTV', '7TV']);
+      expect(
+        cache.sectionsFor(
+          channelEmotes: moreChannelEmotes,
+          globalEmotes: const [],
+          userEmotes: const [],
+          keepTwitchSection: false,
+          order: ['section:BetterTTV', 'section:7TV'],
+        ),
+        same(fifth),
       );
     });
   });

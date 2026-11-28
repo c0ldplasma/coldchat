@@ -392,8 +392,12 @@
   "sendMessage": "Gönder",
   "hideEmoteSection": "Bu emote'ları gizle",
   "hideEmoteSectionSubtitle": "Artık emote panelinde ve önerilerde görünmezler. Bir emote'un adını yazarsan yine de gönderilir.",
-  "hiddenEmoteSections": "Gizlenen emote bölümleri",
-  "hiddenEmoteSectionsNone": "Bir bölümün emote'larını gizlemek için emote panelinde bölüme uzun bas.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 bölüm} other{{count} bölüm}}",
-  "showEmoteSection": "Göster"
+  "showEmoteSection": "Göster",
+  "emotes": "Emote'lar",
+  "emoteSections": "Emote bölümleri",
+  "emoteSectionsSubtitle": "Emote panelinin bölümlerini sırala ve gizle",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 bölüm gizli} other{{count} bölüm gizli}}",
+  "emoteSectionHidden": "Gizli",
+  "arrangeEmoteSections": "Bölümleri düzenle",
+  "resetEmoteSectionOrder": "Sırayı sıfırla"
 }

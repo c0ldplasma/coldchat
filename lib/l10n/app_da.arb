@@ -392,8 +392,12 @@
   "sendMessage": "Send",
   "hideEmoteSection": "Skjul disse emotes",
   "hideEmoteSectionSubtitle": "De vises ikke længere i emote-panelet og forslagene. Skriver du en emotes navn, sendes den stadig.",
-  "hiddenEmoteSections": "Skjulte emote-sektioner",
-  "hiddenEmoteSectionsNone": "Hold en sektion nede i emote-panelet for at skjule dens emotes.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 sektion} other{{count} sektioner}}",
-  "showEmoteSection": "Vis"
+  "showEmoteSection": "Vis",
+  "emotes": "Emotes",
+  "emoteSections": "Emote-sektioner",
+  "emoteSectionsSubtitle": "Sortér og skjul emote-panelets sektioner",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 sektion skjult} other{{count} sektioner skjult}}",
+  "emoteSectionHidden": "Skjult",
+  "arrangeEmoteSections": "Arrangér sektioner",
+  "resetEmoteSectionOrder": "Nulstil rækkefølge"
 }

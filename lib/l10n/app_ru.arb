@@ -392,8 +392,12 @@
   "sendMessage": "Отправить",
   "hideEmoteSection": "Скрыть эти эмоуты",
   "hideEmoteSectionSubtitle": "Они пропадут из панели эмоутов и подсказок. Если ввести название эмоута, он всё равно отправится.",
-  "hiddenEmoteSections": "Скрытые разделы эмоутов",
-  "hiddenEmoteSectionsNone": "Удерживайте раздел в панели эмоутов, чтобы скрыть его эмоуты.",
-  "hiddenEmoteSectionsCount": "{count, plural, one{{count} раздел} few{{count} раздела} many{{count} разделов} other{{count} раздела}}",
-  "showEmoteSection": "Показать"
+  "showEmoteSection": "Показать",
+  "emotes": "Эмоуты",
+  "emoteSections": "Разделы эмоутов",
+  "emoteSectionsSubtitle": "Сортировка и скрытие разделов панели эмоутов",
+  "emoteSectionsHiddenCount": "{count, plural, one{{count} раздел скрыт} few{{count} раздела скрыто} many{{count} разделов скрыто} other{{count} раздела скрыто}}",
+  "emoteSectionHidden": "Скрыт",
+  "arrangeEmoteSections": "Упорядочить разделы",
+  "resetEmoteSectionOrder": "Сбросить порядок"
 }

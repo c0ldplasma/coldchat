@@ -392,8 +392,12 @@
   "sendMessage": "Envia",
   "hideEmoteSection": "Amaga aquestes emoticones",
   "hideEmoteSectionSubtitle": "Ja no surten al tauler d'emoticones ni als suggeriments. Si escrius el nom d'una emoticona, s'envia igualment.",
-  "hiddenEmoteSections": "Seccions d'emoticones amagades",
-  "hiddenEmoteSectionsNone": "Mantén premuda una secció del tauler d'emoticones per amagar-ne les emoticones.",
-  "hiddenEmoteSectionsCount": "{count, plural, =1{1 secció} other{{count} seccions}}",
-  "showEmoteSection": "Mostra"
+  "showEmoteSection": "Mostra",
+  "emotes": "Emoticones",
+  "emoteSections": "Seccions d'emoticones",
+  "emoteSectionsSubtitle": "Ordena i amaga les seccions del tauler d'emoticones",
+  "emoteSectionsHiddenCount": "{count, plural, =1{1 secció amagada} other{{count} seccions amagades}}",
+  "emoteSectionHidden": "Amagada",
+  "arrangeEmoteSections": "Ordena les seccions",
+  "resetEmoteSectionOrder": "Restableix l'ordre"
 }
