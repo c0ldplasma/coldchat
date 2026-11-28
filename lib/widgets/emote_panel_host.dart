@@ -202,7 +202,13 @@ class _EmotePanelHostState extends State<EmotePanelHost> with SingleTickerProvid
     // panel while handing over.
     // Without a search the emotes reach the bottom edge, scrolling on below the section bar floating where the
     // channel switcher's capsule sits.
-    final contentBottom = searching ? math.max(keyboard, media.viewPadding.bottom) : 0.0;
+    // After the search let go of the keyboard, the content follows the keyboard alone down to 0, so the section bar
+    // that is back rides down on it all the way instead of stopping above the home indicator.
+    final contentBottom = !searching
+        ? 0.0
+        : _searchFocus.hasFocus
+        ? math.max(keyboard, media.viewPadding.bottom)
+        : keyboard;
     final sectionBarInset = ChannelSwitcher.bottomInset(context);
     return BlocListener<EmotePanelCubit, EmotePanel>(
       listener: _onPanelChanged,
