@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} λ.",
   "durationSecondsShort": "{count} δ.",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Παρακολούθηση στο Twitch"
+  "watchOnTwitch": "Παρακολούθηση στο Twitch",
+  "home": "Αρχική",
+  "attachPhoto": "Κοινοποίηση φωτογραφίας",
+  "emoteMenu": "Emotes",
+  "sendMessage": "Αποστολή"
 }

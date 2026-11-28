@@ -164,4 +164,23 @@ void main() {
       });
     });
   });
+
+  group('currentSectionIndex', () {
+    test('is the last section whose start has reached the top', () {
+      const starts = [60.0, 400.0, 900.0];
+      expect(currentSectionIndex(starts, 0.0), 0, reason: 'above the first section, at the search field');
+      expect(currentSectionIndex(starts, 60.0), 0);
+      expect(currentSectionIndex(starts, 398.0), 0);
+      expect(currentSectionIndex(starts, 400.0), 1);
+      expect(currentSectionIndex(starts, 5000.0), 2);
+    });
+
+    test('takes a section scrolled to with a rounding error as reached', () {
+      expect(currentSectionIndex([0.0, 400.0], 399.5), 1);
+    });
+
+    test('is null without sections', () {
+      expect(currentSectionIndex(const [], 100.0), isNull);
+    });
+  });
 }

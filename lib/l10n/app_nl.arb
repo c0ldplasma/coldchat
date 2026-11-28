@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Bekijken op Twitch"
+  "watchOnTwitch": "Bekijken op Twitch",
+  "home": "Start",
+  "attachPhoto": "Foto delen",
+  "emoteMenu": "Emotes",
+  "sendMessage": "Versturen"
 }

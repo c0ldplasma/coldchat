@@ -38,6 +38,9 @@ class SettingsRepository {
   static const String chatHistoryKey = 'recentMessagesChatHistory';
   static const String whisperHistoryHintDismissedKey = 'whisperHistoryHintDismissed';
 
+  /// The on-screen keyboard's height when last seen open, which the emote panel takes in its place.
+  static const String keyboardHeightKey = 'keyboardHeight';
+
   /// Set once the full-screen start screen was left, by logging in or "Continue without logging in".
   static const String startScreenDoneKey = 'startScreenDone';
 
@@ -181,6 +184,14 @@ class SettingsRepository {
   bool get whisperHistoryHintDismissed => _box.get(whisperHistoryHintDismissedKey) == true;
 
   Future<void> dismissWhisperHistoryHint() => _box.put(whisperHistoryHintDismissedKey, true);
+
+  /// The keyboard's height when last seen open, or null before it ever was.
+  double? get keyboardHeight {
+    final value = _box.get(keyboardHeightKey);
+    return value is num && value > 0 ? value.toDouble() : null;
+  }
+
+  Future<void> setKeyboardHeight(double height) => _box.put(keyboardHeightKey, height);
 
   /// Whether the full-screen start screen of a fresh install was left; it never shows again then.
   bool get startScreenDone => _box.get(startScreenDoneKey) == true;

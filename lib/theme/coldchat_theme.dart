@@ -208,16 +208,17 @@ abstract final class ColdChatTheme {
 /// Colors for ColdChat's own surfaces that [ColorScheme] has no role for. Widgets read these instead of picking
 /// scheme colors or checking the brightness themselves, so every preset and both modes stay consistent.
 class ChatColors extends ThemeExtension<ChatColors> {
-  /// The tab bar and the message composer at the bottom of the screen.
-  final Color bar;
-  final Color onBar;
+  /// The translucent controls floating over the chat and the home tab at the bottom of the screen: the channel
+  /// switcher, the composer and the cards above it. Blurred content shows through ([Glass]); [glassBorder] is the
+  /// hairline that keeps their edge visible over a background of the same tone.
+  final Color glass;
+  final Color glassBorder;
 
   /// Bottom sheets (settings, account, user cards).
   final Color sheet;
 
-  /// Pills and fields that float over the chat and the home tab: the scroll-down button, the notification pill, the
-  /// search fields. A few tones lighter than the chat, like Material 3's search bar; over moving content, pair it with
-  /// [raisedShadow].
+  /// Fields and pills raised a little off the page, like the home tab's channel search: a few tones lighter than the
+  /// chat, like Material 3's search bar. Controls floating over moving content use [glass] instead.
   final Color raised;
 
   static const List<BoxShadow> raisedShadow = [
@@ -250,8 +251,8 @@ class ChatColors extends ThemeExtension<ChatColors> {
   final Brightness brightness;
 
   const ChatColors({
-    required this.bar,
-    required this.onBar,
+    required this.glass,
+    required this.glassBorder,
     required this.sheet,
     required this.raised,
     required this.link,
@@ -262,10 +263,14 @@ class ChatColors extends ThemeExtension<ChatColors> {
   factory ChatColors.from(ColorScheme scheme, {bool oledBlack = false}) {
     final dark = scheme.brightness == Brightness.dark;
     return ChatColors(
-      // Darker than the chat in dark mode, which is the look ColdChat always had; a light grey in light mode. On a
-      // black chat (OLED) a little lighter instead, since nothing is darker than black.
-      bar: oledBlack ? scheme.surfaceContainer : (dark ? scheme.surfaceContainerLowest : scheme.surfaceContainer),
-      onBar: scheme.onSurface,
+      // A few tones lighter than the chat in dark mode and white in light mode, like iOS's bars, see-through enough
+      // for the blurred messages behind to show. On OLED black more opaque, so it doesn't look grey and washed out.
+      glass: oledBlack
+          ? scheme.surfaceContainerHigh.withValues(alpha: 0.86)
+          : (dark
+                ? scheme.surfaceContainerHigh.withValues(alpha: 0.74)
+                : scheme.surfaceContainerLowest.withValues(alpha: 0.78)),
+      glassBorder: scheme.outlineVariant.withValues(alpha: dark ? 0.45 : 0.6),
       // One grey for everything that sits above the chat, sheets and floating pills alike.
       sheet: scheme.surfaceContainer,
       raised: scheme.surfaceContainer,
@@ -296,16 +301,16 @@ class ChatColors extends ThemeExtension<ChatColors> {
 
   @override
   ChatColors copyWith({
-    Color? bar,
-    Color? onBar,
+    Color? glass,
+    Color? glassBorder,
     Color? sheet,
     Color? raised,
     Color? link,
     Color? muted,
     Brightness? brightness,
   }) => ChatColors(
-    bar: bar ?? this.bar,
-    onBar: onBar ?? this.onBar,
+    glass: glass ?? this.glass,
+    glassBorder: glassBorder ?? this.glassBorder,
     sheet: sheet ?? this.sheet,
     raised: raised ?? this.raised,
     link: link ?? this.link,
@@ -317,8 +322,8 @@ class ChatColors extends ThemeExtension<ChatColors> {
   ChatColors lerp(ChatColors? other, double t) => other == null
       ? this
       : ChatColors(
-          bar: Color.lerp(bar, other.bar, t)!,
-          onBar: Color.lerp(onBar, other.onBar, t)!,
+          glass: Color.lerp(glass, other.glass, t)!,
+          glassBorder: Color.lerp(glassBorder, other.glassBorder, t)!,
           sheet: Color.lerp(sheet, other.sheet, t)!,
           raised: Color.lerp(raised, other.raised, t)!,
           link: Color.lerp(link, other.link, t)!,
@@ -331,8 +336,8 @@ class ChatColors extends ThemeExtension<ChatColors> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ChatColors &&
-          other.bar == bar &&
-          other.onBar == onBar &&
+          other.glass == glass &&
+          other.glassBorder == glassBorder &&
           other.sheet == sheet &&
           other.raised == raised &&
           other.link == link &&
@@ -340,7 +345,7 @@ class ChatColors extends ThemeExtension<ChatColors> {
           other.brightness == brightness;
 
   @override
-  int get hashCode => Object.hash(bar, onBar, sheet, raised, link, muted, brightness);
+  int get hashCode => Object.hash(glass, glassBorder, sheet, raised, link, muted, brightness);
 }
 
 ColorScheme _toColorScheme(DynamicScheme s, Brightness brightness) {

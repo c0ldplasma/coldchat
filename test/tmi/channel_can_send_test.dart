@@ -146,4 +146,11 @@ void main() {
       ]);
     });
   });
+
+  test('only a channel without a login shows the login button; a whisper conversation keeps its field', () {
+    expect(composerNeedsLogin(SendAvailability.needsLogin, isWhisper: false), isTrue);
+    expect(composerNeedsLogin(SendAvailability.connecting, isWhisper: false), isFalse);
+    expect(composerNeedsLogin(SendAvailability.ready, isWhisper: false), isFalse);
+    expect(composerNeedsLogin(SendAvailability.needsLogin, isWhisper: true), isFalse);
+  });
 }

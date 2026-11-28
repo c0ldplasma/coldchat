@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Sledovat na Twitchi"
+  "watchOnTwitch": "Sledovat na Twitchi",
+  "home": "Domů",
+  "attachPhoto": "Sdílet fotku",
+  "emoteMenu": "Emotes",
+  "sendMessage": "Odeslat"
 }

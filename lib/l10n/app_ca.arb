@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} min",
   "durationSecondsShort": "{count} s",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Mira-ho a Twitch"
+  "watchOnTwitch": "Mira-ho a Twitch",
+  "home": "Inici",
+  "attachPhoto": "Comparteix una foto",
+  "emoteMenu": "Emotes",
+  "sendMessage": "Envia"
 }

@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} דק׳",
   "durationSecondsShort": "{count} שנ׳",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "צפייה ב-Twitch"
+  "watchOnTwitch": "צפייה ב-Twitch",
+  "home": "בית",
+  "attachPhoto": "שיתוף תמונה",
+  "emoteMenu": "אימוטים",
+  "sendMessage": "שליחה"
 }

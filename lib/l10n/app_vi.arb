@@ -385,5 +385,9 @@
   "durationMinutesShort": "{count} phút",
   "durationSecondsShort": "{count} giây",
   "durationPair": "{larger} {smaller}",
-  "watchOnTwitch": "Xem trên Twitch"
+  "watchOnTwitch": "Xem trên Twitch",
+  "home": "Trang chủ",
+  "attachPhoto": "Chia sẻ ảnh",
+  "emoteMenu": "Emote",
+  "sendMessage": "Gửi"
 }

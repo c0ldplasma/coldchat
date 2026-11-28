@@ -121,14 +121,23 @@ also run without warnings; treat any new one as something to fix, not as noise.
 All colors come from `lib/theme/coldchat_theme.dart`. Backgrounds are always Indigo's palette; the user's accent
 color (Settings → Accent color; default Ice, the blue of the app icon) only changes `colorScheme.primary` and its
 containers, and OLED black (Settings →
-Appearance) makes the dark chat background pure black. Colors ColorScheme has no role for (tab bar and composer,
-sheets, raised pills, links, chatter name readability) are in the `ChatColors` theme extension: use
+Appearance) makes the dark chat background pure black. Colors ColorScheme has no role for (the glass of the floating
+controls, sheets, raised pills, links, chatter name readability) are in the `ChatColors` theme extension: use
 `ChatColors.of(context)` instead of picking scheme colors or checking the brightness in a widget. Don't wrap widgets
 in a `Theme(...)` to recolor them: a bottom sheet opened below one keeps a frozen copy of it and stops following
 light/dark switches. Pass colors with `DefaultTextStyle`/`IconTheme` instead, like `Surface` does.
 Colors with a fixed meaning in every accent and mode (the live dot, the unread badge, ban/unban, Twitch purple) are
 static constants on `ChatColors`. `test/architecture_test.dart` fails on a `Color(0x…)` or a named `Colors.*` outside
 `lib/theme/`; only black, white and transparent are allowed there (scrims and text over stream thumbnails).
+
+Controls that float over moving content (the composer, the channel switcher, the chat's and home tab's top pills, the
+emote panel's section bar) are `Glass` (`lib/components/glass.dart`): blurred and tinted with `ChatColors.glass`. Fade
+one with its `strength`, not an `Opacity`, which doesn't fade the blur. The content scrolls on under them, with an
+`EdgeFade` (`lib/components/edge_fade.dart`) at the screen's edges instead of an opaque bar; nothing covers the status
+bar. Round buttons use `Pressable` (shrinks when pressed, no ripple). The emote panel isn't part of the chat view: the
+home page shows it in the keyboard's place (`EmotePanelHost`, state in `EmotePanelCubit`), as tall as the keyboard
+(learned and saved in `SettingsRepository.keyboardHeight`), and emotes go to the composer through
+`ComposerDraft.insert`.
 
 Gotcha: `ConnectionState` collides with Flutter's own `ConnectionState` from `package:flutter/material.dart`.
 In any widget file, import the TMI one with a prefix:

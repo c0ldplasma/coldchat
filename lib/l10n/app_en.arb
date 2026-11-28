@@ -504,5 +504,21 @@
   "watchOnTwitch": "Watch on Twitch",
   "@watchOnTwitch": {
     "description": "Channel sheet, while the channel is live: opens the stream in the Twitch app, or on twitch.tv without it."
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Accessibility label of the home tab (house icon) in the channel switcher at the bottom."
+  },
+  "attachPhoto": "Share a photo",
+  "@attachPhoto": {
+    "description": "Accessibility label of the round + button left of the message field: share a photo in chat."
+  },
+  "emoteMenu": "Emotes",
+  "@emoteMenu": {
+    "description": "Accessibility label of the emote button in the message field, which opens the emote panel."
+  },
+  "sendMessage": "Send",
+  "@sendMessage": {
+    "description": "Accessibility label of the round send button (arrow up) in the message field."
   }
 }

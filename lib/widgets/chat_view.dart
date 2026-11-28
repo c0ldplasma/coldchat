@@ -4,11 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../components/edge_fade.dart';
+import '../components/glass.dart';
+import '../components/pressable.dart';
 import '../components/size_reporter.dart';
-import '../components/surface.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
-import '../theme/coldchat_theme.dart';
 import '../tmi/channel/channel.dart';
 import '../tmi/channel/channel_message.dart';
 import '../tmi/channel/channel_messages.dart';
@@ -192,6 +193,14 @@ class _ChatViewState extends State<ChatView> {
                 ),
               ),
             ),
+            // Behind the status bar and the search and avatar pills, which the messages scroll under.
+            if ((widget.padding?.top ?? 0.0) > 0.0)
+              Positioned(
+                left: 0.0,
+                right: 0.0,
+                top: 0.0,
+                child: EdgeFade.top(height: (widget.padding?.top ?? 0.0) + 72.0),
+              ),
             SizeReporter(
               onSize: _onOverlaySize,
               child: SafeArea(
@@ -206,44 +215,38 @@ class _ChatViewState extends State<ChatView> {
                         child: IgnorePointer(
                           ignoring: !chromeShown,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(128.0),
-                                boxShadow: ChatColors.raisedShadow,
-                              ),
-                              child: Surface(
-                                borderRadius: BorderRadius.circular(128.0),
-                                type: SurfaceType.surfaceVariant,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: TextField(
-                                    controller: searchController,
-                                    focusNode: searchFocusNode,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: AppLocalizations.of(context).search,
-                                      isDense: true,
-                                      // Like the home tab's search field: accent icon on the neutral pill.
-                                      prefixIcon: Padding(
-                                        padding: const EdgeInsetsDirectional.only(end: 8.0),
-                                        child: Icon(
-                                          Icons.search,
-                                          size: 20.0,
-                                          color: Theme.of(context).colorScheme.primary,
-                                        ),
+                            // 12 points from the edge, like the composer and the channel switcher.
+                            padding: const EdgeInsets.fromLTRB(12.0, 8.0, 8.0, 8.0),
+                            // Glass, like the composer and the channel switcher floating over the bottom.
+                            child: Glass(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                child: TextField(
+                                  controller: searchController,
+                                  focusNode: searchFocusNode,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: AppLocalizations.of(context).search,
+                                    isDense: true,
+                                    // Like the home tab's search field: accent icon on the neutral pill.
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsetsDirectional.only(end: 8.0),
+                                      child: Icon(
+                                        Icons.search,
+                                        size: 20.0,
+                                        color: Theme.of(context).colorScheme.primary,
                                       ),
-                                      prefixIconConstraints: const BoxConstraints(),
-                                      suffixIconConstraints: const BoxConstraints(),
-                                      suffixIcon: searching
-                                          ? GestureDetector(
-                                              onTap: () => setState(() => searchController.clear()),
-                                              child: const Icon(Icons.close_rounded, size: 20.0),
-                                            )
-                                          : null,
                                     ),
-                                    onChanged: (text) => setState(() {}),
+                                    prefixIconConstraints: const BoxConstraints(),
+                                    suffixIconConstraints: const BoxConstraints(),
+                                    suffixIcon: searching
+                                        ? GestureDetector(
+                                            onTap: () => setState(() => searchController.clear()),
+                                            child: const Icon(Icons.close_rounded, size: 20.0),
+                                          )
+                                        : null,
                                   ),
+                                  onChanged: (text) => setState(() {}),
                                 ),
                               ),
                             ),
@@ -255,8 +258,8 @@ class _ChatViewState extends State<ChatView> {
                       ChatAvatarVisibility(
                         chromeShown: chromeShown,
                         child: const Padding(
-                          padding: EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                          child: AvatarButton(floating: true),
+                          padding: EdgeInsets.only(top: 8.0, right: 12.0, bottom: 8.0),
+                          child: AvatarButton(),
                         ),
                       ),
                   ],
@@ -264,8 +267,10 @@ class _ChatViewState extends State<ChatView> {
               ),
             ),
             Positioned(
-              bottom: 24.0,
-              right: 24.0,
+              // Above the composer and the channel switcher floating over the chat.
+              bottom: (widget.padding?.bottom ?? 0.0) + 12.0,
+              // Lined up with the channel switcher's search button below, 12 points from the edge.
+              right: 12.0,
               child: SafeArea(
                 bottom: false,
                 child: AnimatedOpacity(
@@ -273,23 +278,20 @@ class _ChatViewState extends State<ChatView> {
                   opacity: scrollMessages != null ? 1.0 : 0.0,
                   child: IgnorePointer(
                     ignoring: scrollMessages == null,
-                    // Styled like the chat's other floating controls (the search pill), with a shadow to lift it off
-                    // the messages behind it.
-                    child: DecoratedBox(
-                      decoration: const BoxDecoration(shape: BoxShape.circle, boxShadow: ChatColors.raisedShadow),
-                      child: Surface(
-                        onTap: () {
-                          scrollMessages = null;
-                          setState(() {});
-                          WidgetsBinding.instance.scheduleFrameCallback((_) {
-                            scrollController.jumpTo(scrollController.position.minScrollExtent);
-                          });
-                          searchController.text = '';
-                        },
-                        borderRadius: BorderRadius.circular(128.0),
-                        type: SurfaceType.surfaceVariant,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
+                    // A round glass button like the composer's, over the messages it scrolls.
+                    child: Pressable(
+                      onTap: () {
+                        scrollMessages = null;
+                        setState(() {});
+                        WidgetsBinding.instance.scheduleFrameCallback((_) {
+                          scrollController.jumpTo(scrollController.position.minScrollExtent);
+                        });
+                        searchController.text = '';
+                      },
+                      child: Glass(
+                        shape: const CircleBorder(),
+                        child: SizedBox.square(
+                          dimension: 44.0,
                           child: Icon(Icons.keyboard_arrow_down_rounded, color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
