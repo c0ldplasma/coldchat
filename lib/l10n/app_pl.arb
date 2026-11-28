@@ -389,5 +389,11 @@
   "home": "Start",
   "attachPhoto": "Udostępnij zdjęcie",
   "emoteMenu": "Emotki",
-  "sendMessage": "Wyślij"
+  "sendMessage": "Wyślij",
+  "hideEmoteSection": "Ukryj te emotki",
+  "hideEmoteSectionSubtitle": "Nie będą widoczne w panelu emotek ani w podpowiedziach. Wpisanie nazwy emotki nadal ją wysyła.",
+  "hiddenEmoteSections": "Ukryte sekcje emotek",
+  "hiddenEmoteSectionsNone": "Przytrzymaj sekcję kanału w panelu emotek, aby ukryć jego emotki.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanał} few{{count} kanały} many{{count} kanałów} other{{count} kanału}}",
+  "showEmoteSection": "Pokaż"
 }

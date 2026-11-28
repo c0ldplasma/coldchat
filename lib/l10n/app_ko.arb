@@ -389,5 +389,11 @@
   "home": "홈",
   "attachPhoto": "사진 공유",
   "emoteMenu": "이모트",
-  "sendMessage": "보내기"
+  "sendMessage": "보내기",
+  "hideEmoteSection": "이 이모트 숨기기",
+  "hideEmoteSectionSubtitle": "이모트 패널과 추천 목록에 표시되지 않습니다. 이모트 이름을 입력하면 그래도 전송됩니다.",
+  "hiddenEmoteSections": "숨긴 이모트 섹션",
+  "hiddenEmoteSectionsNone": "이모트 패널에서 채널 섹션을 길게 누르면 그 채널의 이모트를 숨길 수 있습니다.",
+  "hiddenEmoteSectionsCount": "{count, plural, other{채널 {count}개}}",
+  "showEmoteSection": "표시"
 }

@@ -389,5 +389,11 @@
   "home": "Início",
   "attachPhoto": "Partilhar uma foto",
   "emoteMenu": "Emotes",
-  "sendMessage": "Enviar"
+  "sendMessage": "Enviar",
+  "hideEmoteSection": "Ocultar estes emotes",
+  "hideEmoteSectionSubtitle": "Deixam de aparecer no painel de emotes e nas sugestões. Escrever o nome de um emote continua a enviá-lo.",
+  "hiddenEmoteSections": "Secções de emotes ocultas",
+  "hiddenEmoteSectionsNone": "Mantém premida a secção de um canal no painel de emotes para ocultar os seus emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 canal} other{{count} canais}}",
+  "showEmoteSection": "Mostrar"
 }

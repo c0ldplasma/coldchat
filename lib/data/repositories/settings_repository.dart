@@ -41,6 +41,10 @@ class SettingsRepository {
   /// The on-screen keyboard's height when last seen open, which the emote panel takes in its place.
   static const String keyboardHeightKey = 'keyboardHeight';
 
+  /// The channels whose emotes the emote picker and the suggestions leave out: a map from the channel's user id to its
+  /// name at the time it was hidden, for the list in Settings.
+  static const String hiddenEmoteChannelsKey = 'hiddenEmoteChannels';
+
   /// Set once the full-screen start screen was left, by logging in or "Continue without logging in".
   static const String startScreenDoneKey = 'startScreenDone';
 
@@ -192,6 +196,25 @@ class SettingsRepository {
   }
 
   Future<void> setKeyboardHeight(double height) => _box.put(keyboardHeightKey, height);
+
+  /// The channels whose emotes are hidden from the picker and the suggestions, by user id, with their names.
+  Map<String, String> get hiddenEmoteChannels {
+    final value = _box.get(hiddenEmoteChannelsKey);
+    if (value is! Map) return const {};
+    return {
+      for (final MapEntry(:key, :value) in value.entries)
+        if (key is String && value is String) key: value,
+    };
+  }
+
+  /// Hides the emotes of the channel [id], named [name], from the picker and the suggestions.
+  Future<void> hideEmoteChannel(String id, String name) =>
+      _box.put(hiddenEmoteChannelsKey, {...hiddenEmoteChannels, id: name});
+
+  /// Shows the emotes of the channel [id] again.
+  Future<void> showEmoteChannel(String id) => _box.put(hiddenEmoteChannelsKey, {...hiddenEmoteChannels}..remove(id));
+
+  late final Listenable hiddenEmoteChannelsChanges = BoxChanges(_box, keys: const [hiddenEmoteChannelsKey]);
 
   /// Whether the full-screen start screen of a fresh install was left; it never shows again then.
   bool get startScreenDone => _box.get(startScreenDoneKey) == true;

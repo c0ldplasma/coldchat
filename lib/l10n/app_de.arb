@@ -285,5 +285,11 @@
   "home": "Start",
   "attachPhoto": "Foto teilen",
   "emoteMenu": "Emotes",
-  "sendMessage": "Senden"
+  "sendMessage": "Senden",
+  "hideEmoteSection": "Diese Emotes ausblenden",
+  "hideEmoteSectionSubtitle": "Sie fehlen dann im Emote-Panel und in den Vorschlägen. Den Namen eines Emotes zu tippen, sendet es trotzdem.",
+  "hiddenEmoteSections": "Ausgeblendete Emote-Bereiche",
+  "hiddenEmoteSectionsNone": "Halte den Bereich eines Kanals im Emote-Panel gedrückt, um seine Emotes auszublenden.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 Kanal} other{{count} Kanäle}}",
+  "showEmoteSection": "Einblenden"
 }

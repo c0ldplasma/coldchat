@@ -34,6 +34,7 @@ import '../tools/browser_warmup.dart';
 import '../tools/composer/composer_send.dart';
 import '../tools/composer/composer_text.dart';
 import '../tools/emotes/autocompletion_matcher.dart';
+import '../tools/emotes/visible_emotes.dart';
 import 'chat/upload_queue_bar.dart';
 import 'chat_view.dart';
 import 'emoji_glyph.dart';
@@ -72,6 +73,7 @@ class ChannelViewState extends State<ChannelView> {
   final TextEditingController textEditingController = TextEditingController();
   // Keeps the autocompletion's emote and chatter lists between rebuilds, see [AutocompletionMatcher].
   final AutocompletionMatcher _autocompletion = AutocompletionMatcher();
+  final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
   StreamSubscription<UploadTask>? _uploadSubscription;
   StreamSubscription<String>? _mentionSubscription;
   StreamSubscription<String>? _insertionSubscription;
@@ -396,7 +398,11 @@ class ChannelViewState extends State<ChannelView> {
     final sortedEmotes = _autocompletion.emotes(
       channelEmotes: widget.channel.channelEmotes.state,
       globalEmotes: widget.channel.client.globals.emotes.state,
-      userEmotes: widget.channel.client.globals.twitchUserEmotes.state,
+      // Without the emotes of channels hidden in the emote picker.
+      userEmotes: _visibleUserEmotes.of(
+        widget.channel.client.globals.twitchUserEmotes.state,
+        context.read<SettingsRepository>().hiddenEmoteChannels.keys.toSet(),
+      ),
       // As typed: emote names are case-sensitive, so `Kappa` ranks above `kappa` for "Kappa".
       search: typed,
       needsColon: chatSettings.emoteAutocompletionWithColon,

@@ -22,13 +22,14 @@ final _sevenTv = _Source('7TV');
 final _bttv = _Source('BetterTTV');
 final _emoji = EmojiSource(EmojiDataApi(offlineApi()));
 
-Emote _emote(String name, ChatSource source, {String? category, String? categoryIcon}) => Emote(
+Emote _emote(String name, ChatSource source, {String? category, String? categoryIcon, String? ownerId}) => Emote(
   id: name,
   name: name,
   mipmap: ['https://example.com/$name'],
   source: source,
   category: category,
   categoryIcon: categoryIcon,
+  ownerId: ownerId,
 );
 
 /// The titles of [sections] with the names of their emotes.
@@ -99,8 +100,8 @@ void main() {
         globalEmotes: const [],
         userEmotes: [
           _emote('Kappa', _twitch),
-          _emote('ronniHi', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub'),
-          _emote('ronniBye', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub'),
+          _emote('ronniHi', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub', ownerId: '1'),
+          _emote('ronniBye', _twitch, category: 'Ronni', categoryIcon: 'https://example.com/ronni-sub', ownerId: '1'),
           _emote('forsenE', _twitch, category: 'forsen'),
         ],
       );
@@ -118,7 +119,9 @@ void main() {
           null,
         ],
       );
-      expect(sections.matching('bye').single.iconUrl, 'https://example.com/ronni-sub');
+      expect([for (final section in sections.sections) section.ownerId], [null, '1', null]);
+      final searched = sections.matching('bye').single;
+      expect((searched.iconUrl, searched.ownerId), ('https://example.com/ronni-sub', '1'));
     });
   });
 

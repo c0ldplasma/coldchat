@@ -389,5 +389,11 @@
   "home": "Domů",
   "attachPhoto": "Sdílet fotku",
   "emoteMenu": "Emotes",
-  "sendMessage": "Odeslat"
+  "sendMessage": "Odeslat",
+  "hideEmoteSection": "Skrýt tyto emoty",
+  "hideEmoteSectionSubtitle": "Nebudou v panelu emotů ani v návrzích. Když napíšeš název emotu, i tak se odešle.",
+  "hiddenEmoteSections": "Skryté sekce emotů",
+  "hiddenEmoteSectionsNone": "Podrž sekci kanálu v panelu emotů a skryješ jeho emoty.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanál} few{{count} kanály} other{{count} kanálů}}",
+  "showEmoteSection": "Zobrazit"
 }

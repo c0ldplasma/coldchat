@@ -520,5 +520,25 @@
   "sendMessage": "Send",
   "@sendMessage": {
     "description": "Accessibility label of the round send button (arrow up) in the message field."
+  },
+  "hideEmoteSection": "Hide these emotes",
+  "hideEmoteSectionSubtitle": "They're left out of the emote panel and the suggestions. Typing an emote's name still sends it.",
+  "hiddenEmoteSections": "Hidden emote sections",
+  "hiddenEmoteSectionsNone": "Long-press a channel's section in the emote panel to hide its emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 channel} other{{count} channels}}",
+  "showEmoteSection": "Show",
+  "@hideEmoteSection": {
+    "description": "Long-press action on a channel's section in the emote panel: hides that channel's Twitch emotes from the panel and autocomplete."
+  },
+  "@hiddenEmoteSectionsCount": {
+    "description": "Subtitle of Settings → Chat → Hidden emote sections: how many channels' emotes are hidden.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@showEmoteSection": {
+    "description": "Button next to a hidden channel in Settings → Chat → Hidden emote sections: shows its emotes again."
   }
 }

@@ -8,14 +8,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../components/glass.dart';
+import '../../components/modal.dart';
 import '../../data/emote.dart';
 import '../../data/emote_cache.dart';
+import '../../data/repositories/settings_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../../sheets/emote_section.dart';
 import '../../theme/coldchat_theme.dart';
 import '../../tmi/channel/channel.dart';
 import '../../tmi/client/client.dart';
 import '../../tmi/emotes.dart';
 import '../../tools/emotes/emote_picker_sections.dart';
+import '../../tools/emotes/visible_emotes.dart';
 import '../emoji_glyph.dart';
 
 class SectionHeaderDelegate extends SliverPersistentHeaderDelegate {
@@ -90,6 +94,7 @@ class _EmotePickerState extends State<EmotePicker> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   final EmotePickerSectionsCache sectionsCache = EmotePickerSectionsCache();
+  final VisibleEmotes _visibleUserEmotes = VisibleEmotes();
   // One key per section title, kept across rebuilds so the section headers aren't rebuilt from scratch every time;
   // the tab bar scrolls to a section by its key.
   final Map<String, GlobalKey> groupKeys = {};
@@ -186,14 +191,34 @@ class _EmotePickerState extends State<EmotePicker> {
     super.dispose();
   }
 
+  /// Long-pressing a channel's section offers hiding its emotes.
+  Future<void> _showSectionActions(EmoteSection section) async {
+    final channelId = section.ownerId;
+    if (channelId == null) return;
+    await Modal.show(
+      context: context,
+      child: EmoteSectionModal(channelId: channelId, channelName: section.title),
+    );
+  }
+
   // Emotes keep loading after the picker opens (Twitch's only arrive once the chat connection is up), so it rebuilds
-  // when any list changes.
+  // when any list changes, and when a channel's emotes are hidden or shown again.
   @override
-  Widget build(BuildContext context) => BlocBuilder<Emotes, List<Emote>>(
+  Widget build(BuildContext context) {
+    final settings = context.read<SettingsRepository>();
+    return ListenableBuilder(
+      listenable: settings.hiddenEmoteChannelsChanges,
+      builder: (context, _) => _buildWithEmotes(context, settings.hiddenEmoteChannels.keys.toSet()),
+    );
+  }
+
+  Widget _buildWithEmotes(BuildContext context, Set<String> hiddenChannels) => BlocBuilder<Emotes, List<Emote>>(
     bloc: widget.client.globals.emotes,
     builder: (context, globalEmotes) => BlocBuilder<Emotes, List<Emote>>(
       bloc: widget.client.globals.twitchUserEmotes,
-      builder: (context, userEmotes) {
+      builder: (context, allUserEmotes) {
+        // Twitch's emotes are the only ones of a channel ([Emote.ownerId]), so the only ones that can be hidden.
+        final userEmotes = _visibleUserEmotes.of(allUserEmotes, hiddenChannels);
         final channelEmotes = widget.channel?.channelEmotes;
         if (channelEmotes == null) {
           return _buildPicker(context, channelEmotes: const [], globalEmotes: globalEmotes, userEmotes: userEmotes);
@@ -315,25 +340,29 @@ class _EmotePickerState extends State<EmotePicker> {
                       // section bar shows which section is in view.
                       SliverToBoxAdapter(
                         key: groupKeys[section.title],
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
-                          child: Row(
-                            children: [
-                              if (section.iconUrl case final iconUrl?) ...[
-                                SizedBox.square(dimension: 18.0, child: _iconImage(iconUrl)),
-                                const SizedBox(width: 6.0),
-                              ],
-                              Flexible(
-                                child: Text(
-                                  section.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w600,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onLongPress: section.ownerId == null ? null : () => _showSectionActions(section),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 4.0),
+                            child: Row(
+                              children: [
+                                if (section.iconUrl case final iconUrl?) ...[
+                                  SizedBox.square(dimension: 18.0, child: _iconImage(iconUrl)),
+                                  const SizedBox(width: 6.0),
+                                ],
+                                Flexible(
+                                  child: Text(
+                                    section.title,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -443,6 +472,7 @@ class _EmotePickerState extends State<EmotePicker> {
                               child: InkWell(
                                 customBorder: const StadiumBorder(),
                                 onTap: () => _scrollToSection(tab.title),
+                                onLongPress: tab.ownerId == null ? null : () => _showSectionActions(tab),
                                 // The section in view sits on a tinted pill, like the channel switcher's tab.
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 200),

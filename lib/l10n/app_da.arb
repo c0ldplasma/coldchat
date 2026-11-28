@@ -389,5 +389,11 @@
   "home": "Hjem",
   "attachPhoto": "Del et billede",
   "emoteMenu": "Emotes",
-  "sendMessage": "Send"
+  "sendMessage": "Send",
+  "hideEmoteSection": "Skjul disse emotes",
+  "hideEmoteSectionSubtitle": "De vises ikke længere i emote-panelet og forslagene. Skriver du en emotes navn, sendes den stadig.",
+  "hiddenEmoteSections": "Skjulte emote-sektioner",
+  "hiddenEmoteSectionsNone": "Hold en kanals sektion nede i emote-panelet for at skjule dens emotes.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanal} other{{count} kanaler}}",
+  "showEmoteSection": "Vis"
 }

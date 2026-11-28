@@ -65,16 +65,25 @@ void main() {
   });
 
   group('subscriberBadgeUrl', () {
-    test('is the base tier 1 badge, the lowest month count below the tier 2 and 3 versions', () {
+    test('is the tier 1 badge for 24 months, else 12 months, else the fewest months', () {
+      final all = {
+        '0': _badge('m0'),
+        '3': _badge('m3'),
+        '12': _badge('m12'),
+        '24': _badge('m24'),
+        '36': _badge('m36'),
+        '2024': _badge('t2m24'),
+      };
+      expect(subscriberBadgeUrl({'subscriber': all}), 'm24/4');
       expect(
         subscriberBadgeUrl({
-          'subscriber': {'2000': _badge('t2'), '12': _badge('m12'), '3': _badge('m3'), '0': _badge('m0')},
+          'subscriber': {...all}..remove('24'),
         }),
-        'm0/4',
+        'm12/4',
       );
       expect(
         subscriberBadgeUrl({
-          'subscriber': {'2003': _badge('t2'), '6': _badge('m6'), '3': _badge('m3')},
+          'subscriber': {'2024': _badge('t2m24'), '6': _badge('m6'), '3': _badge('m3')},
         }),
         'm3/4',
       );
@@ -122,6 +131,8 @@ void main() {
         ('Ronni', 'ronniBye', 'https://badge/ronni'),
       ]);
       expect(emotes.map((emote) => emote.source), everyElement(same(_twitch)));
+      // The channel, to hide its section by.
+      expect([for (final emote in emotes) emote.ownerId], [null, null, '2', '2', '1', '1']);
       expect(emotes.first.mipmap, ['https://static-cdn.jtvnw.net/Kappa/1.0']);
     });
 
@@ -133,6 +144,7 @@ void main() {
       );
 
       expect(_described(emotes), [(null, 'Kappa', null), (null, 'ronniHi', null)]);
+      expect(emotes.last.ownerId, isNull);
     });
   });
 

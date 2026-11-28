@@ -33,6 +33,7 @@ class EmoteBadgeCache {
     'provider': e.source.name,
     'category': e.category,
     'categoryIcon': e.categoryIcon,
+    'ownerId': e.ownerId,
   };
 
   Emote? _emoteFromJson(Map<String, dynamic> m) {
@@ -51,6 +52,7 @@ class EmoteBadgeCache {
       source: source,
       category: m['category'] as String?,
       categoryIcon: m['categoryIcon'] as String?,
+      ownerId: m['ownerId'] as String?,
     );
   }
 

@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:coldchat/api/emojis/emoji_data.dart';
 import 'package:coldchat/data/emote.dart';
+import 'package:coldchat/data/repositories/settings_repository.dart';
 import 'package:coldchat/l10n/app_localizations.dart';
 import 'package:coldchat/sources/emoji_source.dart';
 import 'package:coldchat/theme/coldchat_theme.dart';
 import 'package:coldchat/widgets/chat/emote_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce/hive_ce.dart';
+import 'package:provider/provider.dart';
 
 import '../../api/fake_api.dart';
 import '../../tmi/client/fake_client.dart';
@@ -17,6 +22,20 @@ Emote _emojiEmote(String name, String code, String category) =>
     Emote(id: name, name: name, code: code, mipmap: const [''], source: _emoji, category: category);
 
 void main() {
+  late Directory tempDir;
+  late SettingsRepository settings;
+
+  setUpAll(() async {
+    tempDir = Directory.systemTemp.createTempSync('coldchat_emote_picker_test');
+    Hive.init(tempDir.path);
+    settings = SettingsRepository(await Hive.openBox<dynamic>('Settings'));
+  });
+
+  tearDownAll(() async {
+    await Hive.close();
+    tempDir.deleteSync(recursive: true);
+  });
+
   testWidgets('shows newly loaded emotes and filters by the search', (tester) async {
     final client = FakeClient();
     addTearDown(client.globals.emotes.close);
@@ -32,14 +51,17 @@ void main() {
         theme: ColdChatTheme.build(ColdChatTheme.defaultAccent, Brightness.dark),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: Material(
-          child: SizedBox(
-            height: 350.0,
-            child: EmotePicker(
-              client: client,
-              getFieldInput: () => '',
-              setFieldInput: (_) {},
-              insertFieldInput: inserted.add,
+        home: Provider<SettingsRepository>.value(
+          value: settings,
+          child: Material(
+            child: SizedBox(
+              height: 350.0,
+              child: EmotePicker(
+                client: client,
+                getFieldInput: () => '',
+                setFieldInput: (_) {},
+                insertFieldInput: inserted.add,
+              ),
             ),
           ),
         ),

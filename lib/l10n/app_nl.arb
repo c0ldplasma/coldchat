@@ -389,5 +389,11 @@
   "home": "Start",
   "attachPhoto": "Foto delen",
   "emoteMenu": "Emotes",
-  "sendMessage": "Versturen"
+  "sendMessage": "Versturen",
+  "hideEmoteSection": "Deze emotes verbergen",
+  "hideEmoteSectionSubtitle": "Ze staan dan niet meer in het emotepaneel en de suggesties. De naam van een emote typen verstuurt hem nog steeds.",
+  "hiddenEmoteSections": "Verborgen emotesecties",
+  "hiddenEmoteSectionsNone": "Houd de sectie van een kanaal in het emotepaneel ingedrukt om de emotes ervan te verbergen.",
+  "hiddenEmoteSectionsCount": "{count, plural, =1{1 kanaal} other{{count} kanalen}}",
+  "showEmoteSection": "Tonen"
 }

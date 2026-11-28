@@ -27,7 +27,10 @@ class EmoteSection {
   /// The image for the section bar, e.g. a channel's subscriber badge: the first [Emote.categoryIcon] of its emotes.
   final String? iconUrl;
 
-  const EmoteSection(this.title, this.emotes, {this.iconUrl});
+  /// The channel whose emotes these are, when the section is a channel's (see [Emote.ownerId]): it can be hidden.
+  final String? ownerId;
+
+  const EmoteSection(this.title, this.emotes, {this.iconUrl, this.ownerId});
 }
 
 /// The emote picker's sections for one set of emote lists, and which of their emotes match a search.
@@ -75,6 +78,7 @@ class EmotePickerSections {
             group.key,
             group.value,
             iconUrl: group.value.map((emote) => emote.categoryIcon).nonNulls.firstOrNull,
+            ownerId: group.value.map((emote) => emote.ownerId).nonNulls.firstOrNull,
           ),
       ],
       [
@@ -98,7 +102,9 @@ class EmotePickerSections {
         for (var j = 0; j < names.length; j++)
           if (names[j].contains(search)) section.emotes[j],
       ];
-      if (emotes.isNotEmpty) matching.add(EmoteSection(section.title, emotes, iconUrl: section.iconUrl));
+      if (emotes.isNotEmpty) {
+        matching.add(EmoteSection(section.title, emotes, iconUrl: section.iconUrl, ownerId: section.ownerId));
+      }
     }
     _search = search;
     return _matching = matching;

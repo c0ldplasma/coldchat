@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
+
 import '../../api/twitch/helix_api.dart';
 import '../../api/twitch/twitch_badge.dart';
 import '../../api/twitch/twitch_emote.dart';
@@ -23,23 +25,25 @@ String? channelOwnerOf(TwitchEmote emote) {
   return owner;
 }
 
-/// The image of a channel's base subscriber badge in [badgeSets] (its badge sets from Helix), or null without one.
-/// That's the version for new subscribers, "0" (or "1" on older channels), else the lowest month count among the
-/// tier 1 versions (tier 2 and 3 have versions from 2000 and 3000 on).
+/// The month counts of the subscriber badge versions shown for a channel, most wanted first: the 2-year badge, then
+/// the 1-year one (the base badge is often a plain placeholder, the later ones are the channel's showpieces).
+const _preferredBadgeMonths = [24, 12];
+
+/// The image of a channel's subscriber badge in [badgeSets] (its badge sets from Helix) for the picker, or null without
+/// one: the tier 1 badge for 24 months, else for 12 months, else the one for the fewest months ("0" or "1"). Tier 2
+/// and 3 versions (from 2000 and 3000 on) are only taken when there is no tier 1 one.
 String? subscriberBadgeUrl(Map<String, Map<String, TwitchBadge>> badgeSets) {
   final versions = badgeSets['subscriber'];
   if (versions == null || versions.isEmpty) return null;
-  TwitchBadge? lowest;
-  int? lowestMonths;
-  for (final MapEntry(key: id, value: badge) in versions.entries) {
-    final months = int.tryParse(id);
-    if (months == null || months >= 1000) continue;
-    if (lowestMonths == null || months < lowestMonths) {
-      lowest = badge;
-      lowestMonths = months;
-    }
+  final tier1 = <int, TwitchBadge>{
+    for (final MapEntry(key: id, value: badge) in versions.entries)
+      if (int.tryParse(id) case final months? when months < 1000) months: badge,
+  };
+  for (final months in _preferredBadgeMonths) {
+    if (tier1[months] case final badge?) return badge.imageUrl4x;
   }
-  return (lowest ?? versions.values.first).imageUrl4x;
+  final fewestMonths = tier1.keys.minOrNull;
+  return (fewestMonths == null ? versions.values.first : tier1[fewestMonths]!).imageUrl4x;
 }
 
 /// The account's Twitch emotes for the picker. Emotes of a channel ([channelOwnerOf]) are put in a section named after
@@ -64,6 +68,7 @@ List<Emote> twitchUserEmotesFrom(
       source: twitch,
       category: name,
       categoryIcon: name == null ? null : ownerBadges[owner],
+      ownerId: name == null ? null : owner,
     );
     if (name == null) {
       others.add(converted);
