@@ -38,6 +38,12 @@ class ChatSettingsModal extends StatelessWidget {
             },
           ),
           Tile(
+            title: AppLocalizations.of(context).chatHistory,
+            prefix: const Icon(Icons.history),
+            suffix: Toggle(value: settings.chatHistory, onChanged: settings.setChatHistory),
+            onTap: () => settings.setChatHistory(!settings.chatHistory),
+          ),
+          Tile(
             title: AppLocalizations.of(context).showImagesFromLinks,
             subtitle: AppLocalizations.of(context).showImagesFromLinksSubtitle,
             prefix: const Icon(Icons.image_outlined),

@@ -6,7 +6,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../components/modal.dart';
 import '../components/tile.dart';
-import '../components/toggle.dart';
 import '../data/repositories/settings_repository.dart';
 import '../l10n/app_localizations.dart';
 import 'about.dart';
@@ -103,15 +102,6 @@ class SettingsModal extends StatelessWidget {
                   title: AppLocalizations.of(context).about,
                   prefix: const Icon(Icons.info_outline_rounded),
                   onTap: () => Modal.show(context: context, child: const AboutModal()),
-                ),
-                Tile(
-                  title: AppLocalizations.of(context).chatHistory,
-                  prefix: const Icon(Icons.history),
-                  suffix: Toggle(
-                    value: settings.chatHistory,
-                    onChanged: settings.setChatHistory,
-                  ),
-                  onTap: () => settings.setChatHistory(!settings.chatHistory),
                 ),
                 FutureBuilder<PackageInfo>(
                   future: PackageInfo.fromPlatform(),
